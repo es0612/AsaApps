@@ -17,7 +17,7 @@ struct ContentView: View {
                 .textFieldStyle(.roundedBorder)
                 .padding(.horizontal)
                 .submitLabel(.done)
-            Text(name.isEmpty ? "こんにちは！" : "こんにちは、\(name)さん！")
+            Text(name.isEmpty ? "おはよう！" : "おはよう、\(name)さん！")
                 .font(.system(.title, design: .rounded))
                 .foregroundColor(Color("AsaBlue"))
         }
