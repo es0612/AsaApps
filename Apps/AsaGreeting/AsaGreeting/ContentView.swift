@@ -9,12 +9,16 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State private var name = ""
+
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        VStack(spacing: 20) {
+            TextField("名前を入力", text: $name)
+                .textFieldStyle(.roundedBorder)
+                .padding(.horizontal)
+            Text(name.isEmpty ? "こんにちは！" : "こんにちは、\(name)さん！")
+                .font(.title)
+                .foregroundColor(Color("AsaBlue"))
         }
         .padding()
     }
