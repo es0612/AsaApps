@@ -6,12 +6,19 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		D5FBBC902DC6EF870073DEC2 /* AsaButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5FBBC8E2DC6EF870073DEC2 /* AsaButton.swift */; };
+		D5FBBCA22DC6F1F80073DEC2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D5FBBCA12DC6F1F80073DEC2 /* Assets.xcassets */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		D5E6445D2DC1E7A900983DD4 /* AsaCounter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AsaCounter.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D5FBBC8E2DC6EF870073DEC2 /* AsaButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsaButton.swift; sourceTree = "<group>"; };
+		D5FBBCA12DC6F1F80073DEC2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		D5F6713C2DC41BBA00BAC0E6 /* Exceptions for "AsaCounter" folder in "AsaCounter" target */ = {
+		D5FBBC872DC6EE7E0073DEC2 /* Exceptions for "AsaCounter" folder in "AsaCounter" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
@@ -21,10 +28,10 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		D5E6445F2DC1E7A900983DD4 /* AsaCounter */ = {
+		D5FBBC832DC6EE7E0073DEC2 /* AsaCounter */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				D5F6713C2DC41BBA00BAC0E6 /* Exceptions for "AsaCounter" folder in "AsaCounter" target */,
+				D5FBBC872DC6EE7E0073DEC2 /* Exceptions for "AsaCounter" folder in "AsaCounter" target */,
 			);
 			path = AsaCounter;
 			sourceTree = "<group>";
@@ -45,8 +52,9 @@
 		D5E644542DC1E7A900983DD4 = {
 			isa = PBXGroup;
 			children = (
-				D5E6445F2DC1E7A900983DD4 /* AsaCounter */,
+				D5FBBC832DC6EE7E0073DEC2 /* AsaCounter */,
 				D5E6445E2DC1E7A900983DD4 /* Products */,
+				D5FBBC8F2DC6EF870073DEC2 /* Shared */,
 			);
 			sourceTree = "<group>";
 		};
@@ -57,6 +65,16 @@
 			);
 			name = Products;
 			sourceTree = "<group>";
+		};
+		D5FBBC8F2DC6EF870073DEC2 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				D5FBBCA12DC6F1F80073DEC2 /* Assets.xcassets */,
+				D5FBBC8E2DC6EF870073DEC2 /* AsaButton.swift */,
+			);
+			name = Shared;
+			path = /Users/shinya/workspace/AsaApps/Shared;
+			sourceTree = "<absolute>";
 		};
 /* End PBXGroup section */
 
@@ -74,7 +92,7 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				D5E6445F2DC1E7A900983DD4 /* AsaCounter */,
+				D5FBBC832DC6EE7E0073DEC2 /* AsaCounter */,
 			);
 			name = AsaCounter;
 			packageProductDependencies = (
@@ -122,6 +140,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D5FBBCA22DC6F1F80073DEC2 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -132,6 +151,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D5FBBC902DC6EF870073DEC2 /* AsaButton.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -6,8 +6,15 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		D5FBBCA62DC6F2600073DEC2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D5FBBCA42DC6F2600073DEC2 /* Assets.xcassets */; };
+		D5FBBCA72DC6F2600073DEC2 /* AsaButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5FBBCA32DC6F2600073DEC2 /* AsaButton.swift */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		D5BFECEB2DC574B900641971 /* AsaGreeting.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AsaGreeting.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D5FBBCA32DC6F2600073DEC2 /* AsaButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsaButton.swift; sourceTree = "<group>"; };
+		D5FBBCA42DC6F2600073DEC2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -34,6 +41,7 @@
 			children = (
 				D5BFECED2DC574B900641971 /* AsaGreeting */,
 				D5BFECEC2DC574B900641971 /* Products */,
+				D5FBBCA52DC6F2600073DEC2 /* Shared */,
 			);
 			sourceTree = "<group>";
 		};
@@ -44,6 +52,16 @@
 			);
 			name = Products;
 			sourceTree = "<group>";
+		};
+		D5FBBCA52DC6F2600073DEC2 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				D5FBBCA32DC6F2600073DEC2 /* AsaButton.swift */,
+				D5FBBCA42DC6F2600073DEC2 /* Assets.xcassets */,
+			);
+			name = Shared;
+			path = /Users/shinya/workspace/AsaApps/Shared;
+			sourceTree = "<absolute>";
 		};
 /* End PBXGroup section */
 
@@ -109,6 +127,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D5FBBCA62DC6F2600073DEC2 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -119,6 +138,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D5FBBCA72DC6F2600073DEC2 /* AsaButton.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
