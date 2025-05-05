@@ -7,11 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D5CD7E012DC970ED00C32F57 /* AsaLaunchScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5CD7E002DC970ED00C32F57 /* AsaLaunchScreen.swift */; };
 		D5FBBC902DC6EF870073DEC2 /* AsaButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5FBBC8E2DC6EF870073DEC2 /* AsaButton.swift */; };
 		D5FBBCA22DC6F1F80073DEC2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D5FBBCA12DC6F1F80073DEC2 /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		D5CD7E002DC970ED00C32F57 /* AsaLaunchScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AsaLaunchScreen.swift; path = /Users/shinya/workspace/AsaApps/Shared/AsaLaunchScreen.swift; sourceTree = "<absolute>"; };
 		D5E6445D2DC1E7A900983DD4 /* AsaCounter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AsaCounter.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D5FBBC8E2DC6EF870073DEC2 /* AsaButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsaButton.swift; sourceTree = "<group>"; };
 		D5FBBCA12DC6F1F80073DEC2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -71,6 +73,7 @@
 			children = (
 				D5FBBCA12DC6F1F80073DEC2 /* Assets.xcassets */,
 				D5FBBC8E2DC6EF870073DEC2 /* AsaButton.swift */,
+				D5CD7E002DC970ED00C32F57 /* AsaLaunchScreen.swift */,
 			);
 			name = Shared;
 			path = /Users/shinya/workspace/AsaApps/Shared;
@@ -151,6 +154,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D5CD7E012DC970ED00C32F57 /* AsaLaunchScreen.swift in Sources */,
 				D5FBBC902DC6EF870073DEC2 /* AsaButton.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

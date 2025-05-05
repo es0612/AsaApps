@@ -5,9 +5,7 @@
 	<key>UILaunchScreen</key>
 	<dict>
 		<key>UIColorName</key>
-		<string>AsaBlue</string>
-		<key>UIViewController</key>
-		<string>AsaLaunchScreen</string>
+		<string>AsaDarkSlate</string>
 	</dict>
 </dict>
 </plist>

@@ -7,12 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D5CD7E032DC971D900C32F57 /* AsaLaunchScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5CD7E022DC971D900C32F57 /* AsaLaunchScreen.swift */; };
 		D5FBBCA62DC6F2600073DEC2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D5FBBCA42DC6F2600073DEC2 /* Assets.xcassets */; };
 		D5FBBCA72DC6F2600073DEC2 /* AsaButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5FBBCA32DC6F2600073DEC2 /* AsaButton.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		D5BFECEB2DC574B900641971 /* AsaGreeting.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AsaGreeting.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D5CD7E022DC971D900C32F57 /* AsaLaunchScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsaLaunchScreen.swift; sourceTree = "<group>"; };
 		D5FBBCA32DC6F2600073DEC2 /* AsaButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsaButton.swift; sourceTree = "<group>"; };
 		D5FBBCA42DC6F2600073DEC2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -56,6 +58,7 @@
 		D5FBBCA52DC6F2600073DEC2 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				D5CD7E022DC971D900C32F57 /* AsaLaunchScreen.swift */,
 				D5FBBCA32DC6F2600073DEC2 /* AsaButton.swift */,
 				D5FBBCA42DC6F2600073DEC2 /* Assets.xcassets */,
 			);
@@ -138,6 +141,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D5CD7E032DC971D900C32F57 /* AsaLaunchScreen.swift in Sources */,
 				D5FBBCA72DC6F2600073DEC2 /* AsaButton.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

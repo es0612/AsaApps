@@ -15,7 +15,7 @@ struct AsaGreetingApp: App {
         var body: some Scene {
             WindowGroup {
                 if showSplash {
-                    AsaSplashView(appName: "AsaGreeting")
+                    AsaLaunchScreen(appName: "AsaGreeting")
                         .onAppear {
                             // 2秒後にスプラッシュを非表示
                             DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {

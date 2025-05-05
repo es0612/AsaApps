@@ -8,14 +8,18 @@
 
 import SwiftUI
 
-struct AsaSplashView: View {
+struct AsaLaunchScreen: View {
+    //Mark: - Properties
     let appName: String
     @State private var opacity = 0.0
 
+    //Mark: - Body
     var body: some View {
             ZStack {
+                
                 Color("AsaDarkSlate")
                     .ignoresSafeArea()
+                
                 VStack {
                     Image("AsaLogo")
                         .resizable()
@@ -25,7 +29,7 @@ struct AsaSplashView: View {
                         .font(.largeTitle)
                         .fontWeight(.bold)
                         .foregroundColor(Color("AsaSoftCream"))
-                    Text(appName) // AsaCounterでは"AsaCounter"
+                    Text(appName)
                         .font(.title2)
                         .foregroundColor(Color("AsaSoftCream").opacity(0.8))
                 }
@@ -34,5 +38,5 @@ struct AsaSplashView: View {
 }
 
 #Preview {
-    AsaSplashView(appName: "test app")
+    AsaLaunchScreen(appName: "test app")
 }
