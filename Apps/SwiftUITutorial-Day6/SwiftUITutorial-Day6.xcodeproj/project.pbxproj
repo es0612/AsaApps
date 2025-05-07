@@ -6,8 +6,17 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		D5D3E7872DCAEA9300031F77 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D5D3E7852DCAEA9300031F77 /* Assets.xcassets */; };
+		D5D3E7882DCAEA9300031F77 /* AsaButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D3E7832DCAEA9300031F77 /* AsaButton.swift */; };
+		D5D3E7892DCAEA9300031F77 /* AsaLaunchScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D3E7842DCAEA9300031F77 /* AsaLaunchScreen.swift */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		D5D3E7752DCAE93F00031F77 /* SwiftUITutorial-Day6.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SwiftUITutorial-Day6.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		D5D3E7832DCAEA9300031F77 /* AsaButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsaButton.swift; sourceTree = "<group>"; };
+		D5D3E7842DCAEA9300031F77 /* AsaLaunchScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsaLaunchScreen.swift; sourceTree = "<group>"; };
+		D5D3E7852DCAEA9300031F77 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -34,6 +43,7 @@
 			children = (
 				D5D3E7772DCAE93F00031F77 /* SwiftUITutorial-Day6 */,
 				D5D3E7762DCAE93F00031F77 /* Products */,
+				D5D3E7862DCAEA9300031F77 /* Shared */,
 			);
 			sourceTree = "<group>";
 		};
@@ -44,6 +54,17 @@
 			);
 			name = Products;
 			sourceTree = "<group>";
+		};
+		D5D3E7862DCAEA9300031F77 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				D5D3E7832DCAEA9300031F77 /* AsaButton.swift */,
+				D5D3E7842DCAEA9300031F77 /* AsaLaunchScreen.swift */,
+				D5D3E7852DCAEA9300031F77 /* Assets.xcassets */,
+			);
+			name = Shared;
+			path = /Users/shinya/workspace/AsaApps/Shared;
+			sourceTree = "<absolute>";
 		};
 /* End PBXGroup section */
 
@@ -109,6 +130,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D5D3E7872DCAEA9300031F77 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -119,6 +141,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D5D3E7882DCAEA9300031F77 /* AsaButton.swift in Sources */,
+				D5D3E7892DCAEA9300031F77 /* AsaLaunchScreen.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
