@@ -17,6 +17,8 @@ struct ContentView: View {
     @State private var targetSeconds = 60 // タイマーの目標時間（デフォルト60秒）
     @State private var showAlert = false // アラート表示フラグ
     @State private var inputText = "60" // TextField 入力用
+    @State private var history: [TimerRecord] = [] // 履歴データ
+    
     
     // MARK: - Computed Properties
     private var formattedTime: String {
@@ -35,6 +37,8 @@ struct ContentView: View {
             if seconds >= targetSeconds {
                 stopTimer()
                 showAlert = true
+                // タイマー終了時に履歴を追加
+                history.append(TimerRecord(duration: seconds, endTime: Date()))
             }
         }
     }
@@ -54,68 +58,82 @@ struct ContentView: View {
     
     // MARK: - Body
     var body: some View {
-        ZStack {
-            // 背景に薄いクリーム色を重ねて温かみを
-            Color("AsaSoftCream").opacity(0.1)
-                .ignoresSafeArea()
-            Color("AsaDarkSlate").opacity(0.9)
-                .ignoresSafeArea()
-            VStack(spacing: 20) {
-                // タイマー時間入力
-                HStack {
-                    Text("タイマー設定（秒）:")
+        TabView {
+            ZStack {
+                // 背景に薄いクリーム色を重ねて温かみを
+                Color("AsaSoftCream").opacity(0.1)
+                    .ignoresSafeArea()
+                Color("AsaDarkSlate").opacity(0.8)
+                    .ignoresSafeArea()
+                VStack(spacing: 20) {
+                    // タイマー時間入力
+                    HStack {
+                        Text("タイマー設定（秒）:")
+                            .foregroundColor(Color("AsaCoffeeBrown"))
+                        TextField("秒数を入力", text: $inputText)
+                            .textFieldStyle(.roundedBorder)
+                            .keyboardType(.numberPad)
+                            .frame(width: 50)
+                            .accentColor(Color("AsaCoffeeBrown"))
+                            .background(Color("AsaSoftCream").opacity(0.2))
+                            .cornerRadius(8)
+                    }
+                    .padding(.horizontal)
+                    
+                    // タイマー表示（MM:SS 形式）
+                    Text(formattedTime)
+                        .font(.system(.largeTitle, design: .rounded))
                         .foregroundColor(Color("AsaCoffeeBrown"))
-                    TextField("秒数を入力", text: $inputText)
-                        .textFieldStyle(.roundedBorder)
-                        .keyboardType(.numberPad)
-                        .frame(width: 50)
-                        .accentColor(Color("AsaCoffeeBrown"))
-                        .background(Color("AsaSoftCream").opacity(0.2))
-                        .cornerRadius(8)
+                        .padding()
+                        .background(Color("AsaSoftCream").opacity(0.3))
+                        .cornerRadius(10)
+                        .shadow(radius: 2) // シャドウ追加
+                    // スタート/ストップボタン
+                    AsaButton(
+                        title: isRunning ? "ストップ" : "スタート",
+                        action: {
+                            if isRunning {
+                                stopTimer()
+                            } else {
+                                startTimer()
+                            }
+                        },
+                        color: isRunning ? Color("AsaMocha") : Color("AsaCoffeeBrown"),
+                        isEnabled: true
+                    )
+                    
+                    // リセットボタン
+                    AsaButton(
+                        title: "リセット",
+                        action: resetTimer,
+                        color: Color("AsaMutedSage"),
+                        isEnabled: seconds > 0 || isRunning
+                    )
                 }
-                .padding(.horizontal)
-                
-                // タイマー表示（MM:SS 形式）
-                Text(formattedTime)
-                    .font(.system(.largeTitle, design: .rounded))
-                    .foregroundColor(Color("AsaCoffeeBrown"))
-                    .padding()
-                    .background(Color("AsaSoftCream").opacity(0.3))
-                    .cornerRadius(10)
-                    .shadow(radius: 2) // シャドウ追加
-                // スタート/ストップボタン
-                AsaButton(
-                    title: isRunning ? "ストップ" : "スタート",
-                    action: {
-                        if isRunning {
-                            stopTimer()
-                        } else {
-                            startTimer()
-                        }
-                    },
-                    color: isRunning ? Color("AsaMocha") : Color("AsaCoffeeBrown"),
-                    isEnabled: true
-                )
-                
-                // リセットボタン
-                AsaButton(
-                    title: "リセット",
-                    action: resetTimer,
-                    color: Color("AsaMutedSage"),
-                    isEnabled: seconds > 0 || isRunning
-                )
+                .frame(maxWidth: .infinity)
+                .padding()
             }
-            .frame(maxWidth: .infinity)
-            .padding()
+            .tabItem {
+                Label("タイマー", systemImage: "timer")
+            }
+            
+            // 履歴画面
+            TimerHistoryView(history: history)
+                .tabItem {
+                    Label("履歴", systemImage: "clock.arrow.circlepath")
+                }
         }
+        .accentColor(Color("AsaCoffeeBrown")) // タブバーのアクセントカラー
         .alert("タイマー終了！", isPresented: $showAlert) {
             Button("OK") {
                 resetTimer()
             }
+            
         } message: {
             Text("設定した時間が経過しました。")
         }
     }
+    
 }
 
 #Preview {
