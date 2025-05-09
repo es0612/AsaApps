@@ -17,7 +17,11 @@ struct ContentView: View {
     @State private var targetSeconds = 60 // タイマーの目標時間（デフォルト60秒）
     @State private var showAlert = false // アラート表示フラグ
     @State private var inputText = "60" // TextField 入力用
-    @State private var history: [TimerRecord] = [] // 履歴データ
+    @State private var history: [TimerRecord] = []  {
+        didSet {
+            saveHistory() // 履歴が更新されるたびに保存
+        }
+    }// 履歴データ
     
     
     // MARK: - Computed Properties
@@ -28,6 +32,19 @@ struct ContentView: View {
     }
     
     // MARK: - Methods
+    private func loadHistory() {
+        if let data = UserDefaults.standard.data(forKey: "timerHistory"),
+           let savedHistory = try? JSONDecoder().decode([TimerRecord].self, from: data) {
+            history = savedHistory
+        }
+    }
+
+    private func saveHistory() {
+        if let encoded = try? JSONEncoder().encode(history) {
+            UserDefaults.standard.set(encoded, forKey: "timerHistory")
+        }
+    }
+    
     private func startTimer() {
         guard let target = Int(inputText), target > 0 else { return }
         targetSeconds = target
@@ -118,7 +135,7 @@ struct ContentView: View {
             }
             
             // 履歴画面
-            TimerHistoryView(history: history)
+            TimerHistoryView(history: $history)
                 .tabItem {
                     Label("履歴", systemImage: "clock.arrow.circlepath")
                 }
@@ -132,8 +149,10 @@ struct ContentView: View {
         } message: {
             Text("設定した時間が経過しました。")
         }
+        .onAppear {
+            loadHistory() // アプリ起動時に履歴を読み込み
+        }
     }
-    
 }
 
 #Preview {
