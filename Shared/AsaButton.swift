@@ -25,7 +25,10 @@ struct AsaButton: View {
                 .foregroundColor(.white)
                 .cornerRadius(10)
                 .shadow(radius: 2)
+                .scaleEffect(isEnabled ? 1.0 : 0.95) // 無効時に少し縮小
         }
+        .disabled(!isEnabled)
+        .animation(.easeInOut(duration: 0.2), value: isEnabled) // アニメーション追加
     }
 }
 
