@@ -12,14 +12,15 @@ struct TimerRecord: Identifiable,Codable {
     let id: UUID // タイマーのユニークID
     let duration: Int // タイマー時間（秒）
     let endTime: Date // タイマー終了時刻
+    let repeatCount: Int // 繰り返し回数
     
     // 初期化
-    init(id: UUID = UUID(),duration: Int, endTime: Date) {
+    init(id: UUID = UUID(), duration: Int, endTime: Date, repeatCount: Int = 1) {
         self.id = id
         self.duration = duration
         self.endTime = endTime
+        self.repeatCount = repeatCount
     }
-    
     // フォーマット済みの時間を返す（MM:SS）
     var formattedDuration: String {
         let minutes = duration / 60

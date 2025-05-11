@@ -7,6 +7,7 @@
 
 
 import SwiftUI
+import AVFoundation
 
 struct ContentView: View {
     // MARK: - Properties
@@ -22,7 +23,24 @@ struct ContentView: View {
             saveHistory() // 履歴が更新されるたびに保存
         }
     }// 履歴データ
+    @State private var repeatTimer = false // 繰り返しタイマー設定
+    @State private var currentRepeatCount = 1 // 現在の繰り返し回数
     
+    @State private var playSound = true // サウンド再生のオン/オフ
+    private var audioPlayer: AVAudioPlayer?
+    
+    // MARK: - Init
+    init() {
+        // サウンドファイルの準備
+        if let soundURL = Bundle.main.url(forResource: "notification", withExtension: "mp3") {
+            do {
+                audioPlayer = try AVAudioPlayer(contentsOf: soundURL)
+                audioPlayer?.prepareToPlay()
+            } catch {
+                print("Error loading sound file: \(error)")
+            }
+        }
+    }
     
     // MARK: - Computed Properties
     private var formattedTime: String {
@@ -32,13 +50,19 @@ struct ContentView: View {
     }
     
     // MARK: - Methods
+    private func playNotificationSound() {
+        if playSound {
+            audioPlayer?.play()
+        }
+    }
+    
     private func loadHistory() {
         if let data = UserDefaults.standard.data(forKey: "timerHistory"),
            let savedHistory = try? JSONDecoder().decode([TimerRecord].self, from: data) {
             history = savedHistory
         }
     }
-
+    
     private func saveHistory() {
         if let encoded = try? JSONEncoder().encode(history) {
             UserDefaults.standard.set(encoded, forKey: "timerHistory")
@@ -52,10 +76,16 @@ struct ContentView: View {
         timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
             seconds += 1
             if seconds >= targetSeconds {
-                stopTimer()
-                showAlert = true
-                // タイマー終了時に履歴を追加
-                history.append(TimerRecord(duration: seconds, endTime: Date()))
+                history.append(TimerRecord(duration: targetSeconds, endTime: Date(), repeatCount: currentRepeatCount))
+                if repeatTimer {
+                    seconds = 0
+                    currentRepeatCount += 1 // 繰り返し回数をインクリメント
+                    playNotificationSound()
+                } else {
+                    stopTimer()
+                    showAlert = true
+                    playNotificationSound()
+                }
             }
         }
     }
@@ -70,6 +100,7 @@ struct ContentView: View {
         stopTimer()
         seconds = 0
         inputText = "\(targetSeconds)" // 入力欄をリセット
+        currentRepeatCount = 1 // 繰り返し回数をリセット
     }
     
     
@@ -96,6 +127,22 @@ struct ContentView: View {
                             .cornerRadius(8)
                     }
                     .padding(.horizontal)
+                    
+                    // 繰り返しタイマーのトグル
+                    Toggle(isOn: $repeatTimer) {
+                        Text("タイマーを繰り返す")
+                            .foregroundColor(Color("AsaCoffeeBrown"))
+                    }
+                    .padding(.horizontal)
+                    .tint(Color("AsaMocha")) // トグルの色をブランドカラーに
+                    
+                    // サウンド再生のトグル
+                    Toggle(isOn: $playSound) {
+                        Text("サウンド通知")
+                            .foregroundColor(Color("AsaCoffeeBrown"))
+                    }
+                    .padding(.horizontal)
+                    .tint(Color("AsaMocha"))
                     
                     // タイマー表示（MM:SS 形式）
                     Text(formattedTime)

@@ -35,6 +35,11 @@ struct TimerHistoryView: View {
                                         Text(record.formattedEndTime)
                                             .font(.caption)
                                             .foregroundColor(Color("AsaMocha"))
+                                        if record.repeatCount > 1 {
+                                            Text("繰り返し: \(record.repeatCount)回")
+                                                .font(.caption)
+                                                .foregroundColor(Color("AsaMutedSage"))
+                                        }
                                     }
                                     Spacer()
                                 }
@@ -76,6 +81,6 @@ struct TimerHistoryView: View {
 #Preview {
     TimerHistoryView(history: .constant([
         TimerRecord(duration: 120, endTime: Date()),
-        TimerRecord(duration: 300, endTime: Date())
+        TimerRecord(duration: 300, endTime: Date(), repeatCount: 2),
     ]))
 }
