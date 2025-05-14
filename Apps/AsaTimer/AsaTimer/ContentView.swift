@@ -29,6 +29,10 @@ struct ContentView: View {
     @State private var playSound = true // サウンド再生のオン/オフ
     private var audioPlayer: AVAudioPlayer?
     
+    let presetTimes = [60, 300, 600] // 1分、5分、10分
+    @State private var selectedPresetTime = 60 // 選択されたプリセット時間
+    
+    
     // MARK: - Init
     init() {
         // サウンドファイルの準備
@@ -114,6 +118,25 @@ struct ContentView: View {
                 Color("AsaDarkSlate").opacity(0.8)
                     .ignoresSafeArea()
                 VStack(spacing: 20) {
+                    // プリセットタイマー選択
+                    Picker("プリセット時間", selection: $selectedPresetTime) {
+                        ForEach(presetTimes, id: \.self) { time in
+                            Text("\(time / 60)分").tag(time)
+                        }
+                    }
+                    .pickerStyle(.menu)
+                    .accentColor(Color("AsaCoffeeBrown"))
+                    .padding(.horizontal)
+                    .background(
+                        RoundedRectangle(cornerRadius: 8)
+                            .fill(Color("AsaSoftCream").opacity(0.2))
+                            .padding(.horizontal, -8)
+                    )
+                    .onChange(of: selectedPresetTime) { newValue in
+                        inputText = "\(newValue)"
+                        targetSeconds = newValue
+                    }
+                    
                     // タイマー時間入力
                     HStack {
                         Text("タイマー設定（秒）:")
@@ -125,6 +148,12 @@ struct ContentView: View {
                             .accentColor(Color("AsaCoffeeBrown"))
                             .background(Color("AsaSoftCream").opacity(0.2))
                             .cornerRadius(8)
+                            .onChange(of: inputText) { newValue in
+                                              if let newTarget = Int(newValue) {
+                                                  targetSeconds = newTarget
+                                                  selectedPresetTime = presetTimes.contains(newTarget) ? newTarget : presetTimes[0]
+                                              }
+                                          }
                     }
                     .padding(.horizontal)
                     
@@ -135,7 +164,11 @@ struct ContentView: View {
                     }
                     .padding(.horizontal)
                     .tint(Color("AsaMocha")) // トグルの色をブランドカラーに
-                    
+                    .background(
+                        RoundedRectangle(cornerRadius: 8)
+                            .fill(Color("AsaSoftCream").opacity(0.2))
+                            .padding(.horizontal, -8)
+                    )
                     // サウンド再生のトグル
                     Toggle(isOn: $playSound) {
                         Text("サウンド通知")
@@ -143,6 +176,11 @@ struct ContentView: View {
                     }
                     .padding(.horizontal)
                     .tint(Color("AsaMocha"))
+                    .background(
+                        RoundedRectangle(cornerRadius: 8)
+                            .fill(Color("AsaSoftCream").opacity(0.2))
+                            .padding(.horizontal, -8)
+                    )
                     
                     // タイマー表示（MM:SS 形式）
                     Text(formattedTime)
