@@ -117,7 +117,8 @@ struct ContentView: View {
                     .ignoresSafeArea()
                 Color("AsaDarkSlate").opacity(0.8)
                     .ignoresSafeArea()
-                VStack(spacing: 20) {
+                
+                VStack(spacing: 15) {
                     // プリセットタイマー選択
                     Picker("プリセット時間", selection: $selectedPresetTime) {
                         ForEach(presetTimes, id: \.self) { time in
@@ -149,11 +150,28 @@ struct ContentView: View {
                             .background(Color("AsaSoftCream").opacity(0.2))
                             .cornerRadius(8)
                             .onChange(of: inputText) { newValue in
-                                              if let newTarget = Int(newValue) {
-                                                  targetSeconds = newTarget
-                                                  selectedPresetTime = presetTimes.contains(newTarget) ? newTarget : presetTimes[0]
-                                              }
-                                          }
+                                if let newTarget = Int(newValue) {
+                                    targetSeconds = newTarget
+                                    selectedPresetTime = presetTimes.contains(newTarget) ? newTarget : presetTimes[0]
+                                }
+                            }
+                    }
+                    .padding(.horizontal)
+                    
+                    // スライダーによる時間調整
+                    VStack {
+                        Text("タイマー時間: \(Int(targetSeconds / 60))分")
+                            .foregroundColor(Color("AsaCoffeeBrown"))
+                        Slider(value: Binding<Double>(
+                            get: { Double(targetSeconds) },
+                            set: { newValue in
+                                targetSeconds = Int(newValue)
+                                inputText = "\(targetSeconds)"
+                                selectedPresetTime = presetTimes.contains(targetSeconds) ? targetSeconds : presetTimes[0]
+                            }
+                        ), in: 60...3600, step: 60)
+                        .accentColor(Color("AsaMocha"))
+                        .padding(.horizontal)
                     }
                     .padding(.horizontal)
                     
