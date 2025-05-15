@@ -32,6 +32,10 @@ struct ContentView: View {
     let presetTimes = [60, 300, 600] // 1分、5分、10分
     @State private var selectedPresetTime = 60 // 選択されたプリセット時間
     
+    // プログレスバーの進行状況
+    private var progress: Double {
+        targetSeconds > 0 ? Double(seconds) / Double(targetSeconds) : 0.0
+    }
     
     // MARK: - Init
     init() {
@@ -199,15 +203,22 @@ struct ContentView: View {
                             .fill(Color("AsaSoftCream").opacity(0.2))
                             .padding(.horizontal, -8)
                     )
+                                        
+                    // タイマー表示とプログレスバー
+                    ZStack {
+                        Circle()
+                            .stroke(Color("AsaSoftCream").opacity(0.3), lineWidth: 10)
+                            .frame(width: 120, height: 120)
+                        CircularProgress(progress: progress)
+                            .stroke(Color("AsaMocha"), style: StrokeStyle(lineWidth: 10, lineCap: .round))
+                            .frame(width: 120, height: 120)
+                            .animation(.linear(duration: 1.0), value: progress)
+                        Text(formattedTime)
+                            .font(.system(.largeTitle, design: .rounded))
+                            .foregroundColor(Color("AsaCoffeeBrown"))
+                    }
+                    .padding()
                     
-                    // タイマー表示（MM:SS 形式）
-                    Text(formattedTime)
-                        .font(.system(.largeTitle, design: .rounded))
-                        .foregroundColor(Color("AsaCoffeeBrown"))
-                        .padding()
-                        .background(Color("AsaSoftCream").opacity(0.3))
-                        .cornerRadius(10)
-                        .shadow(radius: 2) // シャドウ追加
                     // スタート/ストップボタン
                     AsaButton(
                         title: isRunning ? "ストップ" : "スタート",
