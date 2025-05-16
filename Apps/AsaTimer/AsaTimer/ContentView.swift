@@ -37,6 +37,8 @@ struct ContentView: View {
         targetSeconds > 0 ? Double(seconds) / Double(targetSeconds) : 0.0
     }
     
+    @State private var pulseAnimation = false // パルスアニメーションの状態
+    
     // MARK: - Init
     init() {
         // サウンドファイルの準備
@@ -81,6 +83,12 @@ struct ContentView: View {
         guard let target = Int(inputText), target > 0 else { return }
         targetSeconds = target
         isRunning = true
+        
+        // パルスアニメーションをトリガー
+        withAnimation(.easeInOut(duration: 0.5).repeatCount(2, autoreverses: true)) {
+            pulseAnimation = true
+        }
+        
         timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
             seconds += 1
             if seconds >= targetSeconds {
@@ -89,6 +97,10 @@ struct ContentView: View {
                     seconds = 0
                     currentRepeatCount += 1 // 繰り返し回数をインクリメント
                     playNotificationSound()
+                    // 繰り返しタイマーでもパルスを再トリガー
+                    withAnimation(.easeInOut(duration: 0.5).repeatCount(2, autoreverses: true)) {
+                        pulseAnimation = true
+                    }
                 } else {
                     stopTimer()
                     showAlert = true
@@ -109,6 +121,7 @@ struct ContentView: View {
         seconds = 0
         inputText = "\(targetSeconds)" // 入力欄をリセット
         currentRepeatCount = 1 // 繰り返し回数をリセット
+        pulseAnimation = false // パルスアニメーションをリセット
     }
     
     
@@ -217,6 +230,7 @@ struct ContentView: View {
                             .font(.system(.largeTitle, design: .rounded))
                             .foregroundColor(Color("AsaCoffeeBrown"))
                     }
+                    .scaleEffect(pulseAnimation ? 1.05 : 1.0) // パルスアニメーション
                     .padding()
                     
                     // スタート/ストップボタン
