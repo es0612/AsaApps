@@ -39,6 +39,9 @@ struct ContentView: View {
     
     @State private var pulseAnimation = false // パルスアニメーションの状態
     
+    // ダークモード/ライトモードを取得
+    @Environment(\.colorScheme) var colorScheme
+    
     // MARK: - Init
     init() {
         // サウンドファイルの準備
@@ -129,25 +132,28 @@ struct ContentView: View {
     var body: some View {
         TabView {
             ZStack {
-                // 背景に薄いクリーム色を重ねて温かみを
-                Color("AsaSoftCream").opacity(0.1)
+                // 背景色をダークモード/ライトモードで動的に変更
+                Color(colorScheme == .dark ? "AsaDarkSlate" : "AsaSoftCream")
+                    .opacity(colorScheme == .dark ? 0.9 : 0.1)
                     .ignoresSafeArea()
-                Color("AsaDarkSlate").opacity(0.8)
+                Color(colorScheme == .dark ? "AsaSoftCream" : "AsaDarkSlate")
+                    .opacity(colorScheme == .dark ? 0.2 : 0.8)
                     .ignoresSafeArea()
                 
                 VStack(spacing: 15) {
                     // プリセットタイマー選択
                     Picker("プリセット時間", selection: $selectedPresetTime) {
                         ForEach(presetTimes, id: \.self) { time in
-                            Text("\(time / 60)分").tag(time)
+                            Text("\(time / 60)分")
+                                .tag(time)
                         }
                     }
                     .pickerStyle(.menu)
-                    .accentColor(Color("AsaCoffeeBrown"))
+                    .accentColor(colorScheme == .dark ? Color("AsaSoftCream") : Color("AsaCoffeeBrown"))
                     .padding(.horizontal)
                     .background(
                         RoundedRectangle(cornerRadius: 8)
-                            .fill(Color("AsaSoftCream").opacity(0.2))
+                            .fill(Color("AsaSoftCream").opacity(colorScheme == .dark ? 0.4 : 0.2))
                             .padding(.horizontal, -8)
                     )
                     .onChange(of: selectedPresetTime) { newValue in
@@ -158,13 +164,13 @@ struct ContentView: View {
                     // タイマー時間入力
                     HStack {
                         Text("タイマー設定（秒）:")
-                            .foregroundColor(Color("AsaCoffeeBrown"))
+                            .foregroundColor(colorScheme == .dark ? Color("AsaSoftCream") : Color("AsaCoffeeBrown"))
                         TextField("秒数を入力", text: $inputText)
                             .textFieldStyle(.roundedBorder)
                             .keyboardType(.numberPad)
                             .frame(width: 50)
                             .accentColor(Color("AsaCoffeeBrown"))
-                            .background(Color("AsaSoftCream").opacity(0.2))
+                            .background(Color("AsaSoftCream").opacity(colorScheme == .dark ? 0.4 : 0.2))
                             .cornerRadius(8)
                             .onChange(of: inputText) { newValue in
                                 if let newTarget = Int(newValue) {
@@ -178,7 +184,7 @@ struct ContentView: View {
                     // スライダーによる時間調整
                     VStack {
                         Text("タイマー時間: \(Int(targetSeconds / 60))分")
-                            .foregroundColor(Color("AsaCoffeeBrown"))
+                            .foregroundColor(colorScheme == .dark ? Color("AsaSoftCream") : Color("AsaCoffeeBrown"))
                         Slider(value: Binding<Double>(
                             get: { Double(targetSeconds) },
                             set: { newValue in
@@ -195,25 +201,25 @@ struct ContentView: View {
                     // 繰り返しタイマーのトグル
                     Toggle(isOn: $repeatTimer) {
                         Text("タイマーを繰り返す")
-                            .foregroundColor(Color("AsaCoffeeBrown"))
+                            .foregroundColor(colorScheme == .dark ? Color("AsaSoftCream") : Color("AsaCoffeeBrown"))
                     }
                     .padding(.horizontal)
                     .tint(Color("AsaMocha")) // トグルの色をブランドカラーに
                     .background(
                         RoundedRectangle(cornerRadius: 8)
-                            .fill(Color("AsaSoftCream").opacity(0.2))
+                            .fill(Color("AsaSoftCream").opacity(colorScheme == .dark ? 0.4 : 0.2))
                             .padding(.horizontal, -8)
                     )
                     // サウンド再生のトグル
                     Toggle(isOn: $playSound) {
                         Text("サウンド通知")
-                            .foregroundColor(Color("AsaCoffeeBrown"))
+                            .foregroundColor(colorScheme == .dark ? Color("AsaSoftCream") : Color("AsaCoffeeBrown"))
                     }
                     .padding(.horizontal)
                     .tint(Color("AsaMocha"))
                     .background(
                         RoundedRectangle(cornerRadius: 8)
-                            .fill(Color("AsaSoftCream").opacity(0.2))
+                            .fill(Color("AsaSoftCream").opacity(colorScheme == .dark ? 0.4 : 0.2))
                             .padding(.horizontal, -8)
                     )
                                         
@@ -228,7 +234,7 @@ struct ContentView: View {
                             .animation(.linear(duration: 1.0), value: progress)
                         Text(formattedTime)
                             .font(.system(.largeTitle, design: .rounded))
-                            .foregroundColor(Color("AsaCoffeeBrown"))
+                            .foregroundColor(colorScheme == .dark ? Color("AsaSoftCream") : Color("AsaCoffeeBrown"))
                     }
                     .scaleEffect(pulseAnimation ? 1.05 : 1.0) // パルスアニメーション
                     .padding()
