@@ -225,13 +225,20 @@ struct ContentView: View {
                                         
                     // タイマー表示とプログレスバー
                     ZStack {
-                        Circle()
-                            .stroke(Color("AsaSoftCream").opacity(0.3), lineWidth: 10)
-                            .frame(width: 120, height: 120)
-                        CircularProgress(progress: progress)
-                            .stroke(Color("AsaMocha"), style: StrokeStyle(lineWidth: 10, lineCap: .round))
-                            .frame(width: 120, height: 120)
-                            .animation(.linear(duration: 1.0), value: progress)
+//                        Circle()
+//                            .stroke(Color("AsaSoftCream").opacity(0.3), lineWidth: 10)
+//                            .frame(width: 120, height: 120)
+//                        CircularProgress(progress: progress)
+//                            .stroke(Color("AsaMocha"), style: StrokeStyle(lineWidth: 10, lineCap: .round))
+//                            .frame(width: 120, height: 120)
+//                            .animation(.linear(duration: 1.0), value: progress)
+                        
+                        CustomCircularProgress(
+                                    progress: progress,
+                                    trackColor: UIColor(Color("AsaSoftCream").opacity(0.3)),
+                                    progressColor: UIColor(Color("AsaMocha"))
+                                )
+                                .frame(width: 120, height: 120)
                         Text(formattedTime)
                             .font(.system(.largeTitle, design: .rounded))
                             .foregroundColor(colorScheme == .dark ? Color("AsaSoftCream") : Color("AsaCoffeeBrown"))
