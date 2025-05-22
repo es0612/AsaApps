@@ -13,13 +13,17 @@ struct TimerRecord: Identifiable,Codable {
     let duration: Int // タイマー時間（秒）
     let endTime: Date // タイマー終了時刻
     let repeatCount: Int // 繰り返し回数
+    var startTime: Date // 開始時間を追加
+    var memo: String? // メモを追加（オプション）
     
     // 初期化
-    init(id: UUID = UUID(), duration: Int, endTime: Date, repeatCount: Int = 1) {
+    init(id: UUID = UUID(), duration: Int, endTime: Date, repeatCount: Int = 1, startTime: Date = Date(), memo: String? = nil) {
         self.id = id
         self.duration = duration
         self.endTime = endTime
         self.repeatCount = repeatCount
+        self.startTime = startTime
+        self.memo = memo
     }
     // フォーマット済みの時間を返す（MM:SS）
     var formattedDuration: String {
