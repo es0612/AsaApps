@@ -22,6 +22,7 @@ struct ContentView: View {
 
                 // フラッシュカード
                 ZStack {
+                    // カード背景
                     RoundedRectangle(cornerRadius: 20)
                         .fill(Color.white)
                         .frame(width: 250, height: 150)
@@ -30,12 +31,33 @@ struct ContentView: View {
                                 .stroke(Color.gray, lineWidth: 2)
                         )
                         .shadow(radius: 5)
-
-                    Text(isFlipped ? flashcardManager.currentCard.meaning : flashcardManager.currentCard.word)
-                        .font(.title)
-                        .foregroundColor(.black)
                         .rotation3DEffect(
                             .degrees(isFlipped ? 180 : 0),
+                            axis: (x: 0, y: 1, z: 0)
+                        )
+
+                    // カードの表（word）
+                    Text(flashcardManager.currentCard.word)
+                        .font(.title)
+                        .foregroundColor(.black)
+                        .opacity(isFlipped ? 0 : 1)
+                        .rotation3DEffect(
+                            .degrees(isFlipped ? 180 : 0),
+                            axis: (x: 0, y: 1, z: 0)
+                        )
+
+                    // カードの裏（meaning）
+                    Text(flashcardManager.currentCard.meaning)
+                        .font(.title)
+                        .foregroundColor(.black)
+                        .opacity(isFlipped ? 1 : 0)
+                        .rotation3DEffect(
+                            .degrees(isFlipped ? 180 : 0),
+                            axis: (x: 0, y: 1, z: 0)
+                        )
+                        // フリップ時に文字の向きを補正
+                        .rotation3DEffect(
+                            .degrees(isFlipped ? -180 : 0),
                             axis: (x: 0, y: 1, z: 0)
                         )
                 }
