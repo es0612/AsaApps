@@ -33,7 +33,9 @@ struct ContentView: View {
                 .clipShape(RoundedRectangle(cornerRadius: 10))
                 .shadow(radius: 2)
                 
-                NavigationLink("履歴を見る", destination: Text("履歴画面（未実装）"))
+                NavigationLink("履歴を見る", destination: MoodHistoryView(entries: moodEntries))
+                    .font(.title2.weight(.medium))
+                    .foregroundColor(.asaMutedSage)
             }
             .padding()
             .background(.asaSoftCream)
