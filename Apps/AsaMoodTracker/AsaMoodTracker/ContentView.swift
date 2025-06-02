@@ -9,6 +9,10 @@ struct ContentView: View {
     var body: some View {
         NavigationView {
             VStack(spacing: 20) {
+                Image("AsaLogo")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 100, height: 100)
                 Text("アサパパの気分記録")
                     .font(.title2.weight(.medium))
                     .foregroundColor(.asaCoffeeBrown)
@@ -20,6 +24,7 @@ struct ContentView: View {
                 }
                 .pickerStyle(.menu)
                 .tint(.asaMutedSage)
+                .background(.asaSoftCream.opacity(0.3), in: RoundedRectangle(cornerRadius: 10))
                 
                 Button("記録する") {
                     let newEntry = MoodEntry(date: Date(), emoji: selectedEmoji)

@@ -1,3 +1,4 @@
+// AsaApps/Apps/AsaMoodTracker/Views/MoodHistoryView.swift
 import SwiftUI
 
 struct MoodHistoryView: View {
@@ -5,10 +6,16 @@ struct MoodHistoryView: View {
     
     var body: some View {
         List {
-            ForEach(entries) { entry in
-                Text("\(entry.date, formatter: dateFormatter) - \(entry.emoji)")
-                    .font(.body)
-                    .foregroundColor(.asaCoffeeBrown)
+            if entries.isEmpty {
+                Text("まだ気分を記録していません！")
+                    .font(.body.weight(.medium))
+                    .foregroundColor(.asaMocha)
+            } else {
+                ForEach(entries) { entry in
+                    Text("\(entry.date, formatter: dateFormatter) - \(entry.emoji)")
+                        .font(.body.weight(.medium))
+                        .foregroundColor(.asaCoffeeBrown)
+                }
             }
         }
         .navigationTitle("気分履歴")
