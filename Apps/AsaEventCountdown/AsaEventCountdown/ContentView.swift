@@ -2,12 +2,12 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var eventDate = Date()
+    @State private var viewModel = EventViewModel()
     
     var body: some View {
         NavigationView {
             VStack(spacing: 20) {
-                Image("AsaLogo")
+                Image("AsaPapaLabLogo")
                     .resizable()
                     .scaledToFit()
                     .frame(width: 100, height: 100)
@@ -15,17 +15,23 @@ struct ContentView: View {
                     .font(.title2.weight(.medium))
                     .foregroundColor(.asaCoffeeBrown)
                 
-                DatePicker("イベント日", selection: $eventDate, in: Date()..., displayedComponents: .date)
+                TextField("イベント名（例：誕生日）", text: $viewModel.eventName)
+                    .padding()
+                    .border(.asaMutedSage, width: 1)
+                    .background(.white)
+                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                
+                DatePicker("イベント日", selection: $viewModel.eventDate, in: Date()..., displayedComponents: .date)
                     .datePickerStyle(.compact)
                     .tint(.asaMutedSage)
                     .padding()
                 
-                Text("あと \(daysUntilEvent(from: eventDate)) 日！")
+                Text("あと \(viewModel.daysUntilEvent(from: viewModel.eventDate)) 日！")
                     .font(.title3.weight(.medium))
                     .foregroundColor(.asaCoffeeBrown)
                 
                 Button("保存") {
-                    // Day 2で実装
+                    viewModel.addEvent()
                 }
                 .font(.title2.weight(.medium))
                 .padding()
@@ -40,13 +46,10 @@ struct ContentView: View {
             }
             .padding()
             .background(.asaSoftCream)
+            .onAppear {
+                viewModel.loadFromUserDefaults()
+            }
         }
-    }
-    
-    func daysUntilEvent(from date: Date) -> Int {
-        let calendar = Calendar.current
-        let components = calendar.dateComponents([.day], from: Date(), to: date)
-        return max(0, components.day ?? 0) // 過去の日付は0
     }
 }
 
