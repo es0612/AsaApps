@@ -9,10 +9,11 @@ class EventViewModel {
     var eventDate: Date = Date()
     
     func addEvent() {
+        guard !eventName.isEmpty else { return }
         let newEvent = Event(name: eventName, date: eventDate)
         events.append(newEvent)
         saveToUserDefaults()
-        eventName = "" // リセット
+        eventName = ""
     }
     
     func saveToUserDefaults() {

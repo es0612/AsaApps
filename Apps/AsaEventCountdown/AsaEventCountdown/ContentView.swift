@@ -3,6 +3,7 @@ import SwiftUI
 
 struct ContentView: View {
     @State private var viewModel = EventViewModel()
+    @State private var showError = false
     
     var body: some View {
         NavigationView {
@@ -21,6 +22,12 @@ struct ContentView: View {
                     .background(.white)
                     .clipShape(RoundedRectangle(cornerRadius: 10))
                 
+                if viewModel.eventName.isEmpty && showError {
+                    Text("イベント名を入力してください")
+                        .font(.caption)
+                        .foregroundColor(.red)
+                }
+                
                 DatePicker("イベント日", selection: $viewModel.eventDate, in: Date()..., displayedComponents: .date)
                     .datePickerStyle(.compact)
                     .tint(.asaMutedSage)
@@ -31,6 +38,7 @@ struct ContentView: View {
                     .foregroundColor(.asaCoffeeBrown)
                 
                 Button("保存") {
+                    showError = viewModel.eventName.isEmpty
                     viewModel.addEvent()
                 }
                 .font(.title2.weight(.medium))
@@ -40,7 +48,7 @@ struct ContentView: View {
                 .clipShape(RoundedRectangle(cornerRadius: 10))
                 .shadow(radius: 2)
                 
-                NavigationLink("イベント一覧", destination: Text("未実装"))
+                NavigationLink("イベント一覧", destination: EventListView())
                     .font(.title2.weight(.medium))
                     .foregroundColor(.asaMutedSage)
             }
