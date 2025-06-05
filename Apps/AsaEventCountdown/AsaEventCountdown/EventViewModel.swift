@@ -29,6 +29,11 @@ class EventViewModel {
         }
     }
     
+    func deleteEvent(id: UUID) {
+        events.removeAll { $0.id == id }
+        saveToUserDefaults()
+    }
+    
     func daysUntilEvent(from date: Date) -> Int {
         let calendar = Calendar.current
         let components = calendar.dateComponents([.day], from: Date(), to: date)

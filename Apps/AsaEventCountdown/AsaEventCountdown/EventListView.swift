@@ -15,6 +15,12 @@ struct EventListView: View {
                         .font(.body.weight(.medium))
                         .foregroundColor(.asaCoffeeBrown)
                 }
+                .onDelete { indexSet in
+                    let idsToDelete = indexSet.map { viewModel.events[$0].id }
+                    for id in idsToDelete {
+                        viewModel.deleteEvent(id: id)
+                    }
+                }
             }
         }
         .navigationTitle("イベント一覧")
