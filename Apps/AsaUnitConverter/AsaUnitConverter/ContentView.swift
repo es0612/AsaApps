@@ -1,62 +1,77 @@
-// AsaApps/Apps/AsaUnitConverter/ContentView.swift
 import SwiftUI
 
 struct ContentView: View {
-    @State private var inputValue: String = ""
-    @State private var unitType: String = "m→ft"
-    @State private var convertedValue: Double = 0.0
-    
-    let unitTypes = ["m→ft", "kg→lb"]
+    @State private var viewModel = UnitConverterViewModel()
     
     var body: some View {
         NavigationView {
-            VStack(spacing: 20) {
-                Image("AsaPapaLabLogo")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 100, height: 100)
-                Text("アサパパの単位変換")
-                    .font(.title2.weight(.medium))
-                    .foregroundColor(.asaCoffeeBrown)
+            ZStack {
+                LinearGradient(colors: [.asaSoftCream, .asaMocha], startPoint: .top, endPoint: .bottom)
+                    .ignoresSafeArea()
                 
-                TextField("数値を入力（例：100）", text: $inputValue)
+                VStack(spacing: 16) {
+                    Image("AsaPapaLabLogo")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 80, height: 80)
+                        .padding(.top, 20)
+                    
+                    Text("アサパパの単位変換")
+                        .font(.title2.weight(.medium))
+                        .foregroundColor(.asaCoffeeBrown)
+                    
+                    TextField("数値を入力（例：100）", text: $viewModel.inputValue)
+                        .padding()
+                        .background(.white)
+                        .clipShape(RoundedRectangle(cornerRadius: 15))
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 15)
+                                .stroke(.asaMutedSage, lineWidth: 1)
+                        )
+                        .shadow(radius: 1)
+                        .keyboardType(.decimalPad)
+                    
+                    Picker("単位", selection: $viewModel.unitType) {
+                        ForEach(viewModel.unitTypes, id: \.self) { type in
+                            Text(type).tag(type)
+                        }
+                    }
+                    .pickerStyle(.segmented)
+                    .tint(.asaMutedSage)
+                    .padding(.horizontal)
+                    
+                    Text("結果：\(viewModel.convertedValue, specifier: "%.3f") \(viewModel.unitType == "m→ft" ? "ft" : "lb")")
+                        .font(.title3.weight(.medium))
+                        .foregroundColor(.asaCoffeeBrown)
+                        .padding()
+                        .background(.white.opacity(0.8))
+                        .clipShape(RoundedRectangle(cornerRadius: 15))
+                        .shadow(radius: 2)
+                    
+                    Button("変換") {
+                        viewModel.convert()
+                    }
+                    .font(.title2.weight(.bold))
                     .padding()
-                    .border(.asaMutedSage, width: 1)
-                    .background(.white)
-                    .clipShape(RoundedRectangle(cornerRadius: 10))
-                    .keyboardType(.decimalPad)
-                
-                Picker("単位", selection: $unitType) {
-                    ForEach(unitTypes, id: \.self) { type in
-                        Text(type)
-                    }
+                    .frame(maxWidth: .infinity)
+                    .background(.asaCoffeeBrown)
+                    .foregroundColor(.white)
+                    .clipShape(RoundedRectangle(cornerRadius: 15))
+                    .shadow(radius: 3)
+                    .padding(.horizontal)
+                    
+                    NavigationLink("履歴を見る", destination: Text("未実装"))
+                        .font(.body.weight(.medium))
+                        .foregroundColor(.asaMutedSage)
+                        .padding(.bottom, 20)
+                    
+                    Spacer()
                 }
-                .pickerStyle(.menu)
-                .tint(.asaMutedSage)
-                .padding()
-                
-                Text("結果：\(convertedValue, specifier: "%.3f") \(unitType == "m→ft" ? "ft" : "lb")")
-                    .font(.title3.weight(.medium))
-                    .foregroundColor(.asaCoffeeBrown)
-                
-                Button("変換") {
-                    if let value = Double(inputValue) {
-                        convertedValue = unitType == "m→ft" ? value * 3.28084 : value * 2.20462
-                    }
-                }
-                .font(.title2.weight(.medium))
-                .padding()
-                .background(.asaCoffeeBrown)
-                .foregroundColor(.white)
-                .clipShape(RoundedRectangle(cornerRadius: 10))
-                .shadow(radius: 2)
-                
-                NavigationLink("履歴を見る", destination: Text("未実装"))
-                    .font(.title2.weight(.medium))
-                    .foregroundColor(.asaMutedSage)
+                .padding(.horizontal, 20)
             }
-            .padding()
-            .background(.asaSoftCream)
+            .onAppear {
+                viewModel.loadFromUserDefaults()
+            }
         }
     }
 }
