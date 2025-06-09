@@ -30,6 +30,13 @@ struct ContentView: View {
                         )
                         .shadow(radius: 1)
                         .keyboardType(.decimalPad)
+
+                    if viewModel.inputValue.isEmpty || Double(viewModel.inputValue) == nil {
+                        Text("有効な数値を入力してください")
+                            .font(.caption)
+                            .foregroundColor(.red)
+                            .padding(.top, 4)
+                    }
                     
                     Picker("単位", selection: $viewModel.unitType) {
                         ForEach(viewModel.unitTypes, id: \.self) { type in
@@ -60,7 +67,7 @@ struct ContentView: View {
                     .shadow(radius: 3)
                     .padding(.horizontal)
                     
-                    NavigationLink("履歴を見る", destination: Text("未実装"))
+                    NavigationLink("履歴を見る", destination: ConversionListView())
                         .font(.body.weight(.medium))
                         .foregroundColor(.asaMutedSage)
                         .padding(.bottom, 20)

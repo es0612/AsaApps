@@ -11,7 +11,7 @@ class UnitConverterViewModel {
     let unitTypes = ["m→ft", "kg→lb"]
     
     func convert() {
-        guard let value = Double(inputValue), !inputValue.isEmpty else {
+        guard !inputValue.isEmpty, let value = Double(inputValue) else {
             convertedValue = 0.0
             return
         }
@@ -24,6 +24,7 @@ class UnitConverterViewModel {
         )
         conversions.append(newConversion)
         saveToUserDefaults()
+        inputValue = "" // 成功したら入力クリア
     }
     
     func saveToUserDefaults() {
