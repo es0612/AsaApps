@@ -39,5 +39,10 @@ class UnitConverterViewModel {
             conversions = savedConversions
         }
     }
+    
+    func deleteConversion(_ conversion: Conversion) {
+        conversions.removeAll { $0.id == conversion.id }
+        saveToUserDefaults()
+    }
 }
 

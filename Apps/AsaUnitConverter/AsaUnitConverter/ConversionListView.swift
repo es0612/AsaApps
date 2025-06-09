@@ -28,8 +28,12 @@ struct ConversionListView: View {
                             }
                             .padding(.vertical, 4)
                         }
+                        .onDelete { indexSet in
+                            let conversionsToDelete = indexSet.map { viewModel.conversions[$0] }
+                            conversionsToDelete.forEach { viewModel.deleteConversion($0) }
+                        }
                     }
-                    .background(.white.opacity(0.8))
+                    .background(.white.opacity(0.1))
                     .clipShape(RoundedRectangle(cornerRadius: 15))
                     .padding(.horizontal)
                 }
