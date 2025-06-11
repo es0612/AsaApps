@@ -21,15 +21,13 @@ struct ContentView: View {
                         .font(.title2.weight(.medium))
                         .foregroundColor(.asaCoffeeBrown)
                     
-                    Text(viewModel.currentQuote.text)
-                        .font(.body.weight(.medium))
-                        .foregroundColor(.asaCoffeeBrown)
-                        .multilineTextAlignment(.center)
-                        .padding()
-                        .background(Color.white.opacity(0.8))
-                        .clipShape(RoundedRectangle(cornerRadius: 15))
-                        .shadow(radius: 2)
-                        .padding(.horizontal)
+                    AsaCard {
+                        Text(viewModel.currentQuote.text)
+                            .font(.body.weight(.medium))
+                            .foregroundColor(.asaCoffeeBrown)
+                            .multilineTextAlignment(.center)
+                    }
+                    .padding(.horizontal)
                     
                     Button(action: { viewModel.toggleFavorite() }) {
                         Image(systemName: viewModel.currentQuote.isFavorite ? "heart.fill" : "heart")
@@ -44,7 +42,7 @@ struct ContentView: View {
                     .padding(.horizontal)
                     
                     
-                    NavigationLink("お気に入りを見る", destination: Text("未実装"))
+                    NavigationLink("お気に入りを見る", destination: FavoriteQuotesView())
                         .font(.body.weight(.medium))
                         .foregroundColor(.asaMutedSage)
                         .padding(.bottom, 20)

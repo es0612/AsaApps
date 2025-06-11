@@ -43,4 +43,12 @@ class QuoteViewModel {
             favoriteQuotes = savedQuotes
         }
     }
+    
+    func deleteFavoriteQuote(_ quote: Quote) {
+        favoriteQuotes.removeAll { $0.id == quote.id }
+        if currentQuote.id == quote.id {
+            currentQuote.isFavorite = false
+        }
+        saveToUserDefaults()
+    }
 }
