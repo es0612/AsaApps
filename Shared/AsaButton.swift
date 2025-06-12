@@ -7,7 +7,7 @@ struct AsaButton: View {
     let isEnabled: Bool
 
     // MARK: - Init
-    init(title: String, action: @escaping () -> Void, color: Color, isEnabled: Bool = true) {
+    init(title: String, action: @escaping () -> Void, color: Color = Color("AsaCoffeeBrown"), isEnabled: Bool = true) {
         self.title = title
         self.action = action
         self.color = color
