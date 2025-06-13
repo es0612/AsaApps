@@ -1,11 +1,7 @@
-// AsaApps/Apps/AsaBudget/ContentView.swift
 import SwiftUI
 
 struct ContentView: View {
-    @State private var amount: String = ""
-    @State private var category: String = "食費"
-    @State private var date: Date = Date()
-    let categories = ["食費", "娯楽", "交通費", "生活費"]
+    @State private var viewModel = ExpenseViewModel()
     
     var body: some View {
         NavigationView {
@@ -27,14 +23,14 @@ struct ContentView: View {
                     
                     AsaCard {
                         VStack(spacing: 12) {
-                            TextField("金額を入力", text: $amount)
+                            TextField("金額を入力", text: $viewModel.amount)
                                 .keyboardType(.decimalPad)
                                 .font(.body.weight(.medium))
                                 .foregroundColor(.asaCoffeeBrown)
                                 .padding(.horizontal)
                             
-                            Picker("カテゴリ", selection: $category) {
-                                ForEach(categories, id: \.self) { category in
+                            Picker("カテゴリ", selection: $viewModel.category) {
+                                ForEach(viewModel.categories, id: \.self) { category in
                                     Text(category)
                                 }
                             }
@@ -42,7 +38,7 @@ struct ContentView: View {
                             .font(.body.weight(.medium))
                             .foregroundColor(.asaCoffeeBrown)
                             
-                            DatePicker("日付", selection: $date, displayedComponents: .date)
+                            DatePicker("日付", selection: $viewModel.date, displayedComponents: .date)
                                 .font(.body.weight(.medium))
                                 .foregroundColor(.asaCoffeeBrown)
                                 .padding(.horizontal)
@@ -51,8 +47,7 @@ struct ContentView: View {
                     .padding(.horizontal)
                     
                     AsaButton(title: "支出を追加") {
-                        print("Tapped: ¥\(amount), カテゴリ: \(category), 日付: \(date)")
-                        amount = ""
+                        viewModel.addExpense()
                     }
                     .padding(.horizontal)
                     
@@ -64,6 +59,9 @@ struct ContentView: View {
                     Spacer()
                 }
                 .padding(.horizontal, 20)
+            }
+            .onAppear {
+                viewModel.loadFromUserDefaults()
             }
         }
     }
