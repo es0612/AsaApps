@@ -28,6 +28,15 @@ struct ContentView: View {
                                 .font(.body.weight(.medium))
                                 .foregroundColor(.asaCoffeeBrown)
                                 .padding(.horizontal)
+                                .onChange(of: viewModel.amount) { _, _ in
+                                    viewModel.validateAmount()
+                                }
+                            if let error = viewModel.amountError {
+                                Text(error)
+                                    .font(.caption)
+                                    .foregroundColor(.asaMocha)
+                                    .padding(.horizontal)
+                            }
                             
                             Picker("カテゴリ", selection: $viewModel.category) {
                                 ForEach(viewModel.categories, id: \.self) { category in

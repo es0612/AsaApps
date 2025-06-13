@@ -8,6 +8,7 @@ class ExpenseViewModel {
     var category: String = "食費"
     var date: Date = Date()
     let categories = ["食費", "娯楽", "交通費", "生活費"]
+    var amountError: String? = nil
     
     func addExpense() {
         guard let amountDouble = Double(amount), amountDouble > 0 else { return }
@@ -35,5 +36,19 @@ class ExpenseViewModel {
             expenses.contains { $0.id == expense.id }
         }
         saveToUserDefaults()
+    }
+    
+    func validateAmount() {
+        let filtered = amount.filter { "0123456789.".contains($0) }
+        if filtered.isEmpty {
+            amountError = "金額を入力してください"
+            amount = ""
+        } else if let value = Double(filtered), value > 0 {
+            amountError = nil
+            amount = filtered
+        } else {
+            amountError = "有効な正の金額を入力してください"
+            amount = filtered
+        }
     }
 }
