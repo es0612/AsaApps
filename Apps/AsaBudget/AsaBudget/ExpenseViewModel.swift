@@ -30,4 +30,10 @@ class ExpenseViewModel {
             expenses = savedExpenses
         }
     }
+    func deleteExpense(_ expenses: [Expense]) {
+        self.expenses.removeAll { expense in
+            expenses.contains { $0.id == expense.id }
+        }
+        saveToUserDefaults()
+    }
 }
