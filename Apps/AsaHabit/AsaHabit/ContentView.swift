@@ -74,7 +74,7 @@ struct ContentView: View {
                     }
                     .padding(.horizontal)
                     
-                    NavigationLink("履歴を見る", destination: Text("未実装"))
+                    NavigationLink("履歴を見る", destination: HabitHistoryView())
                         .font(.body.weight(.medium))
                         .foregroundColor(.asaMutedSage)
                         .padding(.bottom, 16)

@@ -49,4 +49,11 @@ class HabitViewModel {
             habits = savedHabits
         }
     }
+    
+    func deleteHabit(_ habits: [Habit]) {
+        self.habits.removeAll { habit in
+            habits.contains { $0.id == habit.id }
+        }
+        saveToUserDefaults()
+    }
 }

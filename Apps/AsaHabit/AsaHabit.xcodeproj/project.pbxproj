@@ -7,18 +7,18 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		D5F61C3F2DFE270D00C8C1E9 /* AsaButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F61C3A2DFE270D00C8C1E9 /* AsaButton.swift */; };
-		D5F61C402DFE270D00C8C1E9 /* AsaLaunchScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F61C3C2DFE270D00C8C1E9 /* AsaLaunchScreen.swift */; };
-		D5F61C412DFE270D00C8C1E9 /* AsaCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F61C3B2DFE270D00C8C1E9 /* AsaCard.swift */; };
-		D5F61C422DFE270D00C8C1E9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D5F61C3D2DFE270D00C8C1E9 /* Assets.xcassets */; };
+		D5DD45B02E00C1A5002CFEA5 /* AsaButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5DD45AB2E00C1A5002CFEA5 /* AsaButton.swift */; };
+		D5DD45B12E00C1A5002CFEA5 /* AsaCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5DD45AC2E00C1A5002CFEA5 /* AsaCard.swift */; };
+		D5DD45B22E00C1A5002CFEA5 /* AsaLaunchScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5DD45AD2E00C1A5002CFEA5 /* AsaLaunchScreen.swift */; };
+		D5DD45B32E00C1A5002CFEA5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D5DD45AE2E00C1A5002CFEA5 /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		D5DD45AB2E00C1A5002CFEA5 /* AsaButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsaButton.swift; sourceTree = "<group>"; };
+		D5DD45AC2E00C1A5002CFEA5 /* AsaCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsaCard.swift; sourceTree = "<group>"; };
+		D5DD45AD2E00C1A5002CFEA5 /* AsaLaunchScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsaLaunchScreen.swift; sourceTree = "<group>"; };
+		D5DD45AE2E00C1A5002CFEA5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D5F61C2C2DFE26E100C8C1E9 /* AsaHabit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AsaHabit.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		D5F61C3A2DFE270D00C8C1E9 /* AsaButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsaButton.swift; sourceTree = "<group>"; };
-		D5F61C3B2DFE270D00C8C1E9 /* AsaCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsaCard.swift; sourceTree = "<group>"; };
-		D5F61C3C2DFE270D00C8C1E9 /* AsaLaunchScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsaLaunchScreen.swift; sourceTree = "<group>"; };
-		D5F61C3D2DFE270D00C8C1E9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -40,10 +40,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D5DD45AF2E00C1A5002CFEA5 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				D5DD45AB2E00C1A5002CFEA5 /* AsaButton.swift */,
+				D5DD45AC2E00C1A5002CFEA5 /* AsaCard.swift */,
+				D5DD45AD2E00C1A5002CFEA5 /* AsaLaunchScreen.swift */,
+				D5DD45AE2E00C1A5002CFEA5 /* Assets.xcassets */,
+			);
+			name = Shared;
+			path = /Users/shinya/workspace/AsaApps/Shared;
+			sourceTree = "<absolute>";
+		};
 		D5F61C232DFE26E100C8C1E9 = {
 			isa = PBXGroup;
 			children = (
-				D5F61C3E2DFE270D00C8C1E9 /* Shared */,
+				D5DD45AF2E00C1A5002CFEA5 /* Shared */,
 				D5F61C2E2DFE26E100C8C1E9 /* AsaHabit */,
 				D5F61C2D2DFE26E100C8C1E9 /* Products */,
 			);
@@ -56,18 +68,6 @@
 			);
 			name = Products;
 			sourceTree = "<group>";
-		};
-		D5F61C3E2DFE270D00C8C1E9 /* Shared */ = {
-			isa = PBXGroup;
-			children = (
-				D5F61C3A2DFE270D00C8C1E9 /* AsaButton.swift */,
-				D5F61C3B2DFE270D00C8C1E9 /* AsaCard.swift */,
-				D5F61C3C2DFE270D00C8C1E9 /* AsaLaunchScreen.swift */,
-				D5F61C3D2DFE270D00C8C1E9 /* Assets.xcassets */,
-			);
-			name = Shared;
-			path = /Users/shinya/workspace/AsaApps/Shared;
-			sourceTree = "<absolute>";
 		};
 /* End PBXGroup section */
 
@@ -133,7 +133,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D5F61C422DFE270D00C8C1E9 /* Assets.xcassets in Resources */,
+				D5DD45B32E00C1A5002CFEA5 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -144,9 +144,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D5F61C3F2DFE270D00C8C1E9 /* AsaButton.swift in Sources */,
-				D5F61C402DFE270D00C8C1E9 /* AsaLaunchScreen.swift in Sources */,
-				D5F61C412DFE270D00C8C1E9 /* AsaCard.swift in Sources */,
+				D5DD45B02E00C1A5002CFEA5 /* AsaButton.swift in Sources */,
+				D5DD45B12E00C1A5002CFEA5 /* AsaCard.swift in Sources */,
+				D5DD45B22E00C1A5002CFEA5 /* AsaLaunchScreen.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
