@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var habitName: String = ""
+    @State private var viewModel = HabitViewModel()
     
     var body: some View {
         NavigationView {
@@ -23,27 +23,54 @@ struct ContentView: View {
                     
                     AsaCard {
                         VStack(spacing: 12) {
-                            TextField("習慣を入力", text: $habitName)
+                            TextField("習慣を入力", text: $viewModel.habitName)
                                 .font(.body.weight(.medium))
                                 .foregroundColor(.asaCoffeeBrown)
                                 .padding(.horizontal)
+                                .onChange(of: viewModel.habitName) { _, _ in
+                                    viewModel.validateHabitName()
+                                }
+                            if let error = viewModel.nameError {
+                                Text(error)
+                                    .font(.caption)
+                                    .foregroundColor(.asaMocha)
+                                    .padding(.horizontal)
+                            }
                         }
                     }
                     .padding(.horizontal)
                     
                     AsaButton(title: "習慣を追加") {
-                        print("追加: \(habitName)")
-                        habitName = ""
+                        viewModel.addHabit()
                     }
                     .padding(.horizontal)
                     
                     AsaCard {
-                        List {
-                            Text("仮の習慣1")
-                            Text("仮の習慣2")
+                        if viewModel.habits.isEmpty {
+                            Text("習慣がありません")
+                                .font(.body.weight(.medium))
+                                .foregroundColor(.asaMocha)
+                                .padding()
+                        } else {
+                            List {
+                                ForEach(viewModel.habits) { habit in
+                                    HStack {
+                                        Text(habit.name)
+                                            .font(.body.weight(.medium))
+                                            .foregroundColor(.asaCoffeeBrown)
+                                        Spacer()
+                                        Image(systemName: habit.isChecked ? "checkmark.circle.fill" : "circle")
+                                            .foregroundColor(.asaMutedSage)
+                                            .onTapGesture {
+                                                viewModel.toggleCheck(for: habit)
+                                            }
+                                    }
+                                    .padding(.vertical, 4)
+                                }
+                            }
+                            .scrollContentBackground(.hidden)
+                            .background(.asaSoftCream)
                         }
-                        .scrollContentBackground(.hidden)
-                        .background(.asaSoftCream)
                     }
                     .padding(.horizontal)
                     
@@ -55,6 +82,9 @@ struct ContentView: View {
                     Spacer()
                 }
                 .padding(.horizontal, 20)
+            }
+            .onAppear {
+                viewModel.loadFromUserDefaults()
             }
         }
     }
