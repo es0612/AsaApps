@@ -1,6 +1,10 @@
 import SwiftUI
+import PhotosUI
 
 struct ContentView: View {
+    @State private var viewModel = PhotoFrameViewModel()
+    @State private var showPicker = false
+    
     var body: some View {
         NavigationView {
             ZStack {
@@ -20,22 +24,41 @@ struct ContentView: View {
                         .foregroundColor(.asaCoffeeBrown)
                     
                     AsaCard {
-                        Rectangle()
-                            .fill(.asaSoftCream)
-                            .frame(width: 300, height: 300)
-                            .cornerRadius(10)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 10)
-                                    .stroke(.asaCoffeeBrown, lineWidth: 5)
-                            )
-                            .padding()
+                        if let image = viewModel.photoImage {
+                            Image(uiImage: image)
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 300, height: 300)
+                                .cornerRadius(10)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .stroke(Color("#C68C53"), lineWidth: viewModel.currentFrame.frameWidth)
+                                )
+                                .padding()
+                        } else {
+                            Rectangle()
+                                .fill(.asaSoftCream)
+                                .frame(width: 300, height: 300)
+                                .cornerRadius(10)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .stroke(.asaCoffeeBrown, lineWidth: 5)
+                                )
+                                .padding()
+                        }
                     }
                     .padding(.horizontal)
                     
                     AsaButton(title: "写真を選択") {
-                        print("写真選択")
+                        showPicker = true
                     }
                     .padding(.horizontal)
+                    .photosPicker(isPresented: $showPicker, selection: $viewModel.selectedPhoto)
+                    .onChange(of: viewModel.selectedPhoto) { _, _ in
+                        Task {
+                            await viewModel.loadImage(from: viewModel.selectedPhoto)
+                        }
+                    }
                     
                     NavigationLink("保存履歴", destination: Text("未実装"))
                         .font(.body.weight(.medium))
@@ -45,6 +68,9 @@ struct ContentView: View {
                     Spacer()
                 }
                 .padding(.horizontal, 20)
+            }
+            .onAppear {
+                viewModel.loadFromUserDefaults()
             }
         }
     }
