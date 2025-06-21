@@ -32,7 +32,7 @@ struct ContentView: View {
                                 .cornerRadius(10)
                                 .overlay(
                                     RoundedRectangle(cornerRadius: 10)
-                                        .stroke(Color("#C68C53"), lineWidth: viewModel.currentFrame.frameWidth)
+                                        .stroke(viewModel.frameColor(), style: viewModel.frameStyle)
                                 )
                                 .padding()
                         } else {
@@ -49,6 +49,30 @@ struct ContentView: View {
                     }
                     .padding(.horizontal)
                     
+                    VStack(spacing: 10) {
+                        Text("枠の色")
+                        Picker("色", selection: $viewModel.selectedColorHex) {
+                            Text("コーヒーブラウン").tag("#C68C53")
+                            Text("ソフトクリーム").tag("#E8D5B9")
+                            Text("ミューテッドセージ").tag("#7A918D")
+                            Text("モカ").tag("#6B4E31")
+                            Text("ダークソフトクリーム").tag("#E0CBB0")
+                        }
+                        .pickerStyle(MenuPickerStyle())
+                        
+                        Slider(value: $viewModel.frameWidth, in: 1...10, step: 1) {
+                            Text("枠の太さ")
+                        }
+                        .accentColor(.asaMutedSage)
+                        
+                        Button("破線/実線切り替え") {
+                            viewModel.toggleDashStyle()
+                        }
+                        .font(.caption)
+                        .foregroundColor(.asaMutedSage)
+                    }
+                    .padding(.horizontal)
+                    
                     AsaButton(title: "写真を選択") {
                         showPicker = true
                     }
@@ -60,7 +84,13 @@ struct ContentView: View {
                         }
                     }
                     
-                    NavigationLink("保存履歴", destination: Text("未実装"))
+                    AsaButton(title: "保存") {
+                        viewModel.saveFrame()
+                        viewModel.saveToPhotoLibrary()
+                    }
+                    .padding(.horizontal)
+                    
+                    NavigationLink("保存履歴", destination: HistoryView())
                         .font(.body.weight(.medium))
                         .foregroundColor(.asaMutedSage)
                         .padding(.bottom, 16)
