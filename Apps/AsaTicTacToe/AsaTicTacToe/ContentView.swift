@@ -15,12 +15,22 @@ struct ContentView: View {
                         GridView(viewModel: $viewModel)
                     }
                     TurnIndicatorView(viewModel: $viewModel)
+                    Button(action: {
+                        viewModel.resetGame()
+                    }) {
+                        Text("リセット")
+                            .font(.body.weight(.medium))
+                            .foregroundColor(.black)
+                            .padding()
+                            .background(Color.asaSoftCreamDark)
+                            .cornerRadius(8)
+                    }
                     Spacer()
                 }
                 .padding(.horizontal, 20)
             }
             .navigationTitle("Tic-Tac-Toe")
-            .foregroundColor(.black) // 文字色を黒に変更（コントラスト向上）
+            .foregroundColor(.black)
         }
     }
 }

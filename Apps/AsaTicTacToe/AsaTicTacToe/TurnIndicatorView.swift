@@ -7,11 +7,11 @@ struct TurnIndicatorView: View {
         if viewModel.gameOver {
             Text("ゲーム終了: \(viewModel.winner ?? "エラー")")
                 .font(.body.weight(.medium))
-                .foregroundColor(.asaMutedSage)
+                .foregroundColor(.black)
         } else {
             Text("ターン: \(viewModel.currentPlayer)")
                 .font(.body.weight(.medium))
-                .foregroundColor(.asaMutedSage)
+                .foregroundColor(.black)
         }
     }
 }
