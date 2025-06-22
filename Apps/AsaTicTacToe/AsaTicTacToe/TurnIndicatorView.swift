@@ -1,17 +1,23 @@
 import SwiftUI
 
 struct TurnIndicatorView: View {
-    @State var viewModel: TicTacToeViewModel
+    @Binding var viewModel: TicTacToeViewModel
 
     var body: some View {
-        Text("ターン: \(viewModel.currentPlayer)")
-            .font(.body.weight(.medium))
-            .foregroundColor(.asaMutedSage)
+        if viewModel.gameOver {
+            Text("ゲーム終了: \(viewModel.winner ?? "エラー")")
+                .font(.body.weight(.medium))
+                .foregroundColor(.asaMutedSage)
+        } else {
+            Text("ターン: \(viewModel.currentPlayer)")
+                .font(.body.weight(.medium))
+                .foregroundColor(.asaMutedSage)
+        }
     }
 }
 
 struct TurnIndicatorView_Previews: PreviewProvider {
     static var previews: some View {
-        TurnIndicatorView(viewModel: TicTacToeViewModel())
+        TurnIndicatorView(viewModel: .constant(TicTacToeViewModel()))
     }
 }

@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct GridView: View {
-    @State var viewModel: TicTacToeViewModel
+    @Binding var viewModel: TicTacToeViewModel
 
     var body: some View {
         LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 3), spacing: 2) {
@@ -11,15 +11,15 @@ struct GridView: View {
                 }) {
                     Text(viewModel.board[index] ?? "")
                         .font(.system(size: 40))
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .frame(width: 100, height: 100) // 各マスのサイズを固定
                         .background(Color.asaSoftCreamDark)
-                        .foregroundColor(.asaCoffeeBrown)
+                        .foregroundColor(.black)
                 }
-                .disabled(viewModel.board[index] != nil)
+                .disabled(viewModel.board[index] != nil || viewModel.gameOver)
                 .buttonStyle(PlainButtonStyle())
             }
         }
-        .frame(width: 300, height: 300)
+        .frame(width: 300, height: 300) // 元のサイズに戻す
         .background(Color.asaSoftCream)
         .cornerRadius(10)
     }
@@ -27,6 +27,6 @@ struct GridView: View {
 
 struct GridView_Previews: PreviewProvider {
     static var previews: some View {
-        GridView(viewModel: TicTacToeViewModel())
+        GridView(viewModel: .constant(TicTacToeViewModel()))
     }
 }
