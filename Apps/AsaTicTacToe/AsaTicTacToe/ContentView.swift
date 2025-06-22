@@ -2,6 +2,7 @@ import SwiftUI
 
 struct ContentView: View {
     @State private var viewModel = TicTacToeViewModel()
+    @State private var showGameOverAlert = false
 
     var body: some View {
         NavigationView {
@@ -30,7 +31,22 @@ struct ContentView: View {
                 .padding(.horizontal, 20)
             }
             .navigationTitle("Tic-Tac-Toe")
-            .foregroundColor(.black)
+            .foregroundColor(.black).onChange(of: viewModel.gameOver) {
+                if viewModel.gameOver {
+                    showGameOverAlert = true
+                }
+            }.onChange(of: viewModel.gameOver) {
+                if viewModel.gameOver {
+                    showGameOverAlert = true
+                }
+            }
+            .alert(isPresented: $showGameOverAlert) {
+                Alert(
+                    title: Text("ゲーム終了"),
+                    message: Text(viewModel.winner == "Draw" ? "引き分けです" : "勝者: \(viewModel.winner ?? "")"),
+                    dismissButton: .default(Text("OK"))
+                )
+            }
         }
     }
 }
