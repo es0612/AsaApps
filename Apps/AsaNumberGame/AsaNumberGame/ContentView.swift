@@ -17,9 +17,15 @@ struct ContentView: View {
                         .frame(width: 80, height: 80)
                         .shadow(radius: 1)
 
-                    Text("1〜100を当ててみて！")
-                        .font(.title2.weight(.medium))
-                        .foregroundColor(.asaCoffeeBrown)
+                    VStack(spacing: 5) {
+                        Text("1〜100を当ててみて！")
+                            .font(.title2.weight(.medium))
+                            .foregroundColor(.asaCoffeeBrown)
+                        
+                        Text("ベストスコア: \(viewModel.bestScore == 999 ? "-" : "\(viewModel.bestScore)回")")
+                            .font(.caption)
+                            .foregroundColor(.asaMutedSage)
+                    }
 
                     AsaCard {
                         VStack(spacing: 10) {
@@ -39,12 +45,25 @@ struct ContentView: View {
                                     }
                                 },
                                 color: .asaCoffeeBrown,
-                                isEnabled: !guess.isEmpty
+                                isEnabled: !guess.isEmpty && !viewModel.gameOver
                             )
 
                             Text(viewModel.hint)
                                 .font(.body)
                                 .foregroundColor(.asaMutedSage)
+                                .multilineTextAlignment(.center)
+                            
+                            if viewModel.gameOver {
+                                AsaButton(
+                                    title: "もう一度挑戦",
+                                    action: {
+                                        viewModel.resetGame()
+                                        guess = ""
+                                    },
+                                    color: .asaMocha
+                                )
+                                .padding(.top, 10)
+                            }
                         }
                     }
 

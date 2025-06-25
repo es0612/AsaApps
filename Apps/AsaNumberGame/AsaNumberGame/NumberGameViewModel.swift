@@ -7,17 +7,29 @@ class NumberGameViewModel {
     var hint: String = "ヒント: 1〜100の数を推測してください"
     var gameOver: Bool = false
     var winner: Bool = false
+    var attempts: Int = 0
+    var bestScore: Int = UserDefaults.standard.integer(forKey: "bestScore") == 0 ? 999 : UserDefaults.standard.integer(forKey: "bestScore")
 
     func makeGuess(_ number: Int) {
         guard !gameOver, (1...100).contains(number) else { return }
+        attempts += 1
+        
         if number == targetNumber {
-            hint = "正解！\(targetNumber)です！"
+            hint = "正解！\(targetNumber)です！\n\(attempts)回で当てました！"
             gameOver = true
             winner = true
+            updateBestScore()
         } else if number < targetNumber {
-            hint = "低すぎます！もう一度試してください。"
+            hint = "低すぎます！もう一度試してください。\n試行回数: \(attempts)"
         } else {
-            hint = "高すぎます！もう一度試してください。"
+            hint = "高すぎます！もう一度試してください。\n試行回数: \(attempts)"
+        }
+    }
+    
+    private func updateBestScore() {
+        if attempts < bestScore {
+            bestScore = attempts
+            UserDefaults.standard.set(bestScore, forKey: "bestScore")
         }
     }
 
@@ -26,5 +38,6 @@ class NumberGameViewModel {
         hint = "ヒント: 1〜100の数を推測してください"
         gameOver = false
         winner = false
+        attempts = 0
     }
 }
