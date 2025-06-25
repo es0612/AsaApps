@@ -30,20 +30,17 @@ struct ContentView: View {
                                 .background(Color.asaSoftCreamDark)
                                 .cornerRadius(8)
 
-                            Button(action: {
-                                if let number = Int(guess) {
-                                    viewModel.makeGuess(number)
-                                    guess = ""
-                                }
-                            }) {
-                                Text("推測")
-                                    .font(.body.weight(.medium))
-                                    .foregroundColor(.asaCoffeeBrown)
-                                    .padding()
-                                    .background(Color.asaSoftCreamDark)
-                                    .cornerRadius(10)
-                            }
-                            .disabled(guess.isEmpty)
+                            AsaButton(
+                                title: "推測",
+                                action: {
+                                    if let number = Int(guess) {
+                                        viewModel.makeGuess(number)
+                                        guess = ""
+                                    }
+                                },
+                                color: .asaCoffeeBrown,
+                                isEnabled: !guess.isEmpty
+                            )
 
                             Text(viewModel.hint)
                                 .font(.body)
