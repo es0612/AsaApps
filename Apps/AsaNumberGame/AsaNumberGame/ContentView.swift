@@ -3,6 +3,8 @@ import SwiftUI
 struct ContentView: View {
     @State private var viewModel = NumberGameViewModel()
     @State private var guess: String = ""
+    @State private var showCelebration = false
+    @FocusState private var isInputFocused: Bool
 
     var body: some View {
         NavigationView {
@@ -32,26 +34,70 @@ struct ContentView: View {
                             TextField("数字を入力", text: $guess)
                                 .keyboardType(.numberPad)
                                 .textFieldStyle(RoundedBorderTextFieldStyle())
+                                .focused($isInputFocused)
+                                .disabled(viewModel.gameOver)
                                 .padding()
                                 .background(Color.asaSoftCreamDark)
                                 .cornerRadius(8)
+                                .onChange(of: guess) { _, newValue in
+                                    if !newValue.isEmpty {
+                                        viewModel.errorMessage = ""
+                                    }
+                                }
 
                             AsaButton(
                                 title: "推測",
                                 action: {
-                                    if let number = Int(guess) {
-                                        viewModel.makeGuess(number)
-                                        guess = ""
+                                    if viewModel.validateInput(guess) {
+                                        if let number = Int(guess) {
+                                            viewModel.makeGuess(number)
+                                            guess = ""
+                                        }
                                     }
                                 },
                                 color: .asaCoffeeBrown,
                                 isEnabled: !guess.isEmpty && !viewModel.gameOver
                             )
+                            .onChange(of: viewModel.winner) { _, newValue in
+                                if newValue {
+                                    showCelebration = true
+                                }
+                            }
+                            
+                            if !viewModel.errorMessage.isEmpty {
+                                Text(viewModel.errorMessage)
+                                    .font(.caption)
+                                    .foregroundColor(.red)
+                                    .padding(.top, 5)
+                            }
 
                             Text(viewModel.hint)
                                 .font(.body)
-                                .foregroundColor(.asaMutedSage)
+                                .foregroundColor(viewModel.winner ? .asaCoffeeBrown : .asaMutedSage)
+                                .fontWeight(viewModel.winner ? .bold : .regular)
                                 .multilineTextAlignment(.center)
+                                .scaleEffect(showCelebration ? 1.1 : 1.0)
+                                .animation(.easeInOut(duration: 0.6).repeatCount(3, autoreverses: true), value: showCelebration)
+                            
+                            if viewModel.winner {
+                                HStack {
+                                    Text("🎉")
+                                        .font(.title)
+                                        .scaleEffect(showCelebration ? 1.3 : 1.0)
+                                        .animation(.easeInOut(duration: 0.5).repeatCount(5, autoreverses: true), value: showCelebration)
+                                    
+                                    Text("おめでとう！")
+                                        .font(.title2)
+                                        .fontWeight(.bold)
+                                        .foregroundColor(.asaCoffeeBrown)
+                                    
+                                    Text("🎉")
+                                        .font(.title)
+                                        .scaleEffect(showCelebration ? 1.3 : 1.0)
+                                        .animation(.easeInOut(duration: 0.5).repeatCount(5, autoreverses: true), value: showCelebration)
+                                }
+                                .padding(.top, 5)
+                            }
                             
                             if viewModel.gameOver {
                                 AsaButton(
@@ -59,6 +105,8 @@ struct ContentView: View {
                                     action: {
                                         viewModel.resetGame()
                                         guess = ""
+                                        showCelebration = false
+                                        isInputFocused = true
                                     },
                                     color: .asaMocha
                                 )

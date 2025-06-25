@@ -9,9 +9,18 @@ class NumberGameViewModel {
     var winner: Bool = false
     var attempts: Int = 0
     var bestScore: Int = UserDefaults.standard.integer(forKey: "bestScore") == 0 ? 999 : UserDefaults.standard.integer(forKey: "bestScore")
+    var errorMessage: String = ""
 
     func makeGuess(_ number: Int) {
-        guard !gameOver, (1...100).contains(number) else { return }
+        guard !gameOver else { return }
+        
+        // 入力値の検証
+        guard (1...100).contains(number) else {
+            errorMessage = "1から100までの数字を入力してください"
+            return
+        }
+        
+        errorMessage = ""
         attempts += 1
         
         if number == targetNumber {
@@ -24,6 +33,19 @@ class NumberGameViewModel {
         } else {
             hint = "高すぎます！もう一度試してください。\n試行回数: \(attempts)"
         }
+    }
+    
+    func validateInput(_ input: String) -> Bool {
+        guard let number = Int(input) else {
+            errorMessage = "有効な数字を入力してください"
+            return false
+        }
+        guard (1...100).contains(number) else {
+            errorMessage = "1から100までの数字を入力してください"
+            return false
+        }
+        errorMessage = ""
+        return true
     }
     
     private func updateBestScore() {
@@ -39,5 +61,6 @@ class NumberGameViewModel {
         gameOver = false
         winner = false
         attempts = 0
+        errorMessage = ""
     }
 }
