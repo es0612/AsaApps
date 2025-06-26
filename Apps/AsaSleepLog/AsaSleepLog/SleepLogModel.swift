@@ -8,7 +8,7 @@
 import Foundation
 
 struct SleepLog: Identifiable, Codable {
-    let id = UUID()
+    let id: UUID
     let date: Date
     let bedTime: Date
     let wakeTime: Date
@@ -20,7 +20,8 @@ struct SleepLog: Identifiable, Codable {
     let wakeUpCount: Int
     let mood: MoodRating?
     
-    init(date: Date, bedTime: Date, wakeTime: Date, quality: SleepQuality = .normal, notes: String? = nil, fellAsleepTime: Date? = nil, wakeUpCount: Int = 0, mood: MoodRating? = nil) {
+    init(id: UUID = UUID(), date: Date, bedTime: Date, wakeTime: Date, quality: SleepQuality = .normal, notes: String? = nil, fellAsleepTime: Date? = nil, wakeUpCount: Int = 0, mood: MoodRating? = nil) {
+        self.id = id
         self.date = date
         self.bedTime = bedTime
         self.wakeTime = wakeTime

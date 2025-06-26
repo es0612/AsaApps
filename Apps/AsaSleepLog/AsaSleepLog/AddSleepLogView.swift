@@ -10,6 +10,7 @@ import SwiftUI
 struct AddSleepLogView: View {
     @ObservedObject var viewModel: SleepLogViewModel
     @Environment(\.dismiss) private var dismiss
+    @State private var showConflictAlert = false
     
     var body: some View {
         NavigationView {
@@ -38,8 +39,11 @@ struct AddSleepLogView: View {
                 }
                 
                 AsaButton(title: "記録を保存") {
-                    viewModel.addSleepLog()
-                    dismiss()
+                    if viewModel.addSleepLog() {
+                        dismiss()
+                    } else {
+                        showConflictAlert = true
+                    }
                 }
                 .padding(.horizontal)
                 .padding(.bottom)
@@ -51,7 +55,13 @@ struct AddSleepLogView: View {
                     Button("キャンセル") {
                         dismiss()
                     }
+                    .foregroundColor(Color("AsaCoffeeBrown"))
                 }
+            }
+            .alert("時間の重複", isPresented: $showConflictAlert) {
+                Button("OK") { }
+            } message: {
+                Text("選択された時間は他の記録と重複しています。別の時間を選択してください。")
             }
         }
     }

@@ -3,22 +3,29 @@ import SwiftUI
 
 struct IntakeHistoryView: View {
     let history: [WaterLog]
-    
+
     var body: some View {
-        List(history.sorted(by: { $0.date > $1.date })) { log in
-            HStack {
-                Text("\(log.date, formatter: itemFormatter)")
-                Spacer()
-                Text("\(log.amount, specifier: "%.0f") ml")
+        List {
+            ForEach(history.sorted(by: { $0.date > $1.date })) { log in
+                HStack {
+                    Image(systemName: "drop.fill")
+                        .foregroundColor(Color("AsaCoffeeBrown"))
+                    Text("\(log.date, formatter: itemFormatter)")
+                    Spacer()
+                    Text("\(log.amount, specifier: "%.0f") ml")
+                        .fontWeight(.bold)
+                }
+                .padding(.vertical, 5)
             }
         }
-        .navigationTitle("摂取履歴")
+        .navigationTitle("水分摂取の履歴")
+        .listStyle(InsetGroupedListStyle())
     }
-    
+
     private var itemFormatter: DateFormatter {
         let formatter = DateFormatter()
-        formatter.dateStyle = .short
-        formatter.timeStyle = .medium
+        formatter.dateStyle = .medium
+        formatter.timeStyle = .short
         return formatter
     }
 }

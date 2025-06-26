@@ -43,7 +43,12 @@ class SleepLogViewModel: ObservableObject {
         fellAsleepTime = calendar.date(byAdding: .minute, value: 15, to: bedTime) ?? bedTime
     }
     
-    func addSleepLog() {
+    func addSleepLog() -> Bool {
+        // 時間重複チェック
+        if hasTimeConflict(bedTime: bedTime, wakeTime: wakeTime) {
+            return false
+        }
+        
         let newLog = SleepLog(
             date: Date(),
             bedTime: bedTime,
@@ -66,6 +71,35 @@ class SleepLogViewModel: ObservableObject {
         wakeUpCount = 0
         notes = ""
         showAdvancedOptions = false
+        
+        return true
+    }
+    
+    func hasTimeConflict(bedTime: Date, wakeTime: Date, excludingId: UUID? = nil) -> Bool {
+        let calendar = Calendar.current
+        
+        for log in sleepLogs {
+            if let excludingId = excludingId, log.id == excludingId {
+                continue
+            }
+            
+            // 同じ日かチェック
+            if calendar.isDate(log.bedTime, inSameDayAs: bedTime) ||
+               calendar.isDate(log.wakeTime, inSameDayAs: wakeTime) {
+                
+                // 時間重複チェック
+                let logStart = log.bedTime
+                let logEnd = log.wakeTime
+                let newStart = bedTime
+                let newEnd = wakeTime
+                
+                if (newStart < logEnd && newEnd > logStart) {
+                    return true
+                }
+            }
+        }
+        
+        return false
     }
     
     func updateSleepLog(_ log: SleepLog) {
@@ -174,6 +208,66 @@ class SleepLogViewModel: ObservableObject {
     func qualityTrendData(for period: StatsPeriod) -> [(Date, Int)] {
         let logs = sleepLogsForPeriod(period)
         return logs.map { ($0.date, $0.qualityScore) }.sorted { $0.0 < $1.0 }
+    }
+    
+    // MARK: - サンプルデータ機能
+    
+    func generateSampleData() {
+        let calendar = Calendar.current
+        let today = Date()
+        
+        // 過去14日分のサンプルデータを生成
+        for i in 1...14 {
+            guard let date = calendar.date(byAdding: .day, value: -i, to: today) else { continue }
+            
+            // ランダムな就寝時間（21:30〜23:30）
+            let bedHour = Int.random(in: 21...23)
+            let bedMinute = Int.random(in: 0...59)
+            guard let bedTime = calendar.date(bySettingHour: bedHour, minute: bedMinute, second: 0, of: date) else { continue }
+            
+            // ランダムな睡眠時間（6.5〜9時間）
+            let sleepDurationHours = Double.random(in: 6.5...9.0)
+            guard let wakeTime = calendar.date(byAdding: .minute, value: Int(sleepDurationHours * 60), to: bedTime) else { continue }
+            
+            // ランダムな入眠時間（就寝から5〜30分後）
+            let fallAsleepDelay = Int.random(in: 5...30)
+            let fellAsleepTime = calendar.date(byAdding: .minute, value: fallAsleepDelay, to: bedTime)
+            
+            // ランダムなデータ
+            let qualities: [SleepQuality] = [.excellent, .good, .normal, .poor, .terrible]
+            let moods: [MoodRating] = [.veryHappy, .happy, .neutral, .tired, .exhausted]
+            
+            let sampleNotes = [
+                "よく眠れた",
+                "少し寝苦しかった",
+                "夢をよく見た",
+                "ぐっすり眠れた",
+                "途中で目が覚めた",
+                nil,
+                nil // 空のメモも含める
+            ]
+            
+            let log = SleepLog(
+                date: date,
+                bedTime: bedTime,
+                wakeTime: wakeTime,
+                quality: qualities.randomElement() ?? .normal,
+                notes: sampleNotes.randomElement() ?? nil,
+                fellAsleepTime: fellAsleepTime,
+                wakeUpCount: Int.random(in: 0...3),
+                mood: moods.randomElement()
+            )
+            
+            sleepLogs.append(log)
+        }
+        
+        sleepLogs.sort { $0.date > $1.date }
+        saveSleepLogs()
+    }
+    
+    func clearAllData() {
+        sleepLogs.removeAll()
+        saveSleepLogs()
     }
 }
 

@@ -167,6 +167,15 @@ struct EnhancedSleepLogRow: View {
                             .font(.title3)
                             .fontWeight(.bold)
                             .foregroundColor(Color("AsaCoffeeBrown"))
+                        
+                        HStack(spacing: 2) {
+                            Image(systemName: "pencil")
+                                .font(.caption2)
+                                .foregroundColor(.gray)
+                            Text("タップで編集")
+                                .font(.caption2)
+                                .foregroundColor(.gray)
+                        }
                     }
                 }
                 

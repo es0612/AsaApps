@@ -12,6 +12,8 @@ struct ContentView: View {
     @State private var showingAddLog = false
     @State private var showingStats = false
     @State private var showingGoals = false
+    @State private var showingSettings = false
+    @State private var selectedLogForEdit: SleepLog?
     
     var body: some View {
         TabView {
@@ -26,6 +28,9 @@ struct ContentView: View {
                     List {
                         ForEach(viewModel.sleepLogs) { log in
                             EnhancedSleepLogRow(log: log)
+                                .onTapGesture {
+                                    selectedLogForEdit = log
+                                }
                         }
                         .onDelete(perform: viewModel.deleteSleepLog)
                     }
@@ -40,6 +45,13 @@ struct ContentView: View {
                 }
                 .navigationTitle("睡眠ログ")
                 .toolbar {
+                    ToolbarItem(placement: .navigationBarLeading) {
+                        Button(action: { showingSettings = true }) {
+                            Image(systemName: "gearshape.fill")
+                                .foregroundColor(Color("AsaCoffeeBrown"))
+                        }
+                    }
+                    
                     ToolbarItem(placement: .navigationBarTrailing) {
                         Button(action: { showingGoals = true }) {
                             Image(systemName: "target")
@@ -53,6 +65,12 @@ struct ContentView: View {
                 }
                 .sheet(isPresented: $showingGoals) {
                     SleepGoalsView(viewModel: viewModel)
+                }
+                .sheet(isPresented: $showingSettings) {
+                    SettingsView(viewModel: viewModel)
+                }
+                .sheet(item: $selectedLogForEdit) { log in
+                    EditSleepLogView(viewModel: viewModel, log: log)
                 }
             }
             .tabItem {
