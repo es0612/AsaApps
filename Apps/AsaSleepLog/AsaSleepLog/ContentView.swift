@@ -10,40 +10,64 @@ import SwiftUI
 struct ContentView: View {
     @StateObject private var viewModel = SleepLogViewModel()
     @State private var showingAddLog = false
+    @State private var showingStats = false
+    @State private var showingGoals = false
     
     var body: some View {
-        NavigationView {
-            VStack(spacing: 20) {
-                // 統計カード
-                SleepStatsCard(
-                    totalLogs: viewModel.sleepLogs.count,
-                    averageDuration: viewModel.averageSleepDurationFormatted
-                )
-                .padding(.horizontal)
-                
-                // 記録一覧
-                List {
-                    ForEach(viewModel.sleepLogs) { log in
-                        SleepLogRow(log: log)
+        TabView {
+            // メイン画面
+            NavigationView {
+                VStack(spacing: 20) {
+                    // 拡張統計カード
+                    EnhancedStatsCard(viewModel: viewModel)
+                        .padding(.horizontal)
+                    
+                    // 記録一覧
+                    List {
+                        ForEach(viewModel.sleepLogs) { log in
+                            EnhancedSleepLogRow(log: log)
+                        }
+                        .onDelete(perform: viewModel.deleteSleepLog)
                     }
-                    .onDelete(perform: viewModel.deleteSleepLog)
+                    .listStyle(PlainListStyle())
+                    
+                    // 記録追加ボタン
+                    AsaButton(title: "睡眠記録を追加") {
+                        showingAddLog = true
+                    }
+                    .padding(.horizontal)
+                    .padding(.bottom)
                 }
-                .listStyle(PlainListStyle())
-                
-                Spacer()
-                
-                // 記録追加ボタン
-                AsaButton(title: "睡眠記録を追加") {
-                    showingAddLog = true
+                .navigationTitle("睡眠ログ")
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        Button(action: { showingGoals = true }) {
+                            Image(systemName: "target")
+                                .foregroundColor(Color("AsaCoffeeBrown"))
+                        }
+                    }
                 }
-                .padding(.horizontal)
+                .background(Color("AsaSoftCream").opacity(0.3))
+                .sheet(isPresented: $showingAddLog) {
+                    AddSleepLogView(viewModel: viewModel)
+                }
+                .sheet(isPresented: $showingGoals) {
+                    SleepGoalsView(viewModel: viewModel)
+                }
             }
-            .navigationTitle("睡眠ログ")
-            .background(Color("AsaSoftCream").opacity(0.3))
-            .sheet(isPresented: $showingAddLog) {
-                AddSleepLogView(viewModel: viewModel)
+            .tabItem {
+                Image(systemName: "house.fill")
+                Text("ホーム")
             }
+            
+            // 統計画面
+            SleepStatsView(viewModel: viewModel)
+                .tabItem {
+                    Image(systemName: "chart.bar.fill")
+                    Text("統計")
+                }
         }
+        .accentColor(Color("AsaCoffeeBrown"))
     }
 }
 
