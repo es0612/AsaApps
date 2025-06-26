@@ -21,9 +21,9 @@ struct AsaCard_Previews: PreviewProvider {
         AsaCard {
             Text("サンプルテキスト")
                 .font(.body.weight(.medium))
-                .foregroundColor(.asaCoffeeBrown)
+                .foregroundColor(Color("AsaCoffeeBrown"))
         }
         .padding()
-        .background(.asaSoftCream)
+        .background(Color("AsaSoftCream"))
     }
 }
