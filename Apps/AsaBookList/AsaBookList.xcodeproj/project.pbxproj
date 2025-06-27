@@ -6,31 +6,20 @@
 	objectVersion = 77;
 	objects = {
 
-/* Begin PBXBuildFile section */
-		D5CDAF662E0CE1EF00E1BB42 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D5CDAF642E0CE1EF00E1BB42 /* Assets.xcassets */; };
-		D5CDAF672E0CE1EF00E1BB42 /* AsaCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5CDAF622E0CE1EF00E1BB42 /* AsaCard.swift */; };
-		D5CDAF682E0CE1EF00E1BB42 /* AsaButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5CDAF612E0CE1EF00E1BB42 /* AsaButton.swift */; };
-		D5CDAF692E0CE1EF00E1BB42 /* AsaLaunchScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5CDAF632E0CE1EF00E1BB42 /* AsaLaunchScreen.swift */; };
-/* End PBXBuildFile section */
-
 /* Begin PBXFileReference section */
-		D5CDAF3D2E0CDCC300E1BB42 /* AsaWaterTracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AsaWaterTracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		D5CDAF612E0CE1EF00E1BB42 /* AsaButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsaButton.swift; sourceTree = "<group>"; };
-		D5CDAF622E0CE1EF00E1BB42 /* AsaCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsaCard.swift; sourceTree = "<group>"; };
-		D5CDAF632E0CE1EF00E1BB42 /* AsaLaunchScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsaLaunchScreen.swift; sourceTree = "<group>"; };
-		D5CDAF642E0CE1EF00E1BB42 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		D5E4BE322E0E27E100EBF91B /* AsaBookList.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AsaBookList.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		D5CDAF3F2E0CDCC300E1BB42 /* AsaWaterTracker */ = {
+		D5E4BE342E0E27E100EBF91B /* AsaBookList */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = AsaWaterTracker;
+			path = AsaBookList;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		D5CDAF3A2E0CDCC300E1BB42 /* Frameworks */ = {
+		D5E4BE2F2E0E27E100EBF91B /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -40,120 +29,103 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		D5CDAF342E0CDCC300E1BB42 = {
+		D5E4BE292E0E27E100EBF91B = {
 			isa = PBXGroup;
 			children = (
-				D5CDAF652E0CE1EF00E1BB42 /* Shared */,
-				D5CDAF3F2E0CDCC300E1BB42 /* AsaWaterTracker */,
-				D5CDAF3E2E0CDCC300E1BB42 /* Products */,
+				D5E4BE342E0E27E100EBF91B /* AsaBookList */,
+				D5E4BE332E0E27E100EBF91B /* Products */,
 			);
 			sourceTree = "<group>";
 		};
-		D5CDAF3E2E0CDCC300E1BB42 /* Products */ = {
+		D5E4BE332E0E27E100EBF91B /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				D5CDAF3D2E0CDCC300E1BB42 /* AsaWaterTracker.app */,
+				D5E4BE322E0E27E100EBF91B /* AsaBookList.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		D5CDAF652E0CE1EF00E1BB42 /* Shared */ = {
-			isa = PBXGroup;
-			children = (
-				D5CDAF612E0CE1EF00E1BB42 /* AsaButton.swift */,
-				D5CDAF622E0CE1EF00E1BB42 /* AsaCard.swift */,
-				D5CDAF632E0CE1EF00E1BB42 /* AsaLaunchScreen.swift */,
-				D5CDAF642E0CE1EF00E1BB42 /* Assets.xcassets */,
-			);
-			name = Shared;
-			path = /Users/shinya/workspace/AsaApps/Shared;
-			sourceTree = "<absolute>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		D5CDAF3C2E0CDCC300E1BB42 /* AsaWaterTracker */ = {
+		D5E4BE312E0E27E100EBF91B /* AsaBookList */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = D5CDAF482E0CDCC400E1BB42 /* Build configuration list for PBXNativeTarget "AsaWaterTracker" */;
+			buildConfigurationList = D5E4BE3D2E0E27E300EBF91B /* Build configuration list for PBXNativeTarget "AsaBookList" */;
 			buildPhases = (
-				D5CDAF392E0CDCC300E1BB42 /* Sources */,
-				D5CDAF3A2E0CDCC300E1BB42 /* Frameworks */,
-				D5CDAF3B2E0CDCC300E1BB42 /* Resources */,
+				D5E4BE2E2E0E27E100EBF91B /* Sources */,
+				D5E4BE2F2E0E27E100EBF91B /* Frameworks */,
+				D5E4BE302E0E27E100EBF91B /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				D5CDAF3F2E0CDCC300E1BB42 /* AsaWaterTracker */,
+				D5E4BE342E0E27E100EBF91B /* AsaBookList */,
 			);
-			name = AsaWaterTracker;
+			name = AsaBookList;
 			packageProductDependencies = (
 			);
-			productName = AsaWaterTracker;
-			productReference = D5CDAF3D2E0CDCC300E1BB42 /* AsaWaterTracker.app */;
+			productName = AsaBookList;
+			productReference = D5E4BE322E0E27E100EBF91B /* AsaBookList.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		D5CDAF352E0CDCC300E1BB42 /* Project object */ = {
+		D5E4BE2A2E0E27E100EBF91B /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1640;
 				LastUpgradeCheck = 1640;
 				TargetAttributes = {
-					D5CDAF3C2E0CDCC300E1BB42 = {
+					D5E4BE312E0E27E100EBF91B = {
 						CreatedOnToolsVersion = 16.4;
 					};
 				};
 			};
-			buildConfigurationList = D5CDAF382E0CDCC300E1BB42 /* Build configuration list for PBXProject "AsaWaterTracker" */;
+			buildConfigurationList = D5E4BE2D2E0E27E100EBF91B /* Build configuration list for PBXProject "AsaBookList" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 				Base,
 			);
-			mainGroup = D5CDAF342E0CDCC300E1BB42;
+			mainGroup = D5E4BE292E0E27E100EBF91B;
 			minimizedProjectReferenceProxies = 1;
 			preferredProjectObjectVersion = 77;
-			productRefGroup = D5CDAF3E2E0CDCC300E1BB42 /* Products */;
+			productRefGroup = D5E4BE332E0E27E100EBF91B /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				D5CDAF3C2E0CDCC300E1BB42 /* AsaWaterTracker */,
+				D5E4BE312E0E27E100EBF91B /* AsaBookList */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		D5CDAF3B2E0CDCC300E1BB42 /* Resources */ = {
+		D5E4BE302E0E27E100EBF91B /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D5CDAF662E0CE1EF00E1BB42 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		D5CDAF392E0CDCC300E1BB42 /* Sources */ = {
+		D5E4BE2E2E0E27E100EBF91B /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D5CDAF672E0CE1EF00E1BB42 /* AsaCard.swift in Sources */,
-				D5CDAF682E0CE1EF00E1BB42 /* AsaButton.swift in Sources */,
-				D5CDAF692E0CE1EF00E1BB42 /* AsaLaunchScreen.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		D5CDAF462E0CDCC400E1BB42 /* Debug */ = {
+		D5E4BE3B2E0E27E300EBF91B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -217,7 +189,7 @@
 			};
 			name = Debug;
 		};
-		D5CDAF472E0CDCC400E1BB42 /* Release */ = {
+		D5E4BE3C2E0E27E300EBF91B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -274,7 +246,7 @@
 			};
 			name = Release;
 		};
-		D5CDAF492E0CDCC400E1BB42 /* Debug */ = {
+		D5E4BE3E2E0E27E300EBF91B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -294,7 +266,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.asapapalab.AsaWaterTracker;
+				PRODUCT_BUNDLE_IDENTIFIER = com.asapapalab.AsaBookList;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -302,7 +274,7 @@
 			};
 			name = Debug;
 		};
-		D5CDAF4A2E0CDCC400E1BB42 /* Release */ = {
+		D5E4BE3F2E0E27E300EBF91B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -322,7 +294,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.asapapalab.AsaWaterTracker;
+				PRODUCT_BUNDLE_IDENTIFIER = com.asapapalab.AsaBookList;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -333,25 +305,25 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		D5CDAF382E0CDCC300E1BB42 /* Build configuration list for PBXProject "AsaWaterTracker" */ = {
+		D5E4BE2D2E0E27E100EBF91B /* Build configuration list for PBXProject "AsaBookList" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				D5CDAF462E0CDCC400E1BB42 /* Debug */,
-				D5CDAF472E0CDCC400E1BB42 /* Release */,
+				D5E4BE3B2E0E27E300EBF91B /* Debug */,
+				D5E4BE3C2E0E27E300EBF91B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		D5CDAF482E0CDCC400E1BB42 /* Build configuration list for PBXNativeTarget "AsaWaterTracker" */ = {
+		D5E4BE3D2E0E27E300EBF91B /* Build configuration list for PBXNativeTarget "AsaBookList" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				D5CDAF492E0CDCC400E1BB42 /* Debug */,
-				D5CDAF4A2E0CDCC400E1BB42 /* Release */,
+				D5E4BE3E2E0E27E300EBF91B /* Debug */,
+				D5E4BE3F2E0E27E300EBF91B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = D5CDAF352E0CDCC300E1BB42 /* Project object */;
+	rootObject = D5E4BE2A2E0E27E100EBF91B /* Project object */;
 }
