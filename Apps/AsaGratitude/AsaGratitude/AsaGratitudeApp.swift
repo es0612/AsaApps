@@ -1,0 +1,18 @@
+//
+//  AsaGratitudeApp.swift
+//  AsaGratitude
+//  
+//  Created on 2025/07/02
+//
+
+
+import SwiftUI
+
+@main
+struct AsaGratitudeApp: App {
+    var body: some Scene {
+        WindowGroup {
+            ContentView()
+        }
+    }
+}
