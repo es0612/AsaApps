@@ -1,265 +1,336 @@
 //
 //  WorkoutGoalsView.swift
 //  AsaWorkoutLog
-//  
-//  Created on 2025/07/01
+//
+//  Created on 2025/07/03
 //
 
 import SwiftUI
 
 struct WorkoutGoalsView: View {
     @ObservedObject var viewModel: WorkoutViewModel
-    @State private var editingGoal: WorkoutGoal
-    @State private var isEditing = false
-    
-    init(viewModel: WorkoutViewModel) {
-        self.viewModel = viewModel
-        self._editingGoal = State(initialValue: viewModel.workoutGoal)
-    }
+    @State private var tempGoalMinutes: Double = 150
+    @State private var showingGoalEditor = false
     
     var body: some View {
-        ScrollView {
-            VStack(spacing: 20) {
-                // 現在の目標達成状況
-                CurrentGoalProgressView(viewModel: viewModel)
+        NavigationView {
+            ScrollView {
+                VStack(spacing: 20) {
+                    // 現在の目標
+                    AsaCard {
+                        VStack(alignment: .leading, spacing: 16) {
+                            HStack {
+                                Text("週間目標")
+                                    .font(.headline)
+                                    .foregroundColor(Color("AsaCoffeeBrown"))
+                                
+                                Spacer()
+                                
+                                Button("編集") {
+                                    tempGoalMinutes = viewModel.weeklyGoal / 60
+                                    showingGoalEditor = true
+                                }
+                                .font(.subheadline)
+                                .foregroundColor(Color("AsaCoffeeBrown"))
+                            }
+                            
+                            HStack {
+                                Text("目標時間")
+                                    .font(.body)
+                                    .foregroundColor(.secondary)
+                                
+                                Spacer()
+                                
+                                Text("\(Int(viewModel.weeklyGoal / 60))分")
+                                    .font(.title2)
+                                    .fontWeight(.bold)
+                                    .foregroundColor(Color("AsaCoffeeBrown"))
+                            }
+                            
+                            Divider()
+                            
+                            HStack {
+                                Text("今週の進捗")
+                                    .font(.body)
+                                    .foregroundColor(.secondary)
+                                
+                                Spacer()
+                                
+                                Text("\(Int(viewModel.thisWeekDuration / 60))分")
+                                    .font(.title2)
+                                    .fontWeight(.bold)
+                                    .foregroundColor(viewModel.weeklyProgress >= 1.0 ? .green : Color("AsaCoffeeBrown"))
+                            }
+                            
+                            ProgressView(value: viewModel.weeklyProgress)
+                                .progressViewStyle(LinearProgressViewStyle())
+                                .scaleEffect(x: 1, y: 3, anchor: .center)
+                            
+                            HStack {
+                                Text("達成率")
+                                    .font(.caption)
+                                    .foregroundColor(.secondary)
+                                
+                                Spacer()
+                                
+                                Text("\(Int(viewModel.weeklyProgress * 100))%")
+                                    .font(.caption)
+                                    .fontWeight(.semibold)
+                                    .foregroundColor(viewModel.weeklyProgress >= 1.0 ? .green : Color("AsaCoffeeBrown"))
+                            }
+                        }
+                        .padding()
+                    }
+                    
+                    // 推奨目標
+                    AsaCard {
+                        VStack(alignment: .leading, spacing: 16) {
+                            Text("推奨目標")
+                                .font(.headline)
+                                .foregroundColor(Color("AsaCoffeeBrown"))
+                            
+                            Text("WHO（世界保健機関）は、成人に対して週に150分以上の中強度有酸素運動を推奨しています。")
+                                .font(.body)
+                                .foregroundColor(.secondary)
+                                .lineLimit(nil)
+                            
+                            VStack(spacing: 12) {
+                                GoalRecommendationRow(
+                                    title: "初心者",
+                                    minutes: 75,
+                                    description: "週に75分から始めましょう"
+                                ) {
+                                    viewModel.updateWeeklyGoal(75 * 60)
+                                }
+                                
+                                GoalRecommendationRow(
+                                    title: "推奨レベル",
+                                    minutes: 150,
+                                    description: "WHO推奨の週150分"
+                                ) {
+                                    viewModel.updateWeeklyGoal(150 * 60)
+                                }
+                                
+                                GoalRecommendationRow(
+                                    title: "アクティブ",
+                                    minutes: 300,
+                                    description: "より多くの健康効果を得るため"
+                                ) {
+                                    viewModel.updateWeeklyGoal(300 * 60)
+                                }
+                            }
+                        }
+                        .padding()
+                    }
+                    
+                    // 今週の詳細
+                    AsaCard {
+                        VStack(alignment: .leading, spacing: 16) {
+                            Text("今週の詳細")
+                                .font(.headline)
+                                .foregroundColor(Color("AsaCoffeeBrown"))
+                            
+                            if viewModel.thisWeekWorkouts.isEmpty {
+                                Text("今週はまだワークアウトがありません")
+                                    .font(.body)
+                                    .foregroundColor(.secondary)
+                                    .frame(maxWidth: .infinity, alignment: .center)
+                                    .padding()
+                            } else {
+                                ForEach(viewModel.thisWeekWorkouts.sorted(by: { $0.date > $1.date })) { workout in
+                                    WeeklyWorkoutRow(workout: workout)
+                                }
+                            }
+                        }
+                        .padding()
+                    }
+                    
+                    // 目標達成のヒント
+                    AsaCard {
+                        VStack(alignment: .leading, spacing: 12) {
+                            Text("目標達成のヒント")
+                                .font(.headline)
+                                .foregroundColor(Color("AsaCoffeeBrown"))
+                            
+                            VStack(alignment: .leading, spacing: 8) {
+                                TipRow(icon: "calendar", text: "毎日少しずつ運動する習慣を作る")
+                                TipRow(icon: "clock", text: "短時間でも継続することが大切")
+                                TipRow(icon: "heart", text: "楽しめる運動を選ぶ")
+                                TipRow(icon: "person.2", text: "友人や家族と一緒に運動する")
+                            }
+                        }
+                        .padding()
+                    }
+                }
+                .padding()
+            }
+            .navigationTitle("目標")
+            .navigationBarTitleDisplayMode(.large)
+        }
+        .sheet(isPresented: $showingGoalEditor) {
+            GoalEditorView(
+                goalMinutes: $tempGoalMinutes,
+                onSave: {
+                    viewModel.updateWeeklyGoal(tempGoalMinutes * 60)
+                    showingGoalEditor = false
+                },
+                onCancel: {
+                    showingGoalEditor = false
+                }
+            )
+        }
+    }
+}
+
+struct GoalRecommendationRow: View {
+    let title: String
+    let minutes: Int
+    let description: String
+    let action: () -> Void
+    
+    var body: some View {
+        HStack {
+            VStack(alignment: .leading, spacing: 2) {
+                Text(title)
+                    .font(.body)
+                    .fontWeight(.medium)
                 
-                // 目標設定カード
-                GoalSettingsView(
-                    editingGoal: $editingGoal,
-                    isEditing: $isEditing,
-                    viewModel: viewModel
-                )
+                Text(description)
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+            }
+            
+            Spacer()
+            
+            Text("\(minutes)分")
+                .font(.body)
+                .fontWeight(.semibold)
+                .foregroundColor(Color("AsaCoffeeBrown"))
+            
+            Button("設定") {
+                action()
+            }
+            .font(.caption)
+            .padding(.horizontal, 8)
+            .padding(.vertical, 4)
+            .background(Color("AsaCoffeeBrown"))
+            .foregroundColor(.white)
+            .cornerRadius(4)
+        }
+        .padding(.vertical, 4)
+    }
+}
+
+struct WeeklyWorkoutRow: View {
+    let workout: Workout
+    
+    var body: some View {
+        HStack {
+            Image(systemName: workout.category.icon)
+                .foregroundColor(workout.category.color)
+                .frame(width: 16)
+            
+            VStack(alignment: .leading, spacing: 2) {
+                Text(workout.name)
+                    .font(.body)
+                    .fontWeight(.medium)
                 
-                // 目標達成のためのアドバイス
-                GoalAdviceView(viewModel: viewModel)
+                Text(formatDate(workout.date))
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+            }
+            
+            Spacer()
+            
+            Text(workout.formattedDuration)
+                .font(.caption)
+                .fontWeight(.semibold)
+                .foregroundColor(Color("AsaCoffeeBrown"))
+        }
+        .padding(.vertical, 2)
+    }
+    
+    private func formatDate(_ date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "M/d (E) HH:mm"
+        formatter.locale = Locale(identifier: "ja_JP")
+        return formatter.string(from: date)
+    }
+}
+
+struct TipRow: View {
+    let icon: String
+    let text: String
+    
+    var body: some View {
+        HStack {
+            Image(systemName: icon)
+                .foregroundColor(Color("AsaCoffeeBrown"))
+                .frame(width: 16)
+            
+            Text(text)
+                .font(.body)
+                .foregroundColor(.secondary)
+        }
+    }
+}
+
+struct GoalEditorView: View {
+    @Binding var goalMinutes: Double
+    let onSave: () -> Void
+    let onCancel: () -> Void
+    
+    var body: some View {
+        NavigationView {
+            VStack(spacing: 30) {
+                VStack(spacing: 16) {
+                    Text("週間目標を設定")
+                        .font(.title2)
+                        .fontWeight(.bold)
+                        .foregroundColor(Color("AsaCoffeeBrown"))
+                    
+                    Text("1週間の運動目標時間を設定してください")
+                        .font(.body)
+                        .foregroundColor(.secondary)
+                        .multilineTextAlignment(.center)
+                }
+                
+                VStack(spacing: 20) {
+                    Text("\(Int(goalMinutes))分")
+                        .font(.system(size: 48, weight: .bold, design: .rounded))
+                        .foregroundColor(Color("AsaCoffeeBrown"))
+                    
+                    Slider(value: $goalMinutes, in: 30...600, step: 15)
+                        .accentColor(Color("AsaCoffeeBrown"))
+                    
+                    HStack {
+                        Text("30分")
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+                        
+                        Spacer()
+                        
+                        Text("600分")
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+                    }
+                }
+                
+                Spacer()
             }
             .padding()
-        }
-        .navigationTitle("運動目標")
-        .navigationBarTitleDisplayMode(.inline)
-        .navigationBarItems(trailing: Button(isEditing ? "保存" : "編集") {
-            if isEditing {
-                viewModel.updateWorkoutGoal(editingGoal)
-            } else {
-                editingGoal = viewModel.workoutGoal
-            }
-            isEditing.toggle()
-        })
-    }
-}
-
-struct CurrentGoalProgressView: View {
-    @ObservedObject var viewModel: WorkoutViewModel
-    
-    var body: some View {
-        AsaCard(backgroundColor: Color("AsaSoftCream").opacity(0.3)) {
-            VStack(alignment: .leading, spacing: 16) {
-                Text("今週の目標達成状況")
-                    .font(.headline)
-                    .foregroundColor(Color("AsaCoffeeBrown"))
-                
-                VStack(spacing: 16) {
-                    // 運動時間の進捗
-                    GoalProgressRow(
-                        title: "運動時間",
-                        current: viewModel.thisWeekTotalMinutes,
-                        target: viewModel.workoutGoal.weeklyTargetMinutes,
-                        unit: "分",
-                        progress: viewModel.thisWeekProgress,
-                        color: Color("AsaCoffeeBrown")
-                    )
-                    
-                    // セッション数の進捗
-                    GoalProgressRow(
-                        title: "運動回数",
-                        current: viewModel.thisWeekSessionCount,
-                        target: viewModel.workoutGoal.weeklyTargetSessions,
-                        unit: "回",
-                        progress: viewModel.thisWeekSessionProgress,
-                        color: Color("AsaMutedSage")
-                    )
-                }
-            }
-        }
-    }
-}
-
-struct GoalProgressRow: View {
-    let title: String
-    let current: Int
-    let target: Int
-    let unit: String
-    let progress: Double
-    let color: Color
-    
-    var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            HStack {
-                Text(title)
-                    .font(.subheadline)
-                    .foregroundColor(.secondary)
-                Spacer()
-                Text("\(current)\(unit) / \(target)\(unit)")
-                    .font(.subheadline)
-                    .fontWeight(.medium)
-            }
-            
-            ProgressView(value: progress)
-                .progressViewStyle(LinearProgressViewStyle(tint: color))
-                .scaleEffect(x: 1, y: 2, anchor: .center)
-            
-            HStack {
-                Text(progress >= 1.0 ? "🎉 目標達成！" : "あと\(target - current)\(unit)")
-                    .font(.caption)
-                    .foregroundColor(progress >= 1.0 ? Color("AsaCoffeeBrown") : .secondary)
-                Spacer()
-                Text("\(Int(progress * 100))%")
-                    .font(.caption)
-                    .fontWeight(.medium)
-                    .foregroundColor(color)
-            }
-        }
-    }
-}
-
-struct GoalSettingsView: View {
-    @Binding var editingGoal: WorkoutGoal
-    @Binding var isEditing: Bool
-    let viewModel: WorkoutViewModel
-    
-    var body: some View {
-        AsaCard {
-            VStack(alignment: .leading, spacing: 16) {
-                Text("目標設定")
-                    .font(.headline)
-                    .foregroundColor(Color("AsaCoffeeBrown"))
-                
-                if isEditing {
-                    VStack(spacing: 16) {
-                        // 週間運動時間目標
-                        VStack(alignment: .leading, spacing: 8) {
-                            Text("週間運動時間目標: \(editingGoal.weeklyTargetMinutes)分")
-                                .font(.subheadline)
-                            Slider(
-                                value: Binding(
-                                    get: { Double(editingGoal.weeklyTargetMinutes) },
-                                    set: { editingGoal.weeklyTargetMinutes = Int($0) }
-                                ),
-                                in: 30...600,
-                                step: 30
-                            )
-                            .accentColor(Color("AsaCoffeeBrown"))
-                        }
-                        
-                        // 週間セッション数目標
-                        VStack(alignment: .leading, spacing: 8) {
-                            Text("週間運動回数目標: \(editingGoal.weeklyTargetSessions)回")
-                                .font(.subheadline)
-                            Slider(
-                                value: Binding(
-                                    get: { Double(editingGoal.weeklyTargetSessions) },
-                                    set: { editingGoal.weeklyTargetSessions = Int($0) }
-                                ),
-                                in: 1...14,
-                                step: 1
-                            )
-                            .accentColor(Color("AsaMutedSage"))
-                        }
-                    }
-                } else {
-                    VStack(spacing: 12) {
-                        HStack {
-                            Image(systemName: "clock")
-                                .foregroundColor(Color("AsaCoffeeBrown"))
-                            Text("週間運動時間目標")
-                                .font(.subheadline)
-                            Spacer()
-                            Text(viewModel.workoutGoal.weeklyTargetFormatted)
-                                .font(.subheadline)
-                                .fontWeight(.medium)
-                        }
-                        
-                        HStack {
-                            Image(systemName: "repeat")
-                                .foregroundColor(Color("AsaMutedSage"))
-                            Text("週間運動回数目標")
-                                .font(.subheadline)
-                            Spacer()
-                            Text("\(viewModel.workoutGoal.weeklyTargetSessions)回")
-                                .font(.subheadline)
-                                .fontWeight(.medium)
-                        }
+            .navigationTitle("目標設定")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button("キャンセル") {
+                        onCancel()
                     }
                 }
-            }
-        }
-    }
-}
-
-struct GoalAdviceView: View {
-    @ObservedObject var viewModel: WorkoutViewModel
-    
-    var advice: String {
-        let currentProgress = viewModel.thisWeekProgress
-        let sessionProgress = viewModel.thisWeekSessionProgress
-        
-        if currentProgress >= 1.0 && sessionProgress >= 1.0 {
-            return "🎉 素晴らしい！今週の目標を達成しました。この調子で続けましょう！"
-        } else if currentProgress >= 0.8 || sessionProgress >= 0.8 {
-            return "💪 もう少しで目標達成です！頑張りましょう！"
-        } else if currentProgress >= 0.5 || sessionProgress >= 0.5 {
-            return "👍 良いペースで進んでいます。継続することが大切です。"
-        } else {
-            return "🌅 まだ始まったばかりです。小さな運動から始めて習慣化していきましょう。"
-        }
-    }
-    
-    var tips: [String] {
-        var tips: [String] = []
-        
-        if viewModel.thisWeekTotalMinutes < viewModel.workoutGoal.weeklyTargetMinutes {
-            let remaining = viewModel.workoutGoal.weeklyTargetMinutes - viewModel.thisWeekTotalMinutes
-            tips.append("目標まであと\(remaining)分です。10-15分の運動を追加してみませんか？")
-        }
-        
-        if viewModel.thisWeekSessionCount < viewModel.workoutGoal.weeklyTargetSessions {
-            let remaining = viewModel.workoutGoal.weeklyTargetSessions - viewModel.thisWeekSessionCount
-            tips.append("今週あと\(remaining)回運動すると目標達成です！")
-        }
-        
-        if viewModel.workoutSessions.isEmpty {
-            tips.append("ウォーキングやストレッチなど、軽い運動から始めてみましょう。")
-        }
-        
-        if tips.isEmpty {
-            tips.append("定期的な運動は健康維持に重要です。無理のない範囲で続けましょう。")
-        }
-        
-        return tips
-    }
-    
-    var body: some View {
-        AsaCard(backgroundColor: Color("AsaMocha").opacity(0.1)) {
-            VStack(alignment: .leading, spacing: 16) {
-                Text("アドバイス")
-                    .font(.headline)
-                    .foregroundColor(Color("AsaMocha"))
                 
-                Text(advice)
-                    .font(.subheadline)
-                    .foregroundColor(.primary)
-                    .padding(.bottom, 8)
-                
-                VStack(alignment: .leading, spacing: 8) {
-                    ForEach(tips, id: \.self) { tip in
-                        HStack(alignment: .top, spacing: 8) {
-                            Image(systemName: "lightbulb")
-                                .foregroundColor(Color("AsaMocha"))
-                                .font(.caption)
-                            Text(tip)
-                                .font(.caption)
-                                .foregroundColor(.secondary)
-                        }
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("保存") {
+                        onSave()
                     }
                 }
             }
@@ -268,7 +339,5 @@ struct GoalAdviceView: View {
 }
 
 #Preview {
-    NavigationView {
-        WorkoutGoalsView(viewModel: WorkoutViewModel())
-    }
+    WorkoutGoalsView(viewModel: WorkoutViewModel())
 }

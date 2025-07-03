@@ -1,130 +1,103 @@
 //
 //  AddWorkoutView.swift
 //  AsaWorkoutLog
-//  
-//  Created on 2025/07/01
+//
+//  Created on 2025/07/03
 //
 
 import SwiftUI
 
 struct AddWorkoutView: View {
     @ObservedObject var viewModel: WorkoutViewModel
-    @Environment(\.presentationMode) var presentationMode
+    @Environment(\.dismiss) var dismiss
     
-    @State private var selectedWorkoutType: WorkoutType = .walking
-    @State private var selectedIntensity: WorkoutIntensity = .moderate
-    @State private var selectedDate = Date()
-    @State private var duration: TimeInterval = 1800 // 30分
+    @State private var workoutName = ""
+    @State private var selectedCategory = WorkoutCategory.other
+    @State private var durationMinutes = 30
+    @State private var durationSeconds = 0
+    @State private var workoutDate = Date()
     @State private var notes = ""
     
     var body: some View {
         NavigationView {
             Form {
-                Section(header: Text("運動の詳細")) {
-                    // 運動種類選択
-                    Picker("運動の種類", selection: $selectedWorkoutType) {
-                        ForEach(WorkoutType.allCases, id: \.self) { type in
-                            HStack {
-                                Text(type.emoji)
-                                Text(type.displayName)
-                            }
-                            .tag(type)
-                        }
-                    }
-                    .pickerStyle(MenuPickerStyle())
+                Section("基本情報") {
+                    TextField("ワークアウト名", text: $workoutName)
                     
-                    // 強度選択
-                    Picker("強度", selection: $selectedIntensity) {
-                        ForEach(WorkoutIntensity.allCases, id: \.self) { intensity in
+                    Picker("カテゴリ", selection: $selectedCategory) {
+                        ForEach(WorkoutCategory.allCases, id: \.self) { category in
                             HStack {
-                                Text(intensity.emoji)
-                                Text(intensity.displayName)
+                                Image(systemName: category.icon)
+                                    .foregroundColor(category.color)
+                                Text(category.rawValue)
                             }
-                            .tag(intensity)
+                            .tag(category)
                         }
                     }
-                    .pickerStyle(SegmentedPickerStyle())
+                    
+                    DatePicker("日時", selection: $workoutDate)
                 }
                 
-                Section(header: Text("時間と日付")) {
-                    // 日付選択
-                    DatePicker("日付", selection: $selectedDate, displayedComponents: [.date, .hourAndMinute])
-                    
-                    // 時間選択
-                    VStack(alignment: .leading, spacing: 8) {
-                        Text("運動時間: \(formatDuration(duration))")
-                            .font(.subheadline)
+                Section("時間") {
+                    HStack {
+                        Picker("分", selection: $durationMinutes) {
+                            ForEach(0..<181) { minute in
+                                Text("\(minute)分")
+                                    .tag(minute)
+                            }
+                        }
+                        .pickerStyle(WheelPickerStyle())
+                        .frame(maxWidth: .infinity)
                         
-                        Slider(value: $duration, in: 300...7200, step: 300) // 5分から2時間まで、5分刻み
-                            .accentColor(Color("AsaCoffeeBrown"))
+                        Picker("秒", selection: $durationSeconds) {
+                            ForEach(0..<60) { second in
+                                Text("\(second)秒")
+                                    .tag(second)
+                            }
+                        }
+                        .pickerStyle(WheelPickerStyle())
+                        .frame(maxWidth: .infinity)
                     }
+                    .frame(height: 120)
                 }
                 
-                Section(header: Text("メモ（任意）")) {
-                    TextField("運動についてのメモ", text: $notes, axis: .vertical)
+                Section("メモ") {
+                    TextField("メモ（任意）", text: $notes, axis: .vertical)
                         .lineLimit(3...6)
                 }
-                
-                Section {
-                    VStack(spacing: 8) {
-                        Text("予想消費カロリー")
-                            .font(.subheadline)
-                            .foregroundColor(.secondary)
-                        Text("\(estimatedCalories)kcal")
-                            .font(.title2)
-                            .fontWeight(.bold)
-                            .foregroundColor(Color("AsaCoffeeBrown"))
+            }
+            .navigationTitle("ワークアウトを追加")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button("キャンセル") {
+                        dismiss()
                     }
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 8)
+                }
+                
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("保存") {
+                        saveWorkout()
+                    }
+                    .disabled(workoutName.isEmpty)
                 }
             }
-            .navigationTitle("運動を記録")
-            .navigationBarTitleDisplayMode(.inline)
-            .navigationBarBackButtonHidden(true)
-            .navigationBarItems(
-                leading: Button("キャンセル") {
-                    presentationMode.wrappedValue.dismiss()
-                },
-                trailing: Button("保存") {
-                    saveWorkout()
-                }
-                .fontWeight(.semibold)
-                .foregroundColor(Color("AsaCoffeeBrown"))
-            )
         }
-    }
-    
-    private func formatDuration(_ duration: TimeInterval) -> String {
-        let hours = Int(duration / 3600)
-        let minutes = Int((duration.truncatingRemainder(dividingBy: 3600)) / 60)
-        
-        if hours > 0 {
-            return "\(hours)時間\(minutes)分"
-        } else {
-            return "\(minutes)分"
-        }
-    }
-    
-    private var estimatedCalories: Int {
-        let minutes = duration / 60
-        let baseCalories = selectedWorkoutType.estimatedCaloriesPerMinute * minutes
-        let adjustedCalories = baseCalories * selectedIntensity.multiplier
-        return Int(adjustedCalories)
     }
     
     private func saveWorkout() {
-        let newSession = WorkoutSession(
-            date: selectedDate,
-            workoutType: selectedWorkoutType,
-            duration: duration,
-            intensity: selectedIntensity,
-            caloriesBurned: estimatedCalories,
-            notes: notes.isEmpty ? nil : notes
+        let totalSeconds = TimeInterval(durationMinutes * 60 + durationSeconds)
+        
+        let workout = Workout(
+            name: workoutName,
+            duration: totalSeconds,
+            date: workoutDate,
+            category: selectedCategory,
+            notes: notes
         )
         
-        viewModel.addWorkoutSession(newSession)
-        presentationMode.wrappedValue.dismiss()
+        viewModel.addWorkout(workout)
+        dismiss()
     }
 }
 
