@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct ContentView: View {
-    @StateObject private var viewModel = WeatherViewModel()
     @StateObject private var locationManager = LocationManager()
+    @State private var viewModel: WeatherViewModel?
     @State private var showingLocationPermission = false
     
     var body: some View {
@@ -30,86 +30,94 @@ struct ContentView: View {
                         locationManager: locationManager,
                         onPermissionGranted: {
                             showingLocationPermission = false
-                            Task {
-                                await viewModel.loadWeatherData()
+                            if let viewModel = viewModel {
+                                Task {
+                                    await viewModel.loadWeatherData()
+                                }
                             }
                         }
                     )
                 } else {
-                    ScrollView {
-                        VStack(spacing: 20) {
-                            // 検索バー
-                            SearchBar(searchText: $viewModel.searchText) { cityName in
-                                Task {
-                                    await viewModel.searchWeather(for: cityName)
-                                }
-                            }
-                            .padding(.horizontal)
-                            
-                            if viewModel.isLoading {
-                                ProgressView("天気情報を取得中...")
-                                    .font(.body)
-                                    .foregroundColor(Color("AsaCoffeeBrown"))
-                                    .padding()
-                            } else if let weather = viewModel.currentWeather {
-                                // 現在の天気
-                                WeatherCard(weather: weather)
-                                    .padding(.horizontal)
-                                
-                                // 5日間予報
-                                if !viewModel.dailyForecast.isEmpty {
-                                    VStack(alignment: .leading, spacing: 16) {
-                                        Text("5日間予報")
-                                            .font(.headline)
-                                            .fontWeight(.bold)
-                                            .foregroundColor(Color("AsaCoffeeBrown"))
-                                            .padding(.horizontal)
-                                        
-                                        ScrollView(.horizontal, showsIndicators: false) {
-                                            HStack(spacing: 12) {
-                                                ForEach(viewModel.dailyForecast) { forecast in
-                                                    ForecastCard(forecast: forecast)
-                                                }
-                                            }
-                                            .padding(.horizontal)
-                                        }
+                    if let viewModel = viewModel {
+                        ScrollView {
+                            VStack(spacing: 20) {
+                                // 検索バー
+                                SearchBar(searchText: .constant(viewModel.searchText)) { cityName in
+                                    Task {
+                                        await viewModel.searchWeather(for: cityName)
                                     }
                                 }
-                            } else if let errorMessage = viewModel.errorMessage {
-                                VStack(spacing: 16) {
-                                    Image(systemName: "exclamationmark.triangle")
-                                        .font(.system(size: 40))
-                                        .foregroundColor(Color("AsaCoffeeBrown"))
-                                    
-                                    Text("エラー")
-                                        .font(.headline)
-                                        .foregroundColor(Color("AsaCoffeeBrown"))
-                                    
-                                    Text(errorMessage)
+                                .padding(.horizontal)
+                                
+                                if viewModel.isLoading {
+                                    ProgressView("天気情報を取得中...")
                                         .font(.body)
-                                        .foregroundColor(Color("AsaMutedSage"))
-                                        .multilineTextAlignment(.center)
+                                        .foregroundColor(Color("AsaCoffeeBrown"))
+                                        .padding()
+                                } else if let weather = viewModel.currentWeather {
+                                    // 現在の天気
+                                    WeatherCard(weather: weather)
                                         .padding(.horizontal)
                                     
-                                    Button("再試行") {
-                                        Task {
-                                            await viewModel.refreshWeather()
+                                    // 5日間予報
+                                    if !viewModel.dailyForecast.isEmpty {
+                                        VStack(alignment: .leading, spacing: 16) {
+                                            Text("5日間予報")
+                                                .font(.headline)
+                                                .fontWeight(.bold)
+                                                .foregroundColor(Color("AsaCoffeeBrown"))
+                                                .padding(.horizontal)
+                                            
+                                            ScrollView(.horizontal, showsIndicators: false) {
+                                                HStack(spacing: 12) {
+                                                    ForEach(viewModel.dailyForecast) { forecast in
+                                                        ForecastCard(forecast: forecast)
+                                                    }
+                                                }
+                                                .padding(.horizontal)
+                                            }
                                         }
                                     }
-                                    .font(.body)
-                                    .fontWeight(.medium)
-                                    .foregroundColor(.white)
+                                } else if let errorMessage = viewModel.errorMessage {
+                                    VStack(spacing: 16) {
+                                        Image(systemName: "exclamationmark.triangle")
+                                            .font(.system(size: 40))
+                                            .foregroundColor(Color("AsaCoffeeBrown"))
+                                        
+                                        Text("エラー")
+                                            .font(.headline)
+                                            .foregroundColor(Color("AsaCoffeeBrown"))
+                                        
+                                        Text(errorMessage)
+                                            .font(.body)
+                                            .foregroundColor(Color("AsaMutedSage"))
+                                            .multilineTextAlignment(.center)
+                                            .padding(.horizontal)
+                                        
+                                        Button("再試行") {
+                                            Task {
+                                                await viewModel.refreshWeather()
+                                            }
+                                        }
+                                        .font(.body)
+                                        .fontWeight(.medium)
+                                        .foregroundColor(.white)
+                                        .padding()
+                                        .background(Color("AsaCoffeeBrown"))
+                                        .cornerRadius(10)
+                                    }
                                     .padding()
-                                    .background(Color("AsaCoffeeBrown"))
-                                    .cornerRadius(10)
                                 }
-                                .padding()
                             }
+                            .padding(.vertical)
                         }
-                        .padding(.vertical)
-                    }
-                    .refreshable {
-                        await viewModel.refreshWeather()
+                        .refreshable {
+                            await viewModel.refreshWeather()
+                        }
+                    } else {
+                        ProgressView("初期化中...")
+                            .font(.body)
+                            .foregroundColor(Color("AsaCoffeeBrown"))
                     }
                 }
             }
@@ -120,7 +128,7 @@ struct ContentView: View {
                     Button(action: {
                         if !locationManager.isLocationEnabled {
                             showingLocationPermission = true
-                        } else {
+                        } else if let viewModel = viewModel {
                             Task {
                                 await viewModel.refreshWeather()
                             }
@@ -133,6 +141,9 @@ struct ContentView: View {
             }
         }
         .onAppear {
+            if viewModel == nil {
+                viewModel = WeatherViewModel(locationManager: locationManager)
+            }
             if locationManager.authorizationStatus == .notDetermined {
                 showingLocationPermission = true
             }

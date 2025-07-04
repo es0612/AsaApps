@@ -11,9 +11,10 @@ class WeatherViewModel: ObservableObject {
     @Published var isSearching = false
     
     private let weatherService = WeatherService.shared
-    private var locationManager: LocationManager?
+    private let locationManager: LocationManager
     
-    init() {
+    init(locationManager: LocationManager) {
+        self.locationManager = locationManager
         Task {
             await loadWeatherData()
         }
@@ -24,7 +25,7 @@ class WeatherViewModel: ObservableObject {
         errorMessage = nil
         
         do {
-            if let locationManager = locationManager, let location = locationManager.location {
+            if let location = locationManager.location {
                 await loadWeatherForLocation(location)
             } else {
                 await loadWeatherForDefaultCity()
@@ -113,11 +114,11 @@ extension WeatherViewModel {
     }
     
     var isLocationEnabled: Bool {
-        locationManager?.isLocationEnabled ?? false
+        locationManager.isLocationEnabled
     }
     
     var locationErrorMessage: String? {
-        locationManager?.errorMessage
+        locationManager.errorMessage
     }
 }
 
