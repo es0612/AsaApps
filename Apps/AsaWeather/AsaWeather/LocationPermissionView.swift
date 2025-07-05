@@ -27,6 +27,7 @@ struct LocationPermissionView: View {
             
             VStack(spacing: 16) {
                 Button(action: {
+                    print("🔔 LocationPermissionView: 位置情報を許可ボタンが押されました")
                     locationManager.requestPermission()
                 }) {
                     HStack {

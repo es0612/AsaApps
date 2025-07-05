@@ -26,6 +26,8 @@ class LocationManager: NSObject, ObservableObject {
     }
     
     func requestPermission() {
+        print("🔐 LocationManager: requestPermission() called")
+        print("🔐 Current authorization status: \(authorizationStatus.rawValue)")
         locationManager.requestWhenInUseAuthorization()
     }
 }
@@ -49,20 +51,25 @@ extension LocationManager: CLLocationManagerDelegate {
     }
     
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        print("🔐 LocationManager: didChangeAuthorization called with status: \(status.rawValue)")
         DispatchQueue.main.async {
             self.authorizationStatus = status
             
             switch status {
             case .notDetermined:
+                print("🔐 Status: notDetermined")
                 self.isLocationEnabled = false
             case .restricted, .denied:
+                print("🔐 Status: restricted/denied")
                 self.isLocationEnabled = false
                 self.errorMessage = "位置情報のアクセスが拒否されています。設定から許可してください。"
             case .authorizedWhenInUse, .authorizedAlways:
+                print("🔐 Status: authorized! Requesting location...")
                 self.isLocationEnabled = true
                 self.errorMessage = nil
                 self.requestLocation()
             @unknown default:
+                print("🔐 Status: unknown")
                 self.isLocationEnabled = false
             }
         }
