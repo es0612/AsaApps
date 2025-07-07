@@ -10,16 +10,23 @@ class WeatherService: ObservableObject {
         let lat = location.coordinate.latitude
         let lon = location.coordinate.longitude
         
+        print("🌐 WeatherService: Fetching weather for \(lat), \(lon)")
+        
         // 現在の天気と予報を取得
         let weatherURL = "\(baseURL)/forecast?latitude=\(lat)&longitude=\(lon)&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m&daily=weather_code,temperature_2m_max,temperature_2m_min&timezone=auto"
         
+        print("🌐 WeatherService: API URL: \(weatherURL)")
+        
         // 都市名を取得
         let cityName = await getCityName(for: location)
+        print("🌐 WeatherService: City name: \(cityName)")
         
         guard let url = URL(string: weatherURL) else {
+            print("🌐 WeatherService: Invalid URL")
             throw WeatherError.invalidURL
         }
         
+        print("🌐 WeatherService: Making API request...")
         let (data, response) = try await session.data(from: url)
         
         guard let httpResponse = response as? HTTPURLResponse,

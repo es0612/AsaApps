@@ -24,14 +24,12 @@ class WeatherViewModel: ObservableObject {
         isLoading = true
         errorMessage = nil
         
-        do {
-            if let location = locationManager.location {
-                await loadWeatherForLocation(location)
-            } else {
-                await loadWeatherForDefaultCity()
-            }
-        } catch {
-            errorMessage = error.localizedDescription
+        if let location = locationManager.location {
+            print("🌤️ WeatherViewModel: Loading weather for location: \(location.coordinate.latitude), \(location.coordinate.longitude)")
+            await loadWeatherForLocation(location)
+        } else {
+            print("🌤️ WeatherViewModel: No location available, loading default city")
+            await loadWeatherForDefaultCity()
         }
         
         isLoading = false
@@ -59,12 +57,15 @@ class WeatherViewModel: ObservableObject {
     
     private func loadWeatherForLocation(_ location: CLLocation) async {
         do {
+            print("🌤️ WeatherViewModel: Fetching weather for location...")
             async let weatherData = weatherService.fetchWeather(for: location)
             async let forecastData = weatherService.fetchForecast(for: location)
             
             currentWeather = try await weatherData
             forecast = try await forecastData
+            print("🌤️ WeatherViewModel: Successfully loaded weather data")
         } catch {
+            print("🌤️ WeatherViewModel: Error loading weather: \(error)")
             errorMessage = error.localizedDescription
         }
     }
