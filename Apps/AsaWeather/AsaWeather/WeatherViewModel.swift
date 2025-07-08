@@ -58,12 +58,29 @@ class WeatherViewModel: ObservableObject {
     private func loadWeatherForLocation(_ location: CLLocation) async {
         do {
             print("🌤️ WeatherViewModel: Fetching weather for location...")
-            async let weatherData = weatherService.fetchWeather(for: location)
-            async let forecastData = weatherService.fetchForecast(for: location)
             
-            currentWeather = try await weatherData
-            forecast = try await forecastData
-            print("🌤️ WeatherViewModel: Successfully loaded weather data")
+            // 天気データと予報データを個別に取得して、どちらでエラーが発生しているかを特定
+            do {
+                print("🌤️ WeatherViewModel: Fetching current weather...")
+                let weatherData = try await weatherService.fetchWeather(for: location)
+                currentWeather = weatherData
+                print("🌤️ WeatherViewModel: Successfully loaded current weather")
+            } catch {
+                print("🌤️ WeatherViewModel: Error loading current weather: \(error)")
+                throw error
+            }
+            
+            do {
+                print("🌤️ WeatherViewModel: Fetching forecast...")
+                let forecastData = try await weatherService.fetchForecast(for: location)
+                forecast = forecastData
+                print("🌤️ WeatherViewModel: Successfully loaded forecast")
+            } catch {
+                print("🌤️ WeatherViewModel: Error loading forecast: \(error)")
+                throw error
+            }
+            
+            print("🌤️ WeatherViewModel: Successfully loaded all weather data")
         } catch {
             print("🌤️ WeatherViewModel: Error loading weather: \(error)")
             errorMessage = error.localizedDescription

@@ -37,7 +37,9 @@ class WeatherService: ObservableObject {
         do {
             let openMeteoResponse = try JSONDecoder().decode(OpenMeteoResponse.self, from: data)
             print("🌐 WeatherService: Successfully decoded API response")
+            print("🌐 WeatherService: Converting to WeatherData...")
             let weatherData = convertToWeatherData(openMeteoResponse, cityName: cityName)
+            print("🌐 WeatherService: Successfully converted to WeatherData")
             return weatherData
         } catch {
             print("🌐 WeatherService: Decoding error: \(error)")
@@ -62,25 +64,39 @@ class WeatherService: ObservableObject {
         let lat = location.coordinate.latitude
         let lon = location.coordinate.longitude
         
+        print("🌐 WeatherService: Fetching forecast for \(lat), \(lon)")
+        
         let forecastURL = "\(baseURL)/forecast?latitude=\(lat)&longitude=\(lon)&daily=weather_code,temperature_2m_max,temperature_2m_min&timezone=auto&forecast_days=7"
         
+        print("🌐 WeatherService: Forecast URL: \(forecastURL)")
+        
         guard let url = URL(string: forecastURL) else {
+            print("🌐 WeatherService: Invalid forecast URL")
             throw WeatherError.invalidURL
         }
         
+        print("🌐 WeatherService: Making forecast API request...")
         let (data, response) = try await session.data(from: url)
         
         guard let httpResponse = response as? HTTPURLResponse,
               httpResponse.statusCode == 200 else {
+            print("🌐 WeatherService: Invalid forecast response")
             throw WeatherError.invalidResponse
         }
         
         do {
             let openMeteoResponse = try JSONDecoder().decode(OpenMeteoResponse.self, from: data)
+            print("🌐 WeatherService: Successfully decoded forecast API response")
             let cityName = await getCityName(for: location)
+            print("🌐 WeatherService: Converting to ForecastData...")
             let forecastData = convertToForecastData(openMeteoResponse, cityName: cityName)
+            print("🌐 WeatherService: Successfully converted to ForecastData")
             return forecastData
         } catch {
+            print("🌐 WeatherService: Forecast decoding error: \(error)")
+            if let responseString = String(data: data, encoding: .utf8) {
+                print("🌐 WeatherService: Forecast API Response: \(responseString)")
+            }
             throw WeatherError.decodingError
         }
     }
@@ -122,17 +138,29 @@ class WeatherService: ObservableObject {
     }
     
     private func convertToWeatherData(_ response: OpenMeteoResponse, cityName: String) -> WeatherData {
+        print("🌐 WeatherService: Starting convertToWeatherData")
+        print("🌐 WeatherService: City name: \(cityName)")
+        
         let current = response.current
         let weatherCode = current.weather_code
         let description = getWeatherDescription(for: weatherCode)
         
-        return WeatherData(
+        print("🌐 WeatherService: Current temperature: \(current.temperature_2m)")
+        print("🌐 WeatherService: Weather code: \(weatherCode)")
+        print("🌐 WeatherService: Daily temps count: \(response.daily.temperature_2m_max.count)")
+        
+        let tempMin = response.daily.temperature_2m_min.first ?? current.temperature_2m
+        let tempMax = response.daily.temperature_2m_max.first ?? current.temperature_2m
+        
+        print("🌐 WeatherService: Temp min: \(tempMin), max: \(tempMax)")
+        
+        let weatherData = WeatherData(
             name: cityName,
             main: WeatherData.Main(
                 temp: current.temperature_2m,
                 feelsLike: current.temperature_2m, // Open-Meteoには体感温度がないので同じ値を使用
-                tempMin: response.daily.temperature_2m_min.first ?? current.temperature_2m,
-                tempMax: response.daily.temperature_2m_max.first ?? current.temperature_2m,
+                tempMin: tempMin,
+                tempMax: tempMax,
                 pressure: 1013, // デフォルト値
                 humidity: Int(current.relative_humidity_2m)
             ),
@@ -152,20 +180,36 @@ class WeatherService: ObservableObject {
                 sunset: 0
             )
         )
+        
+        print("🌐 WeatherService: WeatherData created successfully")
+        return weatherData
     }
     
     private func convertToForecastData(_ response: OpenMeteoResponse, cityName: String) -> ForecastData {
+        print("🌐 WeatherService: Starting convertToForecastData")
+        print("🌐 WeatherService: City name: \(cityName)")
+        
         let daily = response.daily
         var forecastItems: [ForecastData.ForecastItem] = []
+        
+        print("🌐 WeatherService: Daily times count: \(daily.time.count)")
+        print("🌐 WeatherService: Daily weather codes count: \(daily.weather_code.count)")
+        print("🌐 WeatherService: Daily max temps count: \(daily.temperature_2m_max.count)")
+        print("🌐 WeatherService: Daily min temps count: \(daily.temperature_2m_min.count)")
         
         for (index, date) in daily.time.enumerated() {
             guard index < daily.weather_code.count,
                   index < daily.temperature_2m_max.count,
-                  index < daily.temperature_2m_min.count else { continue }
+                  index < daily.temperature_2m_min.count else { 
+                print("🌐 WeatherService: Skipping index \(index) due to array bounds")
+                continue 
+            }
             
             let weatherCode = daily.weather_code[index]
             let maxTemp = daily.temperature_2m_max[index]
             let minTemp = daily.temperature_2m_min[index]
+            
+            print("🌐 WeatherService: Processing day \(index): \(date), temp: \(minTemp)-\(maxTemp), code: \(weatherCode)")
             
             let item = ForecastData.ForecastItem(
                 dt: Int(Date().timeIntervalSince1970) + (index * 86400),
@@ -189,10 +233,15 @@ class WeatherService: ObservableObject {
             forecastItems.append(item)
         }
         
-        return ForecastData(
+        print("🌐 WeatherService: Created \(forecastItems.count) forecast items")
+        
+        let forecastData = ForecastData(
             list: forecastItems,
             city: ForecastData.City(id: 0, name: cityName, country: "JP")
         )
+        
+        print("🌐 WeatherService: ForecastData created successfully")
+        return forecastData
     }
     
     private func getWeatherMain(for code: Int) -> String {
