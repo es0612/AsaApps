@@ -36,6 +36,13 @@ class WeatherViewModel: ObservableObject {
         isLoading = true
         errorMessage = nil
         
+        defer {
+            // 処理完了時に必ずフラグをリセット
+            print("🌤️ WeatherViewModel: Resetting loading flags")
+            isLoading = false
+            isLoadingWeatherData = false
+        }
+        
         if let location = locationManager.location {
             print("🌤️ WeatherViewModel: Loading weather for location: \(location.coordinate.latitude), \(location.coordinate.longitude)")
             await loadWeatherForLocation(location)
@@ -44,9 +51,7 @@ class WeatherViewModel: ObservableObject {
             await loadWeatherForDefaultCity()
         }
         
-        print("🌤️ WeatherViewModel: Finished loadWeatherData, setting isLoading = false")
-        isLoading = false
-        isLoadingWeatherData = false
+        print("🌤️ WeatherViewModel: Finished loadWeatherData")
     }
     
     func searchWeather(for cityName: String) async {
@@ -78,7 +83,8 @@ class WeatherViewModel: ObservableObject {
                 print("🌤️ WeatherViewModel: Fetching current weather...")
                 let weatherData = try await weatherService.fetchWeather(for: location)
                 currentWeather = weatherData
-                print("🌤️ WeatherViewModel: Successfully loaded current weather")
+                print("🌤️ WeatherViewModel: Successfully loaded current weather for \(weatherData.name)")
+                print("🌤️ WeatherViewModel: currentWeather is now: \(currentWeather?.name ?? "nil")")
             } catch {
                 print("🌤️ WeatherViewModel: Error loading current weather: \(error)")
                 throw error

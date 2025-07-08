@@ -52,7 +52,7 @@ struct ContentView: View {
                                         .foregroundColor(Color("AsaCoffeeBrown"))
                                         .padding()
                                         .onAppear {
-                                            print("🌤️ ContentView: Showing loading state")
+                                            print("🌤️ ContentView: Showing loading state - isLoading: \(viewModel.isLoading), currentWeather: \(viewModel.currentWeather?.name ?? "nil")")
                                         }
                                 } else if let weather = viewModel.currentWeather {
                                     // 現在の天気
@@ -110,6 +110,12 @@ struct ContentView: View {
                                         .cornerRadius(10)
                                     }
                                     .padding()
+                                } else {
+                                    // デバッグ用：どの条件にも当てはまらない場合
+                                    Text("データなし")
+                                        .onAppear {
+                                            print("🌤️ ContentView: No data state - isLoading: \(viewModel.isLoading), currentWeather: \(viewModel.currentWeather?.name ?? "nil"), errorMessage: \(viewModel.errorMessage ?? "nil")")
+                                        }
                                 }
                             }
                             .padding(.vertical)
