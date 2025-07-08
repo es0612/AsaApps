@@ -36,10 +36,15 @@ class WeatherService: ObservableObject {
         
         do {
             let openMeteoResponse = try JSONDecoder().decode(OpenMeteoResponse.self, from: data)
+            print("🌐 WeatherService: Successfully decoded API response")
             let weatherData = convertToWeatherData(openMeteoResponse, cityName: cityName)
             return weatherData
         } catch {
-            print("Decoding error: \(error)")
+            print("🌐 WeatherService: Decoding error: \(error)")
+            // デバッグ用：レスポンスの内容を出力
+            if let responseString = String(data: data, encoding: .utf8) {
+                print("🌐 WeatherService: API Response: \(responseString)")
+            }
             throw WeatherError.decodingError
         }
     }
