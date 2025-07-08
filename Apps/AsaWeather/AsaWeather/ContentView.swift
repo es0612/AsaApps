@@ -54,10 +54,16 @@ struct ContentView: View {
                                         .font(.body)
                                         .foregroundColor(Color("AsaCoffeeBrown"))
                                         .padding()
+                                        .onAppear {
+                                            print("🌤️ ContentView: Showing loading state")
+                                        }
                                 } else if let weather = viewModel.currentWeather {
                                     // 現在の天気
                                     WeatherCard(weather: weather)
                                         .padding(.horizontal)
+                                        .onAppear {
+                                            print("🌤️ ContentView: Showing weather data for \(weather.name)")
+                                        }
                                     
                                     // 5日間予報
                                     if !viewModel.dailyForecast.isEmpty {

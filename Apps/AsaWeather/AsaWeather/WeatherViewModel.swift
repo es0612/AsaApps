@@ -15,12 +15,16 @@ class WeatherViewModel: ObservableObject {
     
     init(locationManager: LocationManager) {
         self.locationManager = locationManager
+        print("🌤️ WeatherViewModel: Initializing WeatherViewModel")
         Task {
+            // 少し待ってから初回読み込みを実行（位置情報が利用可能になるまで待つ）
+            try? await Task.sleep(nanoseconds: 1_000_000_000) // 1秒待機
             await loadWeatherData()
         }
     }
     
     func loadWeatherData() async {
+        print("🌤️ WeatherViewModel: Starting loadWeatherData, setting isLoading = true")
         isLoading = true
         errorMessage = nil
         
@@ -32,6 +36,7 @@ class WeatherViewModel: ObservableObject {
             await loadWeatherForDefaultCity()
         }
         
+        print("🌤️ WeatherViewModel: Finished loadWeatherData, setting isLoading = false")
         isLoading = false
     }
     
@@ -88,10 +93,13 @@ class WeatherViewModel: ObservableObject {
     }
     
     private func loadWeatherForDefaultCity() async {
+        print("🌤️ WeatherViewModel: Loading default city weather")
         do {
             let weather = try await weatherService.fetchWeather(for: "東京")
             currentWeather = weather
+            print("🌤️ WeatherViewModel: Successfully loaded default city weather")
         } catch {
+            print("🌤️ WeatherViewModel: Error loading default city weather: \(error)")
             errorMessage = error.localizedDescription
         }
     }
