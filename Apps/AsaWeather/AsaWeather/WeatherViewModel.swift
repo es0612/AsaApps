@@ -2,13 +2,14 @@ import Foundation
 import CoreLocation
 
 @MainActor
-class WeatherViewModel: ObservableObject {
-    @Published var currentWeather: WeatherData?
-    @Published var forecast: ForecastData?
-    @Published var isLoading = false
-    @Published var errorMessage: String?
-    @Published var searchText = ""
-    @Published var isSearching = false
+@Observable
+class WeatherViewModel {
+    var currentWeather: WeatherData?
+    var forecast: ForecastData?
+    var isLoading = false
+    var errorMessage: String?
+    var searchText = ""
+    var isSearching = false
     
     private let weatherService = WeatherService.shared
     private let locationManager: LocationManager
@@ -82,6 +83,7 @@ class WeatherViewModel: ObservableObject {
             do {
                 print("🌤️ WeatherViewModel: Fetching current weather...")
                 let weatherData = try await weatherService.fetchWeather(for: location)
+                print("🌤️ WeatherViewModel: About to set currentWeather to \(weatherData.name)")
                 currentWeather = weatherData
                 print("🌤️ WeatherViewModel: Successfully loaded current weather for \(weatherData.name)")
                 print("🌤️ WeatherViewModel: currentWeather is now: \(currentWeather?.name ?? "nil")")
