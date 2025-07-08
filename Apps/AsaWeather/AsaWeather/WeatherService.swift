@@ -141,7 +141,35 @@ class WeatherService: ObservableObject {
         print("🌐 WeatherService: Starting convertToWeatherData")
         print("🌐 WeatherService: City name: \(cityName)")
         
-        let current = response.current
+        guard let current = response.current else {
+            print("🌐 WeatherService: No current data available in response")
+            // currentデータがない場合はdailyデータから最初の日のデータを使用
+            let weatherCode = response.daily.weather_code.first ?? 0
+            let tempMin = response.daily.temperature_2m_min.first ?? 20.0
+            let tempMax = response.daily.temperature_2m_max.first ?? 25.0
+            let avgTemp = (tempMin + tempMax) / 2
+            
+            return WeatherData(
+                name: cityName,
+                main: WeatherData.Main(
+                    temp: avgTemp,
+                    feelsLike: avgTemp,
+                    tempMin: tempMin,
+                    tempMax: tempMax,
+                    pressure: 1013,
+                    humidity: 50 // デフォルト値
+                ),
+                weather: [WeatherData.Weather(
+                    id: weatherCode,
+                    main: getWeatherMain(for: weatherCode),
+                    description: getWeatherDescription(for: weatherCode),
+                    icon: ""
+                )],
+                wind: WeatherData.Wind(speed: 0, deg: nil),
+                sys: WeatherData.Sys(country: "JP", sunrise: 0, sunset: 0)
+            )
+        }
+        
         let weatherCode = current.weather_code
         let description = getWeatherDescription(for: weatherCode)
         

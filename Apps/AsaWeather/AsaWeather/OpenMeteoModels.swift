@@ -9,8 +9,8 @@ struct OpenMeteoResponse: Codable {
     let timezone: String
     let timezone_abbreviation: String
     let elevation: Double
-    let current_units: CurrentUnits
-    let current: Current
+    let current_units: CurrentUnits?  // Optionalに変更
+    let current: Current?             // Optionalに変更
     let daily_units: DailyUnits
     let daily: Daily
     
