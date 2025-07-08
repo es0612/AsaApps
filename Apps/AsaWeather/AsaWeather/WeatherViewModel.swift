@@ -12,19 +12,27 @@ class WeatherViewModel: ObservableObject {
     
     private let weatherService = WeatherService.shared
     private let locationManager: LocationManager
+    private var isLoadingWeatherData = false  // 重複実行を防ぐフラグ
     
     init(locationManager: LocationManager) {
         self.locationManager = locationManager
         print("🌤️ WeatherViewModel: Initializing WeatherViewModel")
         Task {
-            // 少し待ってから初回読み込みを実行（位置情報が利用可能になるまで待つ）
-            try? await Task.sleep(nanoseconds: 1_000_000_000) // 1秒待機
+            // 位置情報が利用可能になるまで少し待機
+            try? await Task.sleep(nanoseconds: 2_000_000_000) // 2秒待機
             await loadWeatherData()
         }
     }
     
     func loadWeatherData() async {
+        // 既に読み込み中の場合は重複実行を防ぐ
+        if isLoadingWeatherData {
+            print("🌤️ WeatherViewModel: Already loading weather data, skipping")
+            return
+        }
+        
         print("🌤️ WeatherViewModel: Starting loadWeatherData, setting isLoading = true")
+        isLoadingWeatherData = true
         isLoading = true
         errorMessage = nil
         
@@ -38,6 +46,7 @@ class WeatherViewModel: ObservableObject {
         
         print("🌤️ WeatherViewModel: Finished loadWeatherData, setting isLoading = false")
         isLoading = false
+        isLoadingWeatherData = false
     }
     
     func searchWeather(for cityName: String) async {

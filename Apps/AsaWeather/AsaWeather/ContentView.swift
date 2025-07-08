@@ -29,12 +29,9 @@ struct ContentView: View {
                     LocationPermissionView(
                         locationManager: locationManager,
                         onPermissionGranted: {
+                            print("🌤️ ContentView: Location permission granted")
                             showingLocationPermission = false
-                            if let viewModel = viewModel {
-                                Task {
-                                    await viewModel.loadWeatherData()
-                                }
-                            }
+                            // ViewModelの初期化で既にloadWeatherDataが実行されるため、ここでは呼び出さない
                         }
                     )
                 } else {
