@@ -251,6 +251,8 @@ struct FeedRowView: View {
 // MARK: - 空の状態ビュー
 
 struct EmptyFeedView: View {
+    @EnvironmentObject var feedViewModel: FeedViewModel
+    
     var body: some View {
         VStack(spacing: 20) {
             Image(systemName: "antenna.radiowaves.left.and.right")
@@ -267,7 +269,7 @@ struct EmptyFeedView: View {
                 .foregroundColor(Color("AsaMutedSage"))
                 .multilineTextAlignment(.center)
             
-            NavigationLink(destination: AddFeedView()) {
+            NavigationLink(destination: AddFeedView().environmentObject(feedViewModel)) {
                 Text("最初のフィードを追加")
                     .font(.body)
                     .fontWeight(.medium)

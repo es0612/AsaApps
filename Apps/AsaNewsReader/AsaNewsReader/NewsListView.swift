@@ -214,7 +214,7 @@ struct EmptyNewsView: View {
                     .foregroundColor(Color("AsaMutedSage"))
                     .multilineTextAlignment(.center)
                 
-                NavigationLink(destination: AddFeedView()) {
+                NavigationLink(destination: AddFeedView().environmentObject(feedViewModel)) {
                     Text("フィードを追加")
                         .font(.body)
                         .fontWeight(.medium)
