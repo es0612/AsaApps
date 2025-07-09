@@ -11,6 +11,7 @@ struct ContentView: View {
     @StateObject private var locationManager = LocationManager()
     @State private var viewModel: WeatherViewModel?
     @State private var showingLocationPermission = false
+    @State private var searchText = ""
     
     var body: some View {
         NavigationView {
@@ -39,9 +40,10 @@ struct ContentView: View {
                         ScrollView {
                             VStack(spacing: 20) {
                                 // 検索バー
-                                SearchBar(searchText: .constant(viewModel.searchText)) { cityName in
+                                SearchBar(searchText: $searchText) { cityName in
                                     Task {
                                         await viewModel.searchWeather(for: cityName)
+                                        searchText = ""
                                     }
                                 }
                                 .padding(.horizontal)

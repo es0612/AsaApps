@@ -139,6 +139,19 @@ struct SearchBar: View {
                         .foregroundColor(Color("AsaMutedSage"))
                 }
             }
+            
+            Button("検索") {
+                let trimmedText = searchText.trimmingCharacters(in: .whitespacesAndNewlines)
+                if !trimmedText.isEmpty {
+                    onSearch(trimmedText)
+                }
+            }
+            .foregroundColor(.white)
+            .padding(.horizontal, 12)
+            .padding(.vertical, 6)
+            .background(Color("AsaCoffeeBrown"))
+            .cornerRadius(6)
+            .disabled(searchText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
         }
         .padding()
         .background(Color("AsaSoftCream").opacity(0.3))
