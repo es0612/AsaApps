@@ -332,8 +332,8 @@ struct FilterSheetView: View {
                 }
             }
         }
-        .onChange(of: newsViewModel.showOnlyUnread) { newValue in
-            if newValue {
+        .onChange(of: newsViewModel.showOnlyUnread) {
+            if newsViewModel.showOnlyUnread {
                 newsViewModel.loadUnreadNews()
             } else {
                 newsViewModel.loadNews()

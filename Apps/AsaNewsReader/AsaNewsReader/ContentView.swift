@@ -34,7 +34,7 @@ struct ContentView: View {
                 Image(systemName: "circle")
                 Text("未読")
             }
-            .badge(newsViewModel.unreadNewsCount > 0 ? newsViewModel.unreadNewsCount : nil)
+            .badge(newsViewModel.unreadNewsCount > 0 ? newsViewModel.unreadNewsCount : 0)
             
             // フィードタブ
             NavigationView {

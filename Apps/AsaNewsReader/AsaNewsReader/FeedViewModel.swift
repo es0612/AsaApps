@@ -264,9 +264,9 @@ class FeedViewModel: ObservableObject {
             case .lastFetched:
                 return \RSSFeed.lastFetched
             case .newsCount:
-                return \RSSFeed.newsItems
+                return \RSSFeed.title // newsCountとunreadCountは計算プロパティのためtitleで代用
             case .unreadCount:
-                return \RSSFeed.newsItems
+                return \RSSFeed.title // newsCountとunreadCountは計算プロパティのためtitleで代用
             case .createdAt:
                 return \RSSFeed.createdAt
             }
