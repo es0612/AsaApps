@@ -87,12 +87,52 @@ struct PersistenceController {
         container = NSPersistentContainer(name: "NewsReader")
         if inMemory {
             container.persistentStoreDescriptions.first!.url = URL(fileURLWithPath: "/dev/null")
+        } else {
+            // 自動マイグレーションを有効にする
+            let storeDescription = container.persistentStoreDescriptions.first!
+            storeDescription.shouldMigrateStoreAutomatically = true
+            storeDescription.shouldInferMappingModelAutomatically = true
         }
+        
+        let containerRef = container
         container.loadPersistentStores(completionHandler: { (storeDescription, error) in
             if let error = error as NSError? {
-                fatalError("Unresolved error \(error), \(error.userInfo)")
+                // マイグレーションエラーの場合、データベースを削除して再作成
+                print("🔄 Core Data: マイグレーションエラーが発生しました。データベースをリセットします。")
+                print("🔄 Core Data: エラー詳細: \(error.localizedDescription)")
+                PersistenceController.deleteAndRecreateStore(container: containerRef)
             }
         })
         container.viewContext.automaticallyMergesChangesFromParent = true
+    }
+    
+    /// データベースストアを削除して再作成する（静的メソッド）
+    private static func deleteAndRecreateStore(container: NSPersistentContainer) {
+        guard let storeURL = container.persistentStoreDescriptions.first?.url else { return }
+        
+        do {
+            // 既存のストアファイルを削除
+            try FileManager.default.removeItem(at: storeURL)
+            
+            // 関連ファイルも削除
+            let walURL = storeURL.appendingPathExtension("wal")
+            let shmURL = storeURL.appendingPathExtension("shm")
+            
+            try? FileManager.default.removeItem(at: walURL)
+            try? FileManager.default.removeItem(at: shmURL)
+            
+            print("🔄 Core Data: 古いデータベースファイルを削除しました。")
+            
+            // 新しいストアを作成
+            container.loadPersistentStores { _, error in
+                if let error = error {
+                    print("🔄 Core Data: 新しいデータベースの作成に失敗: \(error)")
+                } else {
+                    print("🔄 Core Data: 新しいデータベースを作成しました。")
+                }
+            }
+        } catch {
+            print("🔄 Core Data: ファイル削除エラー: \(error)")
+        }
     }
 }

@@ -74,7 +74,7 @@ class RSSService: ObservableObject {
     func fetchAndSaveNews(for feed: RSSFeed) async throws {
         let items = try await fetchFeed(feed)
         
-        await context.perform {
+        try await context.perform {
             for item in items {
                 // 既存の記事をチェック（重複回避）
                 let existingRequest = NSFetchRequest<NewsItem>(entityName: "NewsItem")
@@ -110,6 +110,8 @@ class RSSService: ObservableObject {
                 print("🌐 RSSService: データを保存しました")
             } catch {
                 print("🌐 RSSService: 保存エラー: \(error)")
+                // Core Dataエラーの場合は上位に投げる
+                throw RSSError.dataCorrupted
             }
         }
     }
