@@ -7,62 +7,62 @@
 	objects = {
 
 /* Begin PBXContainerItemProxy section */
-		D5CEE70E2E21BB8B00940E15 /* PBXContainerItemProxy */ = {
+		D5B181CE2E264914005EF67E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = D5CEE6F62E21BB8900940E15 /* Project object */;
+			containerPortal = D5B181B62E264912005EF67E /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = D5CEE6FD2E21BB8900940E15;
-			remoteInfo = AsaLocationTracker;
+			remoteGlobalIDString = D5B181BD2E264912005EF67E;
+			remoteInfo = AsaCurrencyConverter;
 		};
-		D5CEE7182E21BB8B00940E15 /* PBXContainerItemProxy */ = {
+		D5B181D82E264914005EF67E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = D5CEE6F62E21BB8900940E15 /* Project object */;
+			containerPortal = D5B181B62E264912005EF67E /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = D5CEE6FD2E21BB8900940E15;
-			remoteInfo = AsaLocationTracker;
+			remoteGlobalIDString = D5B181BD2E264912005EF67E;
+			remoteInfo = AsaCurrencyConverter;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		D5CEE6FE2E21BB8900940E15 /* AsaLocationTracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AsaLocationTracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		D5CEE70D2E21BB8B00940E15 /* AsaLocationTrackerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AsaLocationTrackerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		D5CEE7172E21BB8B00940E15 /* AsaLocationTrackerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AsaLocationTrackerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		D5B181BE2E264912005EF67E /* AsaCurrencyConverter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AsaCurrencyConverter.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D5B181CD2E264914005EF67E /* AsaCurrencyConverterTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AsaCurrencyConverterTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		D5B181D72E264914005EF67E /* AsaCurrencyConverterUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AsaCurrencyConverterUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		D5CEE7002E21BB8900940E15 /* AsaLocationTracker */ = {
+		D5B181C02E264912005EF67E /* AsaCurrencyConverter */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = AsaLocationTracker;
+			path = AsaCurrencyConverter;
 			sourceTree = "<group>";
 		};
-		D5CEE7102E21BB8B00940E15 /* AsaLocationTrackerTests */ = {
+		D5B181D02E264914005EF67E /* AsaCurrencyConverterTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = AsaLocationTrackerTests;
+			path = AsaCurrencyConverterTests;
 			sourceTree = "<group>";
 		};
-		D5CEE71A2E21BB8B00940E15 /* AsaLocationTrackerUITests */ = {
+		D5B181DA2E264914005EF67E /* AsaCurrencyConverterUITests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = AsaLocationTrackerUITests;
+			path = AsaCurrencyConverterUITests;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		D5CEE6FB2E21BB8900940E15 /* Frameworks */ = {
+		D5B181BB2E264912005EF67E /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		D5CEE70A2E21BB8B00940E15 /* Frameworks */ = {
+		D5B181CA2E264914005EF67E /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		D5CEE7142E21BB8B00940E15 /* Frameworks */ = {
+		D5B181D42E264914005EF67E /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -72,22 +72,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		D5CEE6F52E21BB8900940E15 = {
+		D5B181B52E264912005EF67E = {
 			isa = PBXGroup;
 			children = (
-				D5CEE7002E21BB8900940E15 /* AsaLocationTracker */,
-				D5CEE7102E21BB8B00940E15 /* AsaLocationTrackerTests */,
-				D5CEE71A2E21BB8B00940E15 /* AsaLocationTrackerUITests */,
-				D5CEE6FF2E21BB8900940E15 /* Products */,
+				D5B181C02E264912005EF67E /* AsaCurrencyConverter */,
+				D5B181D02E264914005EF67E /* AsaCurrencyConverterTests */,
+				D5B181DA2E264914005EF67E /* AsaCurrencyConverterUITests */,
+				D5B181BF2E264912005EF67E /* Products */,
 			);
 			sourceTree = "<group>";
 		};
-		D5CEE6FF2E21BB8900940E15 /* Products */ = {
+		D5B181BF2E264912005EF67E /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				D5CEE6FE2E21BB8900940E15 /* AsaLocationTracker.app */,
-				D5CEE70D2E21BB8B00940E15 /* AsaLocationTrackerTests.xctest */,
-				D5CEE7172E21BB8B00940E15 /* AsaLocationTrackerUITests.xctest */,
+				D5B181BE2E264912005EF67E /* AsaCurrencyConverter.app */,
+				D5B181CD2E264914005EF67E /* AsaCurrencyConverterTests.xctest */,
+				D5B181D72E264914005EF67E /* AsaCurrencyConverterUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -95,134 +95,134 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		D5CEE6FD2E21BB8900940E15 /* AsaLocationTracker */ = {
+		D5B181BD2E264912005EF67E /* AsaCurrencyConverter */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = D5CEE7212E21BB8B00940E15 /* Build configuration list for PBXNativeTarget "AsaLocationTracker" */;
+			buildConfigurationList = D5B181E12E264914005EF67E /* Build configuration list for PBXNativeTarget "AsaCurrencyConverter" */;
 			buildPhases = (
-				D5CEE6FA2E21BB8900940E15 /* Sources */,
-				D5CEE6FB2E21BB8900940E15 /* Frameworks */,
-				D5CEE6FC2E21BB8900940E15 /* Resources */,
+				D5B181BA2E264912005EF67E /* Sources */,
+				D5B181BB2E264912005EF67E /* Frameworks */,
+				D5B181BC2E264912005EF67E /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				D5CEE7002E21BB8900940E15 /* AsaLocationTracker */,
+				D5B181C02E264912005EF67E /* AsaCurrencyConverter */,
 			);
-			name = AsaLocationTracker;
+			name = AsaCurrencyConverter;
 			packageProductDependencies = (
 			);
-			productName = AsaLocationTracker;
-			productReference = D5CEE6FE2E21BB8900940E15 /* AsaLocationTracker.app */;
+			productName = AsaCurrencyConverter;
+			productReference = D5B181BE2E264912005EF67E /* AsaCurrencyConverter.app */;
 			productType = "com.apple.product-type.application";
 		};
-		D5CEE70C2E21BB8B00940E15 /* AsaLocationTrackerTests */ = {
+		D5B181CC2E264914005EF67E /* AsaCurrencyConverterTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = D5CEE7242E21BB8B00940E15 /* Build configuration list for PBXNativeTarget "AsaLocationTrackerTests" */;
+			buildConfigurationList = D5B181E42E264914005EF67E /* Build configuration list for PBXNativeTarget "AsaCurrencyConverterTests" */;
 			buildPhases = (
-				D5CEE7092E21BB8B00940E15 /* Sources */,
-				D5CEE70A2E21BB8B00940E15 /* Frameworks */,
-				D5CEE70B2E21BB8B00940E15 /* Resources */,
+				D5B181C92E264914005EF67E /* Sources */,
+				D5B181CA2E264914005EF67E /* Frameworks */,
+				D5B181CB2E264914005EF67E /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				D5CEE70F2E21BB8B00940E15 /* PBXTargetDependency */,
+				D5B181CF2E264914005EF67E /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
-				D5CEE7102E21BB8B00940E15 /* AsaLocationTrackerTests */,
+				D5B181D02E264914005EF67E /* AsaCurrencyConverterTests */,
 			);
-			name = AsaLocationTrackerTests;
+			name = AsaCurrencyConverterTests;
 			packageProductDependencies = (
 			);
-			productName = AsaLocationTrackerTests;
-			productReference = D5CEE70D2E21BB8B00940E15 /* AsaLocationTrackerTests.xctest */;
+			productName = AsaCurrencyConverterTests;
+			productReference = D5B181CD2E264914005EF67E /* AsaCurrencyConverterTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		D5CEE7162E21BB8B00940E15 /* AsaLocationTrackerUITests */ = {
+		D5B181D62E264914005EF67E /* AsaCurrencyConverterUITests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = D5CEE7272E21BB8B00940E15 /* Build configuration list for PBXNativeTarget "AsaLocationTrackerUITests" */;
+			buildConfigurationList = D5B181E72E264914005EF67E /* Build configuration list for PBXNativeTarget "AsaCurrencyConverterUITests" */;
 			buildPhases = (
-				D5CEE7132E21BB8B00940E15 /* Sources */,
-				D5CEE7142E21BB8B00940E15 /* Frameworks */,
-				D5CEE7152E21BB8B00940E15 /* Resources */,
+				D5B181D32E264914005EF67E /* Sources */,
+				D5B181D42E264914005EF67E /* Frameworks */,
+				D5B181D52E264914005EF67E /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				D5CEE7192E21BB8B00940E15 /* PBXTargetDependency */,
+				D5B181D92E264914005EF67E /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
-				D5CEE71A2E21BB8B00940E15 /* AsaLocationTrackerUITests */,
+				D5B181DA2E264914005EF67E /* AsaCurrencyConverterUITests */,
 			);
-			name = AsaLocationTrackerUITests;
+			name = AsaCurrencyConverterUITests;
 			packageProductDependencies = (
 			);
-			productName = AsaLocationTrackerUITests;
-			productReference = D5CEE7172E21BB8B00940E15 /* AsaLocationTrackerUITests.xctest */;
+			productName = AsaCurrencyConverterUITests;
+			productReference = D5B181D72E264914005EF67E /* AsaCurrencyConverterUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		D5CEE6F62E21BB8900940E15 /* Project object */ = {
+		D5B181B62E264912005EF67E /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1640;
 				LastUpgradeCheck = 1640;
 				TargetAttributes = {
-					D5CEE6FD2E21BB8900940E15 = {
+					D5B181BD2E264912005EF67E = {
 						CreatedOnToolsVersion = 16.4;
 					};
-					D5CEE70C2E21BB8B00940E15 = {
+					D5B181CC2E264914005EF67E = {
 						CreatedOnToolsVersion = 16.4;
-						TestTargetID = D5CEE6FD2E21BB8900940E15;
+						TestTargetID = D5B181BD2E264912005EF67E;
 					};
-					D5CEE7162E21BB8B00940E15 = {
+					D5B181D62E264914005EF67E = {
 						CreatedOnToolsVersion = 16.4;
-						TestTargetID = D5CEE6FD2E21BB8900940E15;
+						TestTargetID = D5B181BD2E264912005EF67E;
 					};
 				};
 			};
-			buildConfigurationList = D5CEE6F92E21BB8900940E15 /* Build configuration list for PBXProject "AsaLocationTracker" */;
+			buildConfigurationList = D5B181B92E264912005EF67E /* Build configuration list for PBXProject "AsaCurrencyConverter" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 				Base,
 			);
-			mainGroup = D5CEE6F52E21BB8900940E15;
+			mainGroup = D5B181B52E264912005EF67E;
 			minimizedProjectReferenceProxies = 1;
 			preferredProjectObjectVersion = 77;
-			productRefGroup = D5CEE6FF2E21BB8900940E15 /* Products */;
+			productRefGroup = D5B181BF2E264912005EF67E /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				D5CEE6FD2E21BB8900940E15 /* AsaLocationTracker */,
-				D5CEE70C2E21BB8B00940E15 /* AsaLocationTrackerTests */,
-				D5CEE7162E21BB8B00940E15 /* AsaLocationTrackerUITests */,
+				D5B181BD2E264912005EF67E /* AsaCurrencyConverter */,
+				D5B181CC2E264914005EF67E /* AsaCurrencyConverterTests */,
+				D5B181D62E264914005EF67E /* AsaCurrencyConverterUITests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		D5CEE6FC2E21BB8900940E15 /* Resources */ = {
+		D5B181BC2E264912005EF67E /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		D5CEE70B2E21BB8B00940E15 /* Resources */ = {
+		D5B181CB2E264914005EF67E /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		D5CEE7152E21BB8B00940E15 /* Resources */ = {
+		D5B181D52E264914005EF67E /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -232,21 +232,21 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		D5CEE6FA2E21BB8900940E15 /* Sources */ = {
+		D5B181BA2E264912005EF67E /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		D5CEE7092E21BB8B00940E15 /* Sources */ = {
+		D5B181C92E264914005EF67E /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		D5CEE7132E21BB8B00940E15 /* Sources */ = {
+		D5B181D32E264914005EF67E /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -256,20 +256,20 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		D5CEE70F2E21BB8B00940E15 /* PBXTargetDependency */ = {
+		D5B181CF2E264914005EF67E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = D5CEE6FD2E21BB8900940E15 /* AsaLocationTracker */;
-			targetProxy = D5CEE70E2E21BB8B00940E15 /* PBXContainerItemProxy */;
+			target = D5B181BD2E264912005EF67E /* AsaCurrencyConverter */;
+			targetProxy = D5B181CE2E264914005EF67E /* PBXContainerItemProxy */;
 		};
-		D5CEE7192E21BB8B00940E15 /* PBXTargetDependency */ = {
+		D5B181D92E264914005EF67E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = D5CEE6FD2E21BB8900940E15 /* AsaLocationTracker */;
-			targetProxy = D5CEE7182E21BB8B00940E15 /* PBXContainerItemProxy */;
+			target = D5B181BD2E264912005EF67E /* AsaCurrencyConverter */;
+			targetProxy = D5B181D82E264914005EF67E /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		D5CEE71F2E21BB8B00940E15 /* Debug */ = {
+		D5B181DF2E264914005EF67E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -333,7 +333,7 @@
 			};
 			name = Debug;
 		};
-		D5CEE7202E21BB8B00940E15 /* Release */ = {
+		D5B181E02E264914005EF67E /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -390,7 +390,7 @@
 			};
 			name = Release;
 		};
-		D5CEE7222E21BB8B00940E15 /* Debug */ = {
+		D5B181E22E264914005EF67E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -400,7 +400,6 @@
 				DEVELOPMENT_TEAM = UUD4WPFJTD;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "このアプリは現在の位置を記録し、マップに表示するために位置情報を使用します。";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -411,7 +410,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.asapapalab.AsaLocationTracker;
+				PRODUCT_BUNDLE_IDENTIFIER = com.asapapalab.AsaCurrencyConverter;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -419,7 +418,7 @@
 			};
 			name = Debug;
 		};
-		D5CEE7232E21BB8B00940E15 /* Release */ = {
+		D5B181E32E264914005EF67E /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -429,7 +428,6 @@
 				DEVELOPMENT_TEAM = UUD4WPFJTD;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "このアプリは現在の位置を記録し、マップに表示するために位置情報を使用します。";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -440,7 +438,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.asapapalab.AsaLocationTracker;
+				PRODUCT_BUNDLE_IDENTIFIER = com.asapapalab.AsaCurrencyConverter;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -448,7 +446,7 @@
 			};
 			name = Release;
 		};
-		D5CEE7252E21BB8B00940E15 /* Debug */ = {
+		D5B181E52E264914005EF67E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -458,16 +456,16 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.asapapalab.AsaLocationTrackerTests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.asapapalab.AsaCurrencyConverterTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AsaLocationTracker.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/AsaLocationTracker";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AsaCurrencyConverter.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/AsaCurrencyConverter";
 			};
 			name = Debug;
 		};
-		D5CEE7262E21BB8B00940E15 /* Release */ = {
+		D5B181E62E264914005EF67E /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -477,16 +475,16 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.asapapalab.AsaLocationTrackerTests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.asapapalab.AsaCurrencyConverterTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AsaLocationTracker.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/AsaLocationTracker";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AsaCurrencyConverter.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/AsaCurrencyConverter";
 			};
 			name = Release;
 		};
-		D5CEE7282E21BB8B00940E15 /* Debug */ = {
+		D5B181E82E264914005EF67E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
@@ -494,16 +492,16 @@
 				DEVELOPMENT_TEAM = UUD4WPFJTD;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.asapapalab.AsaLocationTrackerUITests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.asapapalab.AsaCurrencyConverterUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = AsaLocationTracker;
+				TEST_TARGET_NAME = AsaCurrencyConverter;
 			};
 			name = Debug;
 		};
-		D5CEE7292E21BB8B00940E15 /* Release */ = {
+		D5B181E92E264914005EF67E /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
@@ -511,55 +509,55 @@
 				DEVELOPMENT_TEAM = UUD4WPFJTD;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.asapapalab.AsaLocationTrackerUITests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.asapapalab.AsaCurrencyConverterUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = AsaLocationTracker;
+				TEST_TARGET_NAME = AsaCurrencyConverter;
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		D5CEE6F92E21BB8900940E15 /* Build configuration list for PBXProject "AsaLocationTracker" */ = {
+		D5B181B92E264912005EF67E /* Build configuration list for PBXProject "AsaCurrencyConverter" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				D5CEE71F2E21BB8B00940E15 /* Debug */,
-				D5CEE7202E21BB8B00940E15 /* Release */,
+				D5B181DF2E264914005EF67E /* Debug */,
+				D5B181E02E264914005EF67E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		D5CEE7212E21BB8B00940E15 /* Build configuration list for PBXNativeTarget "AsaLocationTracker" */ = {
+		D5B181E12E264914005EF67E /* Build configuration list for PBXNativeTarget "AsaCurrencyConverter" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				D5CEE7222E21BB8B00940E15 /* Debug */,
-				D5CEE7232E21BB8B00940E15 /* Release */,
+				D5B181E22E264914005EF67E /* Debug */,
+				D5B181E32E264914005EF67E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		D5CEE7242E21BB8B00940E15 /* Build configuration list for PBXNativeTarget "AsaLocationTrackerTests" */ = {
+		D5B181E42E264914005EF67E /* Build configuration list for PBXNativeTarget "AsaCurrencyConverterTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				D5CEE7252E21BB8B00940E15 /* Debug */,
-				D5CEE7262E21BB8B00940E15 /* Release */,
+				D5B181E52E264914005EF67E /* Debug */,
+				D5B181E62E264914005EF67E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		D5CEE7272E21BB8B00940E15 /* Build configuration list for PBXNativeTarget "AsaLocationTrackerUITests" */ = {
+		D5B181E72E264914005EF67E /* Build configuration list for PBXNativeTarget "AsaCurrencyConverterUITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				D5CEE7282E21BB8B00940E15 /* Debug */,
-				D5CEE7292E21BB8B00940E15 /* Release */,
+				D5B181E82E264914005EF67E /* Debug */,
+				D5B181E92E264914005EF67E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = D5CEE6F62E21BB8900940E15 /* Project object */;
+	rootObject = D5B181B62E264912005EF67E /* Project object */;
 }

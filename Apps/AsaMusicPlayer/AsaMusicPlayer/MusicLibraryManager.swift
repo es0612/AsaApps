@@ -29,7 +29,7 @@ class MusicLibraryManager: ObservableObject {
         if !fileManager.fileExists(atPath: musicPath.path) {
             do {
                 try fileManager.createDirectory(at: musicPath, withIntermediateDirectories: true)
-                await createSampleMusicFiles(in: musicPath)
+                print("Musicディレクトリを作成しました: \(musicPath.path)")
             } catch {
                 print("Musicディレクトリの作成に失敗: \(error)")
             }
@@ -145,25 +145,6 @@ class MusicLibraryManager: ObservableObject {
         }
     }
     
-    private func createSampleMusicFiles(in directory: URL) async {
-        let sampleFiles = [
-            ("sample1.mp3", "サンプル楽曲1", "サンプルアーティスト"),
-            ("sample2.mp3", "サンプル楽曲2", "サンプルアーティスト"),
-            ("sample3.mp3", "サンプル楽曲3", "別のアーティスト")
-        ]
-        
-        for (filename, title, artist) in sampleFiles {
-            let filePath = directory.appendingPathComponent(filename)
-            
-            if !FileManager.default.fileExists(atPath: filePath.path) {
-                createSilentAudioFile(at: filePath, title: title, artist: artist)
-            }
-        }
-    }
-    
-    private func createSilentAudioFile(at url: URL, title: String, artist: String) {
-        print("サンプルファイル作成機能は実装されていません: \(url.lastPathComponent)")
-    }
     
     func addMusicFile(from url: URL) async {
         guard supportedFileTypes.contains(url.pathExtension.lowercased()) else {

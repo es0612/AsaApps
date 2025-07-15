@@ -16,6 +16,9 @@ class LocationViewModel: ObservableObject {
     @Published var savedLocations: [LocationData] = []
     @Published var isLocationEnabled: Bool = false
     @Published var errorMessage: String = ""
+    @Published var isLoadingLocation: Bool = false
+    @Published var hasCurrentLocation: Bool = false
+    @Published var authorizationStatus: String = ""
     
     private let locationManager = LocationManager()
     private var modelContext: ModelContext?
@@ -31,11 +34,40 @@ class LocationViewModel: ObservableObject {
     
     private func setupLocationManager() {
         isLocationEnabled = locationManager.isLocationEnabled
+        
+        // LocationManagerの状態変化を監視
+        locationManager.$isLocationEnabled
+            .assign(to: &$isLocationEnabled)
+        
+        locationManager.$isLoadingLocation
+            .assign(to: &$isLoadingLocation)
+        
+        locationManager.$locationError
+            .assign(to: &$errorMessage)
+        
+        // 現在位置の取得状態を監視
+        locationManager.$currentLocation
+            .map { $0 != nil }
+            .assign(to: &$hasCurrentLocation)
+        
+        // 許可状態の詳細情報を監視
+        locationManager.$authorizationStatus
+            .map { status in
+                switch status {
+                case .notDetermined: return "未決定"
+                case .denied: return "拒否"
+                case .restricted: return "制限"
+                case .authorizedWhenInUse: return "使用中のみ許可"
+                case .authorizedAlways: return "常に許可"
+                @unknown default: return "不明(\(status.rawValue))"
+                }
+            }
+            .assign(to: &$authorizationStatus)
     }
     
     func requestLocationPermission() {
         locationManager.requestLocationPermission()
-        isLocationEnabled = locationManager.isLocationEnabled
+        // 状態は locationManager からの Publisher で自動更新される
     }
     
     func saveCurrentLocation() {
@@ -45,7 +77,7 @@ class LocationViewModel: ObservableObject {
         }
         
         guard let currentLocation = locationManager.currentLocation else {
-            errorMessage = "現在の位置を取得できませんでした"
+            errorMessage = "位置情報が取得されていません。「現在の位置を取得」ボタンを押してください"
             return
         }
         
@@ -55,23 +87,35 @@ class LocationViewModel: ObservableObject {
     func saveLocationManually(location: CLLocation) {
         let locationData = locationManager.createLocationData(from: location, name: locationName)
         
-        if let context = modelContext {
-            context.insert(locationData)
-            try? context.save()
+        guard let context = modelContext else {
+            errorMessage = "データベースの接続に問題があります"
+            return
         }
         
-        savedLocations.append(locationData)
-        locationName = ""
-        errorMessage = ""
+        do {
+            context.insert(locationData)
+            try context.save()
+            savedLocations.append(locationData)
+            locationName = ""
+            errorMessage = ""
+        } catch {
+            errorMessage = "位置の保存に失敗しました: \(error.localizedDescription)"
+        }
     }
     
     func deleteLocation(_ location: LocationData) {
-        if let context = modelContext {
-            context.delete(location)
-            try? context.save()
+        guard let context = modelContext else {
+            errorMessage = "データベースの接続に問題があります"
+            return
         }
         
-        savedLocations.removeAll { $0.id == location.id }
+        do {
+            context.delete(location)
+            try context.save()
+            savedLocations.removeAll { $0.id == location.id }
+        } catch {
+            errorMessage = "位置の削除に失敗しました: \(error.localizedDescription)"
+        }
     }
     
     func getCurrentLocation() {
