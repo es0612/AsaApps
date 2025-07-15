@@ -13,7 +13,7 @@ import SwiftData
 struct AsaCurrencyConverterApp: App {
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
-            Item.self,
+            ConversionHistory.self,
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 
