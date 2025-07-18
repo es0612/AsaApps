@@ -122,3 +122,11 @@ xcodebuild -project AsaNumberGame.xcodeproj -scheme AsaNumberGame
 - 学習プロジェクト（SwiftUITutorialシリーズ）
 
 最近の追加にはAsaNumberGameとAsaTicTacToeがあり、共有コンポーネントとブランドカラーを使用した強化されたUIを提供しています。
+
+## 技術的アプローチ
+
+### モダン開発プラクティス
+- できる限りモダンなiOS開発の技術やプラクティスを採用すること
+  - @Observableの活用
+  - Swift Dataの導入
+  - Swift Testingの使用
