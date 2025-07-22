@@ -400,6 +400,8 @@
 				DEVELOPMENT_TEAM = UUD4WPFJTD;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "このアプリでは、フィットネス目標の進捗を追跡するためにHealthKitから歩数、運動時間、消費カロリーなどのデータを読み取ります。";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "このアプリでは、ワークアウト記録をHealthKitに書き込むことがあります。";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -428,6 +430,8 @@
 				DEVELOPMENT_TEAM = UUD4WPFJTD;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "このアプリでは、フィットネス目標の進捗を追跡するためにHealthKitから歩数、運動時間、消費カロリーなどのデータを読み取ります。";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "このアプリでは、ワークアウト記録をHealthKitに書き込むことがあります。";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

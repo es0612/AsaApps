@@ -27,7 +27,11 @@ final class FitnessViewModel {
     
     init() {
         Task {
-            await requestHealthKitPermission()
+            do {
+                await requestHealthKitPermission()
+            } catch {
+                print("FitnessViewModel初期化中にエラーが発生しました: \(error)")
+            }
         }
     }
     

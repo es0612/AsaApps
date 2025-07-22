@@ -35,15 +35,22 @@ final class HealthKitService {
     // MARK: - 権限要求
     func requestAuthorization() async {
         guard isHealthKitAvailable else {
-            print("HealthKit is not available on this device")
+            print("HealthKitが利用できません: デバイスがサポートしていません")
+            await MainActor.run {
+                self.authorizationStatus = .notDetermined
+            }
             return
         }
         
         do {
             try await healthStore.requestAuthorization(toShare: [], read: readTypes)
             await updateAuthorizationStatus()
+            print("HealthKit権限リクエストが完了しました")
         } catch {
-            print("Failed to request HealthKit authorization: \(error)")
+            print("HealthKit権限リクエストに失敗しました: \(error.localizedDescription)")
+            await MainActor.run {
+                self.authorizationStatus = .notDetermined
+            }
         }
     }
     

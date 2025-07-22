@@ -21,7 +21,16 @@ struct AsaFitnessGoalApp: App {
         do {
             return try ModelContainer(for: schema, configurations: [modelConfiguration])
         } catch {
-            fatalError("Could not create ModelContainer: \(error)")
+            print("ModelContainer作成エラー: \(error)")
+            print("インメモリコンテナにフォールバックします")
+            
+            // フォールバック：インメモリコンテナを作成
+            let fallbackConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: true)
+            do {
+                return try ModelContainer(for: schema, configurations: [fallbackConfiguration])
+            } catch {
+                fatalError("フォールバックModelContainerの作成にも失敗しました: \(error)")
+            }
         }
     }()
 
