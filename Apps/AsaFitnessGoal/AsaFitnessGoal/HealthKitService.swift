@@ -13,6 +13,8 @@ final class HealthKitService {
     private let healthStore = HKHealthStore()
     var isHealthKitAvailable = false
     var authorizationStatus: HKAuthorizationStatus = .notDetermined
+    var hasRequestedPermission = false
+    var lastError: String?
     
     // 読み取り権限が必要なデータタイプ
     private let readTypes: Set<HKObjectType> = [
@@ -25,6 +27,11 @@ final class HealthKitService {
     
     init() {
         checkHealthKitAvailability()
+        if isHealthKitAvailable {
+            Task { @MainActor in
+                updateAuthorizationStatus()
+            }
+        }
     }
     
     // MARK: - HealthKit可用性チェック
@@ -35,21 +42,34 @@ final class HealthKitService {
     // MARK: - 権限要求
     func requestAuthorization() async {
         guard isHealthKitAvailable else {
-            print("HealthKitが利用できません: デバイスがサポートしていません")
+            let errorMessage = "HealthKitが利用できません: デバイスがサポートしていません"
+            print(errorMessage)
             await MainActor.run {
                 self.authorizationStatus = .notDetermined
+                self.lastError = errorMessage
+                self.hasRequestedPermission = true
             }
             return
+        }
+        
+        await MainActor.run {
+            self.lastError = nil
         }
         
         do {
             try await healthStore.requestAuthorization(toShare: [], read: readTypes)
             await updateAuthorizationStatus()
+            await MainActor.run {
+                self.hasRequestedPermission = true
+            }
             print("HealthKit権限リクエストが完了しました")
         } catch {
-            print("HealthKit権限リクエストに失敗しました: \(error.localizedDescription)")
+            let errorMessage = "HealthKit権限リクエストに失敗しました: \(error.localizedDescription)"
+            print(errorMessage)
             await MainActor.run {
                 self.authorizationStatus = .notDetermined
+                self.lastError = errorMessage
+                self.hasRequestedPermission = true
             }
         }
     }
@@ -62,8 +82,31 @@ final class HealthKitService {
         }
     }
     
+    // 権限状態の説明テキストを取得
+    var authorizationStatusDescription: String {
+        switch authorizationStatus {
+        case .notDetermined:
+            return hasRequestedPermission ? "権限が未確定です" : "権限の許可が必要です"
+        case .sharingDenied:
+            return "HealthKitアクセスが拒否されています。設定から許可してください。"
+        case .sharingAuthorized:
+            return "HealthKitアクセスが許可されています"
+        @unknown default:
+            return "不明な権限状態です"
+        }
+    }
+    
+    // HealthKitが利用可能で権限が許可されているかチェック
+    var isAuthorized: Bool {
+        return isHealthKitAvailable && authorizationStatus == .sharingAuthorized
+    }
+    
     // MARK: - 歩数取得
     func fetchStepCount(for date: Date) async -> Double {
+        guard isAuthorized else {
+            return 0
+        }
+        
         guard let stepCountType = HKQuantityType.quantityType(forIdentifier: .stepCount) else {
             return 0
         }
@@ -100,6 +143,10 @@ final class HealthKitService {
     
     // MARK: - 距離取得
     func fetchDistance(for date: Date) async -> Double {
+        guard isAuthorized else {
+            return 0
+        }
+        
         guard let distanceType = HKQuantityType.quantityType(forIdentifier: .distanceWalkingRunning) else {
             return 0
         }
@@ -136,6 +183,10 @@ final class HealthKitService {
     
     // MARK: - 運動時間取得
     func fetchActiveTime(for date: Date) async -> Double {
+        guard isAuthorized else {
+            return 0
+        }
+        
         guard let activeTimeType = HKQuantityType.quantityType(forIdentifier: .appleExerciseTime) else {
             return 0
         }
@@ -172,6 +223,10 @@ final class HealthKitService {
     
     // MARK: - 消費カロリー取得
     func fetchCalories(for date: Date) async -> Double {
+        guard isAuthorized else {
+            return 0
+        }
+        
         guard let caloriesType = HKQuantityType.quantityType(forIdentifier: .activeEnergyBurned) else {
             return 0
         }
@@ -208,6 +263,10 @@ final class HealthKitService {
     
     // MARK: - ワークアウト回数取得
     func fetchWorkoutCount(for date: Date) async -> Double {
+        guard isAuthorized else {
+            return 0
+        }
+        
         let calendar = Calendar.current
         let startOfDay = calendar.startOfDay(for: date)
         let endOfDay = calendar.date(byAdding: .day, value: 1, to: startOfDay) ?? Date()

@@ -39,6 +39,12 @@ struct ContentView: View {
         .onAppear {
             viewModel.setModelContext(modelContext)
         }
+        .task {
+            // アプリが表示されたらHealthKit権限をリクエスト
+            if !viewModel.healthKitStatus.hasRequestedPermission {
+                await viewModel.requestHealthKitPermission()
+            }
+        }
     }
 }
 
@@ -50,6 +56,11 @@ struct DashboardView: View {
         NavigationStack {
             ScrollView {
                 LazyVStack(spacing: 16) {
+                    // HealthKit権限状態の表示
+                    if !viewModel.healthKitStatus.isAuthorized {
+                        HealthKitStatusCard(viewModel: viewModel)
+                    }
+                    
                     // 今日の進捗サマリー
                     AsaCard {
                         VStack(alignment: .leading, spacing: 12) {
@@ -62,6 +73,24 @@ struct DashboardView: View {
                                 ProgressView("データを読み込み中...")
                                     .frame(maxWidth: .infinity)
                                     .padding()
+                            } else if !viewModel.healthKitStatus.isHealthKitAvailable {
+                                VStack(spacing: 8) {
+                                    Image(systemName: "heart.slash")
+                                        .font(.system(size: 40))
+                                        .foregroundColor(Color("AsaMutedSage"))
+                                    
+                                    Text("HealthKitが利用できません")
+                                        .font(.body)
+                                        .foregroundColor(Color("AsaMocha"))
+                                        .multilineTextAlignment(.center)
+                                    
+                                    Text("手動でワークアウト記録を追加できます")
+                                        .font(.caption)
+                                        .foregroundColor(Color("AsaMutedSage"))
+                                        .multilineTextAlignment(.center)
+                                }
+                                .frame(maxWidth: .infinity)
+                                .padding()
                             } else if viewModel.activeGoals.isEmpty {
                                 VStack(spacing: 8) {
                                     Image(systemName: "target")
@@ -143,6 +172,60 @@ struct DashboardView: View {
     }
 }
 
+// MARK: - HealthKit権限状態カード
+struct HealthKitStatusCard: View {
+    let viewModel: FitnessViewModel
+    
+    var body: some View {
+        AsaCard {
+            VStack(alignment: .leading, spacing: 12) {
+                HStack {
+                    Image(systemName: "heart.fill")
+                        .font(.title2)
+                        .foregroundColor(.red)
+                    
+                    Text("HealthKit権限")
+                        .font(.title2)
+                        .fontWeight(.bold)
+                        .foregroundColor(Color("AsaDarkSlate"))
+                    
+                    Spacer()
+                }
+                
+                Text(viewModel.healthKitStatus.authorizationStatusDescription)
+                    .font(.body)
+                    .foregroundColor(Color("AsaMocha"))
+                
+                if let error = viewModel.healthKitStatus.lastError {
+                    Text("エラー: \(error)")
+                        .font(.caption)
+                        .foregroundColor(.red)
+                        .padding(.top, 4)
+                }
+                
+                if !viewModel.healthKitStatus.isAuthorized {
+                    AsaButton(
+                        title: viewModel.healthKitStatus.hasRequestedPermission ? "再試行" : "権限を許可",
+                        action: {
+                            Task {
+                                await viewModel.requestHealthKitPermission()
+                            }
+                        }
+                    )
+                    .padding(.top, 8)
+                }
+                
+                if viewModel.healthKitStatus.authorizationStatus == .sharingDenied {
+                    Text("設定アプリでHealthKitアクセスを許可してください")
+                        .font(.caption)
+                        .foregroundColor(Color("AsaMutedSage"))
+                        .padding(.top, 4)
+                }
+            }
+        }
+    }
+}
+
 // MARK: - 目標進捗カード
 struct GoalProgressCard: View {
     let goal: FitnessGoal
@@ -178,6 +261,13 @@ struct GoalProgressCard: View {
                 .font(.caption2)
                 .foregroundColor(Color("AsaMutedSage"))
                 .multilineTextAlignment(.center)
+            
+            // HealthKit利用不可時の注記
+            if !viewModel.healthKitStatus.isAuthorized {
+                Text("手動記録のみ")
+                    .font(.caption2)
+                    .foregroundColor(.orange)
+            }
         }
         .padding(.vertical, 8)
     }

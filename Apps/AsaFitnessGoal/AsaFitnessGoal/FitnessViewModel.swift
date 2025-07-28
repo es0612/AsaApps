@@ -26,13 +26,7 @@ final class FitnessViewModel {
     var isLoadingProgress = false
     
     init() {
-        Task {
-            do {
-                await requestHealthKitPermission()
-            } catch {
-                print("FitnessViewModel初期化中にエラーが発生しました: \(error)")
-            }
-        }
+        // HealthKit権限のリクエストは、ビューが表示される際に明示的に行う
     }
     
     func setModelContext(_ context: ModelContext) {
@@ -43,9 +37,17 @@ final class FitnessViewModel {
     
     // MARK: - HealthKit権限
     
+    var healthKitStatus: HealthKitService {
+        return healthKitService
+    }
+    
     @MainActor
     func requestHealthKitPermission() async {
         await healthKitService.requestAuthorization()
+        // 権限取得後、進捗データを更新
+        if healthKitService.isAuthorized {
+            await loadCurrentProgress()
+        }
     }
     
     // MARK: - データ読み込み
