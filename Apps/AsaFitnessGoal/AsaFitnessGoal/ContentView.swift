@@ -7,11 +7,14 @@
 
 import SwiftUI
 import SwiftData
+import HealthKit
 
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
+    @Environment(\.scenePhase) private var scenePhase
     @State private var viewModel = FitnessViewModel()
     @State private var selectedTab = 0
+    @State private var lastScenePhase: ScenePhase = .inactive
     
     var body: some View {
         TabView(selection: $selectedTab) {
@@ -44,6 +47,16 @@ struct ContentView: View {
             if !viewModel.healthKitStatus.hasRequestedPermission {
                 await viewModel.requestHealthKitPermission()
             }
+        }
+        .onChange(of: scenePhase) { oldPhase, newPhase in
+            // フォアグラウンドに復帰した際の処理
+            if lastScenePhase != .active && newPhase == .active {
+                print("アプリがフォアグラウンドに復帰しました - 権限状態を更新します")
+                Task {
+                    await viewModel.updateHealthKitStatusOnForeground()
+                }
+            }
+            lastScenePhase = newPhase
         }
     }
 }
@@ -175,6 +188,9 @@ struct DashboardView: View {
 // MARK: - HealthKit権限状態カード
 struct HealthKitStatusCard: View {
     let viewModel: FitnessViewModel
+    @State private var showDetailedDebugInfo = false
+    @State private var detailedAuthStatuses: [String: HKAuthorizationStatus] = [:]
+    @State private var actualAccessResults: [String: Bool] = [:]
     
     var body: some View {
         AsaCard {
@@ -196,6 +212,22 @@ struct HealthKitStatusCard: View {
                     .font(.body)
                     .foregroundColor(Color("AsaMocha"))
                 
+                // デバッグ情報表示
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("権限状態: \(getAuthorizationStatusText(viewModel.healthKitStatus.authorizationStatus))")
+                        .font(.caption2)
+                        .foregroundColor(Color("AsaMutedSage"))
+                    
+                    Text("利用可能: \(viewModel.healthKitStatus.isHealthKitAvailable ? "はい" : "いいえ")")
+                        .font(.caption2)
+                        .foregroundColor(Color("AsaMutedSage"))
+                    
+                    Text("アクセス可能: \(viewModel.healthKitStatus.isAuthorized ? "はい" : "いいえ")")
+                        .font(.caption2)
+                        .foregroundColor(Color("AsaMutedSage"))
+                }
+                .padding(.top, 4)
+                
                 if let error = viewModel.healthKitStatus.lastError {
                     Text("エラー: \(error)")
                         .font(.caption)
@@ -203,17 +235,40 @@ struct HealthKitStatusCard: View {
                         .padding(.top, 4)
                 }
                 
-                if !viewModel.healthKitStatus.isAuthorized {
-                    AsaButton(
-                        title: viewModel.healthKitStatus.hasRequestedPermission ? "再試行" : "権限を許可",
-                        action: {
+                // ボタンエリア
+                HStack(spacing: 12) {
+                    // 権限リクエストボタン
+                    if viewModel.healthKitStatus.authorizationStatus != .sharingAuthorized {
+                        AsaButton(
+                            title: viewModel.healthKitStatus.hasRequestedPermission ? "再試行" : "権限を許可",
+                            action: {
+                                Task {
+                                    await viewModel.requestHealthKitPermission()
+                                }
+                            }
+                        )
+                    }
+                    
+                    Spacer()
+                    
+                    // 詳細デバッグ情報トグルボタン
+                    Button(action: {
+                        showDetailedDebugInfo.toggle()
+                        if showDetailedDebugInfo {
                             Task {
-                                await viewModel.requestHealthKitPermission()
+                                await loadDetailedDebugInfo()
                             }
                         }
-                    )
-                    .padding(.top, 8)
+                    }) {
+                        HStack(spacing: 4) {
+                            Image(systemName: showDetailedDebugInfo ? "eye.slash" : "eye")
+                            Text("詳細")
+                        }
+                        .font(.caption)
+                        .foregroundColor(Color("AsaCoffeeBrown"))
+                    }
                 }
+                .padding(.top, 8)
                 
                 if viewModel.healthKitStatus.authorizationStatus == .sharingDenied {
                     Text("設定アプリでHealthKitアクセスを許可してください")
@@ -221,7 +276,104 @@ struct HealthKitStatusCard: View {
                         .foregroundColor(Color("AsaMutedSage"))
                         .padding(.top, 4)
                 }
+                
+                // 詳細デバッグ情報表示
+                if showDetailedDebugInfo {
+                    DetailedHealthKitDebugView(
+                        authStatuses: detailedAuthStatuses,
+                        accessResults: actualAccessResults
+                    )
+                    .padding(.top, 8)
+                }
             }
+        }
+    }
+    
+    private func loadDetailedDebugInfo() async {
+        detailedAuthStatuses = viewModel.healthKitStatus.getDetailedAuthorizationStatus()
+        actualAccessResults = await viewModel.healthKitStatus.testActualDataAccess()
+    }
+}
+
+// MARK: - 詳細HealthKitデバッグビュー
+struct DetailedHealthKitDebugView: View {
+    let authStatuses: [String: HKAuthorizationStatus]
+    let accessResults: [String: Bool]
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text("詳細デバッグ情報")
+                .font(.headline)
+                .foregroundColor(Color("AsaDarkSlate"))
+            
+            Divider()
+            
+            // 権限状態セクション
+            Text("権限状態:")
+                .font(.subheadline)
+                .fontWeight(.medium)
+                .foregroundColor(Color("AsaMocha"))
+            
+            ForEach(authStatuses.sorted(by: { $0.key < $1.key }), id: \.key) { dataType, status in
+                HStack {
+                    Text(dataType)
+                        .font(.caption)
+                        .foregroundColor(Color("AsaDarkSlate"))
+                    
+                    Spacer()
+                    
+                    Text(getAuthorizationStatusText(status))
+                        .font(.caption)
+                        .fontWeight(.medium)
+                        .foregroundColor(getStatusColor(status))
+                }
+            }
+            
+            // 実際のアクセステスト結果セクション
+            if !accessResults.isEmpty {
+                Text("実際のアクセステスト:")
+                    .font(.subheadline)
+                    .fontWeight(.medium)
+                    .foregroundColor(Color("AsaMocha"))
+                    .padding(.top, 8)
+                
+                ForEach(accessResults.sorted(by: { $0.key < $1.key }), id: \.key) { dataType, hasAccess in
+                    HStack {
+                        Text(dataType)
+                            .font(.caption)
+                            .foregroundColor(Color("AsaDarkSlate"))
+                        
+                        Spacer()
+                        
+                        HStack(spacing: 4) {
+                            Image(systemName: hasAccess ? "checkmark.circle.fill" : "xmark.circle.fill")
+                                .font(.caption)
+                                .foregroundColor(hasAccess ? .green : .red)
+                            
+                            Text(hasAccess ? "アクセス可能" : "アクセス不可")
+                                .font(.caption)
+                                .fontWeight(.medium)
+                                .foregroundColor(hasAccess ? .green : .red)
+                        }
+                    }
+                }
+            }
+        }
+        .padding()
+        .background(Color("AsaSoftCream").opacity(0.3))
+        .cornerRadius(8)
+    }
+    
+    private func getStatusColor(_ status: HKAuthorizationStatus) -> Color {
+        switch status {
+        case .sharingAuthorized:
+            return .green
+        case .sharingDenied:
+            return .red
+        case .notDetermined:
+            return .orange
+        @unknown default:
+            return Color("AsaMutedSage")
         }
     }
 }
@@ -263,7 +415,7 @@ struct GoalProgressCard: View {
                 .multilineTextAlignment(.center)
             
             // HealthKit利用不可時の注記
-            if !viewModel.healthKitStatus.isAuthorized {
+            if viewModel.healthKitStatus.authorizationStatus != .sharingAuthorized {
                 Text("手動記録のみ")
                     .font(.caption2)
                     .foregroundColor(.orange)
@@ -554,6 +706,20 @@ struct WorkoutRecordRow: View {
                 }
             }
         }
+    }
+}
+
+// MARK: - ヘルパー関数
+func getAuthorizationStatusText(_ status: HKAuthorizationStatus) -> String {
+    switch status {
+    case .notDetermined:
+        return "未確定"
+    case .sharingDenied:
+        return "拒否"
+    case .sharingAuthorized:
+        return "許可"
+    @unknown default:
+        return "不明"
     }
 }
 

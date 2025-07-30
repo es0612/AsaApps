@@ -76,34 +76,76 @@ final class HealthKitService {
     
     @MainActor
     private func updateAuthorizationStatus() {
-        // 代表的なデータタイプの権限状態をチェック
-        if let stepCountType = HKQuantityType.quantityType(forIdentifier: .stepCount) {
-            authorizationStatus = healthStore.authorizationStatus(for: stepCountType)
+        // 全てのデータタイプの権限状態をチェック
+        let authorizationStatuses = getDetailedAuthorizationStatus()
+        
+        // 全データタイプを考慮した総合的な権限判定
+        let authorizedCount = authorizationStatuses.values.filter { $0 == .sharingAuthorized }.count
+        let deniedCount = authorizationStatuses.values.filter { $0 == .sharingDenied }.count
+        let totalCount = authorizationStatuses.count
+        
+        // 権限状態の総合判定
+        if authorizedCount > 0 {
+            // 少なくとも一つのデータタイプが許可されている場合
+            authorizationStatus = .sharingAuthorized
+        } else if deniedCount == totalCount {
+            // 全てのデータタイプが明示的に拒否されている場合
+            authorizationStatus = .sharingDenied
+        } else {
+            // 未確定の状態
+            authorizationStatus = .notDetermined
         }
+        
+        print("HealthKit権限状態: \(authorizationStatusDescription)")
+        print("詳細権限状態: \(authorizationStatuses)")
+        print("総合判定: 許可=\(authorizedCount)/\(totalCount), 拒否=\(deniedCount)/\(totalCount)")
     }
     
     // 権限状態の説明テキストを取得
     var authorizationStatusDescription: String {
+        let authorizationStatuses = getDetailedAuthorizationStatus()
+        let authorizedCount = authorizationStatuses.values.filter { $0 == .sharingAuthorized }.count
+        let deniedCount = authorizationStatuses.values.filter { $0 == .sharingDenied }.count
+        let totalCount = authorizationStatuses.count
+        
         switch authorizationStatus {
         case .notDetermined:
-            return hasRequestedPermission ? "権限が未確定です" : "権限の許可が必要です"
+            if hasRequestedPermission {
+                return "権限の確認中です。データアクセスを試行します。"
+            } else {
+                return "権限の許可が必要です"
+            }
         case .sharingDenied:
             return "HealthKitアクセスが拒否されています。設定から許可してください。"
         case .sharingAuthorized:
-            return "HealthKitアクセスが許可されています"
+            if authorizedCount == totalCount {
+                return "HealthKitアクセスが許可されています"
+            } else {
+                return "HealthKitアクセスが部分的に許可されています（\(authorizedCount)/\(totalCount)項目）"
+            }
         @unknown default:
             return "不明な権限状態です"
         }
     }
     
-    // HealthKitが利用可能で権限が許可されているかチェック
+    // HealthKitが利用可能でデータアクセスが可能かチェック
     var isAuthorized: Bool {
-        return isHealthKitAvailable && authorizationStatus == .sharingAuthorized
+        guard isHealthKitAvailable else { return false }
+        
+        // authorizationStatusと整合性を保つため、同じ判定ロジックを使用
+        return authorizationStatus == .sharingAuthorized
     }
     
     // MARK: - 歩数取得
     func fetchStepCount(for date: Date) async -> Double {
-        guard isAuthorized else {
+        guard isHealthKitAvailable else {
+            print("HealthKitが利用できません")
+            return 0
+        }
+        
+        // 権限が明示的に拒否されている場合のみ処理を中断
+        if authorizationStatus == .sharingDenied {
+            print("HealthKit権限が拒否されています")
             return 0
         }
         
@@ -128,12 +170,17 @@ final class HealthKitService {
                 options: .cumulativeSum
             ) { _, result, error in
                 if let error = error {
-                    print("Failed to fetch step count: \(error)")
+                    print("歩数取得エラー: \(error.localizedDescription)")
+                    // 権限エラーの場合は詳細を記録
+                    if (error as NSError).code == HKError.errorAuthorizationDenied.rawValue {
+                        print("HealthKit権限が拒否されました")
+                    }
                     continuation.resume(returning: 0)
                     return
                 }
                 
                 let stepCount = result?.sumQuantity()?.doubleValue(for: HKUnit.count()) ?? 0
+                print("歩数データ取得成功: \(stepCount)歩")
                 continuation.resume(returning: stepCount)
             }
             
@@ -143,7 +190,13 @@ final class HealthKitService {
     
     // MARK: - 距離取得
     func fetchDistance(for date: Date) async -> Double {
-        guard isAuthorized else {
+        guard isHealthKitAvailable else {
+            print("HealthKitが利用できません")
+            return 0
+        }
+        
+        if authorizationStatus == .sharingDenied {
+            print("HealthKit権限が拒否されています")
             return 0
         }
         
@@ -168,13 +221,18 @@ final class HealthKitService {
                 options: .cumulativeSum
             ) { _, result, error in
                 if let error = error {
-                    print("Failed to fetch distance: \(error)")
+                    print("距離取得エラー: \(error.localizedDescription)")
+                    if (error as NSError).code == HKError.errorAuthorizationDenied.rawValue {
+                        print("HealthKit権限が拒否されました")
+                    }
                     continuation.resume(returning: 0)
                     return
                 }
                 
                 let distance = result?.sumQuantity()?.doubleValue(for: HKUnit.meter()) ?? 0
-                continuation.resume(returning: distance / 1000) // kmに変換
+                let distanceKm = distance / 1000
+                print("距離データ取得成功: \(distanceKm)km")
+                continuation.resume(returning: distanceKm)
             }
             
             healthStore.execute(query)
@@ -183,7 +241,13 @@ final class HealthKitService {
     
     // MARK: - 運動時間取得
     func fetchActiveTime(for date: Date) async -> Double {
-        guard isAuthorized else {
+        guard isHealthKitAvailable else {
+            print("HealthKitが利用できません")
+            return 0
+        }
+        
+        if authorizationStatus == .sharingDenied {
+            print("HealthKit権限が拒否されています")
             return 0
         }
         
@@ -208,12 +272,16 @@ final class HealthKitService {
                 options: .cumulativeSum
             ) { _, result, error in
                 if let error = error {
-                    print("Failed to fetch active time: \(error)")
+                    print("運動時間取得エラー: \(error.localizedDescription)")
+                    if (error as NSError).code == HKError.errorAuthorizationDenied.rawValue {
+                        print("HealthKit権限が拒否されました")
+                    }
                     continuation.resume(returning: 0)
                     return
                 }
                 
                 let activeTime = result?.sumQuantity()?.doubleValue(for: HKUnit.minute()) ?? 0
+                print("運動時間データ取得成功: \(activeTime)分")
                 continuation.resume(returning: activeTime)
             }
             
@@ -223,7 +291,13 @@ final class HealthKitService {
     
     // MARK: - 消費カロリー取得
     func fetchCalories(for date: Date) async -> Double {
-        guard isAuthorized else {
+        guard isHealthKitAvailable else {
+            print("HealthKitが利用できません")
+            return 0
+        }
+        
+        if authorizationStatus == .sharingDenied {
+            print("HealthKit権限が拒否されています")
             return 0
         }
         
@@ -248,12 +322,16 @@ final class HealthKitService {
                 options: .cumulativeSum
             ) { _, result, error in
                 if let error = error {
-                    print("Failed to fetch calories: \(error)")
+                    print("カロリー取得エラー: \(error.localizedDescription)")
+                    if (error as NSError).code == HKError.errorAuthorizationDenied.rawValue {
+                        print("HealthKit権限が拒否されました")
+                    }
                     continuation.resume(returning: 0)
                     return
                 }
                 
                 let calories = result?.sumQuantity()?.doubleValue(for: HKUnit.kilocalorie()) ?? 0
+                print("カロリーデータ取得成功: \(calories)kcal")
                 continuation.resume(returning: calories)
             }
             
@@ -263,7 +341,13 @@ final class HealthKitService {
     
     // MARK: - ワークアウト回数取得
     func fetchWorkoutCount(for date: Date) async -> Double {
-        guard isAuthorized else {
+        guard isHealthKitAvailable else {
+            print("HealthKitが利用できません")
+            return 0
+        }
+        
+        if authorizationStatus == .sharingDenied {
+            print("HealthKit権限が拒否されています")
             return 0
         }
         
@@ -285,17 +369,99 @@ final class HealthKitService {
                 sortDescriptors: nil
             ) { _, samples, error in
                 if let error = error {
-                    print("Failed to fetch workout count: \(error)")
+                    print("ワークアウト回数取得エラー: \(error.localizedDescription)")
+                    if (error as NSError).code == HKError.errorAuthorizationDenied.rawValue {
+                        print("HealthKit権限が拒否されました")
+                    }
                     continuation.resume(returning: 0)
                     return
                 }
                 
                 let workoutCount = Double(samples?.count ?? 0)
+                print("ワークアウト回数データ取得成功: \(workoutCount)回")
                 continuation.resume(returning: workoutCount)
             }
             
             healthStore.execute(query)
         }
+    }
+    
+    // MARK: - 詳細権限状態取得
+    func getDetailedAuthorizationStatus() -> [String: HKAuthorizationStatus] {
+        var statuses: [String: HKAuthorizationStatus] = [:]
+        
+        for dataType in readTypes {
+            let status = healthStore.authorizationStatus(for: dataType)
+            
+            if let quantityType = dataType as? HKQuantityType {
+                switch quantityType.identifier {
+                case HKQuantityTypeIdentifier.stepCount.rawValue:
+                    statuses["歩数"] = status
+                case HKQuantityTypeIdentifier.distanceWalkingRunning.rawValue:
+                    statuses["距離"] = status
+                case HKQuantityTypeIdentifier.activeEnergyBurned.rawValue:
+                    statuses["カロリー"] = status
+                case HKQuantityTypeIdentifier.appleExerciseTime.rawValue:
+                    statuses["運動時間"] = status
+                default:
+                    statuses[quantityType.identifier] = status
+                }
+            } else if dataType == HKObjectType.workoutType() {
+                statuses["ワークアウト"] = status
+            }
+        }
+        
+        return statuses
+    }
+    
+    // MARK: - 権限状態強制更新
+    @MainActor
+    func forceUpdateAuthorizationStatus() {
+        print("権限状態を強制更新します...")
+        updateAuthorizationStatus()
+    }
+    
+    // MARK: - 実際のデータアクセステスト
+    func testActualDataAccess() async -> [String: Bool] {
+        print("実際のデータアクセステストを開始します...")
+        
+        var accessResults: [String: Bool] = [:]
+        let today = Date()
+        
+        // 歩数データのテスト
+        let stepCount = await fetchStepCount(for: today)
+        accessResults["歩数"] = stepCount >= 0
+        print("歩数アクセステスト: \(stepCount >= 0 ? "成功" : "失敗") (値: \(stepCount))")
+        
+        // 距離データのテスト
+        let distance = await fetchDistance(for: today)
+        accessResults["距離"] = distance >= 0
+        print("距離アクセステスト: \(distance >= 0 ? "成功" : "失敗") (値: \(distance))")
+        
+        // 運動時間データのテスト
+        let activeTime = await fetchActiveTime(for: today)
+        accessResults["運動時間"] = activeTime >= 0
+        print("運動時間アクセステスト: \(activeTime >= 0 ? "成功" : "失敗") (値: \(activeTime))")
+        
+        // カロリーデータのテスト
+        let calories = await fetchCalories(for: today)
+        accessResults["カロリー"] = calories >= 0
+        print("カロリーアクセステスト: \(calories >= 0 ? "成功" : "失敗") (値: \(calories))")
+        
+        // ワークアウトデータのテスト
+        let workouts = await fetchWorkoutCount(for: today)
+        accessResults["ワークアウト"] = workouts >= 0
+        print("ワークアウトアクセステスト: \(workouts >= 0 ? "成功" : "失敗") (値: \(workouts))")
+        
+        return accessResults
+    }
+    
+    // 実際のアクセスに基づく権限判定
+    func hasActualDataAccess() async -> Bool {
+        let accessResults = await testActualDataAccess()
+        let hasAccess = accessResults.values.contains(true)
+        print("実際のデータアクセス判定: \(hasAccess ? "利用可能" : "利用不可")")
+        return hasAccess
     }
     
     // MARK: - カテゴリ別データ取得
