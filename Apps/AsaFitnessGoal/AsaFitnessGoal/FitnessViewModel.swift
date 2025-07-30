@@ -44,7 +44,11 @@ final class FitnessViewModel {
     @MainActor
     func requestHealthKitPermission() async {
         await healthKitService.requestAuthorization()
-        // 権限取得後、進捗データを更新
+        
+        // 権限取得後、実際のアクセステスト結果を含む状態更新を実行
+        await healthKitService.updateAuthorizationStatusWithActualTest()
+        
+        // 権限が利用可能になった場合は進捗データを更新
         if healthKitService.isAuthorized {
             await loadCurrentProgress()
         }
@@ -54,15 +58,11 @@ final class FitnessViewModel {
     func updateHealthKitStatusOnForeground() async {
         print("フォアグラウンド復帰時のHealthKit状態更新を開始...")
         
-        // 権限状態を強制更新
-        healthKitService.forceUpdateAuthorizationStatus()
-        
-        // 実際のデータアクセステストを実行
-        let hasAccess = await healthKitService.hasActualDataAccess()
-        print("実際のアクセス可否: \(hasAccess)")
+        // 実際のアクセステスト結果を含む権限状態更新を実行
+        await healthKitService.updateAuthorizationStatusWithActualTest()
         
         // 権限が利用可能になった場合は進捗データを更新
-        if healthKitService.isAuthorized || hasAccess {
+        if healthKitService.isAuthorized {
             await loadCurrentProgress()
         }
     }

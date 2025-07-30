@@ -16,6 +16,10 @@ final class HealthKitService {
     var hasRequestedPermission = false
     var lastError: String?
     
+    // 実際のデータアクセステスト結果のキャッシュ
+    private var cachedActualAccessResults: [String: Bool]?
+    private var lastActualAccessTest: Date?
+    
     // 読み取り権限が必要なデータタイプ
     private let readTypes: Set<HKObjectType> = [
         HKQuantityType.quantityType(forIdentifier: .stepCount)!,
@@ -29,6 +33,7 @@ final class HealthKitService {
         checkHealthKitAvailability()
         if isHealthKitAvailable {
             Task { @MainActor in
+                // 初期化時は従来のロジックを使用し、必要に応じて後で実際のアクセステストを実行
                 updateAuthorizationStatus()
             }
         }
@@ -58,7 +63,10 @@ final class HealthKitService {
         
         do {
             try await healthStore.requestAuthorization(toShare: [], read: readTypes)
-            await updateAuthorizationStatus()
+            
+            // 権限リクエスト後、実際のアクセステスト結果を含む状態更新を実行
+            await updateAuthorizationStatusWithActualTest()
+            
             await MainActor.run {
                 self.hasRequestedPermission = true
             }
@@ -75,7 +83,7 @@ final class HealthKitService {
     }
     
     @MainActor
-    private func updateAuthorizationStatus() {
+    private func updateAuthorizationStatus(actualAccessResults: [String: Bool]? = nil) {
         // 全てのデータタイプの権限状態をチェック
         let authorizationStatuses = getDetailedAuthorizationStatus()
         
@@ -84,25 +92,66 @@ final class HealthKitService {
         let deniedCount = authorizationStatuses.values.filter { $0 == .sharingDenied }.count
         let totalCount = authorizationStatuses.count
         
-        // 権限状態の総合判定
-        if authorizedCount > 0 {
-            // 少なくとも一つのデータタイプが許可されている場合
-            authorizationStatus = .sharingAuthorized
-        } else if deniedCount == totalCount {
-            // 全てのデータタイプが明示的に拒否されている場合
-            authorizationStatus = .sharingDenied
+        // 実際のアクセステスト結果がある場合は、それを優先して使用
+        if let actualResults = actualAccessResults {
+            let actualAccessCount = actualResults.values.filter { $0 == true }.count
+            let actualTotalCount = actualResults.count
+            
+            print("実際のアクセステスト結果を優先した判定を使用")
+            print("実際のアクセス: 成功=\(actualAccessCount)/\(actualTotalCount)")
+            
+            if actualAccessCount > 0 {
+                // 実際にデータアクセスが可能な場合は許可として扱う
+                authorizationStatus = .sharingAuthorized
+                print("実際のアクセス結果に基づいて許可状態に設定")
+            } else {
+                authorizationStatus = .sharingDenied
+                print("実際のアクセス結果に基づいて拒否状態に設定")
+            }
         } else {
-            // 未確定の状態
-            authorizationStatus = .notDetermined
+            // 実際のアクセステスト結果がない場合は従来のロジックを使用
+            print("従来のHKAuthorizationStatus値に基づく判定を使用")
+            
+            if authorizedCount > 0 {
+                // 少なくとも一つのデータタイプが許可されている場合
+                authorizationStatus = .sharingAuthorized
+            } else if deniedCount == totalCount {
+                // 全てのデータタイプが明示的に拒否されている場合
+                authorizationStatus = .sharingDenied
+            } else {
+                // 未確定の状態
+                authorizationStatus = .notDetermined
+            }
         }
         
         print("HealthKit権限状態: \(authorizationStatusDescription)")
         print("詳細権限状態: \(authorizationStatuses)")
-        print("総合判定: 許可=\(authorizedCount)/\(totalCount), 拒否=\(deniedCount)/\(totalCount)")
+        print("HKAuthorizationStatus総合判定: 許可=\(authorizedCount)/\(totalCount), 拒否=\(deniedCount)/\(totalCount)")
+        print("最終的な権限判定: \(getStatusDescription(authorizationStatus))")
     }
     
     // 権限状態の説明テキストを取得
     var authorizationStatusDescription: String {
+        // キャッシュされた実際のアクセス結果がある場合は、それを優先
+        if let actualResults = cachedActualAccessResults,
+           let lastTest = lastActualAccessTest,
+           Date().timeIntervalSince(lastTest) < 300 { // 5分以内のキャッシュのみ有効
+            
+            let actualAccessCount = actualResults.values.filter { $0 == true }.count
+            let actualTotalCount = actualResults.count
+            
+            if actualAccessCount > 0 {
+                if actualAccessCount == actualTotalCount {
+                    return "HealthKitアクセスが許可されています（実際のアクセス確認済み）"
+                } else {
+                    return "HealthKitアクセスが部分的に許可されています（\(actualAccessCount)/\(actualTotalCount)項目で実際のアクセス確認済み）"
+                }
+            } else {
+                return "HealthKitアクセスが拒否されています。設定から許可してください。"
+            }
+        }
+        
+        // 実際のアクセス結果がない場合は従来のロジック
         let authorizationStatuses = getDetailedAuthorizationStatus()
         let authorizedCount = authorizationStatuses.values.filter { $0 == .sharingAuthorized }.count
         let deniedCount = authorizationStatuses.values.filter { $0 == .sharingDenied }.count
@@ -124,7 +173,7 @@ final class HealthKitService {
                 return "HealthKitアクセスが部分的に許可されています（\(authorizedCount)/\(totalCount)項目）"
             }
         @unknown default:
-            return "不明な権限状態です"
+            return "不明な権限状態です（実際のアクセステストをお試しください）"
         }
     }
     
@@ -132,7 +181,16 @@ final class HealthKitService {
     var isAuthorized: Bool {
         guard isHealthKitAvailable else { return false }
         
-        // authorizationStatusと整合性を保つため、同じ判定ロジックを使用
+        // キャッシュされた実際のアクセス結果がある場合は、それを優先
+        if let actualResults = cachedActualAccessResults,
+           let lastTest = lastActualAccessTest,
+           Date().timeIntervalSince(lastTest) < 300 { // 5分以内のキャッシュのみ有効
+            
+            let actualAccessCount = actualResults.values.filter { $0 == true }.count
+            return actualAccessCount > 0
+        }
+        
+        // 実際のアクセス結果がない場合は authorizationStatus を使用
         return authorizationStatus == .sharingAuthorized
     }
     
@@ -390,28 +448,57 @@ final class HealthKitService {
     func getDetailedAuthorizationStatus() -> [String: HKAuthorizationStatus] {
         var statuses: [String: HKAuthorizationStatus] = [:]
         
+        print("=== HealthKit権限状態の詳細デバッグ ===")
+        
         for dataType in readTypes {
             let status = healthStore.authorizationStatus(for: dataType)
+            let statusRawValue = status.rawValue
+            let statusDescription = getStatusDescription(status)
+            
+            var dataTypeName = ""
             
             if let quantityType = dataType as? HKQuantityType {
                 switch quantityType.identifier {
                 case HKQuantityTypeIdentifier.stepCount.rawValue:
+                    dataTypeName = "歩数"
                     statuses["歩数"] = status
                 case HKQuantityTypeIdentifier.distanceWalkingRunning.rawValue:
+                    dataTypeName = "距離"
                     statuses["距離"] = status
                 case HKQuantityTypeIdentifier.activeEnergyBurned.rawValue:
+                    dataTypeName = "カロリー"
                     statuses["カロリー"] = status
                 case HKQuantityTypeIdentifier.appleExerciseTime.rawValue:
+                    dataTypeName = "運動時間"
                     statuses["運動時間"] = status
                 default:
+                    dataTypeName = quantityType.identifier
                     statuses[quantityType.identifier] = status
                 }
             } else if dataType == HKObjectType.workoutType() {
+                dataTypeName = "ワークアウト"
                 statuses["ワークアウト"] = status
             }
+            
+            print("データタイプ: \(dataTypeName), rawValue: \(statusRawValue), 状態: \(statusDescription)")
         }
         
+        print("=== 権限状態デバッグ終了 ===")
         return statuses
+    }
+    
+    // 権限状態の説明を取得するヘルパーメソッド
+    private func getStatusDescription(_ status: HKAuthorizationStatus) -> String {
+        switch status {
+        case .notDetermined:
+            return "未確定(.notDetermined)"
+        case .sharingDenied:
+            return "拒否(.sharingDenied)"
+        case .sharingAuthorized:
+            return "許可(.sharingAuthorized)"
+        @unknown default:
+            return "不明(@unknown default, rawValue: \(status.rawValue))"
+        }
     }
     
     // MARK: - 権限状態強制更新
@@ -419,6 +506,19 @@ final class HealthKitService {
     func forceUpdateAuthorizationStatus() {
         print("権限状態を強制更新します...")
         updateAuthorizationStatus()
+    }
+    
+    // 実際のアクセステスト結果を含む権限状態更新
+    @MainActor
+    func updateAuthorizationStatusWithActualTest() async {
+        print("実際のアクセステストを含む権限状態更新を開始...")
+        let actualResults = await testActualDataAccess()
+        
+        // 実際のアクセス結果をキャッシュ
+        cachedActualAccessResults = actualResults
+        lastActualAccessTest = Date()
+        
+        updateAuthorizationStatus(actualAccessResults: actualResults)
     }
     
     // MARK: - 実際のデータアクセステスト
