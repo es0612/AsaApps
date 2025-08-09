@@ -56,6 +56,22 @@ class VoiceMemoViewModel {
         }
     }
     
+    // 安全な録音開始（許可確認付き）
+    func startRecordingSafely() async {
+        let hasPermission = await audioRecorderManager.requestMicrophonePermission()
+        
+        if hasPermission {
+            let success = audioRecorderManager.startRecording()
+            if !success {
+                alertMessage = audioRecorderManager.recordingError ?? "録音の開始に失敗しました"
+                isShowingMicrophonePermissionAlert = true
+            }
+        } else {
+            alertMessage = "音声録音にはマイクへのアクセス許可が必要です。設定アプリでマイクへのアクセスを許可してください。"
+            isShowingMicrophonePermissionAlert = true
+        }
+    }
+    
     // 録音停止して保存
     func stopRecordingAndSave() {
         audioRecorderManager.stopRecording()

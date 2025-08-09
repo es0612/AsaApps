@@ -148,7 +148,9 @@ struct RecordingView: View {
             } else {
                 // 録音前：録音開始ボタン
                 Button {
-                    viewModel.startRecording()
+                    Task {
+                        await viewModel.startRecordingSafely()
+                    }
                 } label: {
                     VStack(spacing: 8) {
                         Image(systemName: "record.circle")
