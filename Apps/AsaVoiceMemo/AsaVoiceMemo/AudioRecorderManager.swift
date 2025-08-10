@@ -88,9 +88,11 @@ class AudioRecorderManager: NSObject {
                 recordingDuration = 0
                 recordingError = nil
                 startRecordingTimer()
+                print("Recording started successfully")
                 return true
             } else {
                 recordingError = "録音の開始に失敗しました"
+                print("Failed to start recording")
                 return false
             }
         } catch {
@@ -103,9 +105,16 @@ class AudioRecorderManager: NSObject {
     func stopRecording() {
         guard isRecording else { return }
         
+        // 最終的な録音時間を取得
+        if let recorder = audioRecorder {
+            recordingDuration = recorder.currentTime
+        }
+        
         audioRecorder?.stop()
         isRecording = false
         stopRecordingTimer()
+        
+        print("Recording stopped. Final duration: \(recordingDuration)s")
     }
     
     // 録音中断（ファイルを削除）
@@ -127,7 +136,11 @@ class AudioRecorderManager: NSObject {
     private func startRecordingTimer() {
         recordingTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { [weak self] _ in
             guard let self = self, let recorder = self.audioRecorder else { return }
-            self.recordingDuration = recorder.currentTime
+            
+            DispatchQueue.main.async {
+                self.recordingDuration = recorder.currentTime
+                print("Recording time updated: \(self.recordingDuration)s")
+            }
         }
     }
     

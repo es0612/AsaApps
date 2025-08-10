@@ -82,6 +82,10 @@ class VoiceMemoViewModel {
             return
         }
         
+        // 最終的な録音時間を取得
+        let finalDuration = audioRecorderManager.recordingDuration
+        print("Saving voice memo with duration: \(finalDuration)s")
+        
         // タイトルを生成（録音日時ベース）
         let formatter = DateFormatter()
         formatter.dateFormat = "MM/dd HH:mm"
@@ -91,7 +95,7 @@ class VoiceMemoViewModel {
         let voiceMemo = VoiceMemo(
             title: title,
             fileURL: recordingURL,
-            duration: audioRecorderManager.recordingDuration
+            duration: finalDuration
         )
         
         saveVoiceMemo(voiceMemo)
