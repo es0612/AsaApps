@@ -38,10 +38,11 @@ class AudioRecorderManager: NSObject {
     private func setupAudioSession() {
         do {
             let audioSession = AVAudioSession.sharedInstance()
-            try audioSession.setCategory(.playAndRecord, mode: .default, options: [.defaultToSpeaker])
-            try audioSession.setActive(true)
+            try audioSession.setCategory(.playAndRecord, mode: .voiceChat, options: [.defaultToSpeaker, .allowBluetooth])
+            try audioSession.setActive(true, options: .notifyOthersOnDeactivation)
         } catch {
             recordingError = "オーディオセッションの設定に失敗しました: \(error.localizedDescription)"
+            print("Audio session setup failed: \(error)")
         }
     }
     
@@ -58,6 +59,9 @@ class AudioRecorderManager: NSObject {
     func startRecording() -> Bool {
         guard !isRecording else { return false }
         
+        // オーディオセッションを再設定（録音開始時に確実に設定）
+        setupAudioSession()
+        
         // 録音ファイルのURLを生成
         let documentsPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
         let fileName = "recording_\(Date().timeIntervalSince1970).m4a"
@@ -66,9 +70,10 @@ class AudioRecorderManager: NSObject {
         // 録音設定
         let settings: [String: Any] = [
             AVFormatIDKey: Int(kAudioFormatMPEG4AAC),
-            AVSampleRateKey: 44100,
-            AVNumberOfChannelsKey: 2,
-            AVEncoderAudioQualityKey: AVAudioQuality.high.rawValue
+            AVSampleRateKey: 44100.0,
+            AVNumberOfChannelsKey: 1,
+            AVLinearPCMBitDepthKey: 16,
+            AVEncoderAudioQualityKey: AVAudioQuality.medium.rawValue
         ]
         
         do {
