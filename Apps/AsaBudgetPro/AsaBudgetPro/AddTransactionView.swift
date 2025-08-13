@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct AddTransactionView: View {
-    @ObservedObject var viewModel: BudgetViewModel
+    @State var viewModel: BudgetViewModel
     @Environment(\.dismiss) private var dismiss
     @State private var selectedTransactionType: TransactionType = .expense
     

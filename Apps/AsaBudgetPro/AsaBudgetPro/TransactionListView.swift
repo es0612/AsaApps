@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct TransactionListView: View {
-    @ObservedObject var viewModel: BudgetViewModel
+    @State var viewModel: BudgetViewModel
     @Environment(\.dismiss) private var dismiss
     @State private var showingAddTransaction = false
     @State private var selectedFilter: TransactionFilter = .all

@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct BudgetSettingsView: View {
-    @ObservedObject var viewModel: BudgetViewModel
+    @State var viewModel: BudgetViewModel
     @Environment(\.dismiss) private var dismiss
     @State private var selectedYear: Int = Calendar.current.component(.year, from: Date())
     @State private var selectedMonth: Int = Calendar.current.component(.month, from: Date())
@@ -166,7 +166,7 @@ struct BudgetSettingsView: View {
 
 struct BudgetCategoryRow: View {
     let category: Category
-    @ObservedObject var viewModel: BudgetViewModel
+    @State var viewModel: BudgetViewModel
     let year: Int
     let month: Int
     @State private var budgetText: String = ""

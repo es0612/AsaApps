@@ -144,11 +144,15 @@ class BudgetViewModel {
               let category = selectedBudgetCategory else { return }
         
         // 既存の予算をチェック
+        let targetYear = selectedYear
+        let targetMonth = selectedMonth
+        let categoryName = category.name
+        
         let descriptor = FetchDescriptor<Budget>(
             predicate: #Predicate<Budget> { budget in
-                budget.categoryName == category.name &&
-                budget.year == selectedYear &&
-                budget.month == selectedMonth
+                budget.categoryName == categoryName &&
+                budget.year == targetYear &&
+                budget.month == targetMonth
             }
         )
         

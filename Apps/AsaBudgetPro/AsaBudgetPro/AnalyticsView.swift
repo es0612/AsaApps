@@ -9,7 +9,7 @@ import SwiftUI
 import Charts
 
 struct AnalyticsView: View {
-    @ObservedObject var viewModel: BudgetViewModel
+    @State var viewModel: BudgetViewModel
     @Environment(\.dismiss) private var dismiss
     @State private var selectedYear: Int = Calendar.current.component(.year, from: Date())
     @State private var selectedMonth: Int = Calendar.current.component(.month, from: Date())
