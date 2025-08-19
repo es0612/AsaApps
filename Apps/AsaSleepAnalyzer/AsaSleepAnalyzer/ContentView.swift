@@ -13,6 +13,7 @@ struct ContentView: View {
     @State private var viewModel = SleepAnalyzerViewModel()
     @State private var showingStatsView = false
     @State private var showingDetailsView = false
+    @State private var showingDebugInfo = false
     
     var body: some View {
         NavigationView {
@@ -71,13 +72,35 @@ struct ContentView: View {
                 }
                 
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    if viewModel.isHealthKitAuthorized {
+                    HStack {
+                        if !viewModel.isHealthKitAuthorized {
+                            Button(action: {
+                                Task {
+                                    await viewModel.forcePermissionCheck()
+                                }
+                            }) {
+                                Image(systemName: "exclamationmark.triangle.fill")
+                                    .font(.title2)
+                                    .foregroundColor(.orange)
+                            }
+                        }
+                        
                         Button(action: {
-                            showingStatsView = true
+                            showingDebugInfo = true
                         }) {
-                            Image(systemName: "chart.bar.fill")
+                            Image(systemName: "info.circle")
                                 .font(.title2)
-                                .foregroundColor(Color("AsaCoffeeBrown"))
+                                .foregroundColor(Color("AsaMutedSage"))
+                        }
+                        
+                        if viewModel.isHealthKitAuthorized {
+                            Button(action: {
+                                showingStatsView = true
+                            }) {
+                                Image(systemName: "chart.bar.fill")
+                                    .font(.title2)
+                                    .foregroundColor(Color("AsaCoffeeBrown"))
+                            }
                         }
                     }
                 }
@@ -111,10 +134,18 @@ struct ContentView: View {
                     SleepDetailsView(sleepData: todayData, viewModel: viewModel)
                 }
             }
+            .sheet(isPresented: $showingDebugInfo) {
+                DebugInfoView(viewModel: viewModel)
+            }
         }
         .onAppear {
             viewModel.setModelContext(modelContext)
             viewModel.loadSleepGoal()
+        }
+        .onReceive(NotificationCenter.default.publisher(for: UIApplication.didBecomeActiveNotification)) { _ in
+            Task {
+                await viewModel.handleAppDidBecomeActive()
+            }
         }
         .accentColor(Color("AsaCoffeeBrown"))
     }
@@ -137,6 +168,24 @@ struct ContentView: View {
                     .font(.body)
                     .foregroundColor(.secondary)
                     .multilineTextAlignment(.center)
+                
+                if !viewModel.isHealthKitAuthorized {
+                    VStack(spacing: 8) {
+                        Text("📱 設定アプリ > プライバシーとセキュリティ > ヘルスケア > AsaSleepAnalyzer > 睡眠をONにしてください")
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+                            .multilineTextAlignment(.center)
+                            .padding(.horizontal)
+                        
+                        Button("権限状態を再確認") {
+                            Task {
+                                await viewModel.forcePermissionCheck()
+                            }
+                        }
+                        .font(.caption)
+                        .foregroundColor(Color("AsaMutedSage"))
+                    }
+                }
                 
                 if !viewModel.isHealthKitAuthorized {
                     AsaButton(
@@ -358,6 +407,105 @@ struct ContentView: View {
         formatter.dateFormat = "E"
         formatter.locale = Locale(identifier: "ja_JP")
         return formatter.string(from: date)
+    }
+}
+
+// MARK: - Debug Info View
+struct DebugInfoView: View {
+    let viewModel: SleepAnalyzerViewModel
+    @Environment(\.dismiss) private var dismiss
+    
+    var body: some View {
+        NavigationView {
+            ScrollView {
+                VStack(alignment: .leading, spacing: 16) {
+                    // 権限状態セクション
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text("現在の権限状態")
+                            .font(.headline)
+                            .foregroundColor(Color("AsaCoffeeBrown"))
+                        
+                        VStack(alignment: .leading, spacing: 4) {
+                            HStack {
+                                Text("HealthKit利用可能:")
+                                Spacer()
+                                Image(systemName: viewModel.isHealthKitAuthorized ? "checkmark.circle.fill" : "xmark.circle.fill")
+                                    .foregroundColor(viewModel.isHealthKitAuthorized ? .green : .red)
+                            }
+                            
+                            Text("状態: \(viewModel.authorizationStatusDescription)")
+                                .font(.caption)
+                                .foregroundColor(.secondary)
+                        }
+                        .padding()
+                        .background(Color.gray.opacity(0.1))
+                        .cornerRadius(8)
+                    }
+                    
+                    // デバッグログセクション
+                    VStack(alignment: .leading, spacing: 8) {
+                        HStack {
+                            Text("デバッグログ")
+                                .font(.headline)
+                                .foregroundColor(Color("AsaCoffeeBrown"))
+                            
+                            Spacer()
+                            
+                            Button("クリア") {
+                                viewModel.clearDebugInfo()
+                            }
+                            .font(.caption)
+                            .foregroundColor(Color("AsaMutedSage"))
+                        }
+                        
+                        ScrollView {
+                            Text(viewModel.debugInfo.isEmpty ? "ログがありません" : viewModel.debugInfo)
+                                .font(.system(.caption, design: .monospaced))
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .padding()
+                                .background(Color.black.opacity(0.05))
+                                .cornerRadius(8)
+                        }
+                        .frame(height: 300)
+                    }
+                    
+                    // アクションセクション
+                    VStack(spacing: 12) {
+                        AsaButton(
+                            title: "権限状態を強制更新",
+                            action: {
+                                Task {
+                                    await viewModel.forcePermissionCheck()
+                                }
+                            },
+                            color: Color("AsaCoffeeBrown")
+                        )
+                        
+                        if !viewModel.isHealthKitAuthorized {
+                            AsaButton(
+                                title: "設定アプリを開く",
+                                action: {
+                                    if let settingsUrl = URL(string: UIApplication.openSettingsURLString) {
+                                        UIApplication.shared.open(settingsUrl)
+                                    }
+                                },
+                                color: Color("AsaMutedSage")
+                            )
+                        }
+                    }
+                }
+                .padding()
+            }
+            .navigationTitle("デバッグ情報")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("閉じる") {
+                        dismiss()
+                    }
+                }
+            }
+        }
     }
 }
 

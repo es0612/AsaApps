@@ -9,7 +9,7 @@ import SwiftUI
 import Charts
 
 struct SleepStatsView: View {
-    @ObservedObject var viewModel: SleepAnalyzerViewModel
+    @State var viewModel: SleepAnalyzerViewModel
     @Environment(\.dismiss) private var dismiss
     @State private var selectedTimeRange: TimeRange = .week
     

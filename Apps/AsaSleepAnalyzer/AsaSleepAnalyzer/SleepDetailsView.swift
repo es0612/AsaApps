@@ -9,7 +9,7 @@ import SwiftUI
 
 struct SleepDetailsView: View {
     let sleepData: SleepData
-    @ObservedObject var viewModel: SleepAnalyzerViewModel
+    @State var viewModel: SleepAnalyzerViewModel
     @Environment(\.dismiss) private var dismiss
     @State private var showingNotesEditor = false
     @State private var editedNotes = ""

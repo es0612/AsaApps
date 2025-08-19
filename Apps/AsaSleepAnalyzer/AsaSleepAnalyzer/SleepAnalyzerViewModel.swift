@@ -40,6 +40,10 @@ final class SleepAnalyzerViewModel {
         healthKitService.authorizationStatusDescription
     }
     
+    var debugInfo: String {
+        healthKitService.getDebugInfo()
+    }
+    
     init() {
         checkInitialPermissions()
     }
@@ -64,10 +68,16 @@ final class SleepAnalyzerViewModel {
     func requestHealthKitPermission() async {
         isLoading = true
         await healthKitService.requestAuthorization()
+        
+        // 権限リクエスト後に包括的チェックを実行
+        await healthKitService.comprehensivePermissionCheck()
         isLoading = false
         
         if isHealthKitAuthorized {
             await refreshAllData()
+        } else {
+            // 権限が取得できなかった場合のエラーメッセージを更新
+            errorMessage = "HealthKitの権限が必要です。設定アプリから睡眠データのアクセスを許可してください。"
         }
     }
     
@@ -75,8 +85,11 @@ final class SleepAnalyzerViewModel {
     
     @MainActor
     func refreshAllData() async {
+        // 権限状態を再確認
+        await healthKitService.comprehensivePermissionCheck()
+        
         guard isHealthKitAuthorized else {
-            errorMessage = "HealthKitの権限が必要です"
+            errorMessage = "HealthKitの権限が必要です。設定から権限を確認してください。"
             return
         }
         
@@ -323,5 +336,32 @@ final class SleepAnalyzerViewModel {
     var todaySleepProgress: Double {
         guard let todayData = todaySleepData, dailySleepGoal > 0 else { return 0 }
         return min(1.0, todayData.totalSleepDuration / dailySleepGoal)
+    }
+    
+    // MARK: - 権限問題対応
+    
+    @MainActor
+    func handleAppDidBecomeActive() async {
+        await healthKitService.handleAppDidBecomeActive()
+        
+        // 権限状態が変わった場合はデータを更新
+        if isHealthKitAuthorized {
+            await refreshAllData()
+        }
+    }
+    
+    func clearDebugInfo() {
+        healthKitService.clearDebugInfo()
+    }
+    
+    @MainActor
+    func forcePermissionCheck() async {
+        isLoading = true
+        await healthKitService.comprehensivePermissionCheck()
+        
+        if isHealthKitAuthorized {
+            await refreshAllData()
+        }
+        isLoading = false
     }
 }

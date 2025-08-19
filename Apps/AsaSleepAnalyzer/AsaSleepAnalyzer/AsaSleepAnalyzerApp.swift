@@ -11,6 +11,8 @@ import SwiftData
 
 @main
 struct AsaSleepAnalyzerApp: App {
+    @Environment(\.scenePhase) private var scenePhase
+    
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
             SleepData.self,
