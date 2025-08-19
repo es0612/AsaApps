@@ -85,9 +85,6 @@ final class SleepAnalyzerViewModel {
     
     @MainActor
     func refreshAllData() async {
-        // 権限状態を再確認
-        await healthKitService.comprehensivePermissionCheck()
-        
         guard isHealthKitAuthorized else {
             errorMessage = "HealthKitの権限が必要です。設定から権限を確認してください。"
             return
@@ -342,9 +339,7 @@ final class SleepAnalyzerViewModel {
     
     @MainActor
     func handleAppDidBecomeActive() async {
-        await healthKitService.handleAppDidBecomeActive()
-        
-        // 権限状態が変わった場合はデータを更新
+        // 権限があればデータを更新（権限チェックは省略）
         if isHealthKitAuthorized {
             await refreshAllData()
         }

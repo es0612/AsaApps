@@ -18,6 +18,7 @@ final class HealthKitSleepService {
     var debugInfo: [String] = []
     private var lastPermissionUpdateTime: Date?
     private var actualAccessTestResult: Bool = false
+    private var isCheckingPermissions: Bool = false
     
     // 睡眠データ取得に必要なデータタイプ
     private let sleepTypes: Set<HKObjectType> = [
@@ -301,6 +302,13 @@ final class HealthKitSleepService {
     // MARK: - 包括的な権限チェック
     @MainActor
     func comprehensivePermissionCheck() async {
+        // 重複実行を防ぐ
+        guard !isCheckingPermissions else {
+            addDebugInfo("⏭️ 権限チェック実行中のためスキップ")
+            return
+        }
+        
+        isCheckingPermissions = true
         addDebugInfo("包括的権限チェック開始")
         
         updateAuthorizationStatus()
@@ -311,6 +319,7 @@ final class HealthKitSleepService {
         }
         
         addDebugInfo("包括的権限チェック完了 - API状態: \(getStatusDescription(authorizationStatus)), 実アクセス: \(actualAccessTestResult)")
+        isCheckingPermissions = false
     }
     
     // MARK: - 実データアクセステスト
