@@ -1,0 +1,512 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0BB48978B6304A4F5A477375 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AB7928F9BD1609F1DFDDC59 /* SwiftUI.framework */; };
+		52D37BD41E383D56BAB9044C /* Photos.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 705765086F6F66607E4E7EBD /* Photos.framework */; };
+		592C30BBB3A17D1E85466425 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A6DEEA6F9C7F7099A888B8FD /* Assets.xcassets */; };
+		5C9E93278237E37311A12C1D /* AsaButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E039984F1EBE6B524C219031 /* AsaButton.swift */; };
+		61E44D08ABFB570114DF340E /* AsaLaunchScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 138370A1E8274AD183CE46AF /* AsaLaunchScreen.swift */; };
+		8181440D288338D35C72DFC6 /* ImageFilterService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9608FD528C4B70DFC5DF4BDE /* ImageFilterService.swift */; };
+		8F9802A844DC75B8B54654C1 /* AsaPhotoFilterApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26220DDFDE52485A66E5488D /* AsaPhotoFilterApp.swift */; };
+		A4E8EF276572BC47DDA417D2 /* FilterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42EC0AC8B3FAC493C5593F57 /* FilterViewModel.swift */; };
+		B6674389565BA4145054C4B6 /* AsaCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84444CA05E588324E00EA2DC /* AsaCard.swift */; };
+		B846CC10E73AEEBECACE30A7 /* PhotosUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A4B0DD331E6A6B760562052 /* PhotosUI.framework */; };
+		BCBB2B0C37C3B274B47C70F5 /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00BD524A81AA57DD0445A06B /* CoreImage.framework */; };
+		BE0AC4E92690BB51CB5B3DB7 /* FilterType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 499DC00545B1165933A74F19 /* FilterType.swift */; };
+		CCFECC1738780C3FEED8EBB8 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8AFD1EA0FBA815834533208 /* ContentView.swift */; };
+		CDFCA3D211E31B9EC3C21AC9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A297509D7D190BA15EA942E3 /* Assets.xcassets */; };
+		E1D8BEB5FE97964025A8A018 /* AsaPhotoFilterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2CCB81AB20D4ED5D27DEF8A /* AsaPhotoFilterTests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		0433E6AAC6A7DE349D9FE27B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0AC45DAC6BA6435FAC9264D9 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 196580C16E4665595A0B708D;
+			remoteInfo = AsaPhotoFilter;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		00BD524A81AA57DD0445A06B /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
+		138370A1E8274AD183CE46AF /* AsaLaunchScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsaLaunchScreen.swift; sourceTree = "<group>"; };
+		16C222A6DDA92BBDD16DEC6E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		26220DDFDE52485A66E5488D /* AsaPhotoFilterApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsaPhotoFilterApp.swift; sourceTree = "<group>"; };
+		42EC0AC8B3FAC493C5593F57 /* FilterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterViewModel.swift; sourceTree = "<group>"; };
+		499DC00545B1165933A74F19 /* FilterType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterType.swift; sourceTree = "<group>"; };
+		6A4B0DD331E6A6B760562052 /* PhotosUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PhotosUI.framework; path = System/Library/Frameworks/PhotosUI.framework; sourceTree = SDKROOT; };
+		705765086F6F66607E4E7EBD /* Photos.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Photos.framework; path = System/Library/Frameworks/Photos.framework; sourceTree = SDKROOT; };
+		84444CA05E588324E00EA2DC /* AsaCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsaCard.swift; sourceTree = "<group>"; };
+		9608FD528C4B70DFC5DF4BDE /* ImageFilterService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageFilterService.swift; sourceTree = "<group>"; };
+		9AB7928F9BD1609F1DFDDC59 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		A0FA95544274B0B8FB2B1961 /* AsaPhotoFilter.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = AsaPhotoFilter.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A297509D7D190BA15EA942E3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		A6DEEA6F9C7F7099A888B8FD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		B2CCB81AB20D4ED5D27DEF8A /* AsaPhotoFilterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsaPhotoFilterTests.swift; sourceTree = "<group>"; };
+		B560F7A75E0DC4BF0AE792A5 /* AsaPhotoFilterTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = AsaPhotoFilterTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		C8AFD1EA0FBA815834533208 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		E039984F1EBE6B524C219031 /* AsaButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsaButton.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		2794AA6D00556F33BD4042CD /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0BB48978B6304A4F5A477375 /* SwiftUI.framework in Frameworks */,
+				BCBB2B0C37C3B274B47C70F5 /* CoreImage.framework in Frameworks */,
+				52D37BD41E383D56BAB9044C /* Photos.framework in Frameworks */,
+				B846CC10E73AEEBECACE30A7 /* PhotosUI.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		211BBD2C5EA83D0CF86D6568 /* AsaPhotoFilterTests */ = {
+			isa = PBXGroup;
+			children = (
+				B2CCB81AB20D4ED5D27DEF8A /* AsaPhotoFilterTests.swift */,
+			);
+			path = AsaPhotoFilterTests;
+			sourceTree = "<group>";
+		};
+		50EA360218A799E344EFE810 /* AsaPhotoFilter */ = {
+			isa = PBXGroup;
+			children = (
+				26220DDFDE52485A66E5488D /* AsaPhotoFilterApp.swift */,
+				A297509D7D190BA15EA942E3 /* Assets.xcassets */,
+				C8AFD1EA0FBA815834533208 /* ContentView.swift */,
+				499DC00545B1165933A74F19 /* FilterType.swift */,
+				42EC0AC8B3FAC493C5593F57 /* FilterViewModel.swift */,
+				9608FD528C4B70DFC5DF4BDE /* ImageFilterService.swift */,
+				16C222A6DDA92BBDD16DEC6E /* Info.plist */,
+			);
+			path = AsaPhotoFilter;
+			sourceTree = "<group>";
+		};
+		6EB2D30DE1FD0EAA60871F83 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				E039984F1EBE6B524C219031 /* AsaButton.swift */,
+				84444CA05E588324E00EA2DC /* AsaCard.swift */,
+				138370A1E8274AD183CE46AF /* AsaLaunchScreen.swift */,
+				A6DEEA6F9C7F7099A888B8FD /* Assets.xcassets */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		863E3F4591B60B1AF7252A71 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A0FA95544274B0B8FB2B1961 /* AsaPhotoFilter.app */,
+				B560F7A75E0DC4BF0AE792A5 /* AsaPhotoFilterTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		96DA73C9C0E091BCF3A3CFDC = {
+			isa = PBXGroup;
+			children = (
+				EFCAB6A126C7CD16A8C677F6 /* AsaApps */,
+				50EA360218A799E344EFE810 /* AsaPhotoFilter */,
+				211BBD2C5EA83D0CF86D6568 /* AsaPhotoFilterTests */,
+				F2C27B14C5BF8F5D0E6E2E84 /* Frameworks */,
+				863E3F4591B60B1AF7252A71 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		EFCAB6A126C7CD16A8C677F6 /* AsaApps */ = {
+			isa = PBXGroup;
+			children = (
+				6EB2D30DE1FD0EAA60871F83 /* Shared */,
+			);
+			name = AsaApps;
+			path = ../..;
+			sourceTree = "<group>";
+		};
+		F2C27B14C5BF8F5D0E6E2E84 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				00BD524A81AA57DD0445A06B /* CoreImage.framework */,
+				705765086F6F66607E4E7EBD /* Photos.framework */,
+				6A4B0DD331E6A6B760562052 /* PhotosUI.framework */,
+				9AB7928F9BD1609F1DFDDC59 /* SwiftUI.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		196580C16E4665595A0B708D /* AsaPhotoFilter */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 104B2635F460B9576FD48DD2 /* Build configuration list for PBXNativeTarget "AsaPhotoFilter" */;
+			buildPhases = (
+				30CF5ACE20B29E60133CC4C2 /* Sources */,
+				35D6A3349581DF9B3749AD0B /* Resources */,
+				2794AA6D00556F33BD4042CD /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = AsaPhotoFilter;
+			packageProductDependencies = (
+			);
+			productName = AsaPhotoFilter;
+			productReference = A0FA95544274B0B8FB2B1961 /* AsaPhotoFilter.app */;
+			productType = "com.apple.product-type.application";
+		};
+		8E072EF5A26570FECD6FB163 /* AsaPhotoFilterTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6B2B9AF8107632A9ACE6E73A /* Build configuration list for PBXNativeTarget "AsaPhotoFilterTests" */;
+			buildPhases = (
+				D4C79BD813558B30A568D713 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				A45BDE9BE0E9E60AF34D6A53 /* PBXTargetDependency */,
+			);
+			name = AsaPhotoFilterTests;
+			packageProductDependencies = (
+			);
+			productName = AsaPhotoFilterTests;
+			productReference = B560F7A75E0DC4BF0AE792A5 /* AsaPhotoFilterTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		0AC45DAC6BA6435FAC9264D9 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					196580C16E4665595A0B708D = {
+						DevelopmentTeam = "";
+						ProvisioningStyle = Automatic;
+					};
+					8E072EF5A26570FECD6FB163 = {
+						DevelopmentTeam = "";
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = D2A1CFBA7FA20784963DD354 /* Build configuration list for PBXProject "AsaPhotoFilter" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 96DA73C9C0E091BCF3A3CFDC;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				196580C16E4665595A0B708D /* AsaPhotoFilter */,
+				8E072EF5A26570FECD6FB163 /* AsaPhotoFilterTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		35D6A3349581DF9B3749AD0B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CDFCA3D211E31B9EC3C21AC9 /* Assets.xcassets in Resources */,
+				592C30BBB3A17D1E85466425 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		30CF5ACE20B29E60133CC4C2 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5C9E93278237E37311A12C1D /* AsaButton.swift in Sources */,
+				B6674389565BA4145054C4B6 /* AsaCard.swift in Sources */,
+				61E44D08ABFB570114DF340E /* AsaLaunchScreen.swift in Sources */,
+				8F9802A844DC75B8B54654C1 /* AsaPhotoFilterApp.swift in Sources */,
+				CCFECC1738780C3FEED8EBB8 /* ContentView.swift in Sources */,
+				BE0AC4E92690BB51CB5B3DB7 /* FilterType.swift in Sources */,
+				A4E8EF276572BC47DDA417D2 /* FilterViewModel.swift in Sources */,
+				8181440D288338D35C72DFC6 /* ImageFilterService.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D4C79BD813558B30A568D713 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E1D8BEB5FE97964025A8A018 /* AsaPhotoFilterTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		A45BDE9BE0E9E60AF34D6A53 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 196580C16E4665595A0B708D /* AsaPhotoFilter */;
+			targetProxy = 0433E6AAC6A7DE349D9FE27B /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		07D507B5F36A91B695B17EC8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.asapapa.apps.asaphotofilter.tests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AsaPhotoFilter.app/AsaPhotoFilter";
+			};
+			name = Release;
+		};
+		149F84E4A84695A5E28C466F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = "";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		72F09A76D38E757D377136B1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.asapapa.apps.asaphotofilter.tests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AsaPhotoFilter.app/AsaPhotoFilter";
+			};
+			name = Debug;
+		};
+		7A0B464DA60661F37214C683 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_FILE = AsaPhotoFilter/Info.plist;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				NSPhotoLibraryAddUsageDescription = "フィルター適用後の写真を保存するために写真ライブラリへの書き込み権限が必要です";
+				NSPhotoLibraryUsageDescription = "写真にフィルターを適用するために写真ライブラリへのアクセスが必要です";
+				PRODUCT_BUNDLE_IDENTIFIER = com.asapapa.apps.asaphotofilter;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		C88EBAFAC74582748F77AA5B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		E1433DC3A112AB13FFB2833F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_FILE = AsaPhotoFilter/Info.plist;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				NSPhotoLibraryAddUsageDescription = "フィルター適用後の写真を保存するために写真ライブラリへの書き込み権限が必要です";
+				NSPhotoLibraryUsageDescription = "写真にフィルターを適用するために写真ライブラリへのアクセスが必要です";
+				PRODUCT_BUNDLE_IDENTIFIER = com.asapapa.apps.asaphotofilter;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		104B2635F460B9576FD48DD2 /* Build configuration list for PBXNativeTarget "AsaPhotoFilter" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7A0B464DA60661F37214C683 /* Debug */,
+				E1433DC3A112AB13FFB2833F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		6B2B9AF8107632A9ACE6E73A /* Build configuration list for PBXNativeTarget "AsaPhotoFilterTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				72F09A76D38E757D377136B1 /* Debug */,
+				07D507B5F36A91B695B17EC8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		D2A1CFBA7FA20784963DD354 /* Build configuration list for PBXProject "AsaPhotoFilter" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C88EBAFAC74582748F77AA5B /* Debug */,
+				149F84E4A84695A5E28C466F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 0AC45DAC6BA6435FAC9264D9 /* Project object */;
+}
