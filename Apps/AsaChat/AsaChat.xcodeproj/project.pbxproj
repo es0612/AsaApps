@@ -1,0 +1,600 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		16029DC34C133D420E55BC20 /* AsaLaunchScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51D246FB7B4DA60293824EC8 /* AsaLaunchScreen.swift */; };
+		1BCA1F2351D701C42B2807AF /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 13FC14C939302C42FBBE5323 /* SwiftUI.framework */; };
+		2D366F628574156DEDDE3A43 /* AsaChatTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F31242DB25207A9861BAEE87 /* AsaChatTests.swift */; };
+		35C1C6ED1748D7BC02AE5736 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60947492F99F8E629F40359C /* Message.swift */; };
+		46BC94326C5ADE6C1BF5F062 /* AsaChatUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ED00DB2EAA4672E9E09CF24 /* AsaChatUITests.swift */; };
+		7FEF988571BC9916CA1B45B6 /* AsaCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02AA4F4A74540F65E436DA2 /* AsaCard.swift */; };
+		93CF7660FF07215EEFD08D73 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C7D48E38C66670CD96DE340E /* Assets.xcassets */; };
+		9682561FB9DB8AF07C5149B1 /* ChatMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AB4101FF1000A01B0AEB930 /* ChatMessageView.swift */; };
+		97E7387B05A8FAF4E8C40564 /* AsaButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEDB7718B3CB4545567A1070 /* AsaButton.swift */; };
+		9EA157A20233A0DF3E508FC1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2EF0E8F3B2B8C43AD611C831 /* Assets.xcassets */; };
+		C0A1E84C7D9ED9E143DD0C17 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CCE3C6CD6C55F7F72B6D092 /* ContentView.swift */; };
+		D7FFDCC2EEE2ACEA430DA018 /* AsaChatApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 871A957AEFA0C52D221544DF /* AsaChatApp.swift */; };
+		DA56F842F2810F584710F72B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D4AB4CFF150497083A2E6056 /* Foundation.framework */; };
+		F3348B3D7D4958355BDA4840 /* ChatViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB32E2EC49C98348914FBB07 /* ChatViewModel.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		142CA91B4353B7A3B3EDD40E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 55A933628C0B4E075A97E7BF /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 57DC3DEB399E069E9CAA12CA;
+			remoteInfo = AsaChat;
+		};
+		6A40E1C24037364B03D6BC62 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 55A933628C0B4E075A97E7BF /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 57DC3DEB399E069E9CAA12CA;
+			remoteInfo = AsaChat;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		005C5B1FBA1AC96CB5BCD66C /* AsaChatUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = AsaChatUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		13FC14C939302C42FBBE5323 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		2EF0E8F3B2B8C43AD611C831 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		4AB4101FF1000A01B0AEB930 /* ChatMessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageView.swift; sourceTree = "<group>"; };
+		51D246FB7B4DA60293824EC8 /* AsaLaunchScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsaLaunchScreen.swift; sourceTree = "<group>"; };
+		60947492F99F8E629F40359C /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
+		743AC10098FBFC589D87565A /* AsaChat.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = AsaChat.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		871A957AEFA0C52D221544DF /* AsaChatApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsaChatApp.swift; sourceTree = "<group>"; };
+		8CCE3C6CD6C55F7F72B6D092 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		8ED00DB2EAA4672E9E09CF24 /* AsaChatUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsaChatUITests.swift; sourceTree = "<group>"; };
+		C02AA4F4A74540F65E436DA2 /* AsaCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsaCard.swift; sourceTree = "<group>"; };
+		C0C3748354BD3F56D15D8755 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		C7D48E38C66670CD96DE340E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		D01879EFB6389D87F675D680 /* AsaChatTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = AsaChatTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		D4AB4CFF150497083A2E6056 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		F31242DB25207A9861BAEE87 /* AsaChatTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsaChatTests.swift; sourceTree = "<group>"; };
+		FB32E2EC49C98348914FBB07 /* ChatViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewModel.swift; sourceTree = "<group>"; };
+		FEDB7718B3CB4545567A1070 /* AsaButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsaButton.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		7A8D0856A405D174F2E05379 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1BCA1F2351D701C42B2807AF /* SwiftUI.framework in Frameworks */,
+				DA56F842F2810F584710F72B /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		5F5BA3590FB16E4B8E13791A /* AsaChat */ = {
+			isa = PBXGroup;
+			children = (
+				871A957AEFA0C52D221544DF /* AsaChatApp.swift */,
+				C7D48E38C66670CD96DE340E /* Assets.xcassets */,
+				4AB4101FF1000A01B0AEB930 /* ChatMessageView.swift */,
+				FB32E2EC49C98348914FBB07 /* ChatViewModel.swift */,
+				8CCE3C6CD6C55F7F72B6D092 /* ContentView.swift */,
+				C0C3748354BD3F56D15D8755 /* Info.plist */,
+				60947492F99F8E629F40359C /* Message.swift */,
+			);
+			path = AsaChat;
+			sourceTree = "<group>";
+		};
+		64CE886BAD1DFE64478CA5D9 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				FEDB7718B3CB4545567A1070 /* AsaButton.swift */,
+				C02AA4F4A74540F65E436DA2 /* AsaCard.swift */,
+				51D246FB7B4DA60293824EC8 /* AsaLaunchScreen.swift */,
+				2EF0E8F3B2B8C43AD611C831 /* Assets.xcassets */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		664323C85BC8CC455B1FC65B /* AsaApps */ = {
+			isa = PBXGroup;
+			children = (
+				64CE886BAD1DFE64478CA5D9 /* Shared */,
+			);
+			name = AsaApps;
+			path = ../..;
+			sourceTree = "<group>";
+		};
+		720698760CB2987DFA778870 /* AsaChatTests */ = {
+			isa = PBXGroup;
+			children = (
+				F31242DB25207A9861BAEE87 /* AsaChatTests.swift */,
+			);
+			path = AsaChatTests;
+			sourceTree = "<group>";
+		};
+		7803731DA97171938F5B310D = {
+			isa = PBXGroup;
+			children = (
+				664323C85BC8CC455B1FC65B /* AsaApps */,
+				5F5BA3590FB16E4B8E13791A /* AsaChat */,
+				720698760CB2987DFA778870 /* AsaChatTests */,
+				A2E8FF1141D53182792F330D /* AsaChatUITests */,
+				F50740B66B38AB57E73B18CE /* Frameworks */,
+				7E1FAD89C8D6D40E423EA882 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		7E1FAD89C8D6D40E423EA882 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				743AC10098FBFC589D87565A /* AsaChat.app */,
+				D01879EFB6389D87F675D680 /* AsaChatTests.xctest */,
+				005C5B1FBA1AC96CB5BCD66C /* AsaChatUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A2E8FF1141D53182792F330D /* AsaChatUITests */ = {
+			isa = PBXGroup;
+			children = (
+				8ED00DB2EAA4672E9E09CF24 /* AsaChatUITests.swift */,
+			);
+			path = AsaChatUITests;
+			sourceTree = "<group>";
+		};
+		F50740B66B38AB57E73B18CE /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				D4AB4CFF150497083A2E6056 /* Foundation.framework */,
+				13FC14C939302C42FBBE5323 /* SwiftUI.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		57DC3DEB399E069E9CAA12CA /* AsaChat */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 140E91DDC18F45CC4DF9D834 /* Build configuration list for PBXNativeTarget "AsaChat" */;
+			buildPhases = (
+				58918469C9314B1969E0E007 /* Sources */,
+				7B518D8AE920E306943D901F /* Resources */,
+				7A8D0856A405D174F2E05379 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = AsaChat;
+			packageProductDependencies = (
+			);
+			productName = AsaChat;
+			productReference = 743AC10098FBFC589D87565A /* AsaChat.app */;
+			productType = "com.apple.product-type.application";
+		};
+		65A1227F5CE422F944AECB77 /* AsaChatUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5CF642E14BF1CD4471B74051 /* Build configuration list for PBXNativeTarget "AsaChatUITests" */;
+			buildPhases = (
+				59C55283F40F48D9E095292D /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				DDDF170BB7281EF5346607AF /* PBXTargetDependency */,
+			);
+			name = AsaChatUITests;
+			packageProductDependencies = (
+			);
+			productName = AsaChatUITests;
+			productReference = 005C5B1FBA1AC96CB5BCD66C /* AsaChatUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+		A25D8D894EEBC9015005D03A /* AsaChatTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 361952FE135DA03D3D1DE379 /* Build configuration list for PBXNativeTarget "AsaChatTests" */;
+			buildPhases = (
+				6AD6B9B955924FBA4292B3C6 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				0087F248D0EE11C388F0F79D /* PBXTargetDependency */,
+			);
+			name = AsaChatTests;
+			packageProductDependencies = (
+			);
+			productName = AsaChatTests;
+			productReference = D01879EFB6389D87F675D680 /* AsaChatTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		55A933628C0B4E075A97E7BF /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					57DC3DEB399E069E9CAA12CA = {
+						DevelopmentTeam = "";
+						ProvisioningStyle = Automatic;
+					};
+					65A1227F5CE422F944AECB77 = {
+						DevelopmentTeam = "";
+						ProvisioningStyle = Automatic;
+						TestTargetID = 57DC3DEB399E069E9CAA12CA;
+					};
+					A25D8D894EEBC9015005D03A = {
+						DevelopmentTeam = "";
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 95CF0292CCC0009CB31CA293 /* Build configuration list for PBXProject "AsaChat" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 7803731DA97171938F5B310D;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				57DC3DEB399E069E9CAA12CA /* AsaChat */,
+				A25D8D894EEBC9015005D03A /* AsaChatTests */,
+				65A1227F5CE422F944AECB77 /* AsaChatUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		7B518D8AE920E306943D901F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				93CF7660FF07215EEFD08D73 /* Assets.xcassets in Resources */,
+				9EA157A20233A0DF3E508FC1 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		58918469C9314B1969E0E007 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				97E7387B05A8FAF4E8C40564 /* AsaButton.swift in Sources */,
+				7FEF988571BC9916CA1B45B6 /* AsaCard.swift in Sources */,
+				D7FFDCC2EEE2ACEA430DA018 /* AsaChatApp.swift in Sources */,
+				16029DC34C133D420E55BC20 /* AsaLaunchScreen.swift in Sources */,
+				9682561FB9DB8AF07C5149B1 /* ChatMessageView.swift in Sources */,
+				F3348B3D7D4958355BDA4840 /* ChatViewModel.swift in Sources */,
+				C0A1E84C7D9ED9E143DD0C17 /* ContentView.swift in Sources */,
+				35C1C6ED1748D7BC02AE5736 /* Message.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		59C55283F40F48D9E095292D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				46BC94326C5ADE6C1BF5F062 /* AsaChatUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6AD6B9B955924FBA4292B3C6 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2D366F628574156DEDDE3A43 /* AsaChatTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		0087F248D0EE11C388F0F79D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 57DC3DEB399E069E9CAA12CA /* AsaChat */;
+			targetProxy = 6A40E1C24037364B03D6BC62 /* PBXContainerItemProxy */;
+		};
+		DDDF170BB7281EF5346607AF /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 57DC3DEB399E069E9CAA12CA /* AsaChat */;
+			targetProxy = 142CA91B4353B7A3B3EDD40E /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		2D8CC0CF78CE5DE7433B38DB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.asapapa.apps.asachat.tests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AsaChat.app/AsaChat";
+			};
+			name = Release;
+		};
+		3AD271BB18F769EFB8ADCFE7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = "";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		4E9BC77605D29B88FCDE8412 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_FILE = AsaChat/Info.plist;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.asapapa.apps.asachat;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		56D964743486ED0B91492460 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		633E493138359B0638F94E02 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_FILE = AsaChat/Info.plist;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.asapapa.apps.asachat;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		C7467908F1CB9EFDC314FECE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.asapapa.apps.asachat.ui-tests";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = AsaChat;
+			};
+			name = Release;
+		};
+		E3B75AC44461243F4A869609 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.asapapa.apps.asachat.tests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AsaChat.app/AsaChat";
+			};
+			name = Debug;
+		};
+		FD2FACD936936135F6A5F452 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.asapapa.apps.asachat.ui-tests";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = AsaChat;
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		140E91DDC18F45CC4DF9D834 /* Build configuration list for PBXNativeTarget "AsaChat" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				633E493138359B0638F94E02 /* Debug */,
+				4E9BC77605D29B88FCDE8412 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		361952FE135DA03D3D1DE379 /* Build configuration list for PBXNativeTarget "AsaChatTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E3B75AC44461243F4A869609 /* Debug */,
+				2D8CC0CF78CE5DE7433B38DB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		5CF642E14BF1CD4471B74051 /* Build configuration list for PBXNativeTarget "AsaChatUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FD2FACD936936135F6A5F452 /* Debug */,
+				C7467908F1CB9EFDC314FECE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		95CF0292CCC0009CB31CA293 /* Build configuration list for PBXProject "AsaChat" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				56D964743486ED0B91492460 /* Debug */,
+				3AD271BB18F769EFB8ADCFE7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 55A933628C0B4E075A97E7BF /* Project object */;
+}
