@@ -49,14 +49,22 @@ jobs:
           # Optional: Trigger when specific user is assigned to an issue
           # assignee_trigger: "claude-bot"
           
-          # Optional: Allow Claude to run specific commands
-          # allowed_tools: "Bash(npm install),Bash(npm run build),Bash(npm run test:*),Bash(npm run lint:*)"
+          # SwiftUI/iOS開発で使用するコマンドを許可
+          allowed_tools: "Bash(xcodebuild -project * -scheme *),Bash(swift --version),Bash(swiftlint),Bash(xcrun simctl *),Bash(plutil *),Bash(find Apps/ -name *.swift),Bash(grep -r * Apps/),Bash(open *.xcodeproj)"
           
-          # Optional: Add custom instructions for Claude to customize its behavior for your project
-          # custom_instructions: |
-          #   Follow our coding standards
-          #   Ensure all new code has tests
-          #   Use TypeScript for new files
+          # AsaAppsプロジェクト向けカスタム指示
+          custom_instructions: |
+            AsaAppsプロジェクト（朝活パパエンジニアの100個SwiftUIアプリプロジェクト）での作業です。
+            
+            重要な指針：
+            - 全ての対応を日本語で実施してください
+            - CLAUDE.mdのプロジェクト指針を必ず参照してください
+            - ブランドカラー（AsaCoffeeBrown、AsaMocha等）の使用を推奨
+            - 共有コンポーネント（AsaButton、AsaCard、AsaLaunchScreen）を積極的に活用
+            - MVVMアーキテクチャパターンに従った実装
+            - @Observableや@StateなどモダンなSwiftUI技術の使用
+            - 家族向け・生産性重視のテーマを維持
+            - コメントとドキュメントは日本語で記述
           
           # Optional: Custom environment variables for Claude
           # claude_env: |

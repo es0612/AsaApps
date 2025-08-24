@@ -1,0 +1,36 @@
+# AsaApps Code Owners
+# このファイルは、特定のファイルやディレクトリの変更に対して自動的にレビュー担当者を指定します。
+
+# 全体のデフォルトオーナー（プロジェクトオーナー）
+* @es0612
+
+# 重要なプロジェクト設定ファイル
+CLAUDE.md @es0612
+README.md @es0612
+.github/ @es0612
+Docs/BrandGuidelines.md @es0612
+
+# 共有コンポーネント（全アプリに影響する可能性があるため重要）
+Shared/ @es0612
+Shared/*.swift @es0612
+Shared/Assets.xcassets/ @es0612
+
+# 個別アプリディレクトリ（相互レビューを推奨）
+Apps/AsaCounter/ @es0612
+Apps/AsaNumberGame/ @es0612
+Apps/AsaTicTacToe/ @es0612
+Apps/AsaStepCounter/ @es0612
+Apps/AsaPhotoFilter/ @es0612
+
+# Xcodeプロジェクトファイル（ビルド設定に影響するため慎重にレビュー）
+*.xcodeproj/ @es0612
+*.xcworkspace/ @es0612
+*.plist @es0612
+
+# ドキュメントとガイドライン
+Docs/ @es0612
+Docs/Notes/ @es0612
+
+# デザインアセット
+Designs/ @es0612
+**/*.xcassets/ @es0612

@@ -1,14 +1,16 @@
-name: Claude Code Review
+name: AsaApps SwiftUI Code Review
 
 on:
   pull_request:
-    types: [opened, synchronize]
-    # Optional: Only run on specific file changes
-    # paths:
-    #   - "src/**/*.ts"
-    #   - "src/**/*.tsx"
-    #   - "src/**/*.js"
-    #   - "src/**/*.jsx"
+    types: [opened, synchronize, reopened]
+    # SwiftUI/iOS開発関連ファイルのみを対象
+    paths:
+      - "Apps/**/*.swift"
+      - "Shared/**/*.swift"
+      - "**/*.xcodeproj/**"
+      - "**/*.xcworkspace/**"
+      - "**/*.plist"
+      - "**/*.xcassets/**"
 
 jobs:
   claude-review:
@@ -40,16 +42,29 @@ jobs:
           # Optional: Specify model (defaults to Claude Sonnet 4, uncomment for Claude Opus 4.1)
           # model: "claude-opus-4-1-20250805"
 
-          # Direct prompt for automated review (no @claude mention needed)
+          # AsaApps SwiftUI専用レビュープロンプト
           direct_prompt: |
-            Please review this pull request and provide feedback on:
-            - Code quality and best practices
-            - Potential bugs or issues
-            - Performance considerations
-            - Security concerns
-            - Test coverage
-            
-            Be constructive and helpful in your feedback.
+            AsaAppsプロジェクト（朝活パパエンジニアの100個SwiftUIアプリプロジェクト）のコードレビューを実施してください。
+            日本語でレビューを提供し、以下の観点で確認してください：
+
+            **SwiftUI/iOS開発のベストプラクティス:**
+            - SwiftUIライフサイクルの適切な使用（@State、@StateObject、@Observable）
+            - パフォーマンス最適化（不要な再描画の回避、@Binding使用）
+            - iOS設計パターンの遵守（MVVM、Clean Architecture）
+            - アクセシビリティの考慮（VoiceOver対応）
+
+            **AsaAppsプロジェクト固有の要件:**
+            - ブランドガイドライン準拠（AsaCoffeeBrown、AsaMocha等のカラー使用）
+            - 共有コンポーネントの適切な利用（AsaButton、AsaCard、AsaLaunchScreen）
+            - コメントとドキュメントの日本語化
+            - 家族向け・生産性重視のテーマ一貫性
+
+            **コード品質と安全性:**
+            - Swiftのベストプラクティス（Optional処理、エラーハンドリング）
+            - セキュリティ考慮（個人情報処理、HealthKitアクセス）
+            - メモリ管理とパフォーマンス
+
+            建設的で学習に役立つフィードバックを心がけてください。
 
           # Optional: Use sticky comments to make Claude reuse the same comment on subsequent pushes to the same PR
           # use_sticky_comment: true
@@ -68,8 +83,8 @@ jobs:
           #   'Welcome! Please review this PR from a first-time contributor. Be encouraging and provide detailed explanations for any suggestions.' ||
           #   'Please provide a thorough code review focusing on our coding standards and best practices.' }}
           
-          # Optional: Add specific tools for running tests or linting
-          # allowed_tools: "Bash(npm run test),Bash(npm run lint),Bash(npm run typecheck)"
+          # SwiftUI/iOS開発で使用するツールを許可
+          allowed_tools: "Bash(xcodebuild -project * -scheme * clean build),Bash(swift --version),Bash(swiftlint),Bash(xcrun simctl list),Bash(plutil -lint *)"
           
           # Optional: Skip review for certain conditions
           # if: |
