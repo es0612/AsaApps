@@ -16,6 +16,7 @@ final class StepCountService {
     var isHealthKitAvailable = false
     var authorizationStatus: HKAuthorizationStatus = .notDetermined
     var hasRequestedPermission = false
+    var hasValidatedAccess = false // 実際のアクセス可能性を示すフラグ
     var lastError: String?
     var isLoading = false
     
@@ -28,6 +29,8 @@ final class StepCountService {
         if isHealthKitAvailable {
             Task { @MainActor in
                 updateAuthorizationStatus()
+                // 既に権限が設定されている可能性があるので検証
+                await validateHealthKitAccess()
             }
         }
     }
@@ -72,10 +75,8 @@ final class StepCountService {
             }
             print("HealthKit権限リクエストが完了しました")
             
-            // 権限取得後、今日の歩数を取得
-            if isAuthorized {
-                await fetchTodayStepCount()
-            }
+            // 権限リクエスト後、実際にアクセス可能か検証
+            await validateHealthKitAccess()
             
         } catch {
             await MainActor.run {
@@ -99,23 +100,138 @@ final class StepCountService {
         print("歩数データ権限状態: \(authorizationStatusDescription)")
     }
     
-    // MARK: - 権限状態のテキスト
-    var authorizationStatusDescription: String {
-        switch authorizationStatus {
-        case .notDetermined:
-            return hasRequestedPermission ? "権限確認中..." : "権限が必要です"
-        case .sharingDenied:
-            return "HealthKitアクセスが拒否されています。設定から許可してください。"
-        case .sharingAuthorized:
-            return "HealthKitアクセスが許可されています"
-        @unknown default:
-            return "不明な権限状態です"
+    // MARK: - HealthKitアクセス検証
+    private func validateHealthKitAccess() async {
+        await MainActor.run {
+            self.isLoading = true
+        }
+        
+        // 実際にデータを取得して権限があるかテスト
+        let testSteps = await fetchStepCountForValidation(for: Date())
+        
+        await MainActor.run {
+            if testSteps >= 0 { // 0以上なら権限ありとみなす（0歩でも有効）
+                self.hasValidatedAccess = true
+                self.lastError = nil
+                
+                // 実際のアクセス成功時は権限ステータスを適切に設定
+                if self.authorizationStatus == .notDetermined {
+                    // notDeterminedでもアクセス可能な場合は有効とみなす
+                    print("HealthKitアクセス検証成功: \(testSteps)歩 (権限状態: notDetermined)")
+                } else {
+                    print("HealthKitアクセス検証成功: \(testSteps)歩 (権限状態: \(self.authorizationStatus.rawValue))")
+                }
+                
+                Task {
+                    await self.fetchTodayStepCount()
+                }
+            } else {
+                self.hasValidatedAccess = false
+                self.lastError = "HealthKitからデータを読み取れません。設定で権限を確認してください。"
+                print("HealthKitアクセス検証失敗")
+            }
+            self.isLoading = false
         }
     }
     
+    // 検証専用の歩数取得（エラーハンドリングを簡素化）
+    private func fetchStepCountForValidation(for date: Date) async -> Int {
+        guard let stepCountType = HKQuantityType.quantityType(forIdentifier: .stepCount) else {
+            return -1
+        }
+        
+        let calendar = Calendar.current
+        let startOfDay = calendar.startOfDay(for: date)
+        let endOfDay = calendar.date(byAdding: .day, value: 1, to: startOfDay) ?? Date()
+        
+        let predicate = HKQuery.predicateForSamples(
+            withStart: startOfDay,
+            end: endOfDay,
+            options: .strictStartDate
+        )
+        
+        return await withCheckedContinuation { continuation in
+            let query = HKStatisticsQuery(
+                quantityType: stepCountType,
+                quantitySamplePredicate: predicate,
+                options: .cumulativeSum
+            ) { _, result, error in
+                if let error = error {
+                    // 「No data available」エラーは権限ありの証拠として扱う
+                    let errorMessage = error.localizedDescription
+                    if errorMessage.contains("No data available") {
+                        print("検証成功: データなしだが権限あり (\(errorMessage))")
+                        continuation.resume(returning: 0) // 0歩として成功扱い
+                        return
+                    }
+                    print("アクセス検証エラー: \(errorMessage)")
+                    continuation.resume(returning: -1)
+                    return
+                }
+                
+                // result が nil でなければ、データがなくても権限は有効
+                let stepCount = result?.sumQuantity()?.doubleValue(for: HKUnit.count()) ?? 0
+                let steps = Int(stepCount)
+                print("検証成功: \(steps)歩のデータを取得")
+                
+                // 結果が nil でない場合は権限があることの証拠
+                if result != nil {
+                    continuation.resume(returning: steps >= 0 ? steps : 0)
+                } else {
+                    print("検証失敗: HKStatistics result が nil")
+                    continuation.resume(returning: -1)
+                }
+            }
+            
+            healthStore.execute(query)
+        }
+    }
+    
+    // MARK: - 権限状態のテキスト
+    var authorizationStatusDescription: String {
+        if isLoading {
+            return "権限確認中..."
+        }
+        
+        if authorizationStatus == .sharingDenied {
+            return "HealthKitアクセスが拒否されています。設定から許可してください。"
+        }
+        
+        if hasValidatedAccess {
+            return "HealthKitアクセスが許可されています"
+        }
+        
+        if hasRequestedPermission {
+            return "データアクセスを確認中です。権限が拒否されている可能性があります。"
+        }
+        
+        return "HealthKitへのアクセス権限が必要です"
+    }
+    
     var isAuthorized: Bool {
-        guard isHealthKitAvailable else { return false }
-        return authorizationStatus == .sharingAuthorized
+        guard isHealthKitAvailable else {
+            print("isAuthorized: false (HealthKit利用不可)")
+            return false
+        }
+        
+        // 実際のアクセス検証が成功している場合は権限ありとみなす
+        // HealthKitでは読み取り権限のauthorizationStatusが正確でない場合がある
+        if hasValidatedAccess {
+            print("isAuthorized: true (アクセス検証済み, authStatus: \(authorizationStatus.rawValue))")
+            return true
+        }
+        
+        // 検証前の場合：権限リクエストしていない、または明示的に拒否されていない場合のみtrue
+        if !hasRequestedPermission {
+            // 初回起動時は権限カードを表示するためにfalseを返す
+            print("isAuthorized: false (初回起動時, 権限リクエスト未実施)")
+            return false
+        }
+        
+        // 権限リクエスト後で検証前の場合
+        let result = authorizationStatus != .sharingDenied
+        print("isAuthorized: \(result) (権限リクエスト後検証前, authStatus: \(authorizationStatus.rawValue))")
+        return result
     }
     
     // MARK: - 歩数データ取得
@@ -126,15 +242,17 @@ final class StepCountService {
             return 0
         }
         
-        // 権限が明示的に拒否されている場合のみ処理を中断
-        if authorizationStatus == .sharingDenied {
-            print("HealthKit権限が拒否されています")
+        // 権限検証が完了していない場合はスキップ（初期化中など）
+        if !hasValidatedAccess && hasRequestedPermission && authorizationStatus == .sharingDenied {
+            print("HealthKit権限が明示的に拒否されています")
             return 0
         }
         
         let calendar = Calendar.current
         let startOfDay = calendar.startOfDay(for: date)
         let endOfDay = calendar.date(byAdding: .day, value: 1, to: startOfDay) ?? Date()
+        
+        print("歩数データクエリ実行: \(DateFormatter.shortDate.string(from: date)) (\(startOfDay) - \(endOfDay))")
         
         let predicate = HKQuery.predicateForSamples(
             withStart: startOfDay,
@@ -156,7 +274,18 @@ final class StepCountService {
                 
                 let stepCount = result?.sumQuantity()?.doubleValue(for: HKUnit.count()) ?? 0
                 let steps = Int(stepCount)
-                print("歩数データ取得成功: \(steps)歩 (日付: \(DateFormatter.shortDate.string(from: date)))")
+                print("歩数データ取得完了: \(steps)歩 (日付: \(DateFormatter.shortDate.string(from: date)))")
+                
+                // 結果の詳細ログ
+                if let result = result {
+                    print("HKStatistics詳細: sources=\(result.sources?.count ?? 0), startDate=\(result.startDate), endDate=\(result.endDate)")
+                    if let sources = result.sources {
+                        for source in sources {
+                            print("  データソース: \(source.name) (\(source.bundleIdentifier))")
+                        }
+                    }
+                }
+                
                 continuation.resume(returning: steps)
             }
             
