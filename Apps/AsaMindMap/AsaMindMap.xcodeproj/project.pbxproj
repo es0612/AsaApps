@@ -1,0 +1,608 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		09EA593C3911A71B74DAA3F8 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9A2FDD4D486B5E101BA414C /* SwiftUI.framework */; };
+		0B3F24FC6F5EDED44488EB30 /* ConnectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BC486CBFE70F88CC57F210 /* ConnectionView.swift */; };
+		2D3240F9A94C46FF15F8983F /* AsaMindMapApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 950B5D4F8B08FF8B2517DE78 /* AsaMindMapApp.swift */; };
+		32155937446800223FD03A65 /* MindMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD7DB46157222EA513D8C8E /* MindMap.swift */; };
+		4FD18A50187016FDEAC7AAE8 /* MindMapViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A44DEE6A17D5428941C5BE1 /* MindMapViewModel.swift */; };
+		7EE714181591F85AB5DEB074 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6142038FAC056FF66E30BD9F /* Assets.xcassets */; };
+		8705FF9A05C87D10D347C7EC /* AsaLaunchScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD855B73F74B72D25D9F21BA /* AsaLaunchScreen.swift */; };
+		8919432D2165C860FC6315B1 /* MindMapCanvasView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA3C5AF7A8FE9D1CD0D1C2DE /* MindMapCanvasView.swift */; };
+		963D017935F64B54BEF31061 /* NodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4832A1A3207F2D6E9E663439 /* NodeView.swift */; };
+		B77D54C1B38D2EAACE37C96F /* MindMapConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB20F8368449C6DE8738DEA6 /* MindMapConnection.swift */; };
+		BE9EB63128556D09099FB454 /* MindMapNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3639E0607B3192D81C30337 /* MindMapNode.swift */; };
+		C92409DC17E4AF4130E3C237 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C0ED9416DB2650C1C6DDC1C4 /* Assets.xcassets */; };
+		E31993BDC3CDB7FA9D4437D3 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAD3B18580818AAE7D8BBFA4 /* Foundation.framework */; };
+		F348F0C082DA7FA541048667 /* AsaButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C84DC38334CC098776E53F6D /* AsaButton.swift */; };
+		F906075E3E9AA48BCE9E4BD6 /* AsaCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFC58E83F3FFAFFAF6F28D31 /* AsaCard.swift */; };
+		F9812B83839C745151730E08 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2868FB94A22BD539D378602C /* ContentView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		5E8F269427F1D8CBFCECFF35 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CACFEC836639DE9FCAEE7FEF /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9B8472C997EB8A6AD65A98BA;
+			remoteInfo = AsaMindMap;
+		};
+		AE199945691FAED4116CDEDD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CACFEC836639DE9FCAEE7FEF /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9B8472C997EB8A6AD65A98BA;
+			remoteInfo = AsaMindMap;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		02BC486CBFE70F88CC57F210 /* ConnectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionView.swift; sourceTree = "<group>"; };
+		2868FB94A22BD539D378602C /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		2A44DEE6A17D5428941C5BE1 /* MindMapViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MindMapViewModel.swift; sourceTree = "<group>"; };
+		2F6AAACEFB6ABEA4B1307C4D /* AsaMindMapUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = AsaMindMapUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		4832A1A3207F2D6E9E663439 /* NodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeView.swift; sourceTree = "<group>"; };
+		6142038FAC056FF66E30BD9F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		762C0BEA69F77098D02C178D /* AsaMindMap.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = AsaMindMap.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		950B5D4F8B08FF8B2517DE78 /* AsaMindMapApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsaMindMapApp.swift; sourceTree = "<group>"; };
+		A3639E0607B3192D81C30337 /* MindMapNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MindMapNode.swift; sourceTree = "<group>"; };
+		AB20F8368449C6DE8738DEA6 /* MindMapConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MindMapConnection.swift; sourceTree = "<group>"; };
+		AFC58E83F3FFAFFAF6F28D31 /* AsaCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsaCard.swift; sourceTree = "<group>"; };
+		B57EE2D64CB9E6C270E18227 /* AsaMindMapTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = AsaMindMapTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		BCD7DB46157222EA513D8C8E /* MindMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MindMap.swift; sourceTree = "<group>"; };
+		C0ED9416DB2650C1C6DDC1C4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		C84DC38334CC098776E53F6D /* AsaButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsaButton.swift; sourceTree = "<group>"; };
+		CA3C5AF7A8FE9D1CD0D1C2DE /* MindMapCanvasView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MindMapCanvasView.swift; sourceTree = "<group>"; };
+		CD855B73F74B72D25D9F21BA /* AsaLaunchScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsaLaunchScreen.swift; sourceTree = "<group>"; };
+		DAD3B18580818AAE7D8BBFA4 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		F9A2FDD4D486B5E101BA414C /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		57C8DCDEF858449177FDB073 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				09EA593C3911A71B74DAA3F8 /* SwiftUI.framework in Frameworks */,
+				E31993BDC3CDB7FA9D4437D3 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		05232EE8E5423B56161B37B3 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				762C0BEA69F77098D02C178D /* AsaMindMap.app */,
+				B57EE2D64CB9E6C270E18227 /* AsaMindMapTests.xctest */,
+				2F6AAACEFB6ABEA4B1307C4D /* AsaMindMapUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		0A56BB06F07356DBF2D9F9F5 /* AsaApps */ = {
+			isa = PBXGroup;
+			children = (
+				3E46C094918BB34B9388F4E2 /* Shared */,
+			);
+			name = AsaApps;
+			path = ../..;
+			sourceTree = "<group>";
+		};
+		3E46C094918BB34B9388F4E2 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				C84DC38334CC098776E53F6D /* AsaButton.swift */,
+				AFC58E83F3FFAFFAF6F28D31 /* AsaCard.swift */,
+				CD855B73F74B72D25D9F21BA /* AsaLaunchScreen.swift */,
+				C0ED9416DB2650C1C6DDC1C4 /* Assets.xcassets */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		5E428A8A904FDC1A8F4F39BC /* AsaMindMapTests */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = AsaMindMapTests;
+			sourceTree = "<group>";
+		};
+		6A945D72ADC6C1A4B7F4BC46 /* AsaMindMap */ = {
+			isa = PBXGroup;
+			children = (
+				950B5D4F8B08FF8B2517DE78 /* AsaMindMapApp.swift */,
+				6142038FAC056FF66E30BD9F /* Assets.xcassets */,
+				02BC486CBFE70F88CC57F210 /* ConnectionView.swift */,
+				2868FB94A22BD539D378602C /* ContentView.swift */,
+				BCD7DB46157222EA513D8C8E /* MindMap.swift */,
+				CA3C5AF7A8FE9D1CD0D1C2DE /* MindMapCanvasView.swift */,
+				AB20F8368449C6DE8738DEA6 /* MindMapConnection.swift */,
+				A3639E0607B3192D81C30337 /* MindMapNode.swift */,
+				2A44DEE6A17D5428941C5BE1 /* MindMapViewModel.swift */,
+				4832A1A3207F2D6E9E663439 /* NodeView.swift */,
+			);
+			path = AsaMindMap;
+			sourceTree = "<group>";
+		};
+		743C2B04DF856EC5D0216310 = {
+			isa = PBXGroup;
+			children = (
+				0A56BB06F07356DBF2D9F9F5 /* AsaApps */,
+				6A945D72ADC6C1A4B7F4BC46 /* AsaMindMap */,
+				5E428A8A904FDC1A8F4F39BC /* AsaMindMapTests */,
+				CE069F7BAB723A7EBC3C996C /* AsaMindMapUITests */,
+				AE319DBE6C3F63A75BC108D2 /* Frameworks */,
+				05232EE8E5423B56161B37B3 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		AE319DBE6C3F63A75BC108D2 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				DAD3B18580818AAE7D8BBFA4 /* Foundation.framework */,
+				F9A2FDD4D486B5E101BA414C /* SwiftUI.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		CE069F7BAB723A7EBC3C996C /* AsaMindMapUITests */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = AsaMindMapUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		1A8E74E83548407CC6971752 /* AsaMindMapTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E4562BC5ECA581B458093CB9 /* Build configuration list for PBXNativeTarget "AsaMindMapTests" */;
+			buildPhases = (
+				E522A8226C4DB0E6C0BE9906 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				6B35B17A58B6B0E909011DB0 /* PBXTargetDependency */,
+			);
+			name = AsaMindMapTests;
+			packageProductDependencies = (
+			);
+			productName = AsaMindMapTests;
+			productReference = B57EE2D64CB9E6C270E18227 /* AsaMindMapTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		9A85115D848E16924799B325 /* AsaMindMapUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2C96A452C45B1E0905C26B19 /* Build configuration list for PBXNativeTarget "AsaMindMapUITests" */;
+			buildPhases = (
+				9E82694DED57F115F9809CEA /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				831F242149C407690BECA935 /* PBXTargetDependency */,
+			);
+			name = AsaMindMapUITests;
+			packageProductDependencies = (
+			);
+			productName = AsaMindMapUITests;
+			productReference = 2F6AAACEFB6ABEA4B1307C4D /* AsaMindMapUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+		9B8472C997EB8A6AD65A98BA /* AsaMindMap */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2E2CF3AACE9F0004056ED814 /* Build configuration list for PBXNativeTarget "AsaMindMap" */;
+			buildPhases = (
+				7E6FA1F937E935995BA70044 /* Sources */,
+				91444EB8A2325C63AEEA608F /* Resources */,
+				57C8DCDEF858449177FDB073 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = AsaMindMap;
+			packageProductDependencies = (
+			);
+			productName = AsaMindMap;
+			productReference = 762C0BEA69F77098D02C178D /* AsaMindMap.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		CACFEC836639DE9FCAEE7FEF /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					1A8E74E83548407CC6971752 = {
+						DevelopmentTeam = "";
+						ProvisioningStyle = Automatic;
+					};
+					9A85115D848E16924799B325 = {
+						DevelopmentTeam = "";
+						ProvisioningStyle = Automatic;
+						TestTargetID = 9B8472C997EB8A6AD65A98BA;
+					};
+					9B8472C997EB8A6AD65A98BA = {
+						DevelopmentTeam = "";
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 6EB151D403DDBC367B357B40 /* Build configuration list for PBXProject "AsaMindMap" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 743C2B04DF856EC5D0216310;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				9B8472C997EB8A6AD65A98BA /* AsaMindMap */,
+				1A8E74E83548407CC6971752 /* AsaMindMapTests */,
+				9A85115D848E16924799B325 /* AsaMindMapUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		91444EB8A2325C63AEEA608F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7EE714181591F85AB5DEB074 /* Assets.xcassets in Resources */,
+				C92409DC17E4AF4130E3C237 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		7E6FA1F937E935995BA70044 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F348F0C082DA7FA541048667 /* AsaButton.swift in Sources */,
+				F906075E3E9AA48BCE9E4BD6 /* AsaCard.swift in Sources */,
+				8705FF9A05C87D10D347C7EC /* AsaLaunchScreen.swift in Sources */,
+				2D3240F9A94C46FF15F8983F /* AsaMindMapApp.swift in Sources */,
+				0B3F24FC6F5EDED44488EB30 /* ConnectionView.swift in Sources */,
+				F9812B83839C745151730E08 /* ContentView.swift in Sources */,
+				32155937446800223FD03A65 /* MindMap.swift in Sources */,
+				8919432D2165C860FC6315B1 /* MindMapCanvasView.swift in Sources */,
+				B77D54C1B38D2EAACE37C96F /* MindMapConnection.swift in Sources */,
+				BE9EB63128556D09099FB454 /* MindMapNode.swift in Sources */,
+				4FD18A50187016FDEAC7AAE8 /* MindMapViewModel.swift in Sources */,
+				963D017935F64B54BEF31061 /* NodeView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9E82694DED57F115F9809CEA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E522A8226C4DB0E6C0BE9906 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		6B35B17A58B6B0E909011DB0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 9B8472C997EB8A6AD65A98BA /* AsaMindMap */;
+			targetProxy = AE199945691FAED4116CDEDD /* PBXContainerItemProxy */;
+		};
+		831F242149C407690BECA935 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 9B8472C997EB8A6AD65A98BA /* AsaMindMap */;
+			targetProxy = 5E8F269427F1D8CBFCECFF35 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		20CA4F715E76BC92A4012D43 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGNING_ALLOWED = NO;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		403FA74F91865D09A2DA6F7E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGNING_ALLOWED = NO;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = "";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		7C4BEA694066FB9A74F9FD1D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.asapapa.apps.asamindmap;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		A0B76741A5A855F73D6C5553 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.asapapa.apps.asamindmap.tests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AsaMindMap.app/AsaMindMap";
+			};
+			name = Release;
+		};
+		AC022252C45DAC99A0BD7C9A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.asapapa.apps.asamindmap.ui-tests";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = AsaMindMap;
+			};
+			name = Debug;
+		};
+		E7EDFC041805F039DCE7A525 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.asapapa.apps.asamindmap.ui-tests";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = AsaMindMap;
+			};
+			name = Release;
+		};
+		F607716BDEE28C96B3990127 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.asapapa.apps.asamindmap;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		FE8FFC7C5802EE2CD01E677C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.asapapa.apps.asamindmap.tests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AsaMindMap.app/AsaMindMap";
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		2C96A452C45B1E0905C26B19 /* Build configuration list for PBXNativeTarget "AsaMindMapUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AC022252C45DAC99A0BD7C9A /* Debug */,
+				E7EDFC041805F039DCE7A525 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		2E2CF3AACE9F0004056ED814 /* Build configuration list for PBXNativeTarget "AsaMindMap" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F607716BDEE28C96B3990127 /* Debug */,
+				7C4BEA694066FB9A74F9FD1D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		6EB151D403DDBC367B357B40 /* Build configuration list for PBXProject "AsaMindMap" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				20CA4F715E76BC92A4012D43 /* Debug */,
+				403FA74F91865D09A2DA6F7E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		E4562BC5ECA581B458093CB9 /* Build configuration list for PBXNativeTarget "AsaMindMapTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FE8FFC7C5802EE2CD01E677C /* Debug */,
+				A0B76741A5A855F73D6C5553 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = CACFEC836639DE9FCAEE7FEF /* Project object */;
+}
