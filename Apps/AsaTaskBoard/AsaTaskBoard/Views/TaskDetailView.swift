@@ -265,9 +265,13 @@ struct TaskDetailView: View {
                     AsaButton(
                         title: "保存",
                         action: {
-                            Task {
-                                await saveChanges()
-                            }
+                            viewModel.updateTask(
+                                task,
+                                title: editTitle,
+                                description: editDescription.isEmpty ? nil : editDescription,
+                                priority: editPriority,
+                                dueDate: hasEditDueDate ? editDueDate : nil
+                            )
                         },
                         isEnabled: !editTitle.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
                     )
@@ -284,10 +288,8 @@ struct TaskDetailView: View {
                 AsaButton(
                     title: "完了にする",
                     action: {
-                        Task {
-                            await viewModel.moveTask(task, to: .done)
-                            dismiss()
-                        }
+                        viewModel.moveTask(task, to: .done)
+                        dismiss()
                     },
                     color: AsaColors.coffeeBrown
                 )
@@ -297,10 +299,8 @@ struct TaskDetailView: View {
                 AsaButton(
                     title: "進行中にする",
                     action: {
-                        Task {
-                            await viewModel.moveTask(task, to: .inProgress)
-                            dismiss()
-                        }
+                        viewModel.moveTask(task, to: .inProgress)
+                        dismiss()
                     },
                     color: AsaColors.mocha
                 )
@@ -311,9 +311,13 @@ struct TaskDetailView: View {
     private var editButton: some View {
         Button(isEditing ? "完了" : "編集") {
             if isEditing {
-                Task {
-                    await saveChanges()
-                }
+                viewModel.updateTask(
+                    task,
+                    title: editTitle,
+                    description: editDescription.isEmpty ? nil : editDescription,
+                    priority: editPriority,
+                    dueDate: hasEditDueDate ? editDueDate : nil
+                )
             } else {
                 isEditing = true
             }

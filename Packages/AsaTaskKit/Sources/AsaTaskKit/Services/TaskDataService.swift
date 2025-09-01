@@ -3,7 +3,8 @@ import SwiftData
 import AsaUIKit
 
 /// タスクデータの永続化を管理するサービスクラス
-public actor TaskDataService {
+@MainActor
+public final class TaskDataService {
     private let container: ModelContainer
     
     public init() throws {
@@ -128,78 +129,41 @@ public actor TaskDataService {
         status: TaskStatus? = nil,
         priority: AsaTaskPriority? = nil
     ) throws -> [Task] {
-        let context = modelContext
-        
-        var predicate: Predicate<Task>
-        
-        if let status = status, let priority = priority {
-            predicate = #Predicate<Task> { task in
-                task.column?.board?.id == board.id &&
-                task.status == status &&
-                task.priority == priority
-            }
-        } else if let status = status {
-            predicate = #Predicate<Task> { task in
-                task.column?.board?.id == board.id &&
-                task.status == status
-            }
-        } else if let priority = priority {
-            predicate = #Predicate<Task> { task in
-                task.column?.board?.id == board.id &&
-                task.priority == priority
-            }
-        } else {
-            predicate = #Predicate<Task> { task in
-                task.column?.board?.id == board.id
-            }
+        var tasks = board.allTasks
+        if let status = status {
+            tasks = tasks.filter { $0.status == status }
         }
-        
-        let descriptor = FetchDescriptor<Task>(
-            predicate: predicate,
-            sortBy: [
-                SortDescriptor(\.priority),
-                SortDescriptor(\.createdAt, order: .reverse)
-            ]
-        )
-        
-        return try context.fetch(descriptor)
+        if let priority = priority {
+            tasks = tasks.filter { $0.priority == priority }
+        }
+        return tasks.sorted { lhs, rhs in
+            if lhs.priority != rhs.priority {
+                return lhs.priority.rawValue < rhs.priority.rawValue
+            }
+            return lhs.createdAt > rhs.createdAt
+        }
     }
     
     public func fetchOverdueTasks() throws -> [Task] {
         let context = modelContext
-        let now = Date()
-        let predicate = #Predicate<Task> { task in
-            task.dueDate != nil &&
-            task.dueDate! < now &&
-            task.status != .done
+        let all = try context.fetch(FetchDescriptor<Task>())
+        return all.filter { $0.isOverdue }.sorted { (a, b) in
+            (a.dueDate ?? .distantFuture) < (b.dueDate ?? .distantFuture)
         }
-        
-        let descriptor = FetchDescriptor<Task>(
-            predicate: predicate,
-            sortBy: [SortDescriptor(\.dueDate)]
-        )
-        
-        return try context.fetch(descriptor)
     }
     
     public func fetchTasksDueToday() throws -> [Task] {
         let context = modelContext
+        let all = try context.fetch(FetchDescriptor<Task>())
         let calendar = Calendar.current
-        let startOfDay = calendar.startOfDay(for: Date())
-        let endOfDay = calendar.date(byAdding: .day, value: 1, to: startOfDay)!
-        
-        let predicate = #Predicate<Task> { task in
-            task.dueDate != nil &&
-            task.dueDate! >= startOfDay &&
-            task.dueDate! < endOfDay
+        return all.filter { task in
+            if let due = task.dueDate {
+                return calendar.isDate(due, inSameDayAs: Date())
+            }
+            return false
+        }.sorted { (a, b) in
+            (a.dueDate ?? .distantFuture) < (b.dueDate ?? .distantFuture)
         }
-        
-        let descriptor = FetchDescriptor<Task>(
-            predicate: predicate,
-            sortBy: [SortDescriptor(\.dueDate)]
-        )
-        
-        return try context.fetch(descriptor)
     }
     
     // MARK: - Utility Methods
@@ -231,40 +195,38 @@ public extension TaskDataService {
         )
         
         let service = try TaskDataService()
-        
-        // プレビュー用のサンプルデータを作成
-        Task {
-            let board = try await service.createBoard(
-                title: "サンプルプロジェクト",
-                description: "プレビュー用のサンプルタスクボード"
-            )
-            
-            _ = try await service.createTask(
-                title: "API設計",
-                description: "RESTful APIの設計と仕様書作成",
-                priority: .high,
-                dueDate: Calendar.current.date(byAdding: .day, value: 2, to: Date()),
-                in: board,
-                column: .todo
-            )
-            
-            _ = try await service.createTask(
-                title: "UI実装",
-                description: "メイン画面のUI実装",
-                priority: .medium,
-                in: board,
-                column: .inProgress
-            )
-            
-            _ = try await service.createTask(
-                title: "単体テスト",
-                description: "ユニットテストの作成",
-                priority: .low,
-                in: board,
-                column: .done
-            )
-        }
-        
+
+        // プレビュー用のサンプルデータを作成（同期）
+        let board = try service.createBoard(
+            title: "サンプルプロジェクト",
+            description: "プレビュー用のサンプルタスクボード"
+        )
+
+        _ = try service.createTask(
+            title: "API設計",
+            description: "RESTful APIの設計と仕様書作成",
+            priority: .high,
+            dueDate: Calendar.current.date(byAdding: .day, value: 2, to: Date()),
+            in: board,
+            column: .todo
+        )
+
+        _ = try service.createTask(
+            title: "UI実装",
+            description: "メイン画面のUI実装",
+            priority: .medium,
+            in: board,
+            column: .inProgress
+        )
+
+        _ = try service.createTask(
+            title: "単体テスト",
+            description: "ユニットテストの作成",
+            priority: .low,
+            in: board,
+            column: .done
+        )
+
         return service
     }
 }

@@ -54,9 +54,7 @@ struct TaskCardView: View {
             
             if task.status != .inProgress {
                 Button {
-                    Task {
-                        await viewModel.moveTask(task, to: .inProgress)
-                    }
+                    viewModel.moveTask(task, to: .inProgress)
                 } label: {
                     Label("進行中に移動", systemImage: "arrow.right.circle")
                 }
@@ -64,9 +62,7 @@ struct TaskCardView: View {
             
             if task.status != .done {
                 Button {
-                    Task {
-                        await viewModel.moveTask(task, to: .done)
-                    }
+                    viewModel.moveTask(task, to: .done)
                 } label: {
                     Label("完了に移動", systemImage: "checkmark.circle")
                 }
@@ -75,9 +71,7 @@ struct TaskCardView: View {
             Divider()
             
             Button(role: .destructive) {
-                Task {
-                    await viewModel.deleteTask(task)
-                }
+                viewModel.deleteTask(task)
             } label: {
                 Label("削除", systemImage: "trash")
             }

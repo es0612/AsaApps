@@ -131,10 +131,8 @@ struct AddTaskView: View {
         AsaButton(
             title: "タスクを作成",
             action: {
-                Task {
-                    await viewModel.addNewTask()
-                    dismiss()
-                }
+                viewModel.addNewTask()
+                dismiss()
             },
             isEnabled: !viewModel.newTaskTitle.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
         )

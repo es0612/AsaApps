@@ -95,9 +95,8 @@ struct TaskColumnView: View {
             return false
         }
         
-        Task {
-            await viewModel.handleDrop(task: task, to: status)
-        }
+        viewModel.moveTask(task, to: status)
+        viewModel.endDragging()
         
         return true
     }
@@ -109,7 +108,7 @@ struct TaskColumnView: View {
 
 // MARK: - Drag & Drop Support
 
-struct TaskDropItem: Transferable {
+struct TaskDropItem: Transferable, Codable {
     let taskId: UUID
     
     static var transferRepresentation: some TransferRepresentation {

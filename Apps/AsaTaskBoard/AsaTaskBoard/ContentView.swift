@@ -45,7 +45,7 @@ struct ContentView: View {
                 }
             }
             .task {
-                await viewModel.loadBoard()
+                viewModel.loadBoard()
             }
         }
     }

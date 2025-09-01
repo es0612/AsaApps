@@ -4,28 +4,27 @@ import SwiftData
 import AsaUIKit
 
 @MainActor
-@Observable
-public final class TaskBoardViewModel {
+public final class TaskBoardViewModel: ObservableObject {
     
     // MARK: - Properties
     
     private let dataService: TaskDataService
-    public private(set) var currentBoard: TaskBoard?
-    public private(set) var isLoading = false
-    public private(set) var errorMessage: String?
+    @Published public private(set) var currentBoard: TaskBoard?
+    @Published public private(set) var isLoading = false
+    @Published public private(set) var errorMessage: String?
     
     // UI State
-    public var showingAddTask = false
-    public var showingTaskDetail = false
-    public var selectedTask: Task?
-    public var draggedTask: Task?
+    @Published public var showingAddTask = false
+    @Published public var showingTaskDetail = false
+    @Published public var selectedTask: Task?
+    @Published public var draggedTask: Task?
     
     // Task Form Properties
-    public var newTaskTitle = ""
-    public var newTaskDescription = ""
-    public var newTaskPriority: AsaTaskPriority = .medium
-    public var newTaskDueDate: Date?
-    public var hasNewTaskDueDate = false
+    @Published public var newTaskTitle = ""
+    @Published public var newTaskDescription = ""
+    @Published public var newTaskPriority: AsaTaskPriority = .medium
+    @Published public var newTaskDueDate: Date?
+    @Published public var hasNewTaskDueDate = false
     
     // MARK: - Computed Properties
     
@@ -65,18 +64,18 @@ public final class TaskBoardViewModel {
     
     // MARK: - Board Management
     
-    public func loadBoard() async {
+    public func loadBoard() {
         isLoading = true
         errorMessage = nil
         
         do {
-            let boards = try await dataService.fetchAllBoards()
+            let boards = try dataService.fetchAllBoards()
             
             if let existingBoard = boards.first {
                 currentBoard = existingBoard
             } else {
                 // デフォルトボードを作成
-                currentBoard = try await dataService.createBoard(
+                currentBoard = try dataService.createBoard(
                     title: "マイタスクボード",
                     description: "デフォルトのタスク管理ボード"
                 )
@@ -88,17 +87,17 @@ public final class TaskBoardViewModel {
         isLoading = false
     }
     
-    public func createNewBoard(title: String, description: String? = nil) async {
+    public func createNewBoard(title: String, description: String? = nil) {
         do {
-            currentBoard = try await dataService.createBoard(title: title, description: description)
+            currentBoard = try dataService.createBoard(title: title, description: description)
         } catch {
             errorMessage = "ボードの作成に失敗しました: \(error.localizedDescription)"
         }
     }
     
     // MARK: - Task Management
-    
-    public func addNewTask() async {
+
+    public func addNewTask() {
         guard let board = currentBoard,
               !newTaskTitle.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
             return
@@ -106,7 +105,7 @@ public final class TaskBoardViewModel {
         
         do {
             let dueDate = hasNewTaskDueDate ? newTaskDueDate : nil
-            _ = try await dataService.createTask(
+            _ = try dataService.createTask(
                 title: newTaskTitle,
                 description: newTaskDescription.isEmpty ? nil : newTaskDescription,
                 priority: newTaskPriority,
@@ -129,9 +128,9 @@ public final class TaskBoardViewModel {
         description: String? = nil,
         priority: AsaTaskPriority? = nil,
         dueDate: Date? = nil
-    ) async {
+    ) {
         do {
-            try await dataService.updateTask(
+            try dataService.updateTask(
                 task,
                 title: title,
                 description: description,
@@ -143,19 +142,19 @@ public final class TaskBoardViewModel {
         }
     }
     
-    public func deleteTask(_ task: Task) async {
+    public func deleteTask(_ task: Task) {
         do {
-            try await dataService.deleteTask(task)
+            try dataService.deleteTask(task)
         } catch {
             errorMessage = "タスクの削除に失敗しました: \(error.localizedDescription)"
         }
     }
     
-    public func moveTask(_ task: Task, to status: TaskStatus) async {
+    public func moveTask(_ task: Task, to status: TaskStatus) {
         guard let board = currentBoard else { return }
         
         do {
-            try await dataService.moveTask(task, to: status, in: board)
+            try dataService.moveTask(task, to: status, in: board)
         } catch {
             errorMessage = "タスクの移動に失敗しました: \(error.localizedDescription)"
         }
@@ -175,8 +174,8 @@ public final class TaskBoardViewModel {
         return task.status != status
     }
     
-    public func handleDrop(task: Task, to status: TaskStatus) async {
-        await moveTask(task, to: status)
+    public func handleDrop(task: Task, to status: TaskStatus) {
+        moveTask(task, to: status)
         endDragging()
     }
     
