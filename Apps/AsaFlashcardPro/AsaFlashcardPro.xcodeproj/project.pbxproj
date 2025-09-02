@@ -1,0 +1,665 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		070D17D934E1DD3B57EDA779 /* AsaFlashcardProTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 675797C2E2D9E621FDB1EF0D /* AsaFlashcardProTests.swift */; };
+		0F9C85D816BFC1C0EE14F8E3 /* CategoryDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13C998D633F40CB1FF9DF0C1 /* CategoryDetailView.swift */; };
+		1ADB1872A5E813CD27904C6D /* StudyModeSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6292832E7D34308DBD0DF83A /* StudyModeSelectionView.swift */; };
+		1D1C727E560690ED6D61B5EF /* StatisticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 139A85DD0713E70A4DA45262 /* StatisticsView.swift */; };
+		2352DB1E7A8C5961EA463309 /* StudyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BC0ED6DF05E7263CD8B3470 /* StudyView.swift */; };
+		23580C5C49CCFB4AD5570B79 /* CategoryListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC3486D032622649CB29737 /* CategoryListView.swift */; };
+		23A7489BEEC99F4AEDB9E053 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E63CE5FCFC705ADA5F0BF21 /* ContentView.swift */; };
+		25E8480CB9D15703B46DF158 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4DB37C57FEFD912ABEDD75CC /* Assets.xcassets */; };
+		2E6D50C99AD9E9FEB94B1A36 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE63DA01C23D3B6430941201 /* SwiftUI.framework */; };
+		2F06B8B26A80B562B881A138 /* EditCategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD369B01E7A61AA0EE9E78AF /* EditCategoryView.swift */; };
+		6B468AC39F03DBA01898E039 /* SwiftData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BCEC2DF4FF76877A730BD646 /* SwiftData.framework */; };
+		6CD03738923AEFA60434762D /* StudyProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37345E5CF80AA1742B4A1621 /* StudyProgressView.swift */; };
+		80916F3A58DACFCC2D7547A7 /* AsaFlashcardProApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2F8FF520228852F48EC96F6 /* AsaFlashcardProApp.swift */; };
+		936D0984844DE8E3B870103C /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EFBCAA2F96DBA8FD98340FD /* SettingsView.swift */; };
+		A447416CCAEB891DC0797474 /* AddCategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F0E1E5FFE2661FBC0DC7D0 /* AddCategoryView.swift */; };
+		AA0512BDAD6FEB8CC2378365 /* AsaUIKit in Frameworks */ = {isa = PBXBuildFile; productRef = 303788D7253A33A6F7C4810F /* AsaUIKit */; };
+		ABC78347BCBCD77099EA83D5 /* AddFlashcardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F38164E895763EAD604348D /* AddFlashcardView.swift */; };
+		AFAFCB0FD5A8BC37D4F6164E /* Flashcard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08C1347F89A4BDA3263CFC5A /* Flashcard.swift */; };
+		CA2207E1C0390B622EEB102C /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE7B130F24C0041E9967170D /* Category.swift */; };
+		EA103C88419B6370397D1B66 /* FlashcardEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E2503590C51DD16A0DA0A1A /* FlashcardEditView.swift */; };
+		F4CABF5867B51FCA6BD5090B /* StudyProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 321E81BC4BF7CD646398C4B8 /* StudyProgress.swift */; };
+		FE1A1E9BB474CDBD28091B02 /* AsaFlashcardProUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00818255D20925EF109DD0FA /* AsaFlashcardProUITests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		5EC9F6B023C9D34382CF989A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B71AD9497876EBD030C6F9CC /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 6EB51931AA334222236985FA;
+			remoteInfo = AsaFlashcardPro;
+		};
+		81A8FDE38B40DCC9E96F589D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B71AD9497876EBD030C6F9CC /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 6EB51931AA334222236985FA;
+			remoteInfo = AsaFlashcardPro;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		00818255D20925EF109DD0FA /* AsaFlashcardProUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsaFlashcardProUITests.swift; sourceTree = "<group>"; };
+		08C1347F89A4BDA3263CFC5A /* Flashcard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Flashcard.swift; sourceTree = "<group>"; };
+		09D042BEF35C2C5737C520B7 /* AsaFlashcardProTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = AsaFlashcardProTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		139A85DD0713E70A4DA45262 /* StatisticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsView.swift; sourceTree = "<group>"; };
+		13C998D633F40CB1FF9DF0C1 /* CategoryDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryDetailView.swift; sourceTree = "<group>"; };
+		2BC0ED6DF05E7263CD8B3470 /* StudyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyView.swift; sourceTree = "<group>"; };
+		321E81BC4BF7CD646398C4B8 /* StudyProgress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyProgress.swift; sourceTree = "<group>"; };
+		37345E5CF80AA1742B4A1621 /* StudyProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyProgressView.swift; sourceTree = "<group>"; };
+		4DB37C57FEFD912ABEDD75CC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		4EFBCAA2F96DBA8FD98340FD /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		5F1DA034814C0D32F081185B /* AsaFlashcardPro.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = AsaFlashcardPro.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		5FF5A2D93A7B3E294574E13A /* AsaUIKit */ = {isa = PBXFileReference; lastKnownFileType = folder; name = AsaUIKit; path = ../../Packages/AsaUIKit; sourceTree = SOURCE_ROOT; };
+		6292832E7D34308DBD0DF83A /* StudyModeSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyModeSelectionView.swift; sourceTree = "<group>"; };
+		675797C2E2D9E621FDB1EF0D /* AsaFlashcardProTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsaFlashcardProTests.swift; sourceTree = "<group>"; };
+		8CC3486D032622649CB29737 /* CategoryListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryListView.swift; sourceTree = "<group>"; };
+		8E2503590C51DD16A0DA0A1A /* FlashcardEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlashcardEditView.swift; sourceTree = "<group>"; };
+		8E63CE5FCFC705ADA5F0BF21 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		8F38164E895763EAD604348D /* AddFlashcardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFlashcardView.swift; sourceTree = "<group>"; };
+		B28918802BE61509A76E6F57 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		BCEC2DF4FF76877A730BD646 /* SwiftData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftData.framework; path = System/Library/Frameworks/SwiftData.framework; sourceTree = SDKROOT; };
+		BD369B01E7A61AA0EE9E78AF /* EditCategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCategoryView.swift; sourceTree = "<group>"; };
+		BE7B130F24C0041E9967170D /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
+		D5F0E1E5FFE2661FBC0DC7D0 /* AddCategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCategoryView.swift; sourceTree = "<group>"; };
+		DBE28EFB6F0B8A947087B99D /* AsaFlashcardProUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = AsaFlashcardProUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		DE63DA01C23D3B6430941201 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		E2F8FF520228852F48EC96F6 /* AsaFlashcardProApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsaFlashcardProApp.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		30D6A5511D230E6F81E29B7F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AA0512BDAD6FEB8CC2378365 /* AsaUIKit in Frameworks */,
+				2E6D50C99AD9E9FEB94B1A36 /* SwiftUI.framework in Frameworks */,
+				6B468AC39F03DBA01898E039 /* SwiftData.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		065CB338DB8C10E969E943C5 /* AsaFlashcardPro */ = {
+			isa = PBXGroup;
+			children = (
+				E2F8FF520228852F48EC96F6 /* AsaFlashcardProApp.swift */,
+				4DB37C57FEFD912ABEDD75CC /* Assets.xcassets */,
+				8E63CE5FCFC705ADA5F0BF21 /* ContentView.swift */,
+				B28918802BE61509A76E6F57 /* Info.plist */,
+				36ABFACEBFF44208B2CB654C /* Models */,
+				D76489E9BC676936AEFEC3DE /* ViewModels */,
+				23EE433181B85AA3D6DA18FA /* Views */,
+			);
+			path = AsaFlashcardPro;
+			sourceTree = "<group>";
+		};
+		117FFB935D9E2DBAD03E7FD5 /* AsaFlashcardProUITests */ = {
+			isa = PBXGroup;
+			children = (
+				00818255D20925EF109DD0FA /* AsaFlashcardProUITests.swift */,
+			);
+			path = AsaFlashcardProUITests;
+			sourceTree = "<group>";
+		};
+		192544EB2C42F6D954D7AE4E /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				5F1DA034814C0D32F081185B /* AsaFlashcardPro.app */,
+				09D042BEF35C2C5737C520B7 /* AsaFlashcardProTests.xctest */,
+				DBE28EFB6F0B8A947087B99D /* AsaFlashcardProUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		1FB5647E74809F764F2CBDB7 /* AsaFlashcardProTests */ = {
+			isa = PBXGroup;
+			children = (
+				675797C2E2D9E621FDB1EF0D /* AsaFlashcardProTests.swift */,
+			);
+			path = AsaFlashcardProTests;
+			sourceTree = "<group>";
+		};
+		23EE433181B85AA3D6DA18FA /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				D5F0E1E5FFE2661FBC0DC7D0 /* AddCategoryView.swift */,
+				8F38164E895763EAD604348D /* AddFlashcardView.swift */,
+				13C998D633F40CB1FF9DF0C1 /* CategoryDetailView.swift */,
+				8CC3486D032622649CB29737 /* CategoryListView.swift */,
+				BD369B01E7A61AA0EE9E78AF /* EditCategoryView.swift */,
+				8E2503590C51DD16A0DA0A1A /* FlashcardEditView.swift */,
+				4EFBCAA2F96DBA8FD98340FD /* SettingsView.swift */,
+				139A85DD0713E70A4DA45262 /* StatisticsView.swift */,
+				6292832E7D34308DBD0DF83A /* StudyModeSelectionView.swift */,
+				37345E5CF80AA1742B4A1621 /* StudyProgressView.swift */,
+				2BC0ED6DF05E7263CD8B3470 /* StudyView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		36ABFACEBFF44208B2CB654C /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				BE7B130F24C0041E9967170D /* Category.swift */,
+				08C1347F89A4BDA3263CFC5A /* Flashcard.swift */,
+				321E81BC4BF7CD646398C4B8 /* StudyProgress.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		4D5580936F3191F461742D4F /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				5FF5A2D93A7B3E294574E13A /* AsaUIKit */,
+			);
+			name = Packages;
+			sourceTree = "<group>";
+		};
+		52AC4D78CE3CDC326BCD23AD = {
+			isa = PBXGroup;
+			children = (
+				065CB338DB8C10E969E943C5 /* AsaFlashcardPro */,
+				1FB5647E74809F764F2CBDB7 /* AsaFlashcardProTests */,
+				117FFB935D9E2DBAD03E7FD5 /* AsaFlashcardProUITests */,
+				4D5580936F3191F461742D4F /* Packages */,
+				F897A6C17AEEFE6136A70AB7 /* Frameworks */,
+				192544EB2C42F6D954D7AE4E /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		D76489E9BC676936AEFEC3DE /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		F897A6C17AEEFE6136A70AB7 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				BCEC2DF4FF76877A730BD646 /* SwiftData.framework */,
+				DE63DA01C23D3B6430941201 /* SwiftUI.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		26202ED7D847298C5694440E /* AsaFlashcardProUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B3BBBFC22C904EC6F5DB16DD /* Build configuration list for PBXNativeTarget "AsaFlashcardProUITests" */;
+			buildPhases = (
+				0EF1BFCCD435B5BD1AEBEE82 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				7EF5DB22A0E0E3C357EE4541 /* PBXTargetDependency */,
+			);
+			name = AsaFlashcardProUITests;
+			packageProductDependencies = (
+			);
+			productName = AsaFlashcardProUITests;
+			productReference = DBE28EFB6F0B8A947087B99D /* AsaFlashcardProUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+		6EB51931AA334222236985FA /* AsaFlashcardPro */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DFCE049736C596D30476046C /* Build configuration list for PBXNativeTarget "AsaFlashcardPro" */;
+			buildPhases = (
+				167C10339DC7A0C29CCCFE24 /* Sources */,
+				F311446A6B5862C25B59C712 /* Resources */,
+				30D6A5511D230E6F81E29B7F /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = AsaFlashcardPro;
+			packageProductDependencies = (
+				303788D7253A33A6F7C4810F /* AsaUIKit */,
+			);
+			productName = AsaFlashcardPro;
+			productReference = 5F1DA034814C0D32F081185B /* AsaFlashcardPro.app */;
+			productType = "com.apple.product-type.application";
+		};
+		CD5699414A0A27C3F177DD63 /* AsaFlashcardProTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0CC2D261AD2398C9C8ADC283 /* Build configuration list for PBXNativeTarget "AsaFlashcardProTests" */;
+			buildPhases = (
+				E4E2B4AD8978F9B6D2B3829A /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				06E5865B878A8861909A1D16 /* PBXTargetDependency */,
+			);
+			name = AsaFlashcardProTests;
+			packageProductDependencies = (
+			);
+			productName = AsaFlashcardProTests;
+			productReference = 09D042BEF35C2C5737C520B7 /* AsaFlashcardProTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		B71AD9497876EBD030C6F9CC /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					26202ED7D847298C5694440E = {
+						DevelopmentTeam = "";
+						ProvisioningStyle = Automatic;
+						TestTargetID = 6EB51931AA334222236985FA;
+					};
+					6EB51931AA334222236985FA = {
+						DevelopmentTeam = "";
+						ProvisioningStyle = Automatic;
+					};
+					CD5699414A0A27C3F177DD63 = {
+						DevelopmentTeam = "";
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 05D145D91108284F1AC82212 /* Build configuration list for PBXProject "AsaFlashcardPro" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 52AC4D78CE3CDC326BCD23AD;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				1705003A2560B5365A130613 /* XCLocalSwiftPackageReference "../../Packages/AsaUIKit" */,
+			);
+			preferredProjectObjectVersion = 77;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				6EB51931AA334222236985FA /* AsaFlashcardPro */,
+				CD5699414A0A27C3F177DD63 /* AsaFlashcardProTests */,
+				26202ED7D847298C5694440E /* AsaFlashcardProUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		F311446A6B5862C25B59C712 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				25E8480CB9D15703B46DF158 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		0EF1BFCCD435B5BD1AEBEE82 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FE1A1E9BB474CDBD28091B02 /* AsaFlashcardProUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		167C10339DC7A0C29CCCFE24 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A447416CCAEB891DC0797474 /* AddCategoryView.swift in Sources */,
+				ABC78347BCBCD77099EA83D5 /* AddFlashcardView.swift in Sources */,
+				80916F3A58DACFCC2D7547A7 /* AsaFlashcardProApp.swift in Sources */,
+				CA2207E1C0390B622EEB102C /* Category.swift in Sources */,
+				0F9C85D816BFC1C0EE14F8E3 /* CategoryDetailView.swift in Sources */,
+				23580C5C49CCFB4AD5570B79 /* CategoryListView.swift in Sources */,
+				23A7489BEEC99F4AEDB9E053 /* ContentView.swift in Sources */,
+				2F06B8B26A80B562B881A138 /* EditCategoryView.swift in Sources */,
+				AFAFCB0FD5A8BC37D4F6164E /* Flashcard.swift in Sources */,
+				EA103C88419B6370397D1B66 /* FlashcardEditView.swift in Sources */,
+				936D0984844DE8E3B870103C /* SettingsView.swift in Sources */,
+				1D1C727E560690ED6D61B5EF /* StatisticsView.swift in Sources */,
+				1ADB1872A5E813CD27904C6D /* StudyModeSelectionView.swift in Sources */,
+				F4CABF5867B51FCA6BD5090B /* StudyProgress.swift in Sources */,
+				6CD03738923AEFA60434762D /* StudyProgressView.swift in Sources */,
+				2352DB1E7A8C5961EA463309 /* StudyView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E4E2B4AD8978F9B6D2B3829A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				070D17D934E1DD3B57EDA779 /* AsaFlashcardProTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		06E5865B878A8861909A1D16 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 6EB51931AA334222236985FA /* AsaFlashcardPro */;
+			targetProxy = 5EC9F6B023C9D34382CF989A /* PBXContainerItemProxy */;
+		};
+		7EF5DB22A0E0E3C357EE4541 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 6EB51931AA334222236985FA /* AsaFlashcardPro */;
+			targetProxy = 81A8FDE38B40DCC9E96F589D /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		1305184B640DAD6744347A6C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_FILE = AsaFlashcardPro/Info.plist;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.asapapa.apps.asaflashcardpro;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		1ED71C0813BEDE929CADF724 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.asapapa.apps.asaflashcardpro.tests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AsaFlashcardPro.app/AsaFlashcardPro";
+			};
+			name = Release;
+		};
+		2285F76755106B86110F233D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		28AB0864B20CC4921CB4FB73 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_FILE = AsaFlashcardPro/Info.plist;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.asapapa.apps.asaflashcardpro;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		98025ECB817C111C7547EFDF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = "";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		E73F107AF5D7F887D7F9A5C8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.asapapa.apps.asaflashcardpro.ui-tests";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = AsaFlashcardPro;
+			};
+			name = Release;
+		};
+		F40478FB573824AFBFE26CD7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.asapapa.apps.asaflashcardpro.ui-tests";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = AsaFlashcardPro;
+			};
+			name = Debug;
+		};
+		F94FC5948729137EB9CAB6AF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.asapapa.apps.asaflashcardpro.tests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AsaFlashcardPro.app/AsaFlashcardPro";
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		05D145D91108284F1AC82212 /* Build configuration list for PBXProject "AsaFlashcardPro" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2285F76755106B86110F233D /* Debug */,
+				98025ECB817C111C7547EFDF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		0CC2D261AD2398C9C8ADC283 /* Build configuration list for PBXNativeTarget "AsaFlashcardProTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F94FC5948729137EB9CAB6AF /* Debug */,
+				1ED71C0813BEDE929CADF724 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		B3BBBFC22C904EC6F5DB16DD /* Build configuration list for PBXNativeTarget "AsaFlashcardProUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F40478FB573824AFBFE26CD7 /* Debug */,
+				E73F107AF5D7F887D7F9A5C8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		DFCE049736C596D30476046C /* Build configuration list for PBXNativeTarget "AsaFlashcardPro" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				28AB0864B20CC4921CB4FB73 /* Debug */,
+				1305184B640DAD6744347A6C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		1705003A2560B5365A130613 /* XCLocalSwiftPackageReference "../../Packages/AsaUIKit" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../../Packages/AsaUIKit;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		303788D7253A33A6F7C4810F /* AsaUIKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = AsaUIKit;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = B71AD9497876EBD030C6F9CC /* Project object */;
+}
