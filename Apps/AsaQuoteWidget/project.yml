@@ -1,0 +1,79 @@
+name: AsaQuoteWidget
+options:
+  bundleIdPrefix: com.asaapps
+  createIntermediateGroups: true
+  usesTabs: false
+  indentWidth: 4
+  tabWidth: 4
+  
+settings:
+  MARKETING_VERSION: "1.0"
+  CURRENT_PROJECT_VERSION: "1"
+  IPHONEOS_DEPLOYMENT_TARGET: "16.0"
+
+targets:
+  AsaQuoteWidget:
+    type: application
+    platform: iOS
+    sources:
+      - AsaQuoteWidget
+      - Shared
+    settings:
+      PRODUCT_BUNDLE_IDENTIFIER: com.asaapps.AsaQuoteWidget
+      INFOPLIST_FILE: AsaQuoteWidget/Info.plist
+      ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+      CODE_SIGN_ENTITLEMENTS: AsaQuoteWidget/AsaQuoteWidget.entitlements
+      CODE_SIGN_IDENTITY[config=Debug]: ""
+      PROVISIONING_PROFILE_SPECIFIER[config=Debug]: ""
+    dependencies:
+      - sdk: SwiftUI.framework
+      - sdk: WidgetKit.framework
+    preBuildScripts:
+      - script: |
+          # スクリプトフェーズでプロジェクトファイルが最新であることを確認
+          echo "Building AsaQuoteWidget..."
+        name: "Build Info"
+        
+  QuoteWidgetExtension:
+    type: app-extension
+    platform: iOS
+    sources:
+      - QuoteWidgetExtension
+      - Shared
+    settings:
+      PRODUCT_BUNDLE_IDENTIFIER: com.asaapps.AsaQuoteWidget.QuoteWidgetExtension
+      INFOPLIST_FILE: QuoteWidgetExtension/Info.plist
+      CODE_SIGN_ENTITLEMENTS: QuoteWidgetExtension/QuoteWidgetExtension.entitlements
+      SKIP_INSTALL: "YES"
+      CODE_SIGN_IDENTITY[config=Debug]: ""
+      PROVISIONING_PROFILE_SPECIFIER[config=Debug]: ""
+    dependencies:
+      - sdk: SwiftUI.framework
+      - sdk: WidgetKit.framework
+      - target: AsaQuoteWidget
+        embed: false
+
+schemes:
+  AsaQuoteWidget:
+    build:
+      targets:
+        AsaQuoteWidget: all
+        QuoteWidgetExtension: all
+    run:
+      config: Debug
+    test:
+      config: Debug
+    profile:
+      config: Release
+    analyze:
+      config: Debug
+    archive:
+      config: Release
+      
+  QuoteWidgetExtension:
+    build:
+      targets:
+        QuoteWidgetExtension: all
+    run:
+      config: Debug
+      askForAppToLaunch: true
