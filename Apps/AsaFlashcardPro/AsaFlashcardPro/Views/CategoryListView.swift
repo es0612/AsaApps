@@ -67,7 +67,7 @@ struct CategoryListView: View {
             do {
                 try modelContext.save()
             } catch {
-                print("カテゴリの削除に失敗しました: \\(error)")
+                print("カテゴリの削除に失敗しました: \(error)")
             }
         }
     }
@@ -92,9 +92,9 @@ struct HeaderStatsView: View {
     var body: some View {
         VStack(spacing: 12) {
             HStack(spacing: 20) {
-                StatsCard(title: "カテゴリ", value: "\\(categories.count)", icon: "folder.fill", color: "AsaCoffeeBrown")
-                StatsCard(title: "単語", value: "\\(totalFlashcards)", icon: "doc.text.fill", color: "AsaMocha")
-                StatsCard(title: "学習済み", value: "\\(totalStudied)", icon: "checkmark.circle.fill", color: "AsaMutedSage")
+                StatsCard(title: "カテゴリ", value: "\(categories.count)", icon: "folder.fill", color: "AsaCoffeeBrown")
+                StatsCard(title: "単語", value: "\(totalFlashcards)", icon: "doc.text.fill", color: "AsaMocha")
+                StatsCard(title: "学習済み", value: "\(totalStudied)", icon: "checkmark.circle.fill", color: "AsaMutedSage")
             }
             
             if totalFlashcards > 0 {
@@ -104,7 +104,7 @@ struct HeaderStatsView: View {
                             .font(.subheadline)
                             .foregroundColor(Color("AsaDarkSlate"))
                         Spacer()
-                        Text("\\(Int(overallProgress * 100))%")
+                        Text("\(Int(overallProgress * 100))%")
                             .font(.subheadline.weight(.semibold))
                             .foregroundColor(Color("AsaCoffeeBrown"))
                     }
@@ -169,7 +169,7 @@ struct CategoryRowView: View {
                     .font(.headline)
                     .foregroundColor(Color("AsaDarkSlate"))
                 
-                Text("\\(category.totalFlashcards)枚の単語")
+                Text("\(category.totalFlashcards)枚の単語")
                     .font(.subheadline)
                     .foregroundColor(Color("AsaDarkSlate").opacity(0.6))
                 
@@ -184,12 +184,12 @@ struct CategoryRowView: View {
             
             VStack(alignment: .trailing, spacing: 4) {
                 if category.totalFlashcards > 0 {
-                    Text("\\(Int(category.studyProgress * 100))%")
+                    Text("\(Int(category.studyProgress * 100))%")
                         .font(.subheadline.weight(.semibold))
                         .foregroundColor(Color(category.color))
                 }
                 
-                Text("\\(category.studiedFlashcards)/\\(category.totalFlashcards)")
+                Text("\(category.studiedFlashcards)/\(category.totalFlashcards)")
                     .font(.caption)
                     .foregroundColor(Color("AsaDarkSlate").opacity(0.6))
             }

@@ -150,7 +150,7 @@ struct EditCategoryView: View {
             try modelContext.save()
             dismiss()
         } catch {
-            errorMessage = "カテゴリの更新に失敗しました: \\(error.localizedDescription)"
+            errorMessage = "カテゴリの更新に失敗しました: \(error.localizedDescription)"
             showingError = true
         }
     }
@@ -179,7 +179,7 @@ struct CategoryInfoView: View {
                     Text("総単語数:")
                         .foregroundColor(Color("AsaDarkSlate").opacity(0.7))
                     Spacer()
-                    Text("\\(category.totalFlashcards)枚")
+                    Text("\(category.totalFlashcards)枚")
                         .fontWeight(.medium)
                         .foregroundColor(Color("AsaDarkSlate"))
                 }
@@ -188,7 +188,7 @@ struct CategoryInfoView: View {
                     Text("学習済み:")
                         .foregroundColor(Color("AsaDarkSlate").opacity(0.7))
                     Spacer()
-                    Text("\\(category.studiedFlashcards)枚")
+                    Text("\(category.studiedFlashcards)枚")
                         .fontWeight(.medium)
                         .foregroundColor(Color("AsaMutedSage"))
                 }
@@ -197,7 +197,7 @@ struct CategoryInfoView: View {
                     Text("進捗率:")
                         .foregroundColor(Color("AsaDarkSlate").opacity(0.7))
                     Spacer()
-                    Text("\\(Int(category.studyProgress * 100))%")
+                    Text("\(Int(category.studyProgress * 100))%")
                         .fontWeight(.medium)
                         .foregroundColor(Color(category.color))
                 }

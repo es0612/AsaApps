@@ -145,7 +145,7 @@ struct AddFlashcardView: View {
             try modelContext.save()
             dismiss()
         } catch {
-            errorMessage = "フラッシュカードの追加に失敗しました: \\(error.localizedDescription)"
+            errorMessage = "フラッシュカードの追加に失敗しました: \(error.localizedDescription)"
             showingError = true
         }
     }

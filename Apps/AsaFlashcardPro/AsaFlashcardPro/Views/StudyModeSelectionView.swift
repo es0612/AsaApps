@@ -49,7 +49,7 @@ struct StudyModeSelectionView: View {
                             )) {
                                 StudyModeCard(
                                     title: "復習",
-                                    subtitle: "\\(reviewFlashcards.count)枚",
+                                    subtitle: "\(reviewFlashcards.count)枚",
                                     description: "復習が必要な単語",
                                     icon: "clock.arrow.circlepath",
                                     color: "AsaMocha",
@@ -62,7 +62,7 @@ struct StudyModeSelectionView: View {
                             // カテゴリ別学習
                             StudyModeCard(
                                 title: "カテゴリ",
-                                subtitle: "\\(categories.count)個",
+                                subtitle: "\(categories.count)個",
                                 description: "カテゴリ別に学習",
                                 icon: "folder.fill",
                                 color: "AsaCoffeeBrown",
@@ -78,7 +78,7 @@ struct StudyModeSelectionView: View {
                             )) {
                                 StudyModeCard(
                                     title: "お気に入り",
-                                    subtitle: "\\(bookmarkedFlashcards.count)枚",
+                                    subtitle: "\(bookmarkedFlashcards.count)枚",
                                     description: "お気に入りの単語",
                                     icon: "heart.fill",
                                     color: "AsaMutedSage",
@@ -95,7 +95,7 @@ struct StudyModeSelectionView: View {
                             )) {
                                 StudyModeCard(
                                     title: "難しい単語",
-                                    subtitle: "\\(hardFlashcards.count)枚",
+                                    subtitle: "\(hardFlashcards.count)枚",
                                     description: "苦手な単語を集中",
                                     icon: "exclamationmark.triangle.fill",
                                     color: "AsaDarkSlate",
@@ -112,7 +112,7 @@ struct StudyModeSelectionView: View {
                             )) {
                                 StudyModeCard(
                                     title: "ランダム",
-                                    subtitle: "\\(allFlashcards.count)枚",
+                                    subtitle: "\(allFlashcards.count)枚",
                                     description: "すべてからランダム",
                                     icon: "shuffle",
                                     color: "AsaCoffeeBrown",
@@ -173,9 +173,9 @@ struct StudyHeaderView: View {
     var body: some View {
         VStack(spacing: 12) {
             HStack(spacing: 20) {
-                StatsCard(title: "総単語数", value: "\\(totalCards)", icon: "doc.text.fill", color: "AsaCoffeeBrown")
-                StatsCard(title: "復習待ち", value: "\\(reviewCards)", icon: "clock.fill", color: "AsaMocha")
-                StatsCard(title: "今日の学習", value: "\\(studiedToday)", icon: "checkmark.circle.fill", color: "AsaMutedSage")
+                StatsCard(title: "総単語数", value: "\(totalCards)", icon: "doc.text.fill", color: "AsaCoffeeBrown")
+                StatsCard(title: "復習待ち", value: "\(reviewCards)", icon: "clock.fill", color: "AsaMocha")
+                StatsCard(title: "今日の学習", value: "\(studiedToday)", icon: "checkmark.circle.fill", color: "AsaMutedSage")
             }
             
             if reviewCards > 0 {
@@ -183,7 +183,7 @@ struct StudyHeaderView: View {
                     Image(systemName: "exclamationmark.circle.fill")
                         .foregroundColor(Color("AsaMocha"))
                     
-                    Text("\\(reviewCards)枚の単語が復習を待っています")
+                    Text("\(reviewCards)枚の単語が復習を待っています")
                         .font(.subheadline)
                         .foregroundColor(Color("AsaDarkSlate"))
                     
@@ -302,7 +302,7 @@ struct CategoryQuickCard: View {
                         .foregroundColor(Color("AsaDarkSlate"))
                         .lineLimit(1)
                     
-                    Text("\\(category.totalFlashcards)枚")
+                    Text("\(category.totalFlashcards)枚")
                         .font(.caption)
                         .foregroundColor(Color(category.color))
                 }
@@ -343,7 +343,7 @@ struct CategorySelectionForStudyView: View {
                                     .font(.headline)
                                     .foregroundColor(Color("AsaDarkSlate"))
                                 
-                                Text("\\(category.totalFlashcards)枚の単語")
+                                Text("\(category.totalFlashcards)枚の単語")
                                     .font(.subheadline)
                                     .foregroundColor(Color("AsaDarkSlate").opacity(0.6))
                             }
@@ -351,7 +351,7 @@ struct CategorySelectionForStudyView: View {
                             Spacer()
                             
                             if category.totalFlashcards > 0 {
-                                Text("\\(Int(category.studyProgress * 100))%")
+                                Text("\(Int(category.studyProgress * 100))%")
                                     .font(.subheadline.weight(.semibold))
                                     .foregroundColor(Color(category.color))
                             }

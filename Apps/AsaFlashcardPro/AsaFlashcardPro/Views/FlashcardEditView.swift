@@ -161,7 +161,7 @@ struct FlashcardEditView: View {
             try modelContext.save()
             dismiss()
         } catch {
-            errorMessage = "変更の保存に失敗しました: \\(error.localizedDescription)"
+            errorMessage = "変更の保存に失敗しました: \(error.localizedDescription)"
             showingError = true
         }
     }
@@ -177,7 +177,7 @@ struct FlashcardEditView: View {
         do {
             try modelContext.save()
         } catch {
-            errorMessage = "学習データのリセットに失敗しました: \\(error.localizedDescription)"
+            errorMessage = "学習データのリセットに失敗しました: \(error.localizedDescription)"
             showingError = true
         }
     }
@@ -194,7 +194,7 @@ struct FlashcardEditView: View {
             try modelContext.save()
             dismiss()
         } catch {
-            errorMessage = "単語の削除に失敗しました: \\(error.localizedDescription)"
+            errorMessage = "単語の削除に失敗しました: \(error.localizedDescription)"
             showingError = true
         }
     }
@@ -214,7 +214,7 @@ struct StudyStatsView: View {
                     Text("総回答数:")
                         .foregroundColor(Color("AsaDarkSlate").opacity(0.7))
                     Spacer()
-                    Text("\\(flashcard.studyProgress.totalAnswers)回")
+                    Text("\(flashcard.studyProgress.totalAnswers)回")
                         .fontWeight(.medium)
                         .foregroundColor(Color("AsaDarkSlate"))
                 }
@@ -223,7 +223,7 @@ struct StudyStatsView: View {
                     Text("正解数:")
                         .foregroundColor(Color("AsaDarkSlate").opacity(0.7))
                     Spacer()
-                    Text("\\(flashcard.studyProgress.correctAnswers)回")
+                    Text("\(flashcard.studyProgress.correctAnswers)回")
                         .fontWeight(.medium)
                         .foregroundColor(Color("AsaMutedSage"))
                 }
@@ -232,7 +232,7 @@ struct StudyStatsView: View {
                     Text("正解率:")
                         .foregroundColor(Color("AsaDarkSlate").opacity(0.7))
                     Spacer()
-                    Text("\\(Int(flashcard.studyProgress.correctRate * 100))%")
+                    Text("\(Int(flashcard.studyProgress.correctRate * 100))%")
                         .fontWeight(.medium)
                         .foregroundColor(Color(flashcard.category?.color ?? "AsaCoffeeBrown"))
                 }
@@ -241,7 +241,7 @@ struct StudyStatsView: View {
                     Text("連続正解:")
                         .foregroundColor(Color("AsaDarkSlate").opacity(0.7))
                     Spacer()
-                    Text("\\(flashcard.studyProgress.streak)回")
+                    Text("\(flashcard.studyProgress.streak)回")
                         .fontWeight(.medium)
                         .foregroundColor(Color("AsaMocha"))
                 }

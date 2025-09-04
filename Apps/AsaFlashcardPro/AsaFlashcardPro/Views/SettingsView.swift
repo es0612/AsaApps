@@ -38,7 +38,7 @@ struct SettingsView: View {
                         Spacer()
                         
                         Stepper(value: $dailyStudyGoal, in: 1...100) {
-                            Text("\\(dailyStudyGoal)枚")
+                            Text("\(dailyStudyGoal)枚")
                                 .foregroundColor(Color("AsaCoffeeBrown"))
                         }
                     }
@@ -214,7 +214,7 @@ struct SettingsView: View {
         do {
             try modelContext.save()
         } catch {
-            print("データのリセットに失敗しました: \\(error)")
+            print("データのリセットに失敗しました: \(error)")
         }
     }
 }
@@ -307,7 +307,7 @@ struct NotificationSettingsView: View {
                     Spacer()
                     Picker("時", selection: $notificationHour) {
                         ForEach(0..<24, id: \.self) { hour in
-                            Text("\\(hour)時").tag(hour)
+                            Text("\(hour)時").tag(hour)
                         }
                     }
                     .pickerStyle(WheelPickerStyle())
@@ -319,7 +319,7 @@ struct NotificationSettingsView: View {
                     Spacer()
                     Picker("分", selection: $notificationMinute) {
                         ForEach([0, 15, 30, 45], id: \.self) { minute in
-                            Text("\\(minute)分").tag(minute)
+                            Text("\(minute)分").tag(minute)
                         }
                     }
                     .pickerStyle(WheelPickerStyle())
@@ -328,7 +328,7 @@ struct NotificationSettingsView: View {
             }
             
             Section {
-                Text("毎日\\(String(format: \"%02d:%02d\", notificationHour, notificationMinute))に学習のリマインダーが送信されます。")
+                Text("毎日\(String(format: \"%02d:%02d\", notificationHour, notificationMinute))に学習のリマインダーが送信されます。")
                     .font(.caption)
                     .foregroundColor(Color("AsaDarkSlate").opacity(0.7))
             }
@@ -354,7 +354,7 @@ struct DataExportView: View {
                     .font(.title.weight(.bold))
                     .foregroundColor(Color("AsaDarkSlate"))
                 
-                Text("\\(categories.count)個のカテゴリと\\(flashcards.count)枚のフラッシュカードをエクスポートします。")
+                Text("\(categories.count)個のカテゴリと\(flashcards.count)枚のフラッシュカードをエクスポートします。")
                     .font(.body)
                     .foregroundColor(Color("AsaDarkSlate").opacity(0.7))
                     .multilineTextAlignment(.center)
@@ -423,7 +423,7 @@ struct DataExportView: View {
         do {
             let jsonData = try JSONEncoder().encode(exportData)
             let documentsPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
-            let fileURL = documentsPath.appendingPathComponent("AsaFlashcardPro_Export_\\(DateFormatter.fileNameFormatter.string(from: Date())).json")
+            let fileURL = documentsPath.appendingPathComponent("AsaFlashcardPro_Export_\(DateFormatter.fileNameFormatter.string(from: Date())).json")
             
             try jsonData.write(to: fileURL)
             
@@ -437,7 +437,7 @@ struct DataExportView: View {
             
             dismiss()
         } catch {
-            print("エクスポートエラー: \\(error)")
+            print("エクスポートエラー: \(error)")
             // エラーハンドリングは後で改善
         }
     }
@@ -568,12 +568,12 @@ struct DataImportView: View {
                 dismiss()
                 
             } catch {
-                errorMessage = "ファイルの読み込みに失敗しました: \\(error.localizedDescription)"
+                errorMessage = "ファイルの読み込みに失敗しました: \(error.localizedDescription)"
                 showingError = true
             }
             
         case .failure(let error):
-            errorMessage = "ファイル選択エラー: \\(error.localizedDescription)"
+            errorMessage = "ファイル選択エラー: \(error.localizedDescription)"
             showingError = true
         }
     }

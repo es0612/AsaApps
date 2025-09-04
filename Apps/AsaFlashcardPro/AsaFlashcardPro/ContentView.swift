@@ -102,7 +102,7 @@ struct ContentView: View {
         do {
             try modelContext.save()
         } catch {
-            print("サンプルデータの作成に失敗しました: \\(error)")
+            print("サンプルデータの作成に失敗しました: \(error)")
         }
     }
 }

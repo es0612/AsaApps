@@ -162,7 +162,7 @@ struct CategoryDetailView: View {
             do {
                 try modelContext.save()
             } catch {
-                print("フラッシュカードの削除に失敗しました: \\(error)")
+                print("フラッシュカードの削除に失敗しました: \(error)")
             }
         }
     }
@@ -179,7 +179,7 @@ struct CategoryDetailView: View {
         do {
             try modelContext.save()
         } catch {
-            print("カテゴリの削除に失敗しました: \\(error)")
+            print("カテゴリの削除に失敗しました: \(error)")
         }
     }
 }
@@ -251,7 +251,7 @@ struct FlashcardRowView: View {
                     
                     // 正解率
                     if flashcard.studyProgress.totalAnswers > 0 {
-                        Text("\\(Int(flashcard.studyProgress.correctRate * 100))%")
+                        Text("\(Int(flashcard.studyProgress.correctRate * 100))%")
                             .font(.caption.weight(.medium))
                             .foregroundColor(Color(flashcard.category?.color ?? "AsaCoffeeBrown"))
                     }

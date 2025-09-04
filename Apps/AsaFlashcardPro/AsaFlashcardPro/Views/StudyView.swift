@@ -153,7 +153,7 @@ struct StudyView: View {
         do {
             try modelContext.save()
         } catch {
-            print("学習データの保存に失敗しました: \\(error)")
+            print("学習データの保存に失敗しました: \(error)")
         }
         
         // 次のカードへ
@@ -230,7 +230,7 @@ struct StudyHeaderBar: View {
                     .font(.headline.weight(.semibold))
                     .foregroundColor(Color("AsaDarkSlate"))
                 
-                Text("\\(currentIndex + 1) / \\(totalCount)")
+                Text("\(currentIndex + 1) / \(totalCount)")
                     .font(.subheadline)
                     .foregroundColor(Color(mode.color))
             }
@@ -286,7 +286,7 @@ struct StudyCardView: View {
                     .multilineTextAlignment(.center)
                 
                 if let pronunciation = flashcard.pronunciation {
-                    Text("/\\(pronunciation)/")
+                    Text("/\(pronunciation)/")
                         .font(.title3)
                         .foregroundColor(Color("AsaDarkSlate").opacity(0.6))
                         .italic()
@@ -448,11 +448,11 @@ struct StudyCompletedView: View {
                 .foregroundColor(Color("AsaDarkSlate"))
             
             VStack(spacing: 12) {
-                Text("\\(session.totalAnswers)問中\\(session.correctAnswers)問正解")
+                Text("\(session.totalAnswers)問中\(session.correctAnswers)問正解")
                     .font(.title2)
                     .foregroundColor(Color("AsaDarkSlate"))
                 
-                Text("正解率: \\(Int(session.correctRate * 100))%")
+                Text("正解率: \(Int(session.correctRate * 100))%")
                     .font(.title3.weight(.semibold))
                     .foregroundColor(Color("AsaCoffeeBrown"))
             }

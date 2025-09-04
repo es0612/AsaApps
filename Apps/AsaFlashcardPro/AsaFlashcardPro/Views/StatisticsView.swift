@@ -126,7 +126,7 @@ struct OverallStatsView: View {
             LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 2), spacing: 16) {
                 OverallStatCard(
                     title: "総カテゴリ数",
-                    value: "\\(categories.count)",
+                    value: "\(categories.count)",
                     subtitle: "個",
                     icon: "folder.fill",
                     color: "AsaCoffeeBrown"
@@ -134,7 +134,7 @@ struct OverallStatsView: View {
                 
                 OverallStatCard(
                     title: "総単語数",
-                    value: "\\(flashcards.count)",
+                    value: "\(flashcards.count)",
                     subtitle: "枚",
                     icon: "doc.text.fill",
                     color: "AsaMocha"
@@ -142,7 +142,7 @@ struct OverallStatsView: View {
                 
                 OverallStatCard(
                     title: "学習した単語",
-                    value: "\\(studiedFlashcards.count)",
+                    value: "\(studiedFlashcards.count)",
                     subtitle: "枚",
                     icon: "checkmark.circle.fill",
                     color: "AsaMutedSage"
@@ -150,7 +150,7 @@ struct OverallStatsView: View {
                 
                 OverallStatCard(
                     title: "正解率",
-                    value: "\\(Int(overallCorrectRate * 100))",
+                    value: "\(Int(overallCorrectRate * 100))",
                     subtitle: "%",
                     icon: "percent",
                     color: "AsaDarkSlate"
@@ -333,7 +333,7 @@ struct CategoryProgressRow: View {
                     .font(.subheadline.weight(.medium))
                     .foregroundColor(Color("AsaDarkSlate"))
                 
-                Text("\\(category.studiedFlashcards) / \\(category.totalFlashcards) 枚")
+                Text("\(category.studiedFlashcards) / \(category.totalFlashcards) 枚")
                     .font(.caption)
                     .foregroundColor(Color("AsaDarkSlate").opacity(0.6))
             }
@@ -341,7 +341,7 @@ struct CategoryProgressRow: View {
             Spacer()
             
             VStack(alignment: .trailing, spacing: 2) {
-                Text("\\(Int(category.studyProgress * 100))%")
+                Text("\(Int(category.studyProgress * 100))%")
                     .font(.subheadline.weight(.semibold))
                     .foregroundColor(Color(category.color))
                 
@@ -385,10 +385,10 @@ struct DetailedStatsView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
             
             LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 2), spacing: 12) {
-                DetailStatItem(title: "平均正解率", value: "\\(Int(averageCorrectRate * 100))%", color: "AsaCoffeeBrown")
-                DetailStatItem(title: "最高連続正解", value: "\\(streakCounts.keys.max() ?? 0)回", color: "AsaMutedSage")
-                DetailStatItem(title: "苦手な単語", value: "\\(flashcards.filter { $0.difficultyLevel == .hard }.count)枚", color: "AsaMocha")
-                DetailStatItem(title: "お気に入り", value: "\\(flashcards.filter { $0.isBookmarked }.count)枚", color: "AsaDarkSlate")
+                DetailStatItem(title: "平均正解率", value: "\(Int(averageCorrectRate * 100))%", color: "AsaCoffeeBrown")
+                DetailStatItem(title: "最高連続正解", value: "\(streakCounts.keys.max() ?? 0)回", color: "AsaMutedSage")
+                DetailStatItem(title: "苦手な単語", value: "\(flashcards.filter { $0.difficultyLevel == .hard }.count)枚", color: "AsaMocha")
+                DetailStatItem(title: "お気に入り", value: "\(flashcards.filter { $0.isBookmarked }.count)枚", color: "AsaDarkSlate")
             }
         }
         .padding()
@@ -451,7 +451,7 @@ struct LearningTrendsView: View {
                             .progressViewStyle(LinearProgressViewStyle(tint: Color(level.color)))
                             .scaleEffect(y: 1.5)
                         
-                        Text("\\(count)")
+                        Text("\(count)")
                             .font(.subheadline.weight(.medium))
                             .foregroundColor(Color(level.color))
                             .frame(width: 30, alignment: .trailing)

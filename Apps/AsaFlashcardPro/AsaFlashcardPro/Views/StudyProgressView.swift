@@ -100,11 +100,11 @@ struct ProgressCircleView: View {
             
             // 中央のテキスト
             VStack(spacing: 4) {
-                Text("\\(currentIndex)")
+                Text("\(currentIndex)")
                     .font(.largeTitle.weight(.bold))
                     .foregroundColor(Color("AsaCoffeeBrown"))
                 
-                Text("/ \\(totalCount)")
+                Text("/ \(totalCount)")
                     .font(.title3)
                     .foregroundColor(Color("AsaDarkSlate").opacity(0.6))
                 
@@ -125,7 +125,7 @@ struct StudyStatsGridView: View {
         LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 2), spacing: 16) {
             StudyStatCard(
                 title: "正解数",
-                value: "\\(session.correctAnswers)",
+                value: "\(session.correctAnswers)",
                 subtitle: "問",
                 icon: "checkmark.circle.fill",
                 color: "AsaMutedSage"
@@ -133,7 +133,7 @@ struct StudyStatsGridView: View {
             
             StudyStatCard(
                 title: "不正解数",
-                value: "\\(session.totalAnswers - session.correctAnswers)",
+                value: "\(session.totalAnswers - session.correctAnswers)",
                 subtitle: "問",
                 icon: "xmark.circle.fill",
                 color: "AsaMocha"
@@ -141,7 +141,7 @@ struct StudyStatsGridView: View {
             
             StudyStatCard(
                 title: "正解率",
-                value: "\\(Int(session.correctRate * 100))",
+                value: "\(Int(session.correctRate * 100))",
                 subtitle: "%",
                 icon: "percent",
                 color: "AsaCoffeeBrown"
@@ -149,7 +149,7 @@ struct StudyStatsGridView: View {
             
             StudyStatCard(
                 title: "残り",
-                value: "\\(remainingCount)",
+                value: "\(remainingCount)",
                 subtitle: "枚",
                 icon: "doc.text.fill",
                 color: "AsaDarkSlate"
@@ -239,7 +239,7 @@ struct TimeStatsView: View {
                 if remainingCount > 0 && averageTimePerCard > 0 {
                     TimeInfoView(
                         title: "推定残り時間",
-                        value: "約\\(estimatedRemainingTime)分",
+                        value: "約\(estimatedRemainingTime)分",
                         icon: "hourglass",
                         color: "AsaMocha"
                     )
