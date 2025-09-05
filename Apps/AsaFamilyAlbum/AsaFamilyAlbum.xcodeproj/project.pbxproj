@@ -1,0 +1,677 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		1E2B861DB9D548A5CF30BFB6 /* PhotosGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D247F5B734A954AD8A93C68 /* PhotosGridView.swift */; };
+		1E41FB7D8C3EC562DCE7C30D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 63B18117F44D91408A977F90 /* Assets.xcassets */; };
+		1FA0587862467C01C117CD8B /* Photos.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A664929F1F20C908D291058 /* Photos.framework */; };
+		2B939BBB65D6BB2D4A3764B6 /* Album.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCD25C0F9E5FF9FBF2A632D2 /* Album.swift */; };
+		330257D7E8AEF60AD7051FFC /* Photo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D4F16AD85A7D7BC47664DF /* Photo.swift */; };
+		40B681A413E106C1BD3CCA68 /* PhotoLibraryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E85384A233C91ADF7C80558B /* PhotoLibraryService.swift */; };
+		57AD6D2C9997DECBFC1B96B9 /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA733776D238B208DC0F0D67 /* SearchView.swift */; };
+		5B7630C67901EE4EC0D525FA /* PhotoDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 485671ED3802C60B6CC81742 /* PhotoDetailView.swift */; };
+		68DAF2ADCF5515CD96DB5FC2 /* DataPersistenceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07FBF845F90D27E911C7D0E8 /* DataPersistenceService.swift */; };
+		6F171191433C083AD35782C6 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BD5EB147FD3A4465AD20B40 /* SwiftUI.framework */; };
+		8151C434CB9E0A1B547EF7D0 /* AlbumsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21E49D64E11DE462E382CE28 /* AlbumsView.swift */; };
+		9D5E313613EE6DCDF5AE0F9D /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 224658EC79592B0A79424551 /* Comment.swift */; };
+		A2F141F2D56DD3C9595617B2 /* SwiftData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 100153A4F14197AB078FB0A5 /* SwiftData.framework */; };
+		B7A01F345BB4897E2EE36464 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE356B3ADCEA9A859EB429C /* ContentView.swift */; };
+		B7BF878730E5E0F561926DD6 /* FamilyMembersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A4345A053A07D54E70B922E /* FamilyMembersView.swift */; };
+		D0B13AA49EEB70784A42732E /* FamilyAlbumViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E877466C9A327019DDDC175B /* FamilyAlbumViewModel.swift */; };
+		D9DB3EED212B5E200AAA648A /* AsaFamilyAlbumApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72EC06E32ADF37AB9AEA1E6B /* AsaFamilyAlbumApp.swift */; };
+		E232CC4AAE5271B004657286 /* FamilyMember.swift in Sources */ = {isa = PBXBuildFile; fileRef = D56835F0A3B3A69B3B56E75E /* FamilyMember.swift */; };
+		E6F7FC72976047F04FED535A /* AsaUIKit in Frameworks */ = {isa = PBXBuildFile; productRef = 3BA79A4DE2830DBD09DC8433 /* AsaUIKit */; };
+		E8D937347606265D00B2C6FD /* AlbumDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 962A208C8584CE2EBC19A87A /* AlbumDetailView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		2BEFC619FAB174DB6CC2D501 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8DF242F683D47C7BCB41D5D8 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B1509A88C1AD4976338EE676;
+			remoteInfo = AsaFamilyAlbum;
+		};
+		D1D7ADA1BE9897B5D7F627EF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8DF242F683D47C7BCB41D5D8 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B1509A88C1AD4976338EE676;
+			remoteInfo = AsaFamilyAlbum;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		07FBF845F90D27E911C7D0E8 /* DataPersistenceService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataPersistenceService.swift; sourceTree = "<group>"; };
+		100153A4F14197AB078FB0A5 /* SwiftData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftData.framework; path = System/Library/Frameworks/SwiftData.framework; sourceTree = SDKROOT; };
+		21E49D64E11DE462E382CE28 /* AlbumsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumsView.swift; sourceTree = "<group>"; };
+		21EC9134BE6E7AD4408E9A79 /* AsaUIKit */ = {isa = PBXFileReference; lastKnownFileType = folder; name = AsaUIKit; path = ../../Packages/AsaUIKit; sourceTree = SOURCE_ROOT; };
+		224658EC79592B0A79424551 /* Comment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comment.swift; sourceTree = "<group>"; };
+		2BD5EB147FD3A4465AD20B40 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		3A4345A053A07D54E70B922E /* FamilyMembersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FamilyMembersView.swift; sourceTree = "<group>"; };
+		485671ED3802C60B6CC81742 /* PhotoDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoDetailView.swift; sourceTree = "<group>"; };
+		4A664929F1F20C908D291058 /* Photos.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Photos.framework; path = System/Library/Frameworks/Photos.framework; sourceTree = SDKROOT; };
+		5DDBAD5E7478EDFD8B2FF32A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		63B18117F44D91408A977F90 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		6D247F5B734A954AD8A93C68 /* PhotosGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosGridView.swift; sourceTree = "<group>"; };
+		72EC06E32ADF37AB9AEA1E6B /* AsaFamilyAlbumApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsaFamilyAlbumApp.swift; sourceTree = "<group>"; };
+		8179C0C1E736AB576BA57AC4 /* AsaFamilyAlbum.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = AsaFamilyAlbum.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		818051946CDD7C3CB0D82345 /* AsaFamilyAlbumTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = AsaFamilyAlbumTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		962A208C8584CE2EBC19A87A /* AlbumDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumDetailView.swift; sourceTree = "<group>"; };
+		AAE356B3ADCEA9A859EB429C /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		B9674C456803C588C6DCB756 /* AsaFamilyAlbumUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = AsaFamilyAlbumUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		D4D4F16AD85A7D7BC47664DF /* Photo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Photo.swift; sourceTree = "<group>"; };
+		D56835F0A3B3A69B3B56E75E /* FamilyMember.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FamilyMember.swift; sourceTree = "<group>"; };
+		DCD25C0F9E5FF9FBF2A632D2 /* Album.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Album.swift; sourceTree = "<group>"; };
+		E85384A233C91ADF7C80558B /* PhotoLibraryService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryService.swift; sourceTree = "<group>"; };
+		E877466C9A327019DDDC175B /* FamilyAlbumViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FamilyAlbumViewModel.swift; sourceTree = "<group>"; };
+		FA733776D238B208DC0F0D67 /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		4DA9925309FE589923B29D56 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E6F7FC72976047F04FED535A /* AsaUIKit in Frameworks */,
+				6F171191433C083AD35782C6 /* SwiftUI.framework in Frameworks */,
+				A2F141F2D56DD3C9595617B2 /* SwiftData.framework in Frameworks */,
+				1FA0587862467C01C117CD8B /* Photos.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		33967905DB8D4F73B5383F7B /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				962A208C8584CE2EBC19A87A /* AlbumDetailView.swift */,
+				21E49D64E11DE462E382CE28 /* AlbumsView.swift */,
+				AAE356B3ADCEA9A859EB429C /* ContentView.swift */,
+				3A4345A053A07D54E70B922E /* FamilyMembersView.swift */,
+				485671ED3802C60B6CC81742 /* PhotoDetailView.swift */,
+				6D247F5B734A954AD8A93C68 /* PhotosGridView.swift */,
+				FA733776D238B208DC0F0D67 /* SearchView.swift */,
+				6F54F1B5F45E90C1ACC33139 /* Components */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		68D9392B178363706F95925B /* AsaFamilyAlbumTests */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = AsaFamilyAlbumTests;
+			sourceTree = "<group>";
+		};
+		6F54F1B5F45E90C1ACC33139 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		7D31E28F6C5FA727A14942DA /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				21EC9134BE6E7AD4408E9A79 /* AsaUIKit */,
+			);
+			name = Packages;
+			sourceTree = "<group>";
+		};
+		8857C14790034ECCE6D46FAE /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8179C0C1E736AB576BA57AC4 /* AsaFamilyAlbum.app */,
+				818051946CDD7C3CB0D82345 /* AsaFamilyAlbumTests.xctest */,
+				B9674C456803C588C6DCB756 /* AsaFamilyAlbumUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		8C5EFC7C642EB86FA1815DB5 /* AsaFamilyAlbumUITests */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = AsaFamilyAlbumUITests;
+			sourceTree = "<group>";
+		};
+		8D09D80E0E4094042C28A93A /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				07FBF845F90D27E911C7D0E8 /* DataPersistenceService.swift */,
+				E85384A233C91ADF7C80558B /* PhotoLibraryService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		928E682BB54913481E0A2F73 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				E877466C9A327019DDDC175B /* FamilyAlbumViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		9795775E52DAEF5CF0460E17 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				DCD25C0F9E5FF9FBF2A632D2 /* Album.swift */,
+				224658EC79592B0A79424551 /* Comment.swift */,
+				D56835F0A3B3A69B3B56E75E /* FamilyMember.swift */,
+				D4D4F16AD85A7D7BC47664DF /* Photo.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		98618650BC49E5D758E500BC = {
+			isa = PBXGroup;
+			children = (
+				DCD608BF619BDC518C28AB52 /* AsaFamilyAlbum */,
+				68D9392B178363706F95925B /* AsaFamilyAlbumTests */,
+				8C5EFC7C642EB86FA1815DB5 /* AsaFamilyAlbumUITests */,
+				7D31E28F6C5FA727A14942DA /* Packages */,
+				A2FF1CF1DC6167B324DEDE96 /* Frameworks */,
+				8857C14790034ECCE6D46FAE /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		A2FF1CF1DC6167B324DEDE96 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				4A664929F1F20C908D291058 /* Photos.framework */,
+				100153A4F14197AB078FB0A5 /* SwiftData.framework */,
+				2BD5EB147FD3A4465AD20B40 /* SwiftUI.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		DCD608BF619BDC518C28AB52 /* AsaFamilyAlbum */ = {
+			isa = PBXGroup;
+			children = (
+				72EC06E32ADF37AB9AEA1E6B /* AsaFamilyAlbumApp.swift */,
+				63B18117F44D91408A977F90 /* Assets.xcassets */,
+				5DDBAD5E7478EDFD8B2FF32A /* Info.plist */,
+				9795775E52DAEF5CF0460E17 /* Models */,
+				8D09D80E0E4094042C28A93A /* Services */,
+				928E682BB54913481E0A2F73 /* ViewModels */,
+				33967905DB8D4F73B5383F7B /* Views */,
+			);
+			path = AsaFamilyAlbum;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		25F3662899B638A5C29BF537 /* AsaFamilyAlbumUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FFB2664A642637E5F9508184 /* Build configuration list for PBXNativeTarget "AsaFamilyAlbumUITests" */;
+			buildPhases = (
+				3266154E5C40A15476912031 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				F109075C5A65A79D20FAA732 /* PBXTargetDependency */,
+			);
+			name = AsaFamilyAlbumUITests;
+			packageProductDependencies = (
+			);
+			productName = AsaFamilyAlbumUITests;
+			productReference = B9674C456803C588C6DCB756 /* AsaFamilyAlbumUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+		489372EF04CF789B37F90180 /* AsaFamilyAlbumTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 92B2221453C100C00BE28C46 /* Build configuration list for PBXNativeTarget "AsaFamilyAlbumTests" */;
+			buildPhases = (
+				400564CA74E5004CF34A9AA2 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				2286E474BCB5E17E74C8F4AA /* PBXTargetDependency */,
+			);
+			name = AsaFamilyAlbumTests;
+			packageProductDependencies = (
+			);
+			productName = AsaFamilyAlbumTests;
+			productReference = 818051946CDD7C3CB0D82345 /* AsaFamilyAlbumTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		B1509A88C1AD4976338EE676 /* AsaFamilyAlbum */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1A9C48052318B5361CDDCA6E /* Build configuration list for PBXNativeTarget "AsaFamilyAlbum" */;
+			buildPhases = (
+				9E1ECCAAF3D925EEB1FE00B0 /* Sources */,
+				E17ACEB1878401FCC5C71C6D /* Resources */,
+				4DA9925309FE589923B29D56 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = AsaFamilyAlbum;
+			packageProductDependencies = (
+				3BA79A4DE2830DBD09DC8433 /* AsaUIKit */,
+			);
+			productName = AsaFamilyAlbum;
+			productReference = 8179C0C1E736AB576BA57AC4 /* AsaFamilyAlbum.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		8DF242F683D47C7BCB41D5D8 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					25F3662899B638A5C29BF537 = {
+						DevelopmentTeam = "";
+						ProvisioningStyle = Automatic;
+						TestTargetID = B1509A88C1AD4976338EE676;
+					};
+					489372EF04CF789B37F90180 = {
+						DevelopmentTeam = "";
+						ProvisioningStyle = Automatic;
+					};
+					B1509A88C1AD4976338EE676 = {
+						DevelopmentTeam = "";
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = D1F3DAB70D9A4F1FD20AC057 /* Build configuration list for PBXProject "AsaFamilyAlbum" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 98618650BC49E5D758E500BC;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				90142619B8ACFB230C621F68 /* XCLocalSwiftPackageReference "../../Packages/AsaUIKit" */,
+			);
+			preferredProjectObjectVersion = 77;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				B1509A88C1AD4976338EE676 /* AsaFamilyAlbum */,
+				489372EF04CF789B37F90180 /* AsaFamilyAlbumTests */,
+				25F3662899B638A5C29BF537 /* AsaFamilyAlbumUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		E17ACEB1878401FCC5C71C6D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1E41FB7D8C3EC562DCE7C30D /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		3266154E5C40A15476912031 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		400564CA74E5004CF34A9AA2 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9E1ECCAAF3D925EEB1FE00B0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2B939BBB65D6BB2D4A3764B6 /* Album.swift in Sources */,
+				E8D937347606265D00B2C6FD /* AlbumDetailView.swift in Sources */,
+				8151C434CB9E0A1B547EF7D0 /* AlbumsView.swift in Sources */,
+				D9DB3EED212B5E200AAA648A /* AsaFamilyAlbumApp.swift in Sources */,
+				9D5E313613EE6DCDF5AE0F9D /* Comment.swift in Sources */,
+				B7A01F345BB4897E2EE36464 /* ContentView.swift in Sources */,
+				68DAF2ADCF5515CD96DB5FC2 /* DataPersistenceService.swift in Sources */,
+				D0B13AA49EEB70784A42732E /* FamilyAlbumViewModel.swift in Sources */,
+				E232CC4AAE5271B004657286 /* FamilyMember.swift in Sources */,
+				B7BF878730E5E0F561926DD6 /* FamilyMembersView.swift in Sources */,
+				330257D7E8AEF60AD7051FFC /* Photo.swift in Sources */,
+				5B7630C67901EE4EC0D525FA /* PhotoDetailView.swift in Sources */,
+				40B681A413E106C1BD3CCA68 /* PhotoLibraryService.swift in Sources */,
+				1E2B861DB9D548A5CF30BFB6 /* PhotosGridView.swift in Sources */,
+				57AD6D2C9997DECBFC1B96B9 /* SearchView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		2286E474BCB5E17E74C8F4AA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B1509A88C1AD4976338EE676 /* AsaFamilyAlbum */;
+			targetProxy = D1D7ADA1BE9897B5D7F627EF /* PBXContainerItemProxy */;
+		};
+		F109075C5A65A79D20FAA732 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B1509A88C1AD4976338EE676 /* AsaFamilyAlbum */;
+			targetProxy = 2BEFC619FAB174DB6CC2D501 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		026FAA855A24A6AB09BBF0B5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_FILE = AsaFamilyAlbum/Info.plist;
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "写真をアルバムに追加するため、フォトライブラリへの書き込みアクセスが必要です。";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "家族の写真を整理・管理するため、フォトライブラリへのアクセスが必要です。";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.asapapa.apps.asafamilyalbum;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		6B2052B6B93DD3941A0463AC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.asapapa.apps.asafamilyalbum.tests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AsaFamilyAlbum.app/AsaFamilyAlbum";
+			};
+			name = Release;
+		};
+		6CB08B576E2A443EE13E1A27 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_FILE = AsaFamilyAlbum/Info.plist;
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "写真をアルバムに追加するため、フォトライブラリへの書き込みアクセスが必要です。";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "家族の写真を整理・管理するため、フォトライブラリへのアクセスが必要です。";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.asapapa.apps.asafamilyalbum;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		A24053D52507640C153C14F9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.asapapa.apps.asafamilyalbum.ui-tests";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = AsaFamilyAlbum;
+			};
+			name = Debug;
+		};
+		AAE2C1B84E2ADAA1F64801FB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.asapapa.apps.asafamilyalbum.tests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AsaFamilyAlbum.app/AsaFamilyAlbum";
+			};
+			name = Debug;
+		};
+		B882100E5814DF8AB4588869 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.asapapa.apps.asafamilyalbum.ui-tests";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = AsaFamilyAlbum;
+			};
+			name = Release;
+		};
+		B8BF764820F1CF867110703D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = "";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		CF44852794440F5AF1BBAEAD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1A9C48052318B5361CDDCA6E /* Build configuration list for PBXNativeTarget "AsaFamilyAlbum" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				026FAA855A24A6AB09BBF0B5 /* Debug */,
+				6CB08B576E2A443EE13E1A27 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		92B2221453C100C00BE28C46 /* Build configuration list for PBXNativeTarget "AsaFamilyAlbumTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AAE2C1B84E2ADAA1F64801FB /* Debug */,
+				6B2052B6B93DD3941A0463AC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		D1F3DAB70D9A4F1FD20AC057 /* Build configuration list for PBXProject "AsaFamilyAlbum" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CF44852794440F5AF1BBAEAD /* Debug */,
+				B8BF764820F1CF867110703D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		FFB2664A642637E5F9508184 /* Build configuration list for PBXNativeTarget "AsaFamilyAlbumUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A24053D52507640C153C14F9 /* Debug */,
+				B882100E5814DF8AB4588869 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		90142619B8ACFB230C621F68 /* XCLocalSwiftPackageReference "../../Packages/AsaUIKit" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../../Packages/AsaUIKit;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		3BA79A4DE2830DBD09DC8433 /* AsaUIKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = AsaUIKit;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = 8DF242F683D47C7BCB41D5D8 /* Project object */;
+}
