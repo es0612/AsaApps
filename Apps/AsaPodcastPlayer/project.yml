@@ -1,0 +1,73 @@
+name: AsaPodcastPlayer
+options:
+  bundleIdPrefix: com.asapapa.apps
+  deploymentTarget:
+    iOS: "17.0"
+  createIntermediateGroups: true
+  generateEmptyDirectories: true
+
+settings:
+  MARKETING_VERSION: "1.0"
+  CURRENT_PROJECT_VERSION: "1"
+  DEVELOPMENT_TEAM: ""
+  CODE_SIGN_STYLE: Automatic
+
+packages:
+  AsaUIKit:
+    path: ../../Packages/AsaUIKit
+
+targets:
+  AsaPodcastPlayer:
+    type: application
+    platform: iOS
+    sources: 
+      - AsaPodcastPlayerApp.swift
+      - ContentView.swift
+      - PodcastEpisode.swift
+      - Podcast.swift
+      - PodcastPlayerViewModel.swift
+      - PodcastLibraryManager.swift
+      - PodcastAudioManager.swift
+      - PodcastLibraryView.swift
+      - EpisodeDetailView.swift
+    resources:
+      - AsaPodcastPlayer/Assets.xcassets
+    settings:
+      PRODUCT_BUNDLE_IDENTIFIER: com.asapapa.apps.asapodcastplayer
+      INFOPLIST_FILE: AsaPodcastPlayer/Info.plist
+      INFOPLIST_KEY_UIApplicationSceneManifest_Generation: true
+      INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents: true
+      INFOPLIST_KEY_UILaunchScreen_Generation: true
+      INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone: "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight"
+      INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad: "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight"
+      INFOPLIST_KEY_NSMicrophoneUsageDescription: "ポッドキャストの音声品質を最適化するため、マイクへのアクセスが必要です。"
+      INFOPLIST_KEY_NSDocumentReadingEntryDescription: "ポッドキャストファイルを読み込むため、ドキュメントへのアクセスが必要です。"
+      INFOPLIST_KEY_UISupportsDocumentBrowser: true
+      INFOPLIST_KEY_UIBackgroundModes: "audio"
+    dependencies:
+      - package: AsaUIKit
+        product: AsaUIKit
+      - sdk: SwiftUI.framework
+      - sdk: AVFoundation.framework
+      - sdk: MediaPlayer.framework
+      - sdk: BackgroundTasks.framework
+
+  AsaPodcastPlayerTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources: AsaPodcastPlayerTests
+    settings:
+      PRODUCT_BUNDLE_IDENTIFIER: com.asapapa.apps.asapodcastplayer.tests
+      GENERATE_INFOPLIST_FILE: YES
+    dependencies:
+      - target: AsaPodcastPlayer
+
+  AsaPodcastPlayerUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources: AsaPodcastPlayerUITests
+    settings:
+      PRODUCT_BUNDLE_IDENTIFIER: com.asapapa.apps.asapodcastplayer.ui-tests
+      GENERATE_INFOPLIST_FILE: YES
+    dependencies:
+      - target: AsaPodcastPlayer

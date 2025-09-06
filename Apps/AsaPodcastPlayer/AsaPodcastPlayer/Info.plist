@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>CFBundleIdentifier</key>
+    <string>com.asapapa.apps.asapodcastplayer</string>
+    <key>CFBundleDisplayName</key>
+    <string>AsaPodcastPlayer</string>
+    <key>CFBundleName</key>
+    <string>AsaPodcastPlayer</string>
+    <key>CFBundleShortVersionString</key>
+    <string>1.0</string>
+    <key>CFBundleVersion</key>
+    <string>1</string>
+    <key>LSRequiresIPhoneOS</key>
+    <true/>
+    <key>UIBackgroundModes</key>
+    <array>
+        <string>audio</string>
+    </array>
+    <key>UTExportedTypeDeclarations</key>
+    <array>
+        <dict>
+            <key>UTTypeConformsTo</key>
+            <array>
+                <string>public.audio</string>
+            </array>
+            <key>UTTypeDescription</key>
+            <string>Podcast Audio File</string>
+            <key>UTTypeIdentifier</key>
+            <string>com.asapapa.podcast-audio</string>
+            <key>UTTypeTagSpecification</key>
+            <dict>
+                <key>public.filename-extension</key>
+                <array>
+                    <string>mp3</string>
+                    <string>m4a</string>
+                    <string>mp4</string>
+                    <string>aac</string>
+                </array>
+                <key>public.mime-type</key>
+                <array>
+                    <string>audio/mpeg</string>
+                    <string>audio/mp4</string>
+                    <string>audio/aac</string>
+                </array>
+            </dict>
+        </dict>
+    </array>
+    <key>CFBundleDocumentTypes</key>
+    <array>
+        <dict>
+            <key>CFBundleTypeIconFiles</key>
+            <array/>
+            <key>CFBundleTypeName</key>
+            <string>Podcast Audio File</string>
+            <key>CFBundleTypeRole</key>
+            <string>Viewer</string>
+            <key>LSHandlerRank</key>
+            <string>Owner</string>
+            <key>LSItemContentTypes</key>
+            <array>
+                <string>com.asapapa.podcast-audio</string>
+                <string>public.mp3</string>
+                <string>public.mpeg-4-audio</string>
+            </array>
+        </dict>
+    </array>
+</dict>
+</plist>
