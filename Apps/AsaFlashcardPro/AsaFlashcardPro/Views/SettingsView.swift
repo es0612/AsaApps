@@ -328,7 +328,7 @@ struct NotificationSettingsView: View {
             }
             
             Section {
-                Text("毎日\(String(format: \"%02d:%02d\", notificationHour, notificationMinute))に学習のリマインダーが送信されます。")
+                Text("毎日\(String(format: "%02d:%02d", notificationHour, notificationMinute))に学習のリマインダーが送信されます。")
                     .font(.caption)
                     .foregroundColor(Color("AsaDarkSlate").opacity(0.7))
             }

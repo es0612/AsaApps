@@ -471,10 +471,11 @@ struct StudyCompletedView: View {
     }
 }
 
-class StudySession: ObservableObject {
-    @Published var correctAnswers = 0
-    @Published var totalAnswers = 0
-    @Published var startTime = Date()
+@Observable
+class StudySession {
+    var correctAnswers = 0
+    var totalAnswers = 0
+    var startTime = Date()
     
     var correctRate: Double {
         guard totalAnswers > 0 else { return 0.0 }

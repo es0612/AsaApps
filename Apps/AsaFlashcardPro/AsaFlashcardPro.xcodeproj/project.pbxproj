@@ -22,7 +22,6 @@
 		80916F3A58DACFCC2D7547A7 /* AsaFlashcardProApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2F8FF520228852F48EC96F6 /* AsaFlashcardProApp.swift */; };
 		936D0984844DE8E3B870103C /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EFBCAA2F96DBA8FD98340FD /* SettingsView.swift */; };
 		A447416CCAEB891DC0797474 /* AddCategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F0E1E5FFE2661FBC0DC7D0 /* AddCategoryView.swift */; };
-		AA0512BDAD6FEB8CC2378365 /* AsaUIKit in Frameworks */ = {isa = PBXBuildFile; productRef = 303788D7253A33A6F7C4810F /* AsaUIKit */; };
 		ABC78347BCBCD77099EA83D5 /* AddFlashcardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F38164E895763EAD604348D /* AddFlashcardView.swift */; };
 		AFAFCB0FD5A8BC37D4F6164E /* Flashcard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08C1347F89A4BDA3263CFC5A /* Flashcard.swift */; };
 		CA2207E1C0390B622EEB102C /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE7B130F24C0041E9967170D /* Category.swift */; };
@@ -60,7 +59,6 @@
 		4DB37C57FEFD912ABEDD75CC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4EFBCAA2F96DBA8FD98340FD /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		5F1DA034814C0D32F081185B /* AsaFlashcardPro.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = AsaFlashcardPro.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		5FF5A2D93A7B3E294574E13A /* AsaUIKit */ = {isa = PBXFileReference; lastKnownFileType = folder; name = AsaUIKit; path = ../../Packages/AsaUIKit; sourceTree = SOURCE_ROOT; };
 		6292832E7D34308DBD0DF83A /* StudyModeSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyModeSelectionView.swift; sourceTree = "<group>"; };
 		675797C2E2D9E621FDB1EF0D /* AsaFlashcardProTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsaFlashcardProTests.swift; sourceTree = "<group>"; };
 		8CC3486D032622649CB29737 /* CategoryListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryListView.swift; sourceTree = "<group>"; };
@@ -82,7 +80,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AA0512BDAD6FEB8CC2378365 /* AsaUIKit in Frameworks */,
 				2E6D50C99AD9E9FEB94B1A36 /* SwiftUI.framework in Frameworks */,
 				6B468AC39F03DBA01898E039 /* SwiftData.framework in Frameworks */,
 			);
@@ -159,21 +156,12 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
-		4D5580936F3191F461742D4F /* Packages */ = {
-			isa = PBXGroup;
-			children = (
-				5FF5A2D93A7B3E294574E13A /* AsaUIKit */,
-			);
-			name = Packages;
-			sourceTree = "<group>";
-		};
 		52AC4D78CE3CDC326BCD23AD = {
 			isa = PBXGroup;
 			children = (
 				065CB338DB8C10E969E943C5 /* AsaFlashcardPro */,
 				1FB5647E74809F764F2CBDB7 /* AsaFlashcardProTests */,
 				117FFB935D9E2DBAD03E7FD5 /* AsaFlashcardProUITests */,
-				4D5580936F3191F461742D4F /* Packages */,
 				F897A6C17AEEFE6136A70AB7 /* Frameworks */,
 				192544EB2C42F6D954D7AE4E /* Products */,
 			);
@@ -230,7 +218,6 @@
 			);
 			name = AsaFlashcardPro;
 			packageProductDependencies = (
-				303788D7253A33A6F7C4810F /* AsaUIKit */,
 			);
 			productName = AsaFlashcardPro;
 			productReference = 5F1DA034814C0D32F081185B /* AsaFlashcardPro.app */;
@@ -288,9 +275,6 @@
 			);
 			mainGroup = 52AC4D78CE3CDC326BCD23AD;
 			minimizedProjectReferenceProxies = 1;
-			packageReferences = (
-				1705003A2560B5365A130613 /* XCLocalSwiftPackageReference "../../Packages/AsaUIKit" */,
-			);
 			preferredProjectObjectVersion = 77;
 			projectDirPath = "";
 			projectRoot = "";
@@ -646,20 +630,6 @@
 			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCLocalSwiftPackageReference section */
-		1705003A2560B5365A130613 /* XCLocalSwiftPackageReference "../../Packages/AsaUIKit" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = ../../Packages/AsaUIKit;
-		};
-/* End XCLocalSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		303788D7253A33A6F7C4810F /* AsaUIKit */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = AsaUIKit;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = B71AD9497876EBD030C6F9CC /* Project object */;
 }
