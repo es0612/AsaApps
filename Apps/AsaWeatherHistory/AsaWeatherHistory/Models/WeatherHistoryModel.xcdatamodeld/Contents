@@ -1,25 +1,10 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="21754" systemVersion="22F66" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
-    <entity name="WeatherRecord" representedClassName="WeatherRecord" syncable="YES">
-        <attribute name="country" optional="YES" attributeType="String"/>
-        <attribute name="createdAt" attributeType="Date" usesScalarValueType="NO"/>
-        <attribute name="feelsLikeTemperature" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
-        <attribute name="humidity" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="latitude" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
-        <attribute name="locationName" optional="YES" attributeType="String"/>
-        <attribute name="longitude" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
-        <attribute name="maxTemperature" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
-        <attribute name="minTemperature" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
-        <attribute name="pressure" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="recordDate" attributeType="Date" usesScalarValueType="NO"/>
-        <attribute name="sunrise" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
-        <attribute name="sunset" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
-        <attribute name="temperature" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
-        <attribute name="updatedAt" attributeType="Date" usesScalarValueType="NO"/>
-        <attribute name="weatherCode" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="weatherDescription" optional="YES" attributeType="String"/>
-        <attribute name="weatherMain" optional="YES" attributeType="String"/>
-        <attribute name="windDirection" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="windSpeed" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
-    </entity>
-</model>
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>_XCCurrentVersionName</key>
+	<string>WeatherHistoryModel.xcdatamodel</string>
+	<key>_XCVersionedDataModel</key>
+	<true/>
+</dict>
+</plist>

@@ -4,9 +4,27 @@ import CoreLocation
 import Combine
 import UIKit
 
+/// 位置情報取得エラー
+enum LocationError: Error, LocalizedError {
+    case alreadyRequesting
+    case permissionDenied
+    case unavailable
+    
+    var errorDescription: String? {
+        switch self {
+        case .alreadyRequesting:
+            return "位置情報の取得が既に実行中です"
+        case .permissionDenied:
+            return "位置情報の使用が許可されていません"
+        case .unavailable:
+            return "位置情報が利用できません"
+        }
+    }
+}
+
 /// 天気履歴管理サービス
 @MainActor
-class WeatherHistoryService: ObservableObject {
+class WeatherHistoryService: NSObject, ObservableObject, CLLocationManagerDelegate {
     
     // MARK: - Singleton
     static let shared = WeatherHistoryService()
@@ -23,13 +41,15 @@ class WeatherHistoryService: ObservableObject {
     private let weatherService = WeatherService.shared
     private let locationManager = CLLocationManager()
     private var cancellables = Set<AnyCancellable>()
+    nonisolated(unsafe) private var locationContinuation: CheckedContinuation<CLLocation, Error>?
     
     // 自動更新タイマー（6時間毎）
     private var updateTimer: Timer?
     private let updateInterval: TimeInterval = 6 * 60 * 60 // 6時間
     
     // MARK: - Initialization
-    private init() {
+    private override init() {
+        super.init()
         setupLocationManager()
         loadRecentRecords()
         setupAutoUpdate()
@@ -135,6 +155,7 @@ class WeatherHistoryService: ObservableObject {
     // MARK: - Private Methods
     
     private func setupLocationManager() {
+        locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.requestWhenInUseAuthorization()
     }
@@ -163,12 +184,37 @@ class WeatherHistoryService: ObservableObject {
     
     private func getCurrentLocation() async throws -> CLLocation {
         return try await withCheckedThrowingContinuation { continuation in
-            locationManager.requestLocation()
+            // 既に位置情報取得中の場合はエラー
+            guard locationContinuation == nil else {
+                continuation.resume(throwing: LocationError.alreadyRequesting)
+                return
+            }
             
-            // CLLocationManagerDelegateの代わりに一時的な実装
-            // 本来はDelegate実装が望ましいが、簡略化のため現在地の固定値を使用
-            let defaultLocation = CLLocation(latitude: 35.6762, longitude: 139.6503) // 東京
-            continuation.resume(returning: defaultLocation)
+            // 位置情報の許可状態をチェック
+            switch locationManager.authorizationStatus {
+            case .authorizedWhenInUse, .authorizedAlways:
+                // 許可済みの場合、位置情報を取得
+                locationContinuation = continuation
+                locationManager.requestLocation()
+                
+            case .denied, .restricted:
+                // 拒否されている場合、デフォルト位置（東京）を返す
+                print("⚠️ 位置情報が拒否されているため、デフォルト位置（東京）を使用します")
+                let defaultLocation = CLLocation(latitude: 35.6762, longitude: 139.6503)
+                continuation.resume(returning: defaultLocation)
+                
+            case .notDetermined:
+                // 未決定の場合、許可を要求してからデフォルト位置を返す
+                locationManager.requestWhenInUseAuthorization()
+                print("⚠️ 位置情報の許可が未決定のため、デフォルト位置（東京）を使用します")
+                let defaultLocation = CLLocation(latitude: 35.6762, longitude: 139.6503)
+                continuation.resume(returning: defaultLocation)
+                
+            @unknown default:
+                // 未知の状態の場合、デフォルト位置を返す
+                let defaultLocation = CLLocation(latitude: 35.6762, longitude: 139.6503)
+                continuation.resume(returning: defaultLocation)
+            }
         }
     }
     
@@ -275,5 +321,43 @@ extension WeatherHistoryService {
     /// 位置情報の許可を要求
     func requestLocationPermission() {
         locationManager.requestWhenInUseAuthorization()
+    }
+    
+    // MARK: - CLLocationManagerDelegate
+    
+    /// 位置情報取得成功時の処理
+    nonisolated func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        guard let location = locations.first else { return }
+        
+        locationContinuation?.resume(returning: location)
+        locationContinuation = nil
+        
+        print("✅ 位置情報を取得しました: \(location.coordinate.latitude), \(location.coordinate.longitude)")
+    }
+    
+    /// 位置情報取得失敗時の処理
+    nonisolated func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        locationContinuation?.resume(throwing: error)
+        locationContinuation = nil
+        
+        print("❌ 位置情報取得エラー: \(error.localizedDescription)")
+    }
+    
+    /// 位置情報許可状態変更時の処理（iOS 14以降）
+    nonisolated func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+        switch manager.authorizationStatus {
+        case .authorizedWhenInUse, .authorizedAlways:
+            print("✅ 位置情報の使用が許可されました")
+        case .denied, .restricted:
+            print("❌ 位置情報の使用が拒否されました")
+            // デフォルト位置（東京）を使用
+            let defaultLocation = CLLocation(latitude: 35.6762, longitude: 139.6503)
+            locationContinuation?.resume(returning: defaultLocation)
+            locationContinuation = nil
+        case .notDetermined:
+            print("⏳ 位置情報の許可が未決定です")
+        @unknown default:
+            print("⚠️ 未知の位置情報許可状態です")
+        }
     }
 }
