@@ -39,6 +39,8 @@ struct ContentView: View {
         .accentColor(Color("AsaCoffeeBrown"))
         .onAppear {
             setupInitialDataIfNeeded()
+            // 既存ユーザー環境でも不足分のみを追加入れ
+            upgradeSampleDataIfNeeded()
         }
     }
     
@@ -177,7 +179,7 @@ struct ContentView: View {
             Flashcard(word: "Set", meaning: "セット", example: "let uniqueNumbers: Set = [1, 2, 3]", category: programmingCategory),
             Flashcard(word: "Tuple", meaning: "タプル", example: "let coordinates = (x: 10, y: 20)", category: programmingCategory),
             // 朝活パパエンジニア実用語彙
-            Flashcard(word: "Debug", meaning: "デバッグ", example: "print(\"Debug: \(value)\")", category: programmingCategory),
+            Flashcard(word: "Debug", meaning: "デバッグ", example: #"print("Debug: \(value)")"#, category: programmingCategory),
             Flashcard(word: "Build", meaning: "ビルド", example: "Building project in Xcode", category: programmingCategory),
             Flashcard(word: "Commit", meaning: "コミット", example: "git commit -m \"Fix bug\"", category: programmingCategory)
         ]
@@ -442,12 +444,253 @@ struct ContentView: View {
             parentingCategory.flashcards.append(flashcard)
         }
         
+        // 句動詞カテゴリ（Phrasal Verbs）
+        let phrasalCategory = Category(name: "句動詞", icon: "arrow.triangle.2.circlepath", color: "AsaDarkSlate")
+        modelContext.insert(phrasalCategory)
+        
+        let phrasalFlashcards = [
+            Flashcard(word: "pick up", meaning: "拾う／迎えに行く", example: "I'll pick up the kids at 5.", category: phrasalCategory),
+            Flashcard(word: "set up", meaning: "準備する／設置する", example: "We need to set up the projector.", category: phrasalCategory),
+            Flashcard(word: "take off", meaning: "離陸する／脱ぐ", example: "The plane will take off soon.", category: phrasalCategory),
+            Flashcard(word: "put off", meaning: "延期する", example: "Let's put off the meeting to tomorrow.", category: phrasalCategory),
+            Flashcard(word: "turn on", meaning: "電源を入れる", example: "Please turn on the lights.", category: phrasalCategory),
+            Flashcard(word: "turn off", meaning: "電源を切る", example: "Don't forget to turn off the AC.", category: phrasalCategory),
+            Flashcard(word: "get along", meaning: "仲良くやる", example: "They get along very well.", category: phrasalCategory),
+            Flashcard(word: "look up", meaning: "調べる", example: "I'll look it up online.", category: phrasalCategory),
+            Flashcard(word: "look after", meaning: "世話をする", example: "Can you look after my dog?", category: phrasalCategory),
+            Flashcard(word: "run into", meaning: "偶然出くわす", example: "I ran into an old friend.", category: phrasalCategory),
+            Flashcard(word: "carry on", meaning: "続ける", example: "Please carry on with your work.", category: phrasalCategory),
+            Flashcard(word: "bring up", meaning: "話題に出す／育てる", example: "She brought up an interesting point.", category: phrasalCategory),
+            Flashcard(word: "come across", meaning: "偶然見つける", example: "I came across a great article.", category: phrasalCategory),
+            Flashcard(word: "figure out", meaning: "解決する／理解する", example: "We need to figure out a solution.", category: phrasalCategory),
+            Flashcard(word: "hand in", meaning: "提出する", example: "Please hand in your report by noon.", category: phrasalCategory),
+            Flashcard(word: "hang out", meaning: "のんびり過ごす", example: "Let's hang out this weekend.", category: phrasalCategory),
+            Flashcard(word: "keep up", meaning: "ついていく／維持する", example: "Keep up the good work!", category: phrasalCategory),
+            Flashcard(word: "pay off", meaning: "成果が出る／完済する", example: "Your effort will pay off.", category: phrasalCategory),
+            Flashcard(word: "point out", meaning: "指摘する", example: "Thanks for pointing that out.", category: phrasalCategory),
+            Flashcard(word: "work out", meaning: "うまくいく／解く／運動する", example: "It will work out in the end.", category: phrasalCategory)
+        ]
+        
+        for flashcard in phrasalFlashcards {
+            modelContext.insert(flashcard)
+            phrasalCategory.flashcards.append(flashcard)
+        }
+        
+        // 英熟語カテゴリ（Idioms）
+        let idiomCategory = Category(name: "英熟語", icon: "quote.bubble.fill", color: "AsaMutedSage")
+        modelContext.insert(idiomCategory)
+        
+        let idiomFlashcards = [
+            Flashcard(word: "a piece of cake", meaning: "とても簡単", example: "The test was a piece of cake.", category: idiomCategory),
+            Flashcard(word: "break a leg", meaning: "健闘を祈る", example: "Good luck! Break a leg.", category: idiomCategory),
+            Flashcard(word: "hit the books", meaning: "勉強する", example: "I have to hit the books tonight.", category: idiomCategory),
+            Flashcard(word: "under the weather", meaning: "体調が悪い", example: "I'm feeling under the weather.", category: idiomCategory),
+            Flashcard(word: "once in a blue moon", meaning: "ごくたまに", example: "He visits once in a blue moon.", category: idiomCategory),
+            Flashcard(word: "cost an arm and a leg", meaning: "とても高い", example: "The repair cost an arm and a leg.", category: idiomCategory),
+            Flashcard(word: "on the same page", meaning: "認識が一致して", example: "Now we're on the same page.", category: idiomCategory),
+            Flashcard(word: "out of the blue", meaning: "突然", example: "She called me out of the blue.", category: idiomCategory),
+            Flashcard(word: "rule of thumb", meaning: "経験則", example: "As a rule of thumb, start small.", category: idiomCategory),
+            Flashcard(word: "back to square one", meaning: "振り出しに戻る", example: "We are back to square one.", category: idiomCategory),
+            Flashcard(word: "call it a day", meaning: "切り上げる", example: "Let's call it a day.", category: idiomCategory),
+            Flashcard(word: "get cold feet", meaning: "尻込みする", example: "He got cold feet at the last minute.", category: idiomCategory),
+            Flashcard(word: "on cloud nine", meaning: "有頂天で", example: "She was on cloud nine.", category: idiomCategory),
+            Flashcard(word: "the ball is in your court", meaning: "次はあなたの番", example: "The ball is in your court now.", category: idiomCategory),
+            Flashcard(word: "in hot water", meaning: "困った立場", example: "He's in hot water with his boss.", category: idiomCategory),
+            Flashcard(word: "cut corners", meaning: "手を抜く", example: "Don't cut corners on safety.", category: idiomCategory),
+            Flashcard(word: "face the music", meaning: "現実を受け止める", example: "It's time to face the music.", category: idiomCategory),
+            Flashcard(word: "let the cat out of the bag", meaning: "秘密を漏らす", example: "Who let the cat out of the bag?", category: idiomCategory),
+            Flashcard(word: "on the fence", meaning: "決めかねて", example: "I'm on the fence about it.", category: idiomCategory),
+            Flashcard(word: "up in the air", meaning: "未定で", example: "The plan is still up in the air.", category: idiomCategory)
+        ]
+        
+        for flashcard in idiomFlashcards {
+            modelContext.insert(flashcard)
+            idiomCategory.flashcards.append(flashcard)
+        }
+        
+        // 旅行英語カテゴリ
+        let travelCategory = Category(name: "旅行英語", icon: "airplane", color: "AsaCoffeeBrown")
+        modelContext.insert(travelCategory)
+        
+        let travelFlashcards = [
+            Flashcard(word: "boarding pass", meaning: "搭乗券", example: "Please show your boarding pass.", category: travelCategory),
+            Flashcard(word: "check-in", meaning: "チェックイン", example: "What time is check-in?", category: travelCategory),
+            Flashcard(word: "baggage claim", meaning: "手荷物受取所", example: "The baggage claim is on the first floor.", category: travelCategory),
+            Flashcard(word: "gate", meaning: "搭乗口", example: "Your gate is B12.", category: travelCategory),
+            Flashcard(word: "connecting flight", meaning: "乗り継ぎ便", example: "We have a connecting flight in Dubai.", category: travelCategory),
+            Flashcard(word: "aisle seat", meaning: "通路側の席", example: "I'd like an aisle seat.", category: travelCategory),
+            Flashcard(word: "window seat", meaning: "窓側の席", example: "Is a window seat available?", category: travelCategory),
+            Flashcard(word: "carry-on", meaning: "機内持ち込み手荷物", example: "This is my carry-on.", category: travelCategory),
+            Flashcard(word: "customs", meaning: "税関", example: "Do I need to go through customs?", category: travelCategory),
+            Flashcard(word: "immigration", meaning: "入国審査", example: "Immigration took a while.", category: travelCategory),
+            Flashcard(word: "reservation", meaning: "予約", example: "I have a reservation under Tanaka.", category: travelCategory),
+            Flashcard(word: "confirmation", meaning: "予約確認", example: "Could you send the confirmation email?", category: travelCategory),
+            Flashcard(word: "itinerary", meaning: "旅程", example: "Here's our itinerary for the trip.", category: travelCategory),
+            Flashcard(word: "sightseeing", meaning: "観光", example: "We're going sightseeing tomorrow.", category: travelCategory),
+            Flashcard(word: "attraction", meaning: "名所", example: "This is a popular attraction.", category: travelCategory),
+            Flashcard(word: "admission fee", meaning: "入場料", example: "What's the admission fee?", category: travelCategory),
+            Flashcard(word: "discount", meaning: "割引", example: "Is there a student discount?", category: travelCategory),
+            Flashcard(word: "currency exchange", meaning: "両替", example: "Where is the currency exchange?", category: travelCategory),
+            Flashcard(word: "travel insurance", meaning: "旅行保険", example: "Do you have travel insurance?", category: travelCategory),
+            Flashcard(word: "souvenir", meaning: "お土産", example: "Let's buy some souvenirs.", category: travelCategory)
+        ]
+        
+        for flashcard in travelFlashcards {
+            modelContext.insert(flashcard)
+            travelCategory.flashcards.append(flashcard)
+        }
+        
+        // 医療・健康英語カテゴリ
+        let healthCategory = Category(name: "医療・健康英語", icon: "heart.fill", color: "AsaMocha")
+        modelContext.insert(healthCategory)
+        
+        let healthFlashcards = [
+            Flashcard(word: "symptom", meaning: "症状", example: "Do you have any symptoms?", category: healthCategory),
+            Flashcard(word: "diagnosis", meaning: "診断", example: "We need a proper diagnosis.", category: healthCategory),
+            Flashcard(word: "prescription", meaning: "処方箋", example: "This is your prescription.", category: healthCategory),
+            Flashcard(word: "dosage", meaning: "用量", example: "Check the dosage on the label.", category: healthCategory),
+            Flashcard(word: "side effects", meaning: "副作用", example: "Are there any side effects?", category: healthCategory),
+            Flashcard(word: "appointment", meaning: "予約", example: "I'd like to make an appointment.", category: healthCategory),
+            Flashcard(word: "checkup", meaning: "健康診断", example: "It's time for a checkup.", category: healthCategory),
+            Flashcard(word: "fever", meaning: "熱", example: "I have a high fever.", category: healthCategory),
+            Flashcard(word: "cough", meaning: "咳", example: "This cough won't go away.", category: healthCategory),
+            Flashcard(word: "headache", meaning: "頭痛", example: "I have a headache.", category: healthCategory),
+            Flashcard(word: "allergy", meaning: "アレルギー", example: "Do you have any allergies?", category: healthCategory),
+            Flashcard(word: "vaccine", meaning: "ワクチン", example: "I got a flu vaccine.", category: healthCategory),
+            Flashcard(word: "blood pressure", meaning: "血圧", example: "Your blood pressure is normal.", category: healthCategory),
+            Flashcard(word: "heart rate", meaning: "心拍数", example: "Measure your heart rate.", category: healthCategory),
+            Flashcard(word: "emergency", meaning: "救急", example: "Call 911 in an emergency.", category: healthCategory),
+            Flashcard(word: "first aid", meaning: "応急手当", example: "We need a first-aid kit.", category: healthCategory),
+            Flashcard(word: "pharmacy", meaning: "薬局", example: "Is there a pharmacy nearby?", category: healthCategory),
+            Flashcard(word: "insurance card", meaning: "保険証", example: "Please show your insurance card.", category: healthCategory),
+            Flashcard(word: "referral", meaning: "紹介状", example: "You need a referral to see a specialist.", category: healthCategory),
+            Flashcard(word: "specialist", meaning: "専門医", example: "I'll refer you to a specialist.", category: healthCategory)
+        ]
+        
+        for flashcard in healthFlashcards {
+            modelContext.insert(flashcard)
+            healthCategory.flashcards.append(flashcard)
+        }
+        
+        // 学術英語（AWL Sublist 1）
+        let awlCategory = Category(name: "学術英語（AWL）", icon: "book.closed.fill", color: "AsaSoftCream")
+        modelContext.insert(awlCategory)
+        
+        let awlFlashcards = [
+            Flashcard(word: "analyze", meaning: "分析する", example: "We need to analyze the data.", category: awlCategory),
+            Flashcard(word: "approach", meaning: "取り組み／取り組む", example: "This is a practical approach.", category: awlCategory),
+            Flashcard(word: "area", meaning: "分野／領域", example: "This area needs more research.", category: awlCategory),
+            Flashcard(word: "assess", meaning: "評価する", example: "We will assess the risks.", category: awlCategory),
+            Flashcard(word: "assume", meaning: "仮定する", example: "Don't assume without evidence.", category: awlCategory),
+            Flashcard(word: "authority", meaning: "権威／権限", example: "Who has the authority to approve?", category: awlCategory),
+            Flashcard(word: "available", meaning: "利用可能な", example: "The data is not available.", category: awlCategory),
+            Flashcard(word: "benefit", meaning: "利益／恩恵", example: "This policy has clear benefits.", category: awlCategory),
+            Flashcard(word: "concept", meaning: "概念", example: "The key concept is simple.", category: awlCategory),
+            Flashcard(word: "consistent", meaning: "一貫した", example: "Results are consistent across studies.", category: awlCategory),
+            Flashcard(word: "create", meaning: "作成する", example: "Create a new dataset.", category: awlCategory),
+            Flashcard(word: "data", meaning: "データ", example: "The data supports our claim.", category: awlCategory),
+            Flashcard(word: "definition", meaning: "定義", example: "We need a clear definition.", category: awlCategory),
+            Flashcard(word: "economy", meaning: "経済", example: "The global economy is changing.", category: awlCategory),
+            Flashcard(word: "environment", meaning: "環境", example: "Protecting the environment is vital.", category: awlCategory),
+            Flashcard(word: "establish", meaning: "確立する／設立する", example: "We will establish a baseline.", category: awlCategory),
+            Flashcard(word: "estimate", meaning: "見積もる／推定", example: "Please estimate the cost.", category: awlCategory),
+            Flashcard(word: "evidence", meaning: "証拠", example: "There is strong evidence.", category: awlCategory),
+            Flashcard(word: "factor", meaning: "要因", example: "Many factors affect the result.", category: awlCategory),
+            Flashcard(word: "finance", meaning: "財務／資金", example: "We need to secure finance.", category: awlCategory)
+        ]
+        
+        for flashcard in awlFlashcards {
+            modelContext.insert(flashcard)
+            awlCategory.flashcards.append(flashcard)
+        }
+        
         // データを保存
         do {
             try modelContext.save()
         } catch {
             print("サンプルデータの作成に失敗しました: \(error)")
         }
+    }
+
+    // 既存データを壊さず、不足分だけを追加するアップグレード挿入
+    private func upgradeSampleDataIfNeeded() {
+        // 英語基礎の不足分
+        if let english = categories.first(where: { $0.name == "英語基礎" }) {
+            let existing = Set(english.flashcards.map { $0.word })
+            let add: [(String, String, String?, String?)] = [
+                ("Teacher", "先生", "The teacher is kind.", "ˈtiːtʃər"),
+                ("Student", "生徒", "The student studies English.", "ˈstuːdnt"),
+                ("Table", "テーブル", "Put the book on the table.", "ˈteɪbəl"),
+                ("Chair", "いす", "This chair is comfortable.", "tʃer"),
+                ("Window", "窓", "Open the window, please.", "ˈwɪndoʊ"),
+                ("Door", "ドア", "Close the door.", "dɔːr"),
+                ("Breakfast", "朝食", "I have toast for breakfast.", "ˈbrekfəst"),
+                ("Lunch", "昼食", "Let's have lunch together.", "lʌntʃ"),
+                ("Dinner", "夕食", "What's for dinner?", "ˈdɪnər"),
+                ("Street", "通り", "The street is busy.", "striːt"),
+                ("City", "都市", "Tokyo is a big city.", "ˈsɪti"),
+                ("Country", "国・田舎", "Japan is a beautiful country.", "ˈkʌntri"),
+                ("Music", "音楽", "I love music.", "ˈmjuːzɪk"),
+                ("Movie", "映画", "This movie is exciting.", "ˈmuːvi"),
+                ("Game", "ゲーム", "Let's play a game.", "ɡeɪm"),
+                ("Sport", "スポーツ", "My favorite sport is soccer.", "spɔːrt"),
+                ("Weather", "天気", "The weather is nice.", "ˈweðər"),
+                ("Rain", "雨", "It may rain today.", "reɪn"),
+                ("Snow", "雪", "It will snow tomorrow.", "snoʊ"),
+                ("Sun", "太陽", "The sun is bright.", "sʌn")
+            ].filter { !existing.contains($0.0) }
+            for (w, m, e, p) in add {
+                let f = Flashcard(word: w, meaning: m, example: e, pronunciation: p, category: english)
+                modelContext.insert(f)
+                english.flashcards.append(f)
+            }
+        }
+        
+        // 日本語基礎の不足分
+        if let japanese = categories.first(where: { $0.name == "日本語基礎" }) {
+            let existing = Set(japanese.flashcards.map { $0.word })
+            let add: [(String, String, String?, String?)] = [
+                ("あめ", "雨", "あめがふっています。", "ame"),
+                ("ゆき", "雪", "ゆきがふりました。", "yuki"),
+                ("そら", "空", "そらがあおいです。", "sora"),
+                ("くるま", "車", "くるまにのります。", "kuruma"),
+                ("ともだち", "友達", "ともだちとあそびます。", "tomodachi"),
+                ("せんせい", "先生", "せんせいにききます。", "sensei"),
+                ("いぬ", "犬", "いぬがほえています。", "inu"),
+                ("とけい", "時計", "とけいをみます。", "tokei"),
+                ("えき", "駅", "えきにつきました。", "eki"),
+                ("きっぷ", "切符", "きっぷをかいます。", "kippu")
+            ].filter { !existing.contains($0.0) }
+            for (w, m, e, p) in add {
+                let f = Flashcard(word: w, meaning: m, example: e, pronunciation: p, category: japanese)
+                modelContext.insert(f)
+                japanese.flashcards.append(f)
+            }
+        }
+        
+        // プログラミング用語の不足分
+        if let programming = categories.first(where: { $0.name == "プログラミング用語" }) {
+            let existing = Set(programming.flashcards.map { $0.word })
+            let add: [(String, String, String?)] = [
+                ("Class", "クラス", "class User { }"),
+                ("Struct", "構造体", "struct Point { x: Int, y: Int }"),
+                ("Enum", "列挙型", "enum Direction { case north }"),
+                ("Closure", "クロージャ", "let add = { (a,b) in a+b }"),
+                ("Protocol", "プロトコル", "protocol Drawable { }"),
+                ("Extension", "拡張", "extension String { }"),
+                ("Generic", "ジェネリクス", "func id<T>(_ x:T)->T { x }"),
+                ("Async", "非同期", "async let value = fetch()"),
+                ("Await", "待機", "let r = await value"),
+                ("Actor", "アクタ", "actor Counter { var n = 0 }")
+            ].filter { !existing.contains($0.0) }
+            for (w, m, e) in add {
+                let f = Flashcard(word: w, meaning: m, example: e, category: programming)
+                modelContext.insert(f)
+                programming.flashcards.append(f)
+            }
+        }
+        
+        do { try modelContext.save() } catch { print("アップグレード挿入に失敗: \(error)") }
     }
 }
 
