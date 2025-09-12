@@ -50,17 +50,65 @@ AsaApps/
 
 ## 開発コマンド
 
-XcodeプロジェクトはXcodeGenコマンドで管理すること。
+### XcodeGenによるプロジェクト管理
 
-各アプリは独立したXcodeプロジェクトです。作業する特定のアプリディレクトリに移動してください：
+**すべてのXcodeプロジェクトはXcodeGenで管理され、.xcodeproj ファイルはGitトラッキング対象外です。**
+
+#### 基本的なXcodeGenワークフロー
 
 ```bash
-# 特定のアプリをXcodeで開く
-cd Apps/AsaNumberGame
-open AsaNumberGame.xcodeproj
+# プロジェクト構成ファイルを生成/更新
+xcodegen generate
 
-# コマンドラインからビルドして実行
+# 特定のアプリディレクトリでの生成
+cd Apps/AsaNumberGame
+xcodegen generate -s project.yml
+
+# 生成されたプロジェクトを開く
+open AsaNumberGame.xcodeproj
+```
+
+#### プロジェクト設定ファイル（project.yml）の標準構造
+
+```yaml
+name: AsaNewApp
+options:
+  bundleIdPrefix: com.asaapps
+  deploymentTarget:
+    iOS: "17.0"
+  
+targets:
+  AsaNewApp:
+    type: application
+    platform: iOS
+    sources: 
+      - Sources
+    dependencies:
+      - package: AsaUIKit
+        product: AsaUIKit
+      - package: AsaTaskKit
+        product: AsaTaskKit
+    settings:
+      SWIFT_VERSION: "5.9"
+      
+packages:
+  AsaUIKit:
+    path: ../../Packages/AsaUIKit
+  AsaTaskKit:
+    path: ../../Packages/AsaTaskKit
+```
+
+#### ビルド・実行コマンド
+
+```bash
+# コマンドラインからビルド
 xcodebuild -project AsaNumberGame.xcodeproj -scheme AsaNumberGame
+
+# テスト実行
+swift test
+
+# 特定のターゲットをビルド・実行
+xcodebuild -project AsaNumberGame.xcodeproj -scheme AsaNumberGame -destination 'platform=iOS Simulator,name=iPhone 16'
 ```
 
 ## アーキテクチャパターン
@@ -72,9 +120,49 @@ xcodebuild -project AsaNumberGame.xcodeproj -scheme AsaNumberGame
   - `Model.swift` - データモデル
   - 複雑なUIコンポーネント用のカスタムビュー
 
-### 共有コンポーネント
+### ローカルパッケージ化戦略
+
+#### UI・ロジック分離原則
+**すべてのアプリUIとビジネスロジックはローカルパッケージに集約し、テスト可能な形で実装します。**
+
+#### パッケージ構造
+- **AsaUIKit** - 共有UIコンポーネント（テスト可能）
+  - AsaButton, AsaCard, AsaColors等の統一UIライブラリ
+  - SwiftUI プレビューとUnit Tests完備
+- **AsaTaskKit** - ドメインロジック（テスト可能）
+  - Models, ViewModels, Services の分離実装
+  - Business Logic の Swift Test完備
+- **App本体** - UIとロジックの組み立て
+  - パッケージの組み合わせのみ、独自ロジック最小化
+
+#### パッケージ化の利点
+```swift
+// ✅ 良い例: テスト可能なパッケージ化
+// AsaUIKit/Tests/AsaButtonTests.swift
+@Test("AsaButton アクション実行テスト")
+func testButtonAction() {
+    var actionCalled = false
+    let button = AsaButton(title: "Test") {
+        actionCalled = true
+    }
+    // テスト実行
+    #expect(actionCalled == true)
+}
+
+// ✅ 良い例: ビジネスロジックのテスト
+// AsaTaskKit/Tests/TaskViewModelTests.swift
+@Test("タスク追加ロジックテスト")
+func testAddTask() {
+    let viewModel = TaskViewModel()
+    viewModel.addTask("新しいタスク")
+    #expect(viewModel.tasks.count == 1)
+}
+```
+
+#### 共有UIコンポーネント（AsaUIKit）
 - **AsaButton**: ブランドカラーを使用した一貫したボタンスタイリング
 - **AsaCard**: コンテンツセクション用のカードラッパー
+- **AsaColors**: ブランドカラーパレット定義
 - **AsaLaunchScreen**: アプリ間で共通のランチスクリーン
 
 ### データ管理
@@ -188,15 +276,118 @@ xcodebuild -project AsaNumberGame.xcodeproj -scheme AsaNumberGame
 ## コード品質管理
 
 ### 自動化・CI/CD
-- **GitHub Actions**: 自動ビルド・テスト実行
-- **Pull Request**: テンプレート化されたコードレビュー
-- **XcodeGen**: プロジェクトファイル自動生成
 
-### テスト戦略
-- **Swift Testing**: モダン@Test構文使用
-- **単体テスト**: ViewModelロジックテスト
-- **UIテスト**: 主要ユーザーフローテスト
-- **カバレッジ目標**: 段階的拡張中（現在4ファイル→全ViewModel）
+#### リンターによるコード品質管理
+**すべてのSwiftコードは自動リンター/フォーマッターで一貫性を保ちます。**
+
+```bash
+# SwiftLint - コーディング規約チェック
+swiftlint lint
+swiftlint lint --fix  # 自動修正
+
+# SwiftFormat - コード書式統一
+swiftformat .
+swiftformat --config .swiftformat .
+```
+
+#### リンター設定ファイル (.swiftlint.yml)
+```yaml
+# SwiftLint設定
+disabled_rules:
+  - trailing_whitespace
+opt_in_rules:
+  - empty_count
+  - force_unwrapping
+  - implicitly_unwrapped_optional
+line_length: 120
+identifier_name:
+  min_length: 1
+excluded:
+  - Carthage
+  - .build
+```
+
+#### フォーマッター設定 (.swiftformat)
+```
+--indent 4
+--maxwidth 120
+--linebreaks lf
+--commas inline
+--trimwhitespace always
+--disable redundantSelf
+```
+
+#### CI/CD統合
+- **GitHub Actions**: 自動ビルド・テスト・リンター実行
+- **Pull Request**: テンプレート化されたコードレビュー + 自動品質チェック
+- **XcodeGen**: プロジェクトファイル自動生成
+- **Pre-commit hooks**: コミット前の自動品質チェック
+
+### Swift Testing実践戦略
+
+#### テスト実行コマンド
+```bash
+# 全パッケージのテスト実行
+swift test
+
+# 特定パッケージのテスト実行
+cd Packages/AsaUIKit
+swift test
+
+# 特定テストクラスの実行
+swift test --filter AsaButtonTests
+```
+
+#### テストレベル別戦略
+
+**Unit Tests (最優先 - 95%カバレッジ目標)**
+```swift
+// ViewModelロジックテスト
+@Test("タスク状態変更テスト")
+func testTaskStateChange() async {
+    let viewModel = TaskViewModel()
+    await viewModel.toggleTaskState(id: "task1")
+    #expect(viewModel.tasks.first?.isCompleted == true)
+}
+
+// UIコンポーネントテスト
+@Test("AsaButton状態テスト")
+func testButtonStates() {
+    let button = AsaButton(title: "Test", isLoading: true)
+    #expect(button.isEnabled == false)
+}
+```
+
+**Integration Tests (重要 - 80%カバレッジ目標)**
+```swift
+// データ永続化テスト
+@Test("UserDefaults統合テスト")
+func testDataPersistence() async {
+    let service = TaskDataService()
+    await service.saveTasks([Task(title: "テストタスク")])
+    let loaded = await service.loadTasks()
+    #expect(loaded.count == 1)
+}
+```
+
+**UI Tests (補完的 - 主要フローのみ)**
+```swift
+// 主要ユーザーフローテスト（XCUITest）
+func testMainUserFlow() {
+    let app = XCUIApplication()
+    app.launch()
+    app.buttons["新しいタスク"].tap()
+    app.textFields["タスクタイトル"].typeText("重要なタスク")
+    app.buttons["保存"].tap()
+    XCTAssert(app.staticTexts["重要なタスク"].exists)
+}
+```
+
+#### テスト実装ガイドライン
+- **@Test構文**: 従来のXCTestではなくSwift Testingを使用
+- **#expect**: assertではなく#expectマクロでより自然な記述
+- **async/await**: 非同期処理のテストサポート
+- **並列実行**: Swift Testingの並列実行機能を活用
 
 ### コーディング規約
 - **命名規約**: `Asa` + 機能名（AsaCounter、AsaBudgetPro）

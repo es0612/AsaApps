@@ -1,0 +1,369 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		1188169C9F7B4C8B2B218606 /* AsaDrawingProApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA138B123A4B1CB8D826D914 /* AsaDrawingProApp.swift */; };
+		12D7F636A08E8D2E20F4D7DB /* DrawingProViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A1F03C3AC4EDE84904DC93 /* DrawingProViewModel.swift */; };
+		31435DE4C6B267DEA3A25680 /* DrawingTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FE03C16C4AEF6F0F6C16FC9 /* DrawingTool.swift */; };
+		3665E50938BB954D7C393945 /* Color+AsaColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3463360575D56595DDC1740E /* Color+AsaColors.swift */; };
+		53656BDBB8172B96AF392FAA /* LayerManagerSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = A12B597A9230AB8E6D658073 /* LayerManagerSheet.swift */; };
+		67473D9FD0C8A8114C6A1E8B /* CanvasLayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E41D84EF361D734CDE5B04E0 /* CanvasLayerView.swift */; };
+		81ECBCF426B9F9905F4D6822 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B6E566503D66D0FAE17705C /* ContentView.swift */; };
+		8B4A8FF720A8C0175A955CE9 /* DrawingLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F3A0A2FB6CFD47969CFEB92 /* DrawingLayer.swift */; };
+		AA24CA1DAEE5DF5100AE9648 /* CompactToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 494AE1F4856C4BF5943CC210 /* CompactToolbar.swift */; };
+		B1A9E4989B7F37D87E5C3599 /* DrawingStroke.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A925B5FE090BE3880ACA3B3 /* DrawingStroke.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		3463360575D56595DDC1740E /* Color+AsaColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+AsaColors.swift"; sourceTree = "<group>"; };
+		3B6E566503D66D0FAE17705C /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		3F3A0A2FB6CFD47969CFEB92 /* DrawingLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingLayer.swift; sourceTree = "<group>"; };
+		494AE1F4856C4BF5943CC210 /* CompactToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompactToolbar.swift; sourceTree = "<group>"; };
+		7A925B5FE090BE3880ACA3B3 /* DrawingStroke.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingStroke.swift; sourceTree = "<group>"; };
+		7FE03C16C4AEF6F0F6C16FC9 /* DrawingTool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingTool.swift; sourceTree = "<group>"; };
+		A12B597A9230AB8E6D658073 /* LayerManagerSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayerManagerSheet.swift; sourceTree = "<group>"; };
+		BA138B123A4B1CB8D826D914 /* AsaDrawingProApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsaDrawingProApp.swift; sourceTree = "<group>"; };
+		D4339026BB68CF6F79502211 /* AsaDrawingPro.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = AsaDrawingPro.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E41D84EF361D734CDE5B04E0 /* CanvasLayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasLayerView.swift; sourceTree = "<group>"; };
+		F3A1F03C3AC4EDE84904DC93 /* DrawingProViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingProViewModel.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		0D4334DB40FB79BA3245A285 /* AsaDrawingPro */ = {
+			isa = PBXGroup;
+			children = (
+				BA138B123A4B1CB8D826D914 /* AsaDrawingProApp.swift */,
+				3B6E566503D66D0FAE17705C /* ContentView.swift */,
+				DC1704CBEC37D85292144CB9 /* Extensions */,
+				C8F3CA74740CF3DB1EB21593 /* Models */,
+				36D2EE188D00DF394A32D562 /* ViewModels */,
+				8B1834566E21F2BCAE455E5F /* Views */,
+			);
+			path = AsaDrawingPro;
+			sourceTree = "<group>";
+		};
+		36D2EE188D00DF394A32D562 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				F3A1F03C3AC4EDE84904DC93 /* DrawingProViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		7277C58D26016F21A5DB0ED6 = {
+			isa = PBXGroup;
+			children = (
+				0D4334DB40FB79BA3245A285 /* AsaDrawingPro */,
+				A6F484D9A6C76D2C4578ADD3 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		8B1834566E21F2BCAE455E5F /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				E41D84EF361D734CDE5B04E0 /* CanvasLayerView.swift */,
+				494AE1F4856C4BF5943CC210 /* CompactToolbar.swift */,
+				A12B597A9230AB8E6D658073 /* LayerManagerSheet.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		A6F484D9A6C76D2C4578ADD3 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D4339026BB68CF6F79502211 /* AsaDrawingPro.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		C8F3CA74740CF3DB1EB21593 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				3F3A0A2FB6CFD47969CFEB92 /* DrawingLayer.swift */,
+				7A925B5FE090BE3880ACA3B3 /* DrawingStroke.swift */,
+				7FE03C16C4AEF6F0F6C16FC9 /* DrawingTool.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		DC1704CBEC37D85292144CB9 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				3463360575D56595DDC1740E /* Color+AsaColors.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		25C4C29C321F9410E00AA366 /* AsaDrawingPro */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DE4C827CAD63AA632B5748F1 /* Build configuration list for PBXNativeTarget "AsaDrawingPro" */;
+			buildPhases = (
+				C45F77EDF27B6A606FE5B8D0 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = AsaDrawingPro;
+			packageProductDependencies = (
+			);
+			productName = AsaDrawingPro;
+			productReference = D4339026BB68CF6F79502211 /* AsaDrawingPro.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		96F9D104449C5A9018296436 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					25C4C29C321F9410E00AA366 = {
+						DevelopmentTeam = "";
+					};
+				};
+			};
+			buildConfigurationList = 788E5173273FE507F0A6FC17 /* Build configuration list for PBXProject "AsaDrawingPro" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 7277C58D26016F21A5DB0ED6;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				25C4C29C321F9410E00AA366 /* AsaDrawingPro */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		C45F77EDF27B6A606FE5B8D0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1188169C9F7B4C8B2B218606 /* AsaDrawingProApp.swift in Sources */,
+				67473D9FD0C8A8114C6A1E8B /* CanvasLayerView.swift in Sources */,
+				3665E50938BB954D7C393945 /* Color+AsaColors.swift in Sources */,
+				AA24CA1DAEE5DF5100AE9648 /* CompactToolbar.swift in Sources */,
+				81ECBCF426B9F9905F4D6822 /* ContentView.swift in Sources */,
+				8B4A8FF720A8C0175A955CE9 /* DrawingLayer.swift in Sources */,
+				12D7F636A08E8D2E20F4D7DB /* DrawingProViewModel.swift in Sources */,
+				B1A9E4989B7F37D87E5C3599 /* DrawingStroke.swift in Sources */,
+				31435DE4C6B267DEA3A25680 /* DrawingTool.swift in Sources */,
+				53656BDBB8172B96AF392FAA /* LayerManagerSheet.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		179D082E13B9D6D43EA7F04B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.asaapps.AsaDrawingPro;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.9;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		433861CA93A4520DE2EB7007 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		560DDF5C65B5F2CD5EFCEC75 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		F24B8ECADD143357A64BAA7A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.asaapps.AsaDrawingPro;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.9;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		788E5173273FE507F0A6FC17 /* Build configuration list for PBXProject "AsaDrawingPro" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				560DDF5C65B5F2CD5EFCEC75 /* Debug */,
+				433861CA93A4520DE2EB7007 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		DE4C827CAD63AA632B5748F1 /* Build configuration list for PBXNativeTarget "AsaDrawingPro" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F24B8ECADD143357A64BAA7A /* Debug */,
+				179D082E13B9D6D43EA7F04B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 96F9D104449C5A9018296436 /* Project object */;
+}
