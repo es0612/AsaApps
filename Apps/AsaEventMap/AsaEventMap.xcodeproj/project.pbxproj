@@ -1,0 +1,633 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		13D1CC8C711B9019AAAB58CC /* EventListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8461EB53E994208454E6594C /* EventListView.swift */; };
+		31792A3DC023F5137F8BD694 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D611BC003F65A12446B6EC1E /* Assets.xcassets */; };
+		3ED1EEA3A2545F44E1AAFA58 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9577EC62DB1A251F2398D1E2 /* CoreLocation.framework */; };
+		4B2E84264AFE2A455AE72FE0 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4EF66BEFF1B487D321E4505A /* SwiftUI.framework */; };
+		4B45446E1DF1720A9F61EF51 /* AsaButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5159E559A278DB521828C40 /* AsaButton.swift */; };
+		596E3F5C194C0F777A2DDCC2 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92E5BD6CE44E716DD0702708 /* MapKit.framework */; };
+		698592E30CC2EBC37D3E0E56 /* SwiftData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 726DFE1CB89052C42DCF4F6D /* SwiftData.framework */; };
+		708759D3BD46D1B8D03462DE /* EventMapViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 591CA3BA30786E6974759D2B /* EventMapViewModel.swift */; };
+		711C7559879D91DEA88C044D /* AsaEventMapApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B293F1D6363755DF2D0135 /* AsaEventMapApp.swift */; };
+		72C2B305EDB521F3B4EFE675 /* EventMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21FBAD27BE02236E1DA0F1A6 /* EventMapView.swift */; };
+		AC127C9DCC3F6F69AE8C4FF2 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C12176E660471003484456F4 /* ContentView.swift */; };
+		B1BF28370298E292DC1534AC /* EditEventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13B369F36588CE839C5F1E50 /* EditEventView.swift */; };
+		BA88369DE5597AE2B90D5984 /* AddEventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49EB14C2208CF19DC2B6F535 /* AddEventView.swift */; };
+		D35A8370300712920C9BF244 /* EventCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8C8A1B3D6E0C69FCB2079DA /* EventCategory.swift */; };
+		D902C5A1DCE15E4A73AB2D6D /* EventDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 505B5BE606E07E0373836A60 /* EventDetailView.swift */; };
+		DDFC5A9A408A3A7B22753C5F /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A714FB9CDBC334AE7923914 /* Event.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		9EAE4619F4D02A6ED5F9EF09 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1DC2070FF65E5E1C518FEA32 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 6135978A3959C69A6AF16E38;
+			remoteInfo = AsaEventMap;
+		};
+		F5B60A9C84E6E5EE3562FAE2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1DC2070FF65E5E1C518FEA32 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 6135978A3959C69A6AF16E38;
+			remoteInfo = AsaEventMap;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		03985EA1F4B52D95C93D7B6A /* AsaEventMap.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = AsaEventMap.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1042FF32557E3A52B0B42CD1 /* AsaEventMapTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = AsaEventMapTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		11B293F1D6363755DF2D0135 /* AsaEventMapApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsaEventMapApp.swift; sourceTree = "<group>"; };
+		13B369F36588CE839C5F1E50 /* EditEventView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditEventView.swift; sourceTree = "<group>"; };
+		21FBAD27BE02236E1DA0F1A6 /* EventMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventMapView.swift; sourceTree = "<group>"; };
+		324838A2518442D58C026BCD /* AsaEventMapUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = AsaEventMapUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		3A714FB9CDBC334AE7923914 /* Event.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
+		49EB14C2208CF19DC2B6F535 /* AddEventView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEventView.swift; sourceTree = "<group>"; };
+		4EF66BEFF1B487D321E4505A /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		505B5BE606E07E0373836A60 /* EventDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDetailView.swift; sourceTree = "<group>"; };
+		591CA3BA30786E6974759D2B /* EventMapViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventMapViewModel.swift; sourceTree = "<group>"; };
+		726DFE1CB89052C42DCF4F6D /* SwiftData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftData.framework; path = System/Library/Frameworks/SwiftData.framework; sourceTree = SDKROOT; };
+		8461EB53E994208454E6594C /* EventListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventListView.swift; sourceTree = "<group>"; };
+		92E5BD6CE44E716DD0702708 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		9577EC62DB1A251F2398D1E2 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		A8C8A1B3D6E0C69FCB2079DA /* EventCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventCategory.swift; sourceTree = "<group>"; };
+		C12176E660471003484456F4 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		D611BC003F65A12446B6EC1E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		F5159E559A278DB521828C40 /* AsaButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsaButton.swift; sourceTree = "<group>"; };
+		FDEDE65928194D22B2B065EC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		8640B8D488E8FEC7138466D0 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4B2E84264AFE2A455AE72FE0 /* SwiftUI.framework in Frameworks */,
+				698592E30CC2EBC37D3E0E56 /* SwiftData.framework in Frameworks */,
+				596E3F5C194C0F777A2DDCC2 /* MapKit.framework in Frameworks */,
+				3ED1EEA3A2545F44E1AAFA58 /* CoreLocation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		0097250EF7CCF917DFBF7201 /* AsaEventMapTests */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = AsaEventMapTests;
+			sourceTree = "<group>";
+		};
+		2513F963F4739A70FD35ED66 /* AsaEventMapUITests */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = AsaEventMapUITests;
+			sourceTree = "<group>";
+		};
+		440177DF349E9EAA7BFC4B6F /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				3A714FB9CDBC334AE7923914 /* Event.swift */,
+				A8C8A1B3D6E0C69FCB2079DA /* EventCategory.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		52286FC6C729C7D25B4188E6 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				49EB14C2208CF19DC2B6F535 /* AddEventView.swift */,
+				13B369F36588CE839C5F1E50 /* EditEventView.swift */,
+				505B5BE606E07E0373836A60 /* EventDetailView.swift */,
+				8461EB53E994208454E6594C /* EventListView.swift */,
+				21FBAD27BE02236E1DA0F1A6 /* EventMapView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		596CAD506233E5BB3431C3A5 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				9577EC62DB1A251F2398D1E2 /* CoreLocation.framework */,
+				92E5BD6CE44E716DD0702708 /* MapKit.framework */,
+				726DFE1CB89052C42DCF4F6D /* SwiftData.framework */,
+				4EF66BEFF1B487D321E4505A /* SwiftUI.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		7F037D08241376FD9DE40CA5 = {
+			isa = PBXGroup;
+			children = (
+				7FA46FF058C3D0F99E8344D2 /* AsaEventMap */,
+				0097250EF7CCF917DFBF7201 /* AsaEventMapTests */,
+				2513F963F4739A70FD35ED66 /* AsaEventMapUITests */,
+				596CAD506233E5BB3431C3A5 /* Frameworks */,
+				8DA9583C2BE2CED6925E34AC /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		7FA46FF058C3D0F99E8344D2 /* AsaEventMap */ = {
+			isa = PBXGroup;
+			children = (
+				11B293F1D6363755DF2D0135 /* AsaEventMapApp.swift */,
+				D611BC003F65A12446B6EC1E /* Assets.xcassets */,
+				C12176E660471003484456F4 /* ContentView.swift */,
+				FDEDE65928194D22B2B065EC /* Info.plist */,
+				A49D3B0E0B3D2CF8B4C00D21 /* Components */,
+				440177DF349E9EAA7BFC4B6F /* Models */,
+				7FDEA65D0828353A49466C07 /* ViewModels */,
+				52286FC6C729C7D25B4188E6 /* Views */,
+			);
+			path = AsaEventMap;
+			sourceTree = "<group>";
+		};
+		7FDEA65D0828353A49466C07 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				591CA3BA30786E6974759D2B /* EventMapViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		8DA9583C2BE2CED6925E34AC /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				03985EA1F4B52D95C93D7B6A /* AsaEventMap.app */,
+				1042FF32557E3A52B0B42CD1 /* AsaEventMapTests.xctest */,
+				324838A2518442D58C026BCD /* AsaEventMapUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A49D3B0E0B3D2CF8B4C00D21 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				F5159E559A278DB521828C40 /* AsaButton.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		4A01E58ED6F1D2798876975D /* AsaEventMapTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CE7DCCFB6299F58FEA32C7A7 /* Build configuration list for PBXNativeTarget "AsaEventMapTests" */;
+			buildPhases = (
+				A3DB3157D4C8535AB1BDDBFC /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				4B05821AB291D17491E26B57 /* PBXTargetDependency */,
+			);
+			name = AsaEventMapTests;
+			packageProductDependencies = (
+			);
+			productName = AsaEventMapTests;
+			productReference = 1042FF32557E3A52B0B42CD1 /* AsaEventMapTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		6135978A3959C69A6AF16E38 /* AsaEventMap */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EC065E341AE6EA5F039370F6 /* Build configuration list for PBXNativeTarget "AsaEventMap" */;
+			buildPhases = (
+				C5C9D079677AA8527022427E /* Sources */,
+				2BBE1845FE2C865EDA03B699 /* Resources */,
+				8640B8D488E8FEC7138466D0 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = AsaEventMap;
+			packageProductDependencies = (
+			);
+			productName = AsaEventMap;
+			productReference = 03985EA1F4B52D95C93D7B6A /* AsaEventMap.app */;
+			productType = "com.apple.product-type.application";
+		};
+		C5235AD90DC135406BB9DDA6 /* AsaEventMapUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1C2D52605346FDE234D43E28 /* Build configuration list for PBXNativeTarget "AsaEventMapUITests" */;
+			buildPhases = (
+				81748D1955CF24646FE9B054 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				CA933C0BFE666867853B1FC2 /* PBXTargetDependency */,
+			);
+			name = AsaEventMapUITests;
+			packageProductDependencies = (
+			);
+			productName = AsaEventMapUITests;
+			productReference = 324838A2518442D58C026BCD /* AsaEventMapUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		1DC2070FF65E5E1C518FEA32 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					4A01E58ED6F1D2798876975D = {
+						DevelopmentTeam = "";
+						ProvisioningStyle = Automatic;
+					};
+					6135978A3959C69A6AF16E38 = {
+						DevelopmentTeam = "";
+						ProvisioningStyle = Automatic;
+					};
+					C5235AD90DC135406BB9DDA6 = {
+						DevelopmentTeam = "";
+						ProvisioningStyle = Automatic;
+						TestTargetID = 6135978A3959C69A6AF16E38;
+					};
+				};
+			};
+			buildConfigurationList = 6D2FFD6602D9AC3C1E35BA9E /* Build configuration list for PBXProject "AsaEventMap" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 7F037D08241376FD9DE40CA5;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				6135978A3959C69A6AF16E38 /* AsaEventMap */,
+				4A01E58ED6F1D2798876975D /* AsaEventMapTests */,
+				C5235AD90DC135406BB9DDA6 /* AsaEventMapUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		2BBE1845FE2C865EDA03B699 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				31792A3DC023F5137F8BD694 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		81748D1955CF24646FE9B054 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A3DB3157D4C8535AB1BDDBFC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C5C9D079677AA8527022427E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BA88369DE5597AE2B90D5984 /* AddEventView.swift in Sources */,
+				4B45446E1DF1720A9F61EF51 /* AsaButton.swift in Sources */,
+				711C7559879D91DEA88C044D /* AsaEventMapApp.swift in Sources */,
+				AC127C9DCC3F6F69AE8C4FF2 /* ContentView.swift in Sources */,
+				B1BF28370298E292DC1534AC /* EditEventView.swift in Sources */,
+				DDFC5A9A408A3A7B22753C5F /* Event.swift in Sources */,
+				D35A8370300712920C9BF244 /* EventCategory.swift in Sources */,
+				D902C5A1DCE15E4A73AB2D6D /* EventDetailView.swift in Sources */,
+				13D1CC8C711B9019AAAB58CC /* EventListView.swift in Sources */,
+				72C2B305EDB521F3B4EFE675 /* EventMapView.swift in Sources */,
+				708759D3BD46D1B8D03462DE /* EventMapViewModel.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		4B05821AB291D17491E26B57 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 6135978A3959C69A6AF16E38 /* AsaEventMap */;
+			targetProxy = F5B60A9C84E6E5EE3562FAE2 /* PBXContainerItemProxy */;
+		};
+		CA933C0BFE666867853B1FC2 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 6135978A3959C69A6AF16E38 /* AsaEventMap */;
+			targetProxy = 9EAE4619F4D02A6ED5F9EF09 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		2CF685AD92452F64B9169DE7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		41BE91FC11E657E787FB0B07 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.asaapps.asaeventmap.ui-tests";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = AsaEventMap;
+			};
+			name = Debug;
+		};
+		669986E318499CFD654F9AC4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.asaapps.asaeventmap.tests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AsaEventMap.app/AsaEventMap";
+			};
+			name = Release;
+		};
+		6A4D450E9FF7239BF960CE06 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.asaapps.asaeventmap.tests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AsaEventMap.app/AsaEventMap";
+			};
+			name = Debug;
+		};
+		70A1BBE6CF9AEC46A7A3A7DC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_FILE = AsaEventMap/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = AsaEventMap;
+				INFOPLIST_KEY_CFBundleExecutable = AsaEventMap;
+				INFOPLIST_KEY_CFBundleName = AsaEventMap;
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "AsaEventMapはイベントの位置を地図上に表示するために位置情報を使用します。";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.asaapps.asaeventmap;
+				PRODUCT_NAME = AsaEventMap;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		D4F83004620A2D768D4517CF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.asaapps.asaeventmap.ui-tests";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = AsaEventMap;
+			};
+			name = Release;
+		};
+		E6630986EF386CC6AC9745E7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_FILE = AsaEventMap/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = AsaEventMap;
+				INFOPLIST_KEY_CFBundleExecutable = AsaEventMap;
+				INFOPLIST_KEY_CFBundleName = AsaEventMap;
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "AsaEventMapはイベントの位置を地図上に表示するために位置情報を使用します。";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.asaapps.asaeventmap;
+				PRODUCT_NAME = AsaEventMap;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		F617D85F0B681EA62BE12B88 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = "";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1C2D52605346FDE234D43E28 /* Build configuration list for PBXNativeTarget "AsaEventMapUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				41BE91FC11E657E787FB0B07 /* Debug */,
+				D4F83004620A2D768D4517CF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		6D2FFD6602D9AC3C1E35BA9E /* Build configuration list for PBXProject "AsaEventMap" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2CF685AD92452F64B9169DE7 /* Debug */,
+				F617D85F0B681EA62BE12B88 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		CE7DCCFB6299F58FEA32C7A7 /* Build configuration list for PBXNativeTarget "AsaEventMapTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6A4D450E9FF7239BF960CE06 /* Debug */,
+				669986E318499CFD654F9AC4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		EC065E341AE6EA5F039370F6 /* Build configuration list for PBXNativeTarget "AsaEventMap" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E6630986EF386CC6AC9745E7 /* Debug */,
+				70A1BBE6CF9AEC46A7A3A7DC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 1DC2070FF65E5E1C518FEA32 /* Project object */;
+}
