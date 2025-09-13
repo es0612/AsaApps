@@ -130,7 +130,8 @@ extension WeatherData {
     
     /// WeatherDataをCore DataのWeatherRecordに保存
     func saveToRecord(context: NSManagedObjectContext, location: (latitude: Double, longitude: Double)) -> WeatherRecord {
-        let record = WeatherRecord(context: context)
+        // WeatherRecord.createを使用して、createdAtとupdatedAtが自動的に設定される
+        let record = WeatherRecord.create(in: context)
         
         record.recordDate = Date()
         record.locationName = name
