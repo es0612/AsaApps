@@ -1,0 +1,593 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		016AB73E94C74C77D41D502B /* PlanDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3CB6A7723C72FD3AA8BA031 /* PlanDetailView.swift */; };
+		047F35B0B849E985172E9EAC /* AsaWorkoutPlannerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C373ACACAF819608F0617D /* AsaWorkoutPlannerApp.swift */; };
+		079E92EDBBBD0FCD888731B5 /* WorkoutPlan.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2B5A0214D12A85E7ABCB8F /* WorkoutPlan.swift */; };
+		2981E18FB7CF98B31C964053 /* WorkoutPlannerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C717A44028A8A8EAB729257F /* WorkoutPlannerViewModel.swift */; };
+		319BB49F4A9DA46D2F965DDC /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58A5B0D6CAB4D9FE8CCF6B75 /* HomeView.swift */; };
+		3449168166DF9B45B7DA545B /* AsaWorkoutPlannerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44104AB16F37860C61400C81 /* AsaWorkoutPlannerTests.swift */; };
+		48D4195620A74891D885C572 /* AsaHealthKit in Frameworks */ = {isa = PBXBuildFile; productRef = 2F343D28202B5FB7B81E8A08 /* AsaHealthKit */; };
+		61FC872075304E535B8D3BF6 /* WorkoutSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F84E50C037DA0AC411F59CD /* WorkoutSession.swift */; };
+		6ED8917A165BD0158AF0484E /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 39229AF3E2EDEBCD95FB19F2 /* SwiftUI.framework */; };
+		6F83FC098AC1FB37D554FA49 /* SwiftData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D4E7AE01327C9613FD997BC /* SwiftData.framework */; };
+		7D87B78B0F23C0695282A829 /* WorkoutStartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2925A4AC92689F2AF104630 /* WorkoutStartView.swift */; };
+		8288C4D844288A60B23F92DE /* AsaUIKit in Frameworks */ = {isa = PBXBuildFile; productRef = D6F28457FAB82D2797FDBAEF /* AsaUIKit */; };
+		82CEFF50E770C536719E4A0B /* Charts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 097B141125BB699DF392A3C3 /* Charts.framework */; };
+		863669C83206303967F776D5 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA8AD0ABE0050C82DEA69CC7 /* ContentView.swift */; };
+		88DB447D4AA188CF67861B3A /* Exercise.swift in Sources */ = {isa = PBXBuildFile; fileRef = 306EAA93CA256F731B95917A /* Exercise.swift */; };
+		8BFF7CEDFF4300E1997225E3 /* PlanListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011F0816EDD21C1323C2C441 /* PlanListView.swift */; };
+		9102FAE080D24C510FB347FA /* WorkoutProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F0D1E6C8FD10CFF0ECAAFC /* WorkoutProgressView.swift */; };
+		B54B755F52550CFEDA2F7CB7 /* Combine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 81BD08ADA5AF7C9C07751963 /* Combine.framework */; };
+		C22EF5B7B5E90CD1D416A688 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55312B724D21E4BC0858C839 /* SettingsView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		66FAB4E205C6870F7BABE3CA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 333135BA5F267D2FDFCD80A2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 35F235D9FC97FF9B039366A9;
+			remoteInfo = AsaWorkoutPlanner;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		011F0816EDD21C1323C2C441 /* PlanListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanListView.swift; sourceTree = "<group>"; };
+		097B141125BB699DF392A3C3 /* Charts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Charts.framework; sourceTree = "<group>"; };
+		0F84E50C037DA0AC411F59CD /* WorkoutSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutSession.swift; sourceTree = "<group>"; };
+		1D4E7AE01327C9613FD997BC /* SwiftData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SwiftData.framework; sourceTree = "<group>"; };
+		306EAA93CA256F731B95917A /* Exercise.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Exercise.swift; sourceTree = "<group>"; };
+		3585EB6DD5364FD56E411D65 /* AsaUIKit */ = {isa = PBXFileReference; lastKnownFileType = folder; name = AsaUIKit; path = ../../Packages/AsaUIKit; sourceTree = SOURCE_ROOT; };
+		39229AF3E2EDEBCD95FB19F2 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SwiftUI.framework; sourceTree = "<group>"; };
+		44104AB16F37860C61400C81 /* AsaWorkoutPlannerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsaWorkoutPlannerTests.swift; sourceTree = "<group>"; };
+		55312B724D21E4BC0858C839 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		58A5B0D6CAB4D9FE8CCF6B75 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		5FA507513F3A56F97B127DDD /* AsaWorkoutPlanner.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = AsaWorkoutPlanner.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		7A2B5A0214D12A85E7ABCB8F /* WorkoutPlan.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutPlan.swift; sourceTree = "<group>"; };
+		81BD08ADA5AF7C9C07751963 /* Combine.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Combine.framework; sourceTree = "<group>"; };
+		81C373ACACAF819608F0617D /* AsaWorkoutPlannerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsaWorkoutPlannerApp.swift; sourceTree = "<group>"; };
+		93691F96E355965930AAC0BF /* AsaWorkoutPlannerTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = AsaWorkoutPlannerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		A2925A4AC92689F2AF104630 /* WorkoutStartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutStartView.swift; sourceTree = "<group>"; };
+		C717A44028A8A8EAB729257F /* WorkoutPlannerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutPlannerViewModel.swift; sourceTree = "<group>"; };
+		D4F0D1E6C8FD10CFF0ECAAFC /* WorkoutProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutProgressView.swift; sourceTree = "<group>"; };
+		E3CB6A7723C72FD3AA8BA031 /* PlanDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanDetailView.swift; sourceTree = "<group>"; };
+		EA8AD0ABE0050C82DEA69CC7 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		F951E14172B042B05A687B8E /* AsaHealthKit */ = {isa = PBXFileReference; lastKnownFileType = folder; name = AsaHealthKit; path = ../../Packages/AsaHealthKit; sourceTree = SOURCE_ROOT; };
+		FA19652609FA7C2CCF10420B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		DDF8CF045D0E352FE289B2E6 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8288C4D844288A60B23F92DE /* AsaUIKit in Frameworks */,
+				48D4195620A74891D885C572 /* AsaHealthKit in Frameworks */,
+				6ED8917A165BD0158AF0484E /* SwiftUI.framework in Frameworks */,
+				6F83FC098AC1FB37D554FA49 /* SwiftData.framework in Frameworks */,
+				82CEFF50E770C536719E4A0B /* Charts.framework in Frameworks */,
+				B54B755F52550CFEDA2F7CB7 /* Combine.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		1FC0F5995A7F7374F16E6E6C /* AsaWorkoutPlanner */ = {
+			isa = PBXGroup;
+			children = (
+				81C373ACACAF819608F0617D /* AsaWorkoutPlannerApp.swift */,
+				EA8AD0ABE0050C82DEA69CC7 /* ContentView.swift */,
+				FA19652609FA7C2CCF10420B /* Info.plist */,
+				36D548CCAAB09FFBB17A8B6D /* Components */,
+				64F5130DCDDC9495E7392CA6 /* Models */,
+				97BAB813F4C205F9654D3D58 /* ViewModels */,
+				4F5D99B30A6C4B073419A767 /* Views */,
+			);
+			path = AsaWorkoutPlanner;
+			sourceTree = "<group>";
+		};
+		36D548CCAAB09FFBB17A8B6D /* Components */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		4F5D99B30A6C4B073419A767 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				58A5B0D6CAB4D9FE8CCF6B75 /* HomeView.swift */,
+				E3CB6A7723C72FD3AA8BA031 /* PlanDetailView.swift */,
+				011F0816EDD21C1323C2C441 /* PlanListView.swift */,
+				55312B724D21E4BC0858C839 /* SettingsView.swift */,
+				D4F0D1E6C8FD10CFF0ECAAFC /* WorkoutProgressView.swift */,
+				A2925A4AC92689F2AF104630 /* WorkoutStartView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		64F5130DCDDC9495E7392CA6 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				306EAA93CA256F731B95917A /* Exercise.swift */,
+				7A2B5A0214D12A85E7ABCB8F /* WorkoutPlan.swift */,
+				0F84E50C037DA0AC411F59CD /* WorkoutSession.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		7F68ADF580D8B4E89067ABF2 = {
+			isa = PBXGroup;
+			children = (
+				1FC0F5995A7F7374F16E6E6C /* AsaWorkoutPlanner */,
+				C303D02736E6C37093576910 /* AsaWorkoutPlannerTests */,
+				C0E11F2D8E2FDBB2977B1715 /* Packages */,
+				A40BD0D66637B0AA5FBCF509 /* Frameworks */,
+				D3CB52454CC4CDE19890D290 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		97BAB813F4C205F9654D3D58 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				C717A44028A8A8EAB729257F /* WorkoutPlannerViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		A40BD0D66637B0AA5FBCF509 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				097B141125BB699DF392A3C3 /* Charts.framework */,
+				81BD08ADA5AF7C9C07751963 /* Combine.framework */,
+				1D4E7AE01327C9613FD997BC /* SwiftData.framework */,
+				39229AF3E2EDEBCD95FB19F2 /* SwiftUI.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		C0E11F2D8E2FDBB2977B1715 /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				F951E14172B042B05A687B8E /* AsaHealthKit */,
+				3585EB6DD5364FD56E411D65 /* AsaUIKit */,
+			);
+			name = Packages;
+			sourceTree = "<group>";
+		};
+		C303D02736E6C37093576910 /* AsaWorkoutPlannerTests */ = {
+			isa = PBXGroup;
+			children = (
+				44104AB16F37860C61400C81 /* AsaWorkoutPlannerTests.swift */,
+			);
+			path = AsaWorkoutPlannerTests;
+			sourceTree = "<group>";
+		};
+		D3CB52454CC4CDE19890D290 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				5FA507513F3A56F97B127DDD /* AsaWorkoutPlanner.app */,
+				93691F96E355965930AAC0BF /* AsaWorkoutPlannerTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		1C7CF77DEFFB8F3E6C7FEB60 /* AsaWorkoutPlannerTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DD3BAEF1E3D792804DC4CAF1 /* Build configuration list for PBXNativeTarget "AsaWorkoutPlannerTests" */;
+			buildPhases = (
+				062D786BDED70F2FFA0E3578 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				20FB556A5920578EBAFB63A9 /* PBXTargetDependency */,
+			);
+			name = AsaWorkoutPlannerTests;
+			packageProductDependencies = (
+			);
+			productName = AsaWorkoutPlannerTests;
+			productReference = 93691F96E355965930AAC0BF /* AsaWorkoutPlannerTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		35F235D9FC97FF9B039366A9 /* AsaWorkoutPlanner */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2AD1A8FC3356B3FA26A75EB5 /* Build configuration list for PBXNativeTarget "AsaWorkoutPlanner" */;
+			buildPhases = (
+				14D15DB07B6A1778CE0BFCDD /* Sources */,
+				DDF8CF045D0E352FE289B2E6 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = AsaWorkoutPlanner;
+			packageProductDependencies = (
+				D6F28457FAB82D2797FDBAEF /* AsaUIKit */,
+				2F343D28202B5FB7B81E8A08 /* AsaHealthKit */,
+			);
+			productName = AsaWorkoutPlanner;
+			productReference = 5FA507513F3A56F97B127DDD /* AsaWorkoutPlanner.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		333135BA5F267D2FDFCD80A2 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					1C7CF77DEFFB8F3E6C7FEB60 = {
+						DevelopmentTeam = "";
+						ProvisioningStyle = Automatic;
+					};
+					35F235D9FC97FF9B039366A9 = {
+						DevelopmentTeam = "";
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 6C8FE30E5685E281ED4B3E8D /* Build configuration list for PBXProject "AsaWorkoutPlanner" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = ja;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				ja,
+			);
+			mainGroup = 7F68ADF580D8B4E89067ABF2;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				E3E619C7B4A3FEA120B6CF2E /* XCLocalSwiftPackageReference "../../Packages/AsaHealthKit" */,
+				43D5AC7990021B02AEFBA1B5 /* XCLocalSwiftPackageReference "../../Packages/AsaUIKit" */,
+			);
+			preferredProjectObjectVersion = 77;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				35F235D9FC97FF9B039366A9 /* AsaWorkoutPlanner */,
+				1C7CF77DEFFB8F3E6C7FEB60 /* AsaWorkoutPlannerTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		062D786BDED70F2FFA0E3578 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3449168166DF9B45B7DA545B /* AsaWorkoutPlannerTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		14D15DB07B6A1778CE0BFCDD /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				047F35B0B849E985172E9EAC /* AsaWorkoutPlannerApp.swift in Sources */,
+				863669C83206303967F776D5 /* ContentView.swift in Sources */,
+				88DB447D4AA188CF67861B3A /* Exercise.swift in Sources */,
+				319BB49F4A9DA46D2F965DDC /* HomeView.swift in Sources */,
+				016AB73E94C74C77D41D502B /* PlanDetailView.swift in Sources */,
+				8BFF7CEDFF4300E1997225E3 /* PlanListView.swift in Sources */,
+				C22EF5B7B5E90CD1D416A688 /* SettingsView.swift in Sources */,
+				079E92EDBBBD0FCD888731B5 /* WorkoutPlan.swift in Sources */,
+				2981E18FB7CF98B31C964053 /* WorkoutPlannerViewModel.swift in Sources */,
+				9102FAE080D24C510FB347FA /* WorkoutProgressView.swift in Sources */,
+				61FC872075304E535B8D3BF6 /* WorkoutSession.swift in Sources */,
+				7D87B78B0F23C0695282A829 /* WorkoutStartView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		20FB556A5920578EBAFB63A9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 35F235D9FC97FF9B039366A9 /* AsaWorkoutPlanner */;
+			targetProxy = 66FAB4E205C6870F7BABE3CA /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		3344F422505C6C48033E104D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.asaapps.asaworkoutplanner.tests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AsaWorkoutPlanner.app/AsaWorkoutPlanner";
+			};
+			name = Release;
+		};
+		4C01643E8EE5CA3F1757F249 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = "";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.9;
+			};
+			name = Release;
+		};
+		5D51DE6CD2A6C779B85CF5B8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\".\"",
+				);
+				INFOPLIST_FILE = AsaWorkoutPlanner/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = AsaWorkoutPlanner;
+				INFOPLIST_KEY_CFBundleName = AsaWorkoutPlanner;
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "AsaWorkoutPlannerは、あなたの運動データをヘルスアプリと同期して、より正確なフィットネス追跡を提供します。";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "AsaWorkoutPlannerは、ワークアウトセッションのデータをヘルスアプリに保存します。";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.asaapps.asaworkoutplanner;
+				PRODUCT_NAME = AsaWorkoutPlanner;
+				SDKROOT = iphoneos;
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.9;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		809175912D4A6F87A938D5B9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\".\"",
+				);
+				INFOPLIST_FILE = AsaWorkoutPlanner/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = AsaWorkoutPlanner;
+				INFOPLIST_KEY_CFBundleName = AsaWorkoutPlanner;
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "AsaWorkoutPlannerは、あなたの運動データをヘルスアプリと同期して、より正確なフィットネス追跡を提供します。";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "AsaWorkoutPlannerは、ワークアウトセッションのデータをヘルスアプリに保存します。";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.asaapps.asaworkoutplanner;
+				PRODUCT_NAME = AsaWorkoutPlanner;
+				SDKROOT = iphoneos;
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.9;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		D93958368DC9578F7BF896F8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.9;
+			};
+			name = Debug;
+		};
+		E1DE06E227CEA54003058A55 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.asaapps.asaworkoutplanner.tests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AsaWorkoutPlanner.app/AsaWorkoutPlanner";
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		2AD1A8FC3356B3FA26A75EB5 /* Build configuration list for PBXNativeTarget "AsaWorkoutPlanner" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				809175912D4A6F87A938D5B9 /* Debug */,
+				5D51DE6CD2A6C779B85CF5B8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		6C8FE30E5685E281ED4B3E8D /* Build configuration list for PBXProject "AsaWorkoutPlanner" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D93958368DC9578F7BF896F8 /* Debug */,
+				4C01643E8EE5CA3F1757F249 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		DD3BAEF1E3D792804DC4CAF1 /* Build configuration list for PBXNativeTarget "AsaWorkoutPlannerTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E1DE06E227CEA54003058A55 /* Debug */,
+				3344F422505C6C48033E104D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		43D5AC7990021B02AEFBA1B5 /* XCLocalSwiftPackageReference "../../Packages/AsaUIKit" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../../Packages/AsaUIKit;
+		};
+		E3E619C7B4A3FEA120B6CF2E /* XCLocalSwiftPackageReference "../../Packages/AsaHealthKit" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../../Packages/AsaHealthKit;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		2F343D28202B5FB7B81E8A08 /* AsaHealthKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = AsaHealthKit;
+		};
+		D6F28457FAB82D2797FDBAEF /* AsaUIKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = AsaUIKit;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = 333135BA5F267D2FDFCD80A2 /* Project object */;
+}

@@ -1,0 +1,102 @@
+name: AsaWorkoutPlanner
+options:
+  bundleIdPrefix: com.asaapps
+  deploymentTarget:
+    iOS: "17.0"
+  defaultConfig: Release
+  developmentLanguage: ja
+  createIntermediateGroups: true
+  generateEmptyDirectories: true
+
+packages:
+  AsaUIKit:
+    path: ../../Packages/AsaUIKit
+  AsaHealthKit:
+    path: ../../Packages/AsaHealthKit
+
+settings:
+  base:
+    SWIFT_VERSION: "5.9"
+    MARKETING_VERSION: "1.0.0"
+    CURRENT_PROJECT_VERSION: "1"
+    DEVELOPMENT_TEAM: ""
+    CODE_SIGN_STYLE: Automatic
+
+targets:
+  AsaWorkoutPlanner:
+    type: application
+    platform: iOS
+    deploymentTarget: "17.0"
+    
+    sources:
+      - path: AsaWorkoutPlanner
+        excludes:
+          - "**/.DS_Store"
+    
+    dependencies:
+      - package: AsaUIKit
+        product: AsaUIKit
+      - package: AsaHealthKit
+        product: AsaHealthKit
+      - framework: SwiftUI.framework
+        embed: false
+      - framework: SwiftData.framework
+        embed: false
+      - framework: Charts.framework
+        embed: false
+      - framework: Combine.framework
+        embed: false
+    
+    settings:
+      base:
+        INFOPLIST_FILE: AsaWorkoutPlanner/Info.plist
+        PRODUCT_BUNDLE_IDENTIFIER: com.asaapps.asaworkoutplanner
+        PRODUCT_NAME: AsaWorkoutPlanner
+        INFOPLIST_KEY_CFBundleDisplayName: AsaWorkoutPlanner
+        INFOPLIST_KEY_CFBundleName: AsaWorkoutPlanner
+        INFOPLIST_KEY_UIApplicationSceneManifest_Generation: true
+        INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents: true
+        INFOPLIST_KEY_UILaunchScreen_Generation: true
+        INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone: "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight"
+        INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad: "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight"
+        INFOPLIST_KEY_NSHealthShareUsageDescription: "AsaWorkoutPlannerは、あなたの運動データをヘルスアプリと同期して、より正確なフィットネス追跡を提供します。"
+        INFOPLIST_KEY_NSHealthUpdateUsageDescription: "AsaWorkoutPlannerは、ワークアウトセッションのデータをヘルスアプリに保存します。"
+        SWIFT_VERSION: "5.9"
+        TARGETED_DEVICE_FAMILY: "1,2"
+        SUPPORTS_MACCATALYST: false
+        SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD: false
+      
+      configs:
+        Debug:
+          SWIFT_OPTIMIZATION_LEVEL: "-Onone"
+          SWIFT_ACTIVE_COMPILATION_CONDITIONS: "DEBUG"
+        Release:
+          SWIFT_OPTIMIZATION_LEVEL: "-O"
+
+  AsaWorkoutPlannerTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources: AsaWorkoutPlannerTests
+    settings:
+      PRODUCT_BUNDLE_IDENTIFIER: com.asaapps.asaworkoutplanner.tests
+      GENERATE_INFOPLIST_FILE: YES
+    dependencies:
+      - target: AsaWorkoutPlanner
+
+schemes:
+  AsaWorkoutPlanner:
+    build:
+      targets:
+        AsaWorkoutPlanner: all
+    run:
+      config: Debug
+    test:
+      config: Debug
+      targets:
+        - AsaWorkoutPlannerTests
+    profile:
+      config: Release
+    analyze:
+      config: Debug
+    archive:
+      config: Release
