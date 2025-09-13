@@ -1,0 +1,59 @@
+name: AsaQRGenerator
+options:
+  bundleIdPrefix: com.asaapps
+  deploymentTarget:
+    iOS: "17.0"
+  createIntermediateGroups: true
+  generateEmptyDirectories: true
+
+settings:
+  MARKETING_VERSION: "1.0"
+  CURRENT_PROJECT_VERSION: "1"
+  DEVELOPMENT_TEAM: ""
+  CODE_SIGN_STYLE: Automatic
+
+targets:
+  AsaQRGenerator:
+    type: application
+    platform: iOS
+    sources: 
+      - AsaQRGenerator
+    resources:
+      - AsaQRGenerator/Assets.xcassets
+    settings:
+      PRODUCT_BUNDLE_IDENTIFIER: com.asaapps.asaqrgenerator
+      PRODUCT_NAME: AsaQRGenerator
+      INFOPLIST_FILE: AsaQRGenerator/Info.plist
+      INFOPLIST_KEY_CFBundleDisplayName: AsaQRGenerator
+      INFOPLIST_KEY_CFBundleName: AsaQRGenerator
+      INFOPLIST_KEY_CFBundleExecutable: AsaQRGenerator
+      INFOPLIST_KEY_UIApplicationSceneManifest_Generation: true
+      INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents: true
+      INFOPLIST_KEY_UILaunchScreen_Generation: true
+      INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone: "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight"
+      INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad: "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight"
+      INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription: "生成したQRコードを写真ライブラリに保存するために使用します。"
+    dependencies:
+      - sdk: SwiftUI.framework
+      - sdk: CoreImage.framework
+      - sdk: UIKit.framework
+
+  AsaQRGeneratorTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources: AsaQRGeneratorTests
+    settings:
+      PRODUCT_BUNDLE_IDENTIFIER: com.asaapps.asaqrgenerator.tests
+      GENERATE_INFOPLIST_FILE: YES
+    dependencies:
+      - target: AsaQRGenerator
+
+  AsaQRGeneratorUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources: AsaQRGeneratorUITests
+    settings:
+      PRODUCT_BUNDLE_IDENTIFIER: com.asaapps.asaqrgenerator.ui-tests
+      GENERATE_INFOPLIST_FILE: YES
+    dependencies:
+      - target: AsaQRGenerator
