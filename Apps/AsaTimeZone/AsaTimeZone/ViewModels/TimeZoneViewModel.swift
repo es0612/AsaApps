@@ -1,31 +1,27 @@
 import Foundation
 import SwiftUI
-import Combine
 
 @MainActor
-class TimeZoneViewModel: ObservableObject {
-    @Published var timeZoneItems: [TimeZoneItem] = []
-    @Published var currentTime = Date()
-    @Published var globalClockStyle: ClockStyle = .analog
+@Observable
+final class TimeZoneViewModel {
+    var timeZoneItems: [TimeZoneItem] = [] {
+        didSet {
+            // 変更があったら0.5秒後に自動保存
+            Task { @MainActor in
+                try? await Task.sleep(for: .seconds(0.5))
+                saveTimeZones(timeZoneItems)
+            }
+        }
+    }
+    var currentTime = Date()
+    var globalClockStyle: ClockStyle = .analog
 
     private let service = TimeZoneService()
     private var timer: Timer?
-    private var cancellables = Set<AnyCancellable>()
 
     init() {
         loadTimeZones()
         startTimer()
-
-        $timeZoneItems
-            .debounce(for: .seconds(0.5), scheduler: RunLoop.main)
-            .sink { [weak self] items in
-                self?.saveTimeZones(items)
-            }
-            .store(in: &cancellables)
-    }
-
-    deinit {
-        stopTimer()
     }
 
     func loadTimeZones() {

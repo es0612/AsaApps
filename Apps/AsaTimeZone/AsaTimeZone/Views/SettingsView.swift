@@ -3,9 +3,10 @@ import AsaUIKit
 
 struct SettingsView: View {
     @Environment(\.dismiss) private var dismiss
-    @EnvironmentObject private var viewModel: TimeZoneViewModel
+    @Environment(TimeZoneViewModel.self) private var viewModel
 
     var body: some View {
+        @Bindable var viewModel = viewModel
         NavigationStack {
             Form {
                 Section("表示設定") {

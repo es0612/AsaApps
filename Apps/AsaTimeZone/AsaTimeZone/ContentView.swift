@@ -2,7 +2,7 @@ import SwiftUI
 import AsaUIKit
 
 struct ContentView: View {
-    @EnvironmentObject private var viewModel: TimeZoneViewModel
+    @Environment(TimeZoneViewModel.self) private var viewModel
     @State private var showingAddTimeZone = false
     @State private var showingSettings = false
 
@@ -52,11 +52,11 @@ struct ContentView: View {
             }
             .sheet(isPresented: $showingAddTimeZone) {
                 AddTimeZoneView()
-                    .environmentObject(viewModel)
+                    .environment(viewModel)
             }
             .sheet(isPresented: $showingSettings) {
                 SettingsView()
-                    .environmentObject(viewModel)
+                    .environment(viewModel)
             }
         }
     }
@@ -88,6 +88,6 @@ struct AddTimeZoneButton: View {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
-            .environmentObject(TimeZoneViewModel())
+            .environment(TimeZoneViewModel())
     }
 }

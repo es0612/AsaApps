@@ -3,7 +3,7 @@ import AsaUIKit
 
 struct TimeZoneCardView: View {
     let timeZoneItem: TimeZoneItem
-    @EnvironmentObject private var viewModel: TimeZoneViewModel
+    @Environment(TimeZoneViewModel.self) private var viewModel
 
     var body: some View {
         AsaCard {

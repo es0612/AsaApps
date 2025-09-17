@@ -3,7 +3,7 @@ import AsaUIKit
 
 struct AnalogClockView: View {
     let timeZone: TimeZone
-    @EnvironmentObject private var viewModel: TimeZoneViewModel
+    @Environment(TimeZoneViewModel.self) private var viewModel
     @State private var currentTime = Date()
 
     private var hourAngle: Angle {

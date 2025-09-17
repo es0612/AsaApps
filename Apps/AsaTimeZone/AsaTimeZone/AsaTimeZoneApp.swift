@@ -2,12 +2,12 @@ import SwiftUI
 
 @main
 struct AsaTimeZoneApp: App {
-    @StateObject private var viewModel = TimeZoneViewModel()
+    @State private var viewModel = TimeZoneViewModel()
 
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .environmentObject(viewModel)
+                .environment(viewModel)
         }
     }
 }

@@ -3,7 +3,7 @@ import AsaUIKit
 
 struct DigitalClockView: View {
     let timeZone: TimeZone
-    @EnvironmentObject private var viewModel: TimeZoneViewModel
+    @Environment(TimeZoneViewModel.self) private var viewModel
 
     private var timeString: String {
         let formatter = DateFormatter()

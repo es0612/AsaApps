@@ -3,7 +3,7 @@ import AsaUIKit
 
 struct AddTimeZoneView: View {
     @Environment(\.dismiss) private var dismiss
-    @EnvironmentObject private var viewModel: TimeZoneViewModel
+    @Environment(TimeZoneViewModel.self) private var viewModel
     @State private var searchText = ""
     @State private var selectedTimeZone: TimeZoneItem?
 
