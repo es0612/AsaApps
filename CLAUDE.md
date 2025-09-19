@@ -125,6 +125,8 @@ xcodebuild -project AsaNumberGame.xcodeproj -scheme AsaNumberGame -destination '
 #### UI・ロジック分離原則
 **すべてのアプリUIとビジネスロジックはローカルパッケージに集約し、テスト可能な形で実装します。**
 
+これにより、Swift Testingによるテスト容易性を向上させ、SPMを使ったパッケージの再利用性も向上させます。
+
 #### パッケージ構造
 - **AsaUIKit** - 共有UIコンポーネント（テスト可能）
   - AsaButton, AsaCard, AsaColors等の統一UIライブラリ
@@ -402,6 +404,7 @@ func testMainUserFlow() {
 - [ ] エラーハンドリング実装
 - [ ] アクセシビリティ配慮
 - [ ] パフォーマンス検証
+- [ ] アプリドキュメントの作成
 
 ## 開発ガイドライン詳細
 
@@ -412,6 +415,8 @@ func testMainUserFlow() {
 4. **共有コンポーネント活用**: AsaUIKit使用
 5. **テスト実装**: Swift Testingで主要機能テスト
 6. **ドキュメント作成**: `Docs/Notes/DayX-Implementation.md`
+
+毎回アプリのドキュメントは確実に作成してください。
 
 ### 新規アプリ実装テンプレート
 ```swift
