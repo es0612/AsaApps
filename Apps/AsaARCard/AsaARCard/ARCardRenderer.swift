@@ -200,10 +200,13 @@ class ARCardRenderer {
     /// マテリアルを作成
     private static func createCardMaterial(texture: CGImage?) -> Material {
         var material = SimpleMaterial()
-        
+
         if let texture = texture {
-            let textureResource = try? TextureResource.generate(from: texture, options: .init(semantic: .color))
-            material.color = .init(texture: .init(textureResource))
+            if let textureResource = try? TextureResource.generate(from: texture, options: .init(semantic: .color)) {
+                material.color = .init(texture: .init(textureResource))
+            } else {
+                material.color = .init(tint: .white, texture: nil)
+            }
         } else {
             material.color = .init(tint: .white, texture: nil)
         }
@@ -219,10 +222,13 @@ class ARCardRenderer {
     private static func addGestureRecognizers(to entity: ModelEntity) {
         // タップジェスチャ
         entity.generateCollisionShapes(recursive: false)
-        
+
         // エンティティにインタラクション可能マークを設定
-        entity.components.set(InputTargetComponent())
-        
+        // iOS 18.0未満の場合は、CollisionComponentで代替
+        if #available(iOS 18.0, *) {
+            // entity.components.set(InputTargetComponent()) // iOS 18.0以上で利用可能
+        }
+
         // カスタムコンポーネントで回転状態を管理
         entity.components.set(CardFlipComponent())
     }

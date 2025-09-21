@@ -5,14 +5,16 @@ import AsaUIKit
 
 // MARK: - ContentView
 struct ContentView: View {
-    @EnvironmentObject private var viewModel: ARCardViewModel
-    
+    @Environment(ARCardViewModel.self) private var viewModel
+
     var body: some View {
+        @Bindable var viewModel = viewModel
+
         ZStack {
             // ARView
             ARViewContainer(viewModel: viewModel)
                 .ignoresSafeArea()
-            
+
             // UI Overlay
             VStack {
                 // 上部：エラーメッセージ
@@ -20,9 +22,9 @@ struct ContentView: View {
                     errorView(message: errorMessage)
                         .padding()
                 }
-                
+
                 Spacer()
-                
+
                 // 下部：コントロールパネル
                 controlPanel
                     .padding()
@@ -30,7 +32,7 @@ struct ContentView: View {
         }
         .sheet(isPresented: $viewModel.showingSettings) {
             SettingsView()
-                .environmentObject(viewModel)
+                .environment(viewModel)
         }
     }
     
@@ -151,14 +153,9 @@ struct ARViewContainer: UIViewRepresentable {
 
 // MARK: - SettingsView
 struct SettingsView: View {
-    @EnvironmentObject private var viewModel: ARCardViewModel
+    @Environment(ARCardViewModel.self) private var viewModel
     @Environment(\.dismiss) private var dismiss
-    @State private var editingCard: BusinessCard
-    
-    init() {
-        // 現在の名刺データで初期化（一時的な状態）
-        _editingCard = State(initialValue: BusinessCard())
-    }
+    @State private var editingCard = BusinessCard()
     
     var body: some View {
         NavigationView {
@@ -244,5 +241,5 @@ struct SettingsView: View {
 // MARK: - Preview
 #Preview {
     ContentView()
-        .environmentObject(ARCardViewModel())
+        .environment(ARCardViewModel())
 }
