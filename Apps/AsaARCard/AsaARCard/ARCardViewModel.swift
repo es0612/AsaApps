@@ -12,18 +12,28 @@ final class ARCardViewModel {
     var isCardVisible = false
     var showingSettings = false
     var showingCardFlip = false
+    var showingOnboarding = false
+    var showingHelp = false
     var errorMessage: String?
+    var guideMessage: String?
     var arSessionState: ARCamera.TrackingState = .notAvailable
-    
+    var isPlaneDetected = false
+
     // AR関連のプロパティ
     var arView: ARView?
     var cardEntity: ModelEntity?
+
+    // オンボーディング状態
+    var hasCompletedOnboarding: Bool {
+        UserDefaults.standard.bool(forKey: "AsaARCard_HasCompletedOnboarding")
+    }
     
     // MARK: - Initialization
     init() {
         setupAR()
+        checkAndShowOnboarding()
     }
-    
+
     // MARK: - AR Setup
     private func setupAR() {
         // AR利用可能性をチェック
@@ -31,9 +41,42 @@ final class ARCardViewModel {
             errorMessage = "このデバイスはAR機能をサポートしていません"
             return
         }
-        
+
         // ARViewの準備完了を設定
         isARViewReady = true
+
+        // 初期ガイドメッセージを設定
+        if hasCompletedOnboarding {
+            updateGuideMessage()
+        }
+    }
+
+    // MARK: - Onboarding
+    private func checkAndShowOnboarding() {
+        if !hasCompletedOnboarding {
+            showingOnboarding = true
+        }
+    }
+
+    func completeOnboarding() {
+        showingOnboarding = false
+        updateGuideMessage()
+    }
+
+    // MARK: - Guide Messages
+    private func updateGuideMessage() {
+        if !isPlaneDetected {
+            guideMessage = "カメラを床や机などの平面に向けてください"
+        } else if !isCardVisible {
+            guideMessage = "目のアイコンをタップして名刺を表示"
+        } else {
+            guideMessage = nil
+        }
+    }
+
+    func onPlaneDetected() {
+        isPlaneDetected = true
+        updateGuideMessage()
     }
     
     // MARK: - Public Methods
@@ -43,13 +86,15 @@ final class ARCardViewModel {
         guard isARViewReady else { return }
         createCardEntity()
         isCardVisible = true
+        updateGuideMessage()
     }
-    
+
     /// AR名刺を非表示
     func hideBusinessCard() {
         cardEntity?.removeFromParent()
         cardEntity = nil
         isCardVisible = false
+        updateGuideMessage()
     }
     
     /// 名刺の表裏を切り替え

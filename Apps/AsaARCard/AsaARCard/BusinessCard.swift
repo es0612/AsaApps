@@ -2,21 +2,26 @@ import Foundation
 
 // MARK: - 名刺データモデル
 struct BusinessCard: Codable, Identifiable {
-    let id = UUID()
+    var id = UUID()
     var name: String
     var title: String
     var company: String
     var email: String
     var phone: String
     var website: String
-    
+
     init(name: String = "", title: String = "", company: String = "", email: String = "", phone: String = "", website: String = "") {
+        self.id = UUID()
         self.name = name
         self.title = title
         self.company = company
         self.email = email
         self.phone = phone
         self.website = website
+    }
+
+    enum CodingKeys: String, CodingKey {
+        case name, title, company, email, phone, website
     }
     
     // 空のフィールドをチェック

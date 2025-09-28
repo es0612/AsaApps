@@ -17,10 +17,16 @@ struct ContentView: View {
 
             // UI Overlay
             VStack {
-                // 上部：エラーメッセージ
+                // 上部：エラーメッセージまたはガイドメッセージ
                 if let errorMessage = viewModel.errorMessage {
                     errorView(message: errorMessage)
                         .padding()
+                } else {
+                    ARPlaneDetectionGuideView(
+                        guideMessage: viewModel.guideMessage,
+                        isPlaneDetected: viewModel.isPlaneDetected
+                    )
+                    .padding(.top)
                 }
 
                 Spacer()
@@ -32,6 +38,15 @@ struct ContentView: View {
         }
         .sheet(isPresented: $viewModel.showingSettings) {
             SettingsView()
+                .environment(viewModel)
+        }
+        .sheet(isPresented: $viewModel.showingOnboarding) {
+            OnboardingView {
+                viewModel.completeOnboarding()
+            }
+        }
+        .sheet(isPresented: $viewModel.showingHelp) {
+            HelpView()
                 .environment(viewModel)
         }
     }
@@ -60,7 +75,17 @@ struct ContentView: View {
     
     private var controlPanel: some View {
         AsaCard {
-            HStack(spacing: 20) {
+            HStack(spacing: 16) {
+                // ヘルプボタン
+                Button(action: { viewModel.showingHelp = true }) {
+                    Image(systemName: "questionmark.circle.fill")
+                        .font(.title2)
+                        .foregroundColor(.white)
+                        .frame(width: 50, height: 50)
+                        .background(AsaColors.softCream, in: Circle())
+                        .shadow(radius: 2)
+                }
+
                 // 名刺表示/非表示ボタン
                 Button(action: toggleCardVisibility) {
                     Image(systemName: viewModel.isCardVisible ? "eye.slash.fill" : "eye.fill")
@@ -70,7 +95,7 @@ struct ContentView: View {
                         .background(AsaColors.coffeeBrown, in: Circle())
                         .shadow(radius: 2)
                 }
-                
+
                 // 名刺回転ボタン
                 Button(action: viewModel.flipCard) {
                     Image(systemName: "arrow.triangle.2.circlepath")
@@ -81,7 +106,7 @@ struct ContentView: View {
                         .shadow(radius: viewModel.isCardVisible ? 2 : 0)
                 }
                 .disabled(!viewModel.isCardVisible)
-                
+
                 // 設定ボタン
                 Button(action: viewModel.showSettings) {
                     Image(systemName: "gearshape.fill")
@@ -138,14 +163,25 @@ struct ARViewContainer: UIViewRepresentable {
     
     class Coordinator: NSObject, ARSessionDelegate {
         let viewModel: ARCardViewModel
-        
+
         init(viewModel: ARCardViewModel) {
             self.viewModel = viewModel
         }
-        
+
         func session(_ session: ARSession, cameraDidChangeTrackingState camera: ARCamera) {
             DispatchQueue.main.async {
                 self.viewModel.updateARSessionState(camera.trackingState)
+            }
+        }
+
+        func session(_ session: ARSession, didAdd anchors: [ARAnchor]) {
+            for anchor in anchors {
+                if anchor is ARPlaneAnchor {
+                    DispatchQueue.main.async {
+                        self.viewModel.onPlaneDetected()
+                    }
+                    break
+                }
             }
         }
     }
