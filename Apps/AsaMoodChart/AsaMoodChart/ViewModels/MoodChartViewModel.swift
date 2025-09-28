@@ -104,19 +104,20 @@ final class MoodChartViewModel {
         errorMessage = nil
         
         Task { @MainActor in
-            do {
-                if let data = UserDefaults.standard.data(forKey: "moodEntries"),
-                   let savedEntries = try? JSONDecoder().decode([MoodEntry].self, from: data) {
+            if let data = UserDefaults.standard.data(forKey: "moodEntries") {
+                do {
+                    let savedEntries = try JSONDecoder().decode([MoodEntry].self, from: data)
                     allMoodEntries = savedEntries
-                } else {
-                    // デモデータを生成（テスト用）
+                } catch {
+                    errorMessage = "データの読み込みに失敗しました: \(error.localizedDescription)"
+                    // エラー時はデモデータを使用
                     allMoodEntries = generateDemoData()
                 }
-                isLoading = false
-            } catch {
-                errorMessage = "データの読み込みに失敗しました: \(error.localizedDescription)"
-                isLoading = false
+            } else {
+                // デモデータを生成（テスト用）
+                allMoodEntries = generateDemoData()
             }
+            isLoading = false
         }
     }
     

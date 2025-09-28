@@ -3,9 +3,16 @@ import Foundation
 
 /// 気分記録エントリ（AsaMoodTracker互換）
 struct MoodEntry: Codable, Identifiable {
-    let id = UUID()
+    var id: UUID
     let date: Date
     let emoji: String
+    
+    /// イニシャライザ
+    init(id: UUID = UUID(), date: Date, emoji: String) {
+        self.id = id
+        self.date = date
+        self.emoji = emoji
+    }
     
     /// グラフ表示用に気分を数値に変換
     var moodValue: Double {
