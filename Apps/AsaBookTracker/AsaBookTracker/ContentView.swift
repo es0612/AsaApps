@@ -24,7 +24,7 @@ struct ContentView: View {
             // 📖 現在読書中タブ
             CurrentReadingView(viewModel: viewModel)
                 .tabItem {
-                    Image(systemName: "book.open")
+                    Image(systemName: "book")
                     Text("読書中")
                 }
                 .tag(1)

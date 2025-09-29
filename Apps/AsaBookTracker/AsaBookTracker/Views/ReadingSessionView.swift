@@ -92,7 +92,7 @@ struct ReadingSessionView: View {
                         RoundedRectangle(cornerRadius: 8)
                             .fill(AsaColors.softCream)
                             .overlay(
-                                Image(systemName: "book.open")
+                                Image(systemName: "book")
                                     .font(.title)
                                     .foregroundColor(AsaColors.coffeeBrown.opacity(0.7))
                             )

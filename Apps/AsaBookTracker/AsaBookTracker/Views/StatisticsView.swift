@@ -115,7 +115,7 @@ struct StatisticsView: View {
                     )
                     
                     StatisticCard(
-                        icon: "book.open",
+                        icon: "book",
                         title: "読書中",
                         value: "\(stats.currentlyReading)",
                         subtitle: "冊"

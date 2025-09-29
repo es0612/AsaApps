@@ -100,7 +100,7 @@ struct CurrentReadingView: View {
     @ViewBuilder
     private var emptyStateView: some View {
         VStack(spacing: 24) {
-            Image(systemName: "book.open")
+            Image(systemName: "book")
                 .font(.system(size: 80))
                 .foregroundColor(AsaColors.mutedSage.opacity(0.5))
             
@@ -233,7 +233,7 @@ struct CurrentReadingCardView: View {
                                     endPoint: .bottomTrailing
                                 ))
                                 .overlay(
-                                    Image(systemName: "book.open")
+                                    Image(systemName: "book")
                                         .font(.title)
                                         .foregroundColor(AsaColors.coffeeBrown.opacity(0.7))
                                 )

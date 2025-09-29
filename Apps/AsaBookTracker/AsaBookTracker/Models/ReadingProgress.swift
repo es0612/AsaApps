@@ -161,7 +161,7 @@ enum ReadingStatus: String, CaseIterable, Codable {
     var icon: String {
         switch self {
         case .notStarted: return "book.closed"
-        case .reading: return "book.open"
+        case .reading: return "book"
         case .completed: return "checkmark.circle.fill"
         case .paused: return "pause.circle"
         }
