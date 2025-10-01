@@ -12,7 +12,7 @@ import AVFoundation
 @Observable
 final class MultiTimerViewModel {
     // MARK: - Properties
-    private(set) var multiTimer: MultiTimer
+    var multiTimer: MultiTimer
     private var timers: [UUID: Timer] = [:]  // アクティブなFoundation.Timer
     private var audioPlayer: AVAudioPlayer?
     
@@ -75,6 +75,11 @@ final class MultiTimerViewModel {
     // アクティブタイマー
     var activeTimers: [TimerSession] {
         return multiTimer.activeTimers
+    }
+    
+    // アクティブタイマー数
+    var activeTimerCount: Int {
+        return multiTimer.activeTimerCount
     }
     
     // 今日の統計

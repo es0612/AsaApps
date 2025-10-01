@@ -9,8 +9,8 @@ import Foundation
 
 // 複数タイマー管理モデル
 struct MultiTimer: Codable, Sendable {
-    private(set) var sessions: [TimerSession]
-    private(set) var maxConcurrentTimers: Int
+    var sessions: [TimerSession]
+    var maxConcurrentTimers: Int
     
     // MARK: - Init
     init(maxConcurrentTimers: Int = 4) {

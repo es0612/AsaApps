@@ -7,6 +7,7 @@
 
 import Foundation
 import UserNotifications
+import UIKit
 
 /// タイマー通知管理サービス
 final class TimerNotificationService: NSObject, Sendable {

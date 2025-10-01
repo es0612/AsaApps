@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ContentView: View {
-    @EnvironmentObject private var viewModel: MultiTimerViewModel
+    @State private var viewModel = MultiTimerViewModel()
     @Environment(\.scenePhase) var scenePhase
     
     @State private var selectedTab: Int = 0
@@ -17,23 +17,23 @@ struct ContentView: View {
     var body: some View {
         TabView(selection: $selectedTab) {
             // タイマー一覧タブ
-            TimerListView()
+            TimerListView(viewModel: viewModel)
                 .tabItem {
                     Label("タイマー", systemImage: "timer")
                 }
                 .tag(0)
-                .badge(viewModel.multiTimer.sessions.count > 0 ? viewModel.multiTimer.sessions.count : nil)
+                .badge(viewModel.multiTimer.sessions.count)
             
             // 実行中タイマータブ
-            ActiveTimersView()
+            ActiveTimersView(viewModel: viewModel)
                 .tabItem {
                     Label("実行中", systemImage: "play.circle")
                 }
                 .tag(1)
-                .badge(viewModel.activeTimerCount > 0 ? viewModel.activeTimerCount : nil)
+                .badge(viewModel.activeTimerCount)
             
             // 新規作成タブ
-            TimerCreationView()
+            TimerCreationView(viewModel: viewModel)
                 .tabItem {
                     Label("新規作成", systemImage: "plus.circle")
                 }
@@ -124,5 +124,4 @@ struct ContentView: View {
 
 #Preview {
     ContentView()
-        .environmentObject(MultiTimerViewModel())
 }

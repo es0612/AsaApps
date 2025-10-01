@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct TimerCreationView: View {
-    @EnvironmentObject private var viewModel: MultiTimerViewModel
+    @Bindable var viewModel: MultiTimerViewModel
     @Environment(\.colorScheme) var colorScheme
     
     // フォーム状態
@@ -339,6 +339,5 @@ struct TimerCreationView: View {
 }
 
 #Preview {
-    TimerCreationView()
-        .environmentObject(MultiTimerViewModel())
+    TimerCreationView(viewModel: MultiTimerViewModel())
 }

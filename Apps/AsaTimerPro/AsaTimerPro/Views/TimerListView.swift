@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct TimerListView: View {
-    @EnvironmentObject private var viewModel: MultiTimerViewModel
+    @Bindable var viewModel: MultiTimerViewModel
     @Environment(\.colorScheme) var colorScheme
     
     @State private var showingDeleteAlert = false
@@ -252,6 +252,5 @@ struct TimerListView: View {
 }
 
 #Preview {
-    TimerListView()
-        .environmentObject(MultiTimerViewModel())
+    TimerListView(viewModel: MultiTimerViewModel())
 }

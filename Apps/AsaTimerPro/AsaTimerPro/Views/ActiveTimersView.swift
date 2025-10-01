@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ActiveTimersView: View {
-    @EnvironmentObject private var viewModel: MultiTimerViewModel
+    @Bindable var viewModel: MultiTimerViewModel
     @Environment(\.colorScheme) var colorScheme
     
     @State private var showingStopAllAlert = false
@@ -244,6 +244,5 @@ struct ActiveTimersView: View {
 }
 
 #Preview {
-    ActiveTimersView()
-        .environmentObject(MultiTimerViewModel())
+    ActiveTimersView(viewModel: MultiTimerViewModel())
 }
