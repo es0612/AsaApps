@@ -108,6 +108,29 @@ struct SettingsView: View {
             }
             .padding(.vertical, 4)
             
+            #if DEBUG
+            // サンプルデータ読込（デバッグ専用）
+            Button(action: {
+                viewModel.loadSampleData()
+            }) {
+                HStack {
+                    Image(systemName: "doc.badge.plus")
+                        .foregroundColor(AsaColors.coffeeBrown)
+                        .frame(width: 24)
+
+                    Text("サンプルデータ読込")
+                        .foregroundColor(AsaColors.darkSlate)
+
+                    Spacer()
+
+                    Text("10冊")
+                        .font(.caption)
+                        .foregroundColor(AsaColors.mutedSage)
+                }
+            }
+            .padding(.vertical, 4)
+            #endif
+
             // データエクスポート（将来の機能）
             Button(action: {
                 showingDataExport = true
@@ -116,12 +139,12 @@ struct SettingsView: View {
                     Image(systemName: "square.and.arrow.up")
                         .foregroundColor(AsaColors.coffeeBrown)
                         .frame(width: 24)
-                    
+
                     Text("データをエクスポート")
                         .foregroundColor(AsaColors.darkSlate)
-                    
+
                     Spacer()
-                    
+
                     Text("CSV")
                         .font(.caption)
                         .foregroundColor(AsaColors.mutedSage)

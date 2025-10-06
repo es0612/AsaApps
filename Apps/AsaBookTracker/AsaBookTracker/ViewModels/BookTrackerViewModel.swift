@@ -219,8 +219,23 @@ final class BookTrackerViewModel {
         }
     }
     
+    // MARK: - Sample Data (Debug Only)
+
+    #if DEBUG
+    /// サンプルデータを読み込む（デバッグ専用）
+    func loadSampleData() {
+        guard let context = modelContext else {
+            errorMessage = "ModelContextが設定されていません"
+            return
+        }
+
+        SampleBookData.loadSampleData(into: context)
+        loadBooks()
+    }
+    #endif
+
     // MARK: - Statistics
-    
+
     private func calculateStatistics() {
         let totalBooks = books.count
         let completedBooks = books.filter { $0.progress?.status == .completed }.count

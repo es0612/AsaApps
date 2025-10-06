@@ -256,6 +256,12 @@ struct FilterChip: View {
 // MARK: - Preview
 
 #Preview {
-    ContentView()
-        .modelContainer(for: Book.self, inMemory: true)
+    let config = ModelConfiguration(isStoredInMemoryOnly: true)
+    let container = try! ModelContainer(for: Book.self, ReadingProgress.self, ReadingSession.self, configurations: config)
+
+    // サンプルデータを読み込む
+    SampleBookData.loadSampleData(into: container.mainContext)
+
+    return ContentView()
+        .modelContainer(container)
 }
