@@ -9,20 +9,23 @@ import Foundation
 import SwiftData
 import SwiftUI
 
-final class DataPersistenceService: ObservableObject, Sendable {
+final class DataPersistenceService: ObservableObject {
     static let shared = DataPersistenceService()
-    
+
     private var modelContext: ModelContext?
-    
+
     @Published private(set) var isLoading: Bool = false
     @Published private(set) var errorMessage: String?
-    
+
     init() {
-        setupModelContext()
+        Task { @MainActor in
+            setupModelContext()
+        }
     }
     
     // MARK: - Setup
     
+    @MainActor
     private func setupModelContext() {
         do {
             let schema = Schema([
@@ -31,10 +34,10 @@ final class DataPersistenceService: ObservableObject, Sendable {
                 Comment.self,
                 FamilyMember.self
             ])
-            
+
             let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
             let modelContainer = try ModelContainer(for: schema, configurations: [modelConfiguration])
-            
+
             self.modelContext = modelContainer.mainContext
         } catch {
             errorMessage = "データベースの初期化に失敗しました: \(error.localizedDescription)"
@@ -77,7 +80,7 @@ final class DataPersistenceService: ObservableObject, Sendable {
             throw DataPersistenceError.contextNotAvailable
         }
         
-        let descriptor = FetchDescriptor<Album>(
+        var descriptor = FetchDescriptor<Album>(
             predicate: #Predicate { !$0.isArchived },
             sortBy: [SortDescriptor(\.updatedAt, order: .reverse)]
         )
@@ -105,7 +108,7 @@ final class DataPersistenceService: ObservableObject, Sendable {
         let descriptor = FetchDescriptor<Album>(
             predicate: #Predicate { album in
                 album.name.localizedStandardContains(searchText) ||
-                (album.description?.localizedStandardContains(searchText) ?? false) ||
+                (album.albumDescription?.localizedStandardContains(searchText) ?? false) ||
                 album.tags.contains { $0.localizedStandardContains(searchText) }
             },
             sortBy: [SortDescriptor(\.updatedAt, order: .reverse)]
@@ -132,8 +135,11 @@ final class DataPersistenceService: ObservableObject, Sendable {
             throw DataPersistenceError.contextNotAvailable
         }
         
+        let albumId = album.id
         let descriptor = FetchDescriptor<Photo>(
-            predicate: #Predicate { $0.album?.id == album.id },
+            predicate: #Predicate { photo in
+                photo.album?.id == albumId
+            },
             sortBy: [SortDescriptor(\.createdAt, order: .reverse)]
         )
         
@@ -160,7 +166,7 @@ final class DataPersistenceService: ObservableObject, Sendable {
             throw DataPersistenceError.contextNotAvailable
         }
         
-        let descriptor = FetchDescriptor<Photo>(
+        var descriptor = FetchDescriptor<Photo>(
             sortBy: [SortDescriptor(\.createdAt, order: .reverse)]
         )
         descriptor.fetchLimit = limit
@@ -254,8 +260,11 @@ final class DataPersistenceService: ObservableObject, Sendable {
             throw DataPersistenceError.contextNotAvailable
         }
         
+        let photoId = photo.id
         let descriptor = FetchDescriptor<Comment>(
-            predicate: #Predicate { $0.photo?.id == photo.id },
+            predicate: #Predicate { comment in
+                comment.photo?.id == photoId
+            },
             sortBy: [SortDescriptor(\.createdAt, order: .forward)]
         )
         

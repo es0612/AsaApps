@@ -10,7 +10,7 @@ import SwiftData
 import Photos
 
 @Model
-final class Photo: Identifiable, Sendable {
+final class Photo: Identifiable {
     var id: UUID
     var assetID: String  // PhotosKitのPHAssetのlocalIdentifier
     var title: String?

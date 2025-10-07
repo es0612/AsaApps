@@ -9,7 +9,7 @@ import Foundation
 import Photos
 import SwiftUI
 
-final class PhotoLibraryService: NSObject, ObservableObject, Sendable {
+final class PhotoLibraryService: NSObject, ObservableObject {
     static let shared = PhotoLibraryService()
     
     @Published private(set) var authorizationStatus: PHAuthorizationStatus = .notDetermined

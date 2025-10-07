@@ -9,7 +9,7 @@ import Foundation
 import SwiftData
 
 @Model
-final class Comment: Identifiable, Sendable {
+final class Comment: Identifiable {
     var id: UUID
     var text: String
     var author: String

@@ -9,7 +9,7 @@ import Foundation
 import SwiftData
 
 @Model
-final class Album: Identifiable, Sendable {
+final class Album: Identifiable {
     var id: UUID
     var name: String
     var albumDescription: String?
