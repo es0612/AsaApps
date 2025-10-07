@@ -16,7 +16,7 @@ struct TimerListView: View {
     @State private var showingFilterSheet = false
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             ZStack {
                 // 背景
                 Color(colorScheme == .dark ? "AsaDarkSlate" : "AsaSoftCream")
@@ -30,11 +30,10 @@ struct TimerListView: View {
                     // タイマーリスト
                     if viewModel.filteredTimers.isEmpty {
                         emptyStateView
+                            .padding(.top, 40)
                     } else {
                         timerListContent
                     }
-                    
-                    Spacer()
                 }
                 .padding()
             }
@@ -48,19 +47,19 @@ struct TimerListView: View {
                     }
                 }
             }
-        }
-        .sheet(isPresented: $showingFilterSheet) {
-            filterSheetContent
-        }
-        .alert("タイマーを削除", isPresented: $showingDeleteAlert) {
-            Button("削除", role: .destructive) {
-                if let id = timerToDelete {
-                    viewModel.deleteTimer(with: id)
-                }
+            .sheet(isPresented: $showingFilterSheet) {
+                filterSheetContent
             }
-            Button("キャンセル", role: .cancel) {}
-        } message: {
-            Text("このタイマーを完全に削除しますか？この操作は取り消せません。")
+            .alert("タイマーを削除", isPresented: $showingDeleteAlert) {
+                Button("削除", role: .destructive) {
+                    if let id = timerToDelete {
+                        viewModel.deleteTimer(with: id)
+                    }
+                }
+                Button("キャンセル", role: .cancel) {}
+            } message: {
+                Text("このタイマーを完全に削除しますか？この操作は取り消せません。")
+            }
         }
     }
     
@@ -182,11 +181,11 @@ struct TimerListView: View {
             )
             .frame(maxWidth: 200)
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .frame(maxWidth: .infinity)
     }
     
     private var filterSheetContent: some View {
-        NavigationView {
+        NavigationStack {
             VStack(alignment: .leading, spacing: 24) {
                 // 完了済みタイマーの表示設定
                 VStack(alignment: .leading, spacing: 12) {

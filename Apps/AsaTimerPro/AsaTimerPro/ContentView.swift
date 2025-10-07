@@ -39,8 +39,8 @@ struct ContentView: View {
                 }
                 .tag(2)
         }
-        .accentColor(Color("AsaCoffeeBrown"))
-        .onChange(of: scenePhase) { newPhase in
+        .tint(Color("AsaCoffeeBrown"))
+        .onChange(of: scenePhase) { oldPhase, newPhase in
             handleScenePhaseChange(newPhase)
         }
         .onAppear {
@@ -51,8 +51,8 @@ struct ContentView: View {
         } message: {
             Text(viewModel.errorMessage ?? "予期しないエラーが発生しました")
         }
-        .onChange(of: viewModel.showErrorAlert) { showError in
-            if showError {
+        .onChange(of: viewModel.showErrorAlert) { oldValue, newValue in
+            if newValue {
                 showingErrorAlert = true
                 // ViewModelのアラート状態をリセット
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {

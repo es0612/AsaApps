@@ -39,7 +39,7 @@ struct TimerCreationView: View {
     ]
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             ZStack {
                 // 背景
                 Color(colorScheme == .dark ? "AsaDarkSlate" : "AsaSoftCream")
@@ -84,18 +84,18 @@ struct TimerCreationView: View {
                     .foregroundColor(Color("AsaMutedSage"))
                 }
             }
-        }
-        .alert("タイマーを作成しました", isPresented: $showingSuccessAlert) {
-            Button("OK") {
-                resetForm()
+            .alert("タイマーを作成しました", isPresented: $showingSuccessAlert) {
+                Button("OK") {
+                    resetForm()
+                }
+            } message: {
+                Text("「\(timerName)」のタイマーを作成しました。")
             }
-        } message: {
-            Text("「\(timerName)」のタイマーを作成しました。")
-        }
-        .alert("入力エラー", isPresented: $showingValidationError) {
-            Button("OK") {}
-        } message: {
-            Text(validationError)
+            .alert("入力エラー", isPresented: $showingValidationError) {
+                Button("OK") {}
+            } message: {
+                Text(validationError)
+            }
         }
     }
     
@@ -189,7 +189,7 @@ struct TimerCreationView: View {
                         .textFieldStyle(RoundedBorderTextFieldStyle())
                         .keyboardType(.numberPad)
                         .frame(width: 80)
-                        .onChange(of: customDurationMinutes) { newValue in
+                        .onChange(of: customDurationMinutes) { oldValue, newValue in
                             if let minutes = Int(newValue), minutes > 0 {
                                 duration = minutes * 60
                             }
@@ -259,12 +259,16 @@ struct TimerCreationView: View {
     
     private var createButtonSection: some View {
         VStack(spacing: 12) {
-            AsaButton(
-                title: "タイマーを作成",
-                action: createTimer,
-                color: Color("AsaCoffeeBrown"),
-                isEnabled: isFormValid
-            )
+            Button(action: createTimer) {
+                Text("タイマーを作成")
+                    .font(.headline)
+                    .foregroundColor(.white)
+                    .frame(maxWidth: .infinity)
+                    .padding()
+                    .background(isFormValid ? Color("AsaCoffeeBrown") : Color.gray)
+                    .cornerRadius(12)
+            }
+            .disabled(!isFormValid)
             
             if !viewModel.canStartNewTimer {
                 Text("最大同時実行数に達しています。既存のタイマーを停止してから作成してください。")
@@ -295,6 +299,8 @@ struct TimerCreationView: View {
         let trimmedName = timerName.trimmingCharacters(in: .whitespacesAndNewlines)
         let trimmedMemo = memo.trimmingCharacters(in: .whitespacesAndNewlines)
         
+        print("🔵 タイマー作成開始: \(trimmedName), \(duration)秒")
+        
         viewModel.addTimer(
             name: trimmedName,
             category: selectedCategory,
@@ -303,6 +309,7 @@ struct TimerCreationView: View {
             isRepeating: isRepeating
         )
         
+        print("🟢 タイマー作成完了")
         showingSuccessAlert = true
     }
     

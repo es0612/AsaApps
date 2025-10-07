@@ -20,7 +20,7 @@ struct ActiveTimersView: View {
     ]
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             ZStack {
                 // 背景
                 Color(colorScheme == .dark ? "AsaDarkSlate" : "AsaSoftCream")
@@ -30,15 +30,14 @@ struct ActiveTimersView: View {
                 VStack(spacing: 20) {
                     // ステータスヘッダー
                     statusHeaderView
-                    
+
                     // アクティブタイマーグリッド
                     if viewModel.activeTimers.isEmpty {
                         emptyActiveTimersView
+                            .padding(.top, 40)
                     } else {
                         activeTimersGridView
                     }
-                    
-                    Spacer()
                 }
                 .padding()
             }
@@ -57,14 +56,14 @@ struct ActiveTimersView: View {
                     .disabled(viewModel.activeTimers.isEmpty)
                 }
             }
-        }
-        .alert("全タイマーを一時停止", isPresented: $showingStopAllAlert) {
-            Button("一時停止", role: .destructive) {
-                viewModel.pauseAllTimers()
+            .alert("全タイマーを一時停止", isPresented: $showingStopAllAlert) {
+                Button("一時停止", role: .destructive) {
+                    viewModel.pauseAllTimers()
+                }
+                Button("キャンセル", role: .cancel) {}
+            } message: {
+                Text("実行中の全てのタイマーを一時停止しますか？")
             }
-            Button("キャンセル", role: .cancel) {}
-        } message: {
-            Text("実行中の全てのタイマーを一時停止しますか？")
         }
     }
     
@@ -239,7 +238,7 @@ struct ActiveTimersView: View {
                 .padding(.top)
             }
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .frame(maxWidth: .infinity)
     }
 }
 
