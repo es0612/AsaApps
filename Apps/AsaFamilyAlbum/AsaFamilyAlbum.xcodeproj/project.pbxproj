@@ -411,6 +411,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = AsaFamilyAlbum/Info.plist;
+				INFOPLIST_KEY_CFBundleIdentifier = com.asapapa.apps.asafamilyalbum;
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "写真をアルバムに追加するため、フォトライブラリへの書き込みアクセスが必要です。";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "家族の写真を整理・管理するため、フォトライブラリへのアクセスが必要です。";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -451,6 +452,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = AsaFamilyAlbum/Info.plist;
+				INFOPLIST_KEY_CFBundleIdentifier = com.asapapa.apps.asafamilyalbum;
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "写真をアルバムに追加するため、フォトライブラリへの書き込みアクセスが必要です。";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "家族の写真を整理・管理するため、フォトライブラリへのアクセスが必要です。";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
