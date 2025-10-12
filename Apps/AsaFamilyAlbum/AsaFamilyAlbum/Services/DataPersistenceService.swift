@@ -18,32 +18,11 @@ final class DataPersistenceService: ObservableObject {
     @Published private(set) var errorMessage: String?
 
     init() {
-        Task { @MainActor in
-            setupModelContext()
-        }
+        // ModelContextは外部から設定されるため、ここでは初期化しない
     }
-    
+
     // MARK: - Setup
-    
-    @MainActor
-    private func setupModelContext() {
-        do {
-            let schema = Schema([
-                Album.self,
-                Photo.self,
-                Comment.self,
-                FamilyMember.self
-            ])
 
-            let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
-            let modelContainer = try ModelContainer(for: schema, configurations: [modelConfiguration])
-
-            self.modelContext = modelContainer.mainContext
-        } catch {
-            errorMessage = "データベースの初期化に失敗しました: \(error.localizedDescription)"
-        }
-    }
-    
     func setModelContext(_ context: ModelContext) {
         self.modelContext = context
     }

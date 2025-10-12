@@ -9,51 +9,60 @@ import SwiftUI
 import SwiftData
 
 struct ContentView: View {
-    @State private var viewModel = FamilyAlbumViewModel()
+    @Environment(\.modelContext) private var modelContext
+    @State private var viewModel: FamilyAlbumViewModel?
     @State private var selectedTab = 0
     
     var body: some View {
-        TabView(selection: $selectedTab) {
-            AlbumsView(viewModel: viewModel)
-                .tabItem {
-                    Image(systemName: "photo.on.rectangle.angled")
-                    Text("アルバム")
+        if let viewModel = viewModel {
+            TabView(selection: $selectedTab) {
+                AlbumsView(viewModel: viewModel)
+                    .tabItem {
+                        Image(systemName: "photo.on.rectangle.angled")
+                        Text("アルバム")
+                    }
+                    .tag(0)
+
+                PhotosGridView(viewModel: viewModel)
+                    .tabItem {
+                        Image(systemName: "photo.stack")
+                        Text("すべての写真")
+                    }
+                    .tag(1)
+
+                FamilyMembersView(viewModel: viewModel)
+                    .tabItem {
+                        Image(systemName: "person.3.sequence")
+                        Text("家族")
+                    }
+                    .tag(2)
+
+                SearchView(viewModel: viewModel)
+                    .tabItem {
+                        Image(systemName: "magnifyingglass")
+                        Text("検索")
+                    }
+                    .tag(3)
+            }
+            .tint(Color("AsaCoffeeBrown"))
+            .task {
+                await viewModel.loadInitialData()
+            }
+            .sheet(isPresented: Binding(
+                get: { viewModel.errorMessage != nil },
+                set: { _ in viewModel.clearError() }
+            )) {
+                ErrorView(errorMessage: viewModel.errorMessage ?? "")
+            }
+        } else {
+            ProgressView("読み込み中...")
+                .onAppear {
+                    // ViewModelを初期化してModelContextを設定
+                    let vm = FamilyAlbumViewModel()
+                    vm.dataService.setModelContext(modelContext)
+                    self.viewModel = vm
+                    vm.requestPhotoLibraryAccess()
                 }
-                .tag(0)
-            
-            PhotosGridView(viewModel: viewModel)
-                .tabItem {
-                    Image(systemName: "photo.stack")
-                    Text("すべての写真")
-                }
-                .tag(1)
-            
-            FamilyMembersView(viewModel: viewModel)
-                .tabItem {
-                    Image(systemName: "person.3.sequence")
-                    Text("家族")
-                }
-                .tag(2)
-            
-            SearchView(viewModel: viewModel)
-                .tabItem {
-                    Image(systemName: "magnifyingglass")
-                    Text("検索")
-                }
-                .tag(3)
-        }
-        .tint(Color("AsaCoffeeBrown"))
-        .task {
-            await viewModel.loadInitialData()
-        }
-        .sheet(isPresented: Binding(
-            get: { viewModel.errorMessage != nil },
-            set: { _ in viewModel.clearError() }
-        )) {
-            ErrorView(errorMessage: viewModel.errorMessage ?? "")
-        }
-        .onAppear {
-            viewModel.requestPhotoLibraryAccess()
         }
     }
 }

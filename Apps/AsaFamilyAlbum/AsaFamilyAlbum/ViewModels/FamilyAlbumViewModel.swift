@@ -41,7 +41,7 @@ final class FamilyAlbumViewModel: Sendable {
     
     // Services
     private let photoLibraryService: PhotoLibraryService
-    private let dataService: DataPersistenceService
+    let dataService: DataPersistenceService
     
     // MARK: - Enums
     
