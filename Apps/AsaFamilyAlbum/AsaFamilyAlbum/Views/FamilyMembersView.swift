@@ -13,7 +13,7 @@ struct FamilyMembersView: View {
     @State private var showingCreateMember = false
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             VStack(spacing: 0) {
                 if viewModel.isLoading {
                     LoadingView()
@@ -171,7 +171,7 @@ struct CreateFamilyMemberView: View {
     private let colors = ["AsaCoffeeBrown", "AsaMocha", "AsaSoftCream", "AsaDarkSlate", "AsaMutedSage"]
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             Form {
                 Section(header: Text("基本情報").foregroundColor(Color("AsaCoffeeBrown"))) {
                     TextField("名前", text: $name)

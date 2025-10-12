@@ -14,7 +14,7 @@ struct AlbumsView: View {
     @State private var searchText = ""
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             VStack(spacing: 0) {
                 if viewModel.isLoading {
                     LoadingView()
@@ -186,7 +186,7 @@ struct CreateAlbumView: View {
     @State private var tags = ""
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             Form {
                 Section(header: Text("アルバム情報").foregroundColor(Color("AsaCoffeeBrown"))) {
                     TextField("アルバム名", text: $name)

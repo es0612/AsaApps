@@ -259,7 +259,7 @@ struct EditAlbumView: View {
     }
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             Form {
                 Section(header: Text("アルバム情報").foregroundColor(Color("AsaCoffeeBrown"))) {
                     TextField("アルバム名", text: $name)

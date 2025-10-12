@@ -449,7 +449,7 @@ struct AddCommentView: View {
     @State private var authorName = "家族"
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             VStack(spacing: 16) {
                 TextField("著者名", text: $authorName)
                     .textFieldStyle(.roundedBorder)
@@ -493,7 +493,7 @@ struct TagFamilyMembersView: View {
     @Environment(\.dismiss) private var dismiss
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             List {
                 ForEach(viewModel.familyMembers) { member in
                     Button {
@@ -566,7 +566,7 @@ struct EditPhotoView: View {
     }
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             Form {
                 Section(header: Text("写真情報").foregroundColor(Color("AsaCoffeeBrown"))) {
                     TextField("タイトル", text: $title)

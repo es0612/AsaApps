@@ -19,7 +19,7 @@ struct PhotosGridView: View {
     ]
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             VStack(spacing: 0) {
                 if viewModel.isLoading {
                     LoadingView()
@@ -170,7 +170,7 @@ struct FilterView: View {
     @Environment(\.dismiss) private var dismiss
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             Form {
                 Section(header: Text("検索").foregroundColor(Color("AsaCoffeeBrown"))) {
                     TextField("キーワードで検索", text: $viewModel.searchText)

@@ -40,7 +40,7 @@ struct SearchView: View {
     }
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             VStack(spacing: 0) {
                 // 検索バー
                 VStack(spacing: 12) {
@@ -404,7 +404,7 @@ struct AdvancedSearchView: View {
     @Environment(\.dismiss) private var dismiss
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             Form {
                 Section(header: Text("検索条件").foregroundColor(Color("AsaCoffeeBrown"))) {
                     TextField("キーワード", text: $viewModel.searchText)
