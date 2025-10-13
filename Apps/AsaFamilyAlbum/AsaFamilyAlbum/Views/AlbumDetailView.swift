@@ -13,6 +13,7 @@ struct AlbumDetailView: View {
     var viewModel: FamilyAlbumViewModel
     @State private var showingEditAlbum = false
     @State private var showingDeleteAlert = false
+    @State private var showingPhotoPicker = false
     @State private var selectedPhoto: Photo?
     
     private let columns = [
@@ -29,7 +30,7 @@ struct AlbumDetailView: View {
                 
                 // 写真グリッド
                 if album.photos.isEmpty {
-                    EmptyAlbumView()
+                    EmptyAlbumView(showingPhotoPicker: $showingPhotoPicker)
                 } else {
                     PhotoGridSection(album: album, viewModel: viewModel, selectedPhoto: $selectedPhoto)
                 }
@@ -40,6 +41,13 @@ struct AlbumDetailView: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItemGroup(placement: .navigationBarTrailing) {
+                Button {
+                    showingPhotoPicker = true
+                } label: {
+                    Image(systemName: "photo.badge.plus")
+                        .foregroundColor(Color("AsaCoffeeBrown"))
+                }
+                
                 Button {
                     showingEditAlbum = true
                 } label: {
@@ -74,6 +82,9 @@ struct AlbumDetailView: View {
         }
         .sheet(item: $selectedPhoto) { photo in
             PhotoDetailView(photo: photo, viewModel: viewModel)
+        }
+        .sheet(isPresented: $showingPhotoPicker) {
+            PhotoPickerView(album: album, viewModel: viewModel)
         }
         .alert("アルバムを削除", isPresented: $showingDeleteAlert) {
             Button("削除", role: .destructive) {
@@ -217,6 +228,8 @@ struct PhotoGridSection: View {
 }
 
 struct EmptyAlbumView: View {
+    @Binding var showingPhotoPicker: Bool
+    
     var body: some View {
         VStack(spacing: 24) {
             Image(systemName: "photo.badge.plus")
@@ -234,6 +247,24 @@ struct EmptyAlbumView: View {
                     .foregroundColor(Color("AsaMocha"))
                     .multilineTextAlignment(.center)
             }
+            
+            Button {
+                showingPhotoPicker = true
+            } label: {
+                HStack(spacing: 8) {
+                    Image(systemName: "photo.on.rectangle.angled")
+                        .font(.headline)
+                    Text("写真を追加")
+                        .font(.headline)
+                }
+                .foregroundColor(.white)
+                .padding(.horizontal, 24)
+                .padding(.vertical, 12)
+                .background(Color("AsaCoffeeBrown"))
+                .cornerRadius(10)
+                .shadow(color: Color("AsaDarkSlate").opacity(0.2), radius: 4, x: 0, y: 2)
+            }
+            .padding(.top, 8)
         }
         .frame(maxWidth: .infinity)
         .padding(.top, 80)

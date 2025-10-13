@@ -238,6 +238,29 @@ final class FamilyAlbumViewModel: Sendable {
         await loadAlbums()
         await loadAllPhotos()
     }
+
+    @MainActor
+    func addPhotoFromImage(_ image: UIImage, to album: Album) async {
+        // UIImageからPhotoモデルを作成
+        let photo = Photo(
+            assetID: UUID().uuidString, // UIImageの場合は独自IDを生成
+            createdAt: Date(),
+            location: nil
+        )
+        
+        // アルバムに写真を追加
+        photo.album = album
+        photo.updateTimestamp()
+        album.updateTimestamp()
+        
+        do {
+            try await dataService.savePhoto(photo)
+            await loadAlbums()
+            await loadAllPhotos()
+        } catch {
+            errorMessage = "写真の追加に失敗しました: \(error.localizedDescription)"
+        }
+    }
     
     // MARK: - Photo Operations
     
