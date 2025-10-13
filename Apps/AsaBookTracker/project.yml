@@ -30,12 +30,9 @@ targets:
     dependencies:
       - package: AsaUIKit
         product: AsaUIKit
-      - framework: SwiftUI.framework
-        embed: false
-      - framework: SwiftData.framework
-        embed: false
-      - framework: Charts.framework
-        embed: false
+      - sdk: SwiftUI.framework
+      - sdk: SwiftData.framework
+      - sdk: Charts.framework
     
     settings:
       base:
