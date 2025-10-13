@@ -45,7 +45,6 @@ struct ContentView: View {
                     .tag(3)
             }
             .tint(Color("AsaCoffeeBrown"))
-            .ignoresSafeArea()
             .task {
                 await viewModel.loadInitialData()
             }
