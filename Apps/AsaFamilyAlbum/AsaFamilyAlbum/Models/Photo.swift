@@ -25,7 +25,8 @@ final class Photo: Identifiable {
     var aperture: String?
     var shutterSpeed: String?
     var iso: String?
-    
+    var localImagePath: String?  // ローカル保存された画像のファイルパス
+
     // Swift Dataリレーション
     var album: Album?
     
@@ -71,6 +72,10 @@ final class Photo: Identifiable {
     
     var hasExifData: Bool {
         cameraMake != nil || cameraModel != nil || aperture != nil || shutterSpeed != nil || iso != nil
+    }
+
+    var hasLocalImage: Bool {
+        localImagePath != nil
     }
     
     var exifSummary: String {

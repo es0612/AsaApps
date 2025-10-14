@@ -14,6 +14,7 @@
 		2B939BBB65D6BB2D4A3764B6 /* Album.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCD25C0F9E5FF9FBF2A632D2 /* Album.swift */; };
 		330257D7E8AEF60AD7051FFC /* Photo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D4F16AD85A7D7BC47664DF /* Photo.swift */; };
 		38A37BB606C7C8DB407B672A /* CommentModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA8538F7E1370F5B4FCADD3C /* CommentModelTests.swift */; };
+		3F45AD6F0E944DBE9166A14A /* ImageStorageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4E43941DE2F0200237695FB /* ImageStorageService.swift */; };
 		40B681A413E106C1BD3CCA68 /* PhotoLibraryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E85384A233C91ADF7C80558B /* PhotoLibraryService.swift */; };
 		57AD6D2C9997DECBFC1B96B9 /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA733776D238B208DC0F0D67 /* SearchView.swift */; };
 		5B7630C67901EE4EC0D525FA /* PhotoDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 485671ED3802C60B6CC81742 /* PhotoDetailView.swift */; };
@@ -75,6 +76,7 @@
 		932EC7BFEAC4D399763B2AA2 /* FamilyAlbumViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FamilyAlbumViewModelTests.swift; sourceTree = "<group>"; };
 		962A208C8584CE2EBC19A87A /* AlbumDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumDetailView.swift; sourceTree = "<group>"; };
 		A1E31D742A72C9664D749E38 /* DataPersistenceServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataPersistenceServiceTests.swift; sourceTree = "<group>"; };
+		A4E43941DE2F0200237695FB /* ImageStorageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageStorageService.swift; sourceTree = "<group>"; };
 		AAE356B3ADCEA9A859EB429C /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		B50E01CB2F49AE10ECD5A9C2 /* AlbumModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumModelTests.swift; sourceTree = "<group>"; };
 		B9674C456803C588C6DCB756 /* AsaFamilyAlbumUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = AsaFamilyAlbumUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -170,6 +172,7 @@
 			isa = PBXGroup;
 			children = (
 				07FBF845F90D27E911C7D0E8 /* DataPersistenceService.swift */,
+				A4E43941DE2F0200237695FB /* ImageStorageService.swift */,
 				E85384A233C91ADF7C80558B /* PhotoLibraryService.swift */,
 			);
 			path = Services;
@@ -384,6 +387,7 @@
 				D0B13AA49EEB70784A42732E /* FamilyAlbumViewModel.swift in Sources */,
 				E232CC4AAE5271B004657286 /* FamilyMember.swift in Sources */,
 				B7BF878730E5E0F561926DD6 /* FamilyMembersView.swift in Sources */,
+				3F45AD6F0E944DBE9166A14A /* ImageStorageService.swift in Sources */,
 				330257D7E8AEF60AD7051FFC /* Photo.swift in Sources */,
 				5B7630C67901EE4EC0D525FA /* PhotoDetailView.swift in Sources */,
 				40B681A413E106C1BD3CCA68 /* PhotoLibraryService.swift in Sources */,

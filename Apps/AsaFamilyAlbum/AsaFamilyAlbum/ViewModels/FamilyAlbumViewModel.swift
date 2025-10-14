@@ -241,24 +241,32 @@ final class FamilyAlbumViewModel: Sendable {
 
     @MainActor
     func addPhotoFromImage(_ image: UIImage, to album: Album) async {
-        // UIImageからPhotoモデルを作成
+        // 1. 画像をローカルストレージに保存
+        guard let imagePath = await ImageStorageService.shared.saveImage(image) else {
+            errorMessage = "画像の保存に失敗しました"
+            return
+        }
+
+        // 2. Photoモデルを作成
         let photo = Photo(
-            assetID: UUID().uuidString, // UIImageの場合は独自IDを生成
+            assetID: UUID().uuidString,
             createdAt: Date(),
             location: nil
         )
-        
-        // アルバムに写真を追加
+        photo.localImagePath = imagePath
         photo.album = album
         photo.updateTimestamp()
         album.updateTimestamp()
-        
+
+        // 3. Swift Dataに保存
         do {
             try await dataService.savePhoto(photo)
             await loadAlbums()
             await loadAllPhotos()
         } catch {
             errorMessage = "写真の追加に失敗しました: \(error.localizedDescription)"
+            // 保存失敗時は画像ファイルも削除
+            _ = ImageStorageService.shared.deleteImage(at: imagePath)
         }
     }
     
@@ -432,18 +440,30 @@ final class FamilyAlbumViewModel: Sendable {
     // MARK: - Image Loading
     
     func loadImage(for photo: Photo, size: CGSize = CGSize(width: 300, height: 300)) async -> UIImage? {
+        // 優先順位1: ローカル保存画像
+        if let localPath = photo.localImagePath {
+            return await ImageStorageService.shared.loadImage(from: localPath, targetSize: size)
+        }
+
+        // 優先順位2: PHAsset fallback（既存写真）
         guard let asset = photoLibraryService.getAsset(for: photo) else {
             return nil
         }
-        
+
         return await photoLibraryService.loadImage(for: asset, targetSize: size)
     }
     
     func loadFullSizeImage(for photo: Photo) async -> UIImage? {
+        // 優先順位1: ローカル保存画像
+        if let localPath = photo.localImagePath {
+            return await ImageStorageService.shared.loadImage(from: localPath)
+        }
+
+        // 優先順位2: PHAsset fallback（既存写真）
         guard let asset = photoLibraryService.getAsset(for: photo) else {
             return nil
         }
-        
+
         return await photoLibraryService.loadFullSizeImage(for: asset)
     }
     
