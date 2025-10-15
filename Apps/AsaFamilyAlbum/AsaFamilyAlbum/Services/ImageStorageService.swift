@@ -105,20 +105,27 @@ final class ImageStorageService {
     /// - Parameter relativePath: 相対パス（例: "Photos/UUID.jpg"）
     /// - Returns: 読み込んだUIImage、失敗時はnil
     func loadImage(from relativePath: String) async -> UIImage? {
+        print("🔍 DEBUG [ImageStorageService.loadImage]: relativePath = \(relativePath)")
         let documentsPath = fileManager.urls(for: .documentDirectory, in: .userDomainMask)[0]
         let fileURL = documentsPath.appendingPathComponent(relativePath)
+        print("🔍 DEBUG [ImageStorageService.loadImage]: fullPath = \(fileURL.path)")
 
-        guard fileManager.fileExists(atPath: fileURL.path) else {
+        let fileExists = fileManager.fileExists(atPath: fileURL.path)
+        print("🔍 DEBUG [ImageStorageService.loadImage]: fileExists = \(fileExists)")
+
+        guard fileExists else {
             print("❌ Image file not found: \(relativePath)")
             return nil
         }
 
         do {
             let imageData = try Data(contentsOf: fileURL)
+            print("🔍 DEBUG [ImageStorageService.loadImage]: imageData.count = \(imageData.count) bytes")
             guard let image = UIImage(data: imageData) else {
                 print("❌ Failed to create UIImage from data: \(relativePath)")
                 return nil
             }
+            print("✅ DEBUG [ImageStorageService.loadImage]: Successfully loaded image, size = \(image.size)")
             return image
         } catch {
             print("❌ Failed to load image: \(error.localizedDescription)")

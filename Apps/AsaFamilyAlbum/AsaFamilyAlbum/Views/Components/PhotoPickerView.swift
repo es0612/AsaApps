@@ -109,6 +109,7 @@ struct PhotoPickerView: View {
     // MARK: - Private Methods
 
     private func addPhotosToAlbum() async {
+        print("🔍 DEBUG [PhotoPickerView.addPhotosToAlbum]: START - selectedItems.count = \(selectedItems.count)")
         isProcessing = true
         errorMessage = nil
         successCount = 0
@@ -116,19 +117,36 @@ struct PhotoPickerView: View {
         var addedCount = 0
         var errors: [Error] = []
 
-        for item in selectedItems {
+        for (index, item) in selectedItems.enumerated() {
+            print("🔍 DEBUG [PhotoPickerView.addPhotosToAlbum]: Processing item \(index + 1)/\(selectedItems.count)")
             do {
-                if let data = try await item.loadTransferable(type: Data.self),
-                   let uiImage = UIImage(data: data) {
+                print("🔍 DEBUG [PhotoPickerView.addPhotosToAlbum]: Loading transferable data for item \(index + 1)")
+                let data = try await item.loadTransferable(type: Data.self)
 
-                    // UIImageからPhotoモデルを作成してアルバムに追加
-                    await viewModel.addPhotoFromImage(uiImage, to: album)
-                    addedCount += 1
+                if let data = data {
+                    print("🔍 DEBUG [PhotoPickerView.addPhotosToAlbum]: Data loaded successfully, size = \(data.count) bytes")
+
+                    if let uiImage = UIImage(data: data) {
+                        print("🔍 DEBUG [PhotoPickerView.addPhotosToAlbum]: UIImage created successfully, size = \(uiImage.size)")
+
+                        // UIImageからPhotoモデルを作成してアルバムに追加
+                        print("🔍 DEBUG [PhotoPickerView.addPhotosToAlbum]: Calling viewModel.addPhotoFromImage()")
+                        await viewModel.addPhotoFromImage(uiImage, to: album)
+                        addedCount += 1
+                        print("✅ DEBUG [PhotoPickerView.addPhotosToAlbum]: Successfully added photo \(index + 1)")
+                    } else {
+                        print("❌ DEBUG [PhotoPickerView.addPhotosToAlbum]: Failed to create UIImage from data")
+                    }
+                } else {
+                    print("❌ DEBUG [PhotoPickerView.addPhotosToAlbum]: Failed to load data (data is nil)")
                 }
             } catch {
+                print("❌ DEBUG [PhotoPickerView.addPhotosToAlbum]: Error processing item \(index + 1): \(error.localizedDescription)")
                 errors.append(error)
             }
         }
+
+        print("🔍 DEBUG [PhotoPickerView.addPhotosToAlbum]: COMPLETE - addedCount = \(addedCount), errors = \(errors.count)")
 
         await MainActor.run {
             successCount = addedCount
