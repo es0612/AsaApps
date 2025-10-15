@@ -11,6 +11,9 @@ import SwiftData
 struct PhotosGridView: View {
     var viewModel: FamilyAlbumViewModel
     @State private var showingFilterSheet = false
+    @State private var showingCleanupConfirm = false
+    @State private var showingCleanupResult = false
+    @State private var cleanupResultMessage: String?
     
     private let columns = [
         GridItem(.flexible(), spacing: 2),
@@ -32,6 +35,15 @@ struct PhotosGridView: View {
             .navigationTitle("すべての写真")
             .navigationBarTitleDisplayMode(.large)
             .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button {
+                        showingCleanupConfirm = true
+                    } label: {
+                        Image(systemName: "trash.slash")
+                            .foregroundColor(Color("AsaCoffeeBrown"))
+                    }
+                    .accessibilityLabel("重複写真のクリーンアップ")
+                }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button {
                         showingFilterSheet = true
@@ -43,6 +55,35 @@ struct PhotosGridView: View {
             }
             .sheet(isPresented: $showingFilterSheet) {
                 FilterView(viewModel: viewModel)
+            }
+            .confirmationDialog(
+                "重複した写真を削除しますか？",
+                isPresented: $showingCleanupConfirm,
+                titleVisibility: .visible
+            ) {
+                Button("重複を削除", role: .destructive) {
+                    Task {
+                        let removed = await viewModel.cleanupDuplicatePhotos()
+                        await MainActor.run {
+                            if removed > 0 {
+                                cleanupResultMessage = "重複写真を\(removed)枚削除しました。"
+                            } else {
+                                cleanupResultMessage = "重複写真は見つかりませんでした。"
+                            }
+                            showingCleanupResult = true
+                        }
+                    }
+                }
+                Button("キャンセル", role: .cancel) { }
+            } message: {
+                Text("Photosライブラリとの同期で増えた重複レコードを assetID 単位で削除します。")
+            }
+            .alert("クリーンアップ完了", isPresented: $showingCleanupResult) {
+                Button("OK", role: .cancel) { }
+            } message: {
+                if let message = cleanupResultMessage {
+                    Text(message)
+                }
             }
         }
     }
@@ -131,8 +172,10 @@ struct PhotoThumbnailView: View {
         }
         .task {
             guard image == nil else { return }
-            
+
+            print("🔍 DEBUG [PhotoThumbnailView.task]: Starting image load for photo.id = \(photo.id)")
             let loadedImage = await viewModel.loadImage(for: photo, size: CGSize(width: 150, height: 150))
+            print("🔍 DEBUG [PhotoThumbnailView.task]: Load result for photo.id = \(photo.id): \(loadedImage != nil ? "SUCCESS" : "FAILED")")
             await MainActor.run {
                 self.image = loadedImage
                 self.isLoading = false

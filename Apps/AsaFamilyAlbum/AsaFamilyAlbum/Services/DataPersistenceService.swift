@@ -351,11 +351,56 @@ final class DataPersistenceService: ObservableObject {
             throw DataPersistenceError.contextNotAvailable
         }
         
-        for photo in photos {
+        guard !photos.isEmpty else { return }
+        
+        let assetIDs = photos.map { $0.assetID }
+        let existingDescriptor = FetchDescriptor<Photo>(
+            predicate: #Predicate { photo in
+                assetIDs.contains(photo.assetID)
+            }
+        )
+        let existingPhotos = try context.fetch(existingDescriptor)
+        let existingAssetIDs = Set(existingPhotos.map { $0.assetID })
+        
+        let newPhotos = photos.filter { !existingAssetIDs.contains($0.assetID) }
+        guard !newPhotos.isEmpty else { return }
+        
+        for photo in newPhotos {
             context.insert(photo)
         }
         
         try context.save()
+    }
+    
+    @MainActor
+    func removeDuplicatePhotos() throws -> Int {
+        guard let context = modelContext else {
+            throw DataPersistenceError.contextNotAvailable
+        }
+        
+        let descriptor = FetchDescriptor<Photo>(
+            sortBy: [SortDescriptor(\.createdAt, order: .reverse)]
+        )
+        let photos = try context.fetch(descriptor)
+        
+        var seenAssetIDs: Set<String> = []
+        var duplicates: [Photo] = []
+        
+        for photo in photos {
+            if seenAssetIDs.insert(photo.assetID).inserted {
+                continue
+            }
+            duplicates.append(photo)
+        }
+        
+        guard !duplicates.isEmpty else { return 0 }
+        
+        for duplicate in duplicates {
+            context.delete(duplicate)
+        }
+        
+        try context.save()
+        return duplicates.count
     }
     
     @MainActor

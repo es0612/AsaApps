@@ -27,6 +27,7 @@ final class FamilyAlbumViewModel: Sendable {
     private(set) var isLoading: Bool = false
     private(set) var errorMessage: String?
     private(set) var photoLibraryAccess: Bool = false
+    private var isSyncingPhotos: Bool = false
     
     // Selection States
     var selectedAlbum: Album?
@@ -135,6 +136,10 @@ final class FamilyAlbumViewModel: Sendable {
     
     @MainActor
     private func syncPhotosWithLibrary() async {
+        guard !isSyncingPhotos else { return }
+        isSyncingPhotos = true
+        defer { isSyncingPhotos = false }
+        
         // PhotosKitの写真をSwift Dataと同期
         let assets = photoLibraryService.assets
         var newPhotos: [Photo] = []
@@ -149,6 +154,20 @@ final class FamilyAlbumViewModel: Sendable {
             await loadAllPhotos()
         } catch {
             errorMessage = "写真の同期に失敗しました: \(error.localizedDescription)"
+        }
+    }
+    
+    @MainActor
+    func cleanupDuplicatePhotos() async -> Int {
+        do {
+            let removedCount = try dataService.removeDuplicatePhotos()
+            if removedCount > 0 {
+                await loadAllPhotos()
+            }
+            return removedCount
+        } catch {
+            errorMessage = "重複写真の削除に失敗しました: \(error.localizedDescription)"
+            return 0
         }
     }
     
@@ -246,6 +265,7 @@ final class FamilyAlbumViewModel: Sendable {
             errorMessage = "画像の保存に失敗しました"
             return
         }
+        print("🔍 DEBUG [addPhotoFromImage]: imagePath = \(imagePath)")
 
         // 2. Photoモデルを作成
         let photo = Photo(
@@ -257,14 +277,17 @@ final class FamilyAlbumViewModel: Sendable {
         photo.album = album
         photo.updateTimestamp()
         album.updateTimestamp()
+        print("🔍 DEBUG [addPhotoFromImage]: photo.id = \(photo.id), photo.localImagePath = \(String(describing: photo.localImagePath))")
 
         // 3. Swift Dataに保存
         do {
             try await dataService.savePhoto(photo)
+            print("🔍 DEBUG [addPhotoFromImage]: Photo saved successfully to Swift Data")
             await loadAlbums()
             await loadAllPhotos()
         } catch {
             errorMessage = "写真の追加に失敗しました: \(error.localizedDescription)"
+            print("🔍 DEBUG [addPhotoFromImage]: Failed to save photo: \(error.localizedDescription)")
             // 保存失敗時は画像ファイルも削除
             _ = ImageStorageService.shared.deleteImage(at: imagePath)
         }
@@ -440,17 +463,26 @@ final class FamilyAlbumViewModel: Sendable {
     // MARK: - Image Loading
     
     func loadImage(for photo: Photo, size: CGSize = CGSize(width: 300, height: 300)) async -> UIImage? {
+        print("🔍 DEBUG [loadImage]: photo.id = \(photo.id), photo.localImagePath = \(String(describing: photo.localImagePath))")
+
         // 優先順位1: ローカル保存画像
         if let localPath = photo.localImagePath {
-            return await ImageStorageService.shared.loadImage(from: localPath, targetSize: size)
+            print("🔍 DEBUG [loadImage]: Attempting to load from local path: \(localPath)")
+            let loadedImage = await ImageStorageService.shared.loadImage(from: localPath, targetSize: size)
+            print("🔍 DEBUG [loadImage]: Local load result: \(loadedImage != nil ? "SUCCESS" : "FAILED")")
+            return loadedImage
         }
 
         // 優先順位2: PHAsset fallback（既存写真）
+        print("🔍 DEBUG [loadImage]: No local path, attempting PHAsset fallback")
         guard let asset = photoLibraryService.getAsset(for: photo) else {
+            print("🔍 DEBUG [loadImage]: PHAsset not found, returning nil")
             return nil
         }
 
-        return await photoLibraryService.loadImage(for: asset, targetSize: size)
+        let assetImage = await photoLibraryService.loadImage(for: asset, targetSize: size)
+        print("🔍 DEBUG [loadImage]: PHAsset load result: \(assetImage != nil ? "SUCCESS" : "FAILED")")
+        return assetImage
     }
     
     func loadFullSizeImage(for photo: Photo) async -> UIImage? {
