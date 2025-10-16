@@ -95,26 +95,42 @@ final class FamilyAlbumViewModel: Sendable {
     }
     
     // MARK: - Setup
-    
+
     @MainActor
     func loadInitialData() async {
         isLoading = true
         errorMessage = nil
-        
+
         do {
             // サンプルデータのセットアップ
             try await dataService.setupSampleData()
-            
+
             // データの読み込み
             await withTaskGroup(of: Void.self) { group in
                 group.addTask { await self.loadAlbums() }
                 group.addTask { await self.loadFamilyMembers() }
                 group.addTask { await self.loadStatistics() }
             }
-            
+
             isLoading = false
         } catch {
             errorMessage = "初期データの読み込みに失敗しました: \(error.localizedDescription)"
+            isLoading = false
+        }
+    }
+
+    /// すべてのデータをリセットして再初期化
+    /// - Note: 古い壊れたデータをクリアする際に使用。デバッグ用途
+    @MainActor
+    func resetAllData() async {
+        isLoading = true
+        errorMessage = nil
+
+        do {
+            try await dataService.resetAllData()
+            await loadInitialData()
+        } catch {
+            errorMessage = "データリセットに失敗しました: \(error.localizedDescription)"
             isLoading = false
         }
     }
@@ -283,6 +299,11 @@ final class FamilyAlbumViewModel: Sendable {
         do {
             try await dataService.savePhoto(photo)
             print("🔍 DEBUG [addPhotoFromImage]: Photo saved successfully to Swift Data")
+
+            // Swift Dataのリレーションシップ更新を確実にするため、短い遅延を追加
+            // これにより、album.photos配列が正しく更新されてからUI更新が行われる
+            try? await Task.sleep(nanoseconds: 100_000_000) // 0.1秒
+
             await loadAlbums()
             await loadAllPhotos()
         } catch {

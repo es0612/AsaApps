@@ -408,24 +408,46 @@ final class DataPersistenceService: ObservableObject {
         guard let context = modelContext else {
             throw DataPersistenceError.contextNotAvailable
         }
-        
+
         // 既存データがあるかチェック
         let existingAlbums = try context.fetchCount(FetchDescriptor<Album>())
         guard existingAlbums == 0 else { return }
-        
+
         // サンプル家族メンバーを作成
         let familyMembers = FamilyMember.sampleFamilyMembers
         for member in familyMembers {
             context.insert(member)
         }
-        
+
         // サンプルアルバムを作成
         let sampleAlbums = Album.sampleAlbums
         for album in sampleAlbums {
             context.insert(album)
         }
-        
+
         try context.save()
+    }
+
+    // MARK: - Data Management
+
+    /// すべてのデータをリセットして、サンプルデータを再セットアップ
+    /// - Note: デバッグ用途。古い壊れたデータをクリアする際に使用
+    @MainActor
+    func resetAllData() throws {
+        guard let context = modelContext else {
+            throw DataPersistenceError.contextNotAvailable
+        }
+
+        // すべてのデータを削除
+        try context.delete(model: Album.self)
+        try context.delete(model: Photo.self)
+        try context.delete(model: Comment.self)
+        try context.delete(model: FamilyMember.self)
+
+        try context.save()
+
+        // サンプルデータを再セットアップ
+        try setupSampleData()
     }
 }
 
