@@ -70,5 +70,12 @@
             </array>
         </dict>
     </array>
+    <key>LSSupportsOpeningDocumentsInPlace</key>
+    <false/>
+    <key>UILaunchScreen</key>
+    <dict>
+        <key>UIColorName</key>
+        <string>AsaSoftCream</string>
+    </dict>
 </dict>
 </plist>
