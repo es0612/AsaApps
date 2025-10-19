@@ -20,7 +20,7 @@ targets:
   AsaPodcastPlayer:
     type: application
     platform: iOS
-    sources: 
+    sources:
       - AsaPodcastPlayerApp.swift
       - ContentView.swift
       - PodcastEpisode.swift
@@ -30,8 +30,11 @@ targets:
       - PodcastAudioManager.swift
       - PodcastLibraryView.swift
       - EpisodeDetailView.swift
+      - path: AsaPodcastPlayer/sound
+        buildPhase: resources
+        type: folder
     resources:
-      - AsaPodcastPlayer/Assets.xcassets
+      - path: AsaPodcastPlayer/Assets.xcassets
     settings:
       PRODUCT_BUNDLE_IDENTIFIER: com.asapapa.apps.asapodcastplayer
       INFOPLIST_FILE: AsaPodcastPlayer/Info.plist

@@ -96,9 +96,143 @@ final class PodcastLibraryManager {
     }
     
     private func loadSamplePodcasts() {
-        let samplePodcasts = createSamplePodcasts()
-        subscribedPodcasts = samplePodcasts
+        // まずバンドルから実際の音声ファイルを読み込む
+        let bundledPodcasts = loadBundledAudioFiles()
+
+        if !bundledPodcasts.isEmpty {
+            // 実際のファイルが見つかった場合はそれを使用
+            subscribedPodcasts = bundledPodcasts
+        } else {
+            // 実際のファイルがない場合はサンプルデータを使用
+            let samplePodcasts = createSamplePodcasts()
+            subscribedPodcasts = samplePodcasts
+        }
         savePodcastsToStorage()
+    }
+
+    private func loadBundledAudioFiles() -> [Podcast] {
+        var podcasts: [Podcast] = []
+
+        // バンドルからsoundディレクトリのURLを取得（複数の方法を試す）
+        var soundURL: URL?
+
+        // 方法1: Bundle.main.url(forResource:withExtension:)
+        if let url = Bundle.main.url(forResource: "sound", withExtension: nil) {
+            soundURL = url
+            print("✅ soundディレクトリ発見（方法1）: \(url.path)")
+        }
+        // 方法2: Bundle.main.resourceURL?.appendingPathComponent("sound")
+        else if let url = Bundle.main.resourceURL?.appendingPathComponent("sound") {
+            soundURL = url
+            print("✅ soundディレクトリ発見（方法2）: \(url.path)")
+        }
+        // 方法3: Bundle.main.bundleURL.appendingPathComponent("sound")
+        else if let url = try? Bundle.main.bundleURL.appendingPathComponent("sound", isDirectory: true) {
+            soundURL = url
+            print("✅ soundディレクトリ発見（方法3）: \(url.path)")
+        }
+
+        guard let finalSoundURL = soundURL else {
+            print("❌ soundディレクトリが見つかりません")
+            print("Bundle.main.bundlePath: \(Bundle.main.bundlePath)")
+            print("Bundle.main.resourcePath: \(Bundle.main.resourcePath ?? "nil")")
+            return []
+        }
+
+        // soundディレクトリ内の音声ファイルを検索
+        let fileManager = FileManager.default
+
+        // ディレクトリが存在するか確認
+        var isDirectory: ObjCBool = false
+        let exists = fileManager.fileExists(atPath: finalSoundURL.path, isDirectory: &isDirectory)
+        print("📁 soundディレクトリ存在確認: exists=\(exists), isDirectory=\(isDirectory.boolValue)")
+
+        guard let audioFiles = try? fileManager.contentsOfDirectory(
+            at: finalSoundURL,
+            includingPropertiesForKeys: [.isRegularFileKey],
+            options: [.skipsHiddenFiles]
+        ) else {
+            print("❌ soundディレクトリの読み取りに失敗しました: \(finalSoundURL.path)")
+            return []
+        }
+
+        print("📂 soundディレクトリ内のファイル数: \(audioFiles.count)")
+
+        // 対応する音声形式のファイルをフィルタリング
+        let supportedExtensions = ["m4a", "mp3", "mp4", "aac"]
+        let audioFileURLs = audioFiles.filter { url in
+            supportedExtensions.contains(url.pathExtension.lowercased())
+        }
+
+        guard !audioFileURLs.isEmpty else {
+            print("❌ 対応する音声ファイルが見つかりません")
+            print("📋 全ファイル: \(audioFiles.map { $0.lastPathComponent })")
+            return []
+        }
+
+        print("🎵 対応する音声ファイル数: \(audioFileURLs.count)")
+
+        // 各音声ファイルからエピソードを作成
+        var episodes: [PodcastEpisode] = []
+
+        for audioURL in audioFileURLs {
+            let duration = getAudioDuration(from: audioURL)
+            let metadata = extractMetadata(from: audioURL)
+            let artwork = extractArtwork(from: audioURL)
+
+            // ファイル名から拡張子を除いたものをタイトルとして使用（メタデータがない場合）
+            let fileName = audioURL.deletingPathExtension().lastPathComponent
+            let title = metadata.title ?? fileName
+            let author = metadata.artist ?? "朝活パパエンジニア"
+
+            let episode = PodcastEpisode(
+                title: title,
+                description: "\(title)についてのエピソードです。朝活パパによるポッドキャスト配信です。",
+                duration: duration,
+                filePath: audioURL,
+                podcastName: "朝活パパラジオ",
+                author: author,
+                publishDate: Date(),
+                artwork: artwork,
+                playbackPosition: 0,
+                isPlayed: false,
+                isBookmarked: false,
+                episodeNumber: episodes.count + 1
+            )
+
+            episodes.append(episode)
+            print("✅ エピソード読み込み: \(title) (デュレーション: \(formatDuration(duration)))")
+        }
+
+        // エピソードをPodcastにまとめる
+        if !episodes.isEmpty {
+            let podcast = Podcast(
+                name: "朝活パパラジオ",
+                description: "朝活を頑張るパパエンジニアのための番組です。家族、仕事、プログラミングについてお話しします。",
+                author: "朝活パパエンジニア",
+                category: "教育",
+                episodes: episodes,
+                isSubscribed: true
+            )
+            podcasts.append(podcast)
+            print("🎙️ ポッドキャスト作成完了: \(episodes.count)個のエピソード")
+        } else {
+            print("⚠️ エピソードが0個のため、ポッドキャストを作成しませんでした")
+        }
+
+        return podcasts
+    }
+
+    private func formatDuration(_ duration: TimeInterval) -> String {
+        let hours = Int(duration) / 3600
+        let minutes = (Int(duration) % 3600) / 60
+        let seconds = Int(duration) % 60
+
+        if hours > 0 {
+            return String(format: "%d:%02d:%02d", hours, minutes, seconds)
+        } else {
+            return String(format: "%d:%02d", minutes, seconds)
+        }
     }
     
     private func createSamplePodcasts() -> [Podcast] {

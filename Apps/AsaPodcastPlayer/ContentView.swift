@@ -258,10 +258,12 @@ struct ContentView: View {
                     VStack(spacing: 4) {
                         Image(systemName: "gobackward.15")
                             .font(.title)
+                            .fontWeight(.medium)
                         Text("15秒")
                             .font(.caption2)
+                            .fontWeight(.semibold)
                     }
-                    .foregroundColor(Color("AsaMocha"))
+                    .foregroundColor(viewModel.currentEpisode != nil ? Color("AsaMocha") : .gray.opacity(0.3))
                 }
                 .disabled(viewModel.currentEpisode == nil)
                 
@@ -275,12 +277,23 @@ struct ContentView: View {
                 
                 // Play/Pause
                 Button(action: viewModel.togglePlayPause) {
-                    Image(systemName: viewModel.playerState == .playing ? "pause.circle.fill" : "play.circle.fill")
-                        .font(.system(size: 60))
-                        .foregroundColor(Color("AsaCoffeeBrown"))
+                    ZStack {
+                        // ローディング時のプログレスインジケーター
+                        if viewModel.playerState == .loading {
+                            ProgressView()
+                                .scaleEffect(1.5)
+                                .tint(Color("AsaCoffeeBrown"))
+                        } else {
+                            Image(systemName: viewModel.playerState == .playing ? "pause.circle.fill" : "play.circle.fill")
+                                .font(.system(size: 60))
+                                .foregroundColor(viewModel.currentEpisode != nil ? Color("AsaCoffeeBrown") : .gray.opacity(0.3))
+                                .shadow(color: Color("AsaCoffeeBrown").opacity(0.3), radius: 5, x: 0, y: 2)
+                        }
+                    }
+                    .frame(width: 60, height: 60)
                 }
-                .disabled(viewModel.currentEpisode == nil)
-                .scaleEffect(viewModel.playerState == .loading ? 0.9 : 1.0)
+                .disabled(viewModel.currentEpisode == nil || viewModel.playerState == .loading)
+                .scaleEffect(viewModel.playerState == .playing ? 1.05 : 1.0)
                 .animation(.easeInOut(duration: 0.2), value: viewModel.playerState)
                 
                 // Next episode
@@ -296,10 +309,12 @@ struct ContentView: View {
                     VStack(spacing: 4) {
                         Image(systemName: "goforward.30")
                             .font(.title)
+                            .fontWeight(.medium)
                         Text("30秒")
                             .font(.caption2)
+                            .fontWeight(.semibold)
                     }
-                    .foregroundColor(Color("AsaMocha"))
+                    .foregroundColor(viewModel.currentEpisode != nil ? Color("AsaMocha") : .gray.opacity(0.3))
                 }
                 .disabled(viewModel.currentEpisode == nil)
             }
