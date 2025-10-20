@@ -13,26 +13,32 @@ struct ContentView: View {
                     endPoint: .bottomTrailing
                 )
                 .ignoresSafeArea()
-                
+
                 VStack(spacing: 0) {
                     // Header
                     headerView
-                    
-                    // Current Episode Section
-                    if let currentEpisode = viewModel.currentEpisode {
-                        currentEpisodeView(episode: currentEpisode)
-                            .padding()
-                    } else {
-                        noEpisodeSelectedView
-                            .padding()
+
+                    // Scrollable Content
+                    ScrollView(.vertical, showsIndicators: false) {
+                        VStack(spacing: 20) {
+                            // Current Episode Section
+                            if let currentEpisode = viewModel.currentEpisode {
+                                currentEpisodeView(episode: currentEpisode, geometry: geometry)
+                            } else {
+                                noEpisodeSelectedView
+                            }
+                        }
+                        .padding(.horizontal)
+                        .padding(.top, 10)
+                        .padding(.bottom, 240) // プレーヤーコントロールの高さ分の余白
                     }
-                    
+
                     Spacer()
-                    
-                    // Player Controls
+
+                    // Player Controls (fixed at bottom)
                     playerControlsSection
                         .background(
-                            Color.white.opacity(0.9)
+                            Color.white.opacity(0.95)
                                 .cornerRadius(20, corners: [.topLeft, .topRight])
                                 .shadow(radius: 10)
                         )
@@ -97,21 +103,23 @@ struct ContentView: View {
     }
     
     // MARK: - Current Episode View
-    
-    private func currentEpisodeView(episode: PodcastEpisode) -> some View {
-        VStack(spacing: 20) {
+
+    private func currentEpisodeView(episode: PodcastEpisode, geometry: GeometryProxy) -> some View {
+        let artworkSize = min(geometry.size.width * 0.5, 220) // 画面幅の50%、最大220pt
+
+        return VStack(spacing: 16) {
             // Episode Artwork
-            episodeArtworkView(episode: episode)
-            
+            episodeArtworkView(episode: episode, size: artworkSize)
+
             // Episode Info
             episodeInfoView(episode: episode)
-            
+
             // Progress Info
             episodeProgressView(episode: episode)
         }
     }
-    
-    private func episodeArtworkView(episode: PodcastEpisode) -> some View {
+
+    private func episodeArtworkView(episode: PodcastEpisode, size: CGFloat) -> some View {
         Button(action: { viewModel.showEpisodeDetail(for: episode) }) {
             Group {
                 if let artwork = episode.artwork {
@@ -120,13 +128,13 @@ struct ContentView: View {
                         .aspectRatio(contentMode: .fill)
                 } else {
                     Image(systemName: "mic.fill")
-                        .font(.system(size: 60))
+                        .font(.system(size: size * 0.3))
                         .foregroundColor(Color("AsaCoffeeBrown"))
-                        .frame(width: 200, height: 200)
+                        .frame(width: size, height: size)
                         .background(Color("AsaSoftCream"))
                 }
             }
-            .frame(width: 200, height: 200)
+            .frame(width: size, height: size)
             .cornerRadius(20)
             .shadow(radius: 10)
             .overlay(
@@ -255,23 +263,24 @@ struct ContentView: View {
             HStack(spacing: 40) {
                 // Skip backward
                 Button(action: viewModel.skipBackward) {
-                    VStack(spacing: 4) {
+                    VStack(spacing: 6) {
                         Image(systemName: "gobackward.15")
-                            .font(.title)
-                            .fontWeight(.medium)
-                        Text("15秒")
-                            .font(.caption2)
+                            .font(.system(size: 32))
                             .fontWeight(.semibold)
+                        Text("15秒")
+                            .font(.caption)
+                            .fontWeight(.bold)
                     }
-                    .foregroundColor(viewModel.currentEpisode != nil ? Color("AsaMocha") : .gray.opacity(0.3))
+                    .foregroundColor(viewModel.currentEpisode != nil ? Color("AsaDarkSlate") : .gray.opacity(0.3))
                 }
                 .disabled(viewModel.currentEpisode == nil)
-                
+
                 // Previous episode
                 Button(action: viewModel.previousEpisode) {
                     Image(systemName: "backward.fill")
-                        .font(.title2)
-                        .foregroundColor(viewModel.hasPreviousEpisode ? Color("AsaCoffeeBrown") : .secondary)
+                        .font(.system(size: 28))
+                        .fontWeight(.semibold)
+                        .foregroundColor(viewModel.hasPreviousEpisode ? Color("AsaDarkSlate") : .secondary)
                 }
                 .disabled(!viewModel.hasPreviousEpisode)
                 
@@ -299,22 +308,23 @@ struct ContentView: View {
                 // Next episode
                 Button(action: viewModel.nextEpisode) {
                     Image(systemName: "forward.fill")
-                        .font(.title2)
-                        .foregroundColor(viewModel.hasNextEpisode ? Color("AsaCoffeeBrown") : .secondary)
+                        .font(.system(size: 28))
+                        .fontWeight(.semibold)
+                        .foregroundColor(viewModel.hasNextEpisode ? Color("AsaDarkSlate") : .secondary)
                 }
                 .disabled(!viewModel.hasNextEpisode)
-                
+
                 // Skip forward
                 Button(action: viewModel.skipForward) {
-                    VStack(spacing: 4) {
+                    VStack(spacing: 6) {
                         Image(systemName: "goforward.30")
-                            .font(.title)
-                            .fontWeight(.medium)
-                        Text("30秒")
-                            .font(.caption2)
+                            .font(.system(size: 32))
                             .fontWeight(.semibold)
+                        Text("30秒")
+                            .font(.caption)
+                            .fontWeight(.bold)
                     }
-                    .foregroundColor(viewModel.currentEpisode != nil ? Color("AsaMocha") : .gray.opacity(0.3))
+                    .foregroundColor(viewModel.currentEpisode != nil ? Color("AsaDarkSlate") : .gray.opacity(0.3))
                 }
                 .disabled(viewModel.currentEpisode == nil)
             }
@@ -323,41 +333,46 @@ struct ContentView: View {
             HStack(spacing: 30) {
                 // Playback rate
                 Button(action: viewModel.nextPlaybackRate) {
-                    VStack(spacing: 4) {
+                    VStack(spacing: 6) {
                         Text(viewModel.formattedPlaybackRate)
-                            .font(.headline)
+                            .font(.title3)
                             .fontWeight(.bold)
                         Text("再生速度")
-                            .font(.caption2)
+                            .font(.caption)
+                            .fontWeight(.medium)
                     }
-                    .foregroundColor(viewModel.playbackRate != 1.0 ? Color("AsaCoffeeBrown") : Color("AsaMocha"))
+                    .foregroundColor(viewModel.playbackRate != 1.0 ? Color("AsaCoffeeBrown") : Color("AsaDarkSlate"))
                 }
                 .disabled(viewModel.currentEpisode == nil)
-                
+
                 Spacer()
-                
+
                 // Auto play next
                 Button(action: { viewModel.autoPlayNext.toggle() }) {
-                    VStack(spacing: 4) {
+                    VStack(spacing: 6) {
                         Image(systemName: viewModel.autoPlayNext ? "repeat" : "repeat.1")
-                            .font(.title3)
+                            .font(.system(size: 24))
+                            .fontWeight(.semibold)
                         Text("自動再生")
-                            .font(.caption2)
+                            .font(.caption)
+                            .fontWeight(.medium)
                     }
-                    .foregroundColor(viewModel.autoPlayNext ? Color("AsaCoffeeBrown") : Color("AsaMocha"))
+                    .foregroundColor(viewModel.autoPlayNext ? Color("AsaCoffeeBrown") : Color("AsaDarkSlate"))
                 }
-                
+
                 Spacer()
-                
+
                 // Volume control indicator
                 Button(action: {}) {
-                    VStack(spacing: 4) {
+                    VStack(spacing: 6) {
                         Image(systemName: "speaker.wave.2.fill")
-                            .font(.title3)
+                            .font(.system(size: 24))
+                            .fontWeight(.semibold)
                         Text("音量")
-                            .font(.caption2)
+                            .font(.caption)
+                            .fontWeight(.medium)
                     }
-                    .foregroundColor(Color("AsaMocha"))
+                    .foregroundColor(Color("AsaDarkSlate").opacity(0.6))
                 }
                 .disabled(true) // Volume controlled by system
             }

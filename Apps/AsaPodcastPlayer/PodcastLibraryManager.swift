@@ -112,36 +112,50 @@ final class PodcastLibraryManager {
 
     private func loadBundledAudioFiles() -> [Podcast] {
         var podcasts: [Podcast] = []
+        let fileManager = FileManager.default
 
         // バンドルからsoundディレクトリのURLを取得（複数の方法を試す）
         var soundURL: URL?
 
-        // 方法1: Bundle.main.url(forResource:withExtension:)
-        if let url = Bundle.main.url(forResource: "sound", withExtension: nil) {
-            soundURL = url
-            print("✅ soundディレクトリ発見（方法1）: \(url.path)")
+        // 方法1: Bundle.main.resourceURL?.appendingPathComponent("sound") - 最も確実
+        if let resourceURL = Bundle.main.resourceURL {
+            let candidateURL = resourceURL.appendingPathComponent("sound")
+            if fileManager.fileExists(atPath: candidateURL.path) {
+                soundURL = candidateURL
+                print("✅ soundディレクトリ発見（resourceURL）: \(candidateURL.path)")
+            } else {
+                print("⚠️ soundディレクトリが存在しません（resourceURL）: \(candidateURL.path)")
+            }
+        } else {
+            print("❌ Bundle.main.resourceURLが取得できません")
         }
-        // 方法2: Bundle.main.resourceURL?.appendingPathComponent("sound")
-        else if let url = Bundle.main.resourceURL?.appendingPathComponent("sound") {
+
+        // 方法2: Bundle.main.url(forResource:withExtension:)
+        if soundURL == nil, let url = Bundle.main.url(forResource: "sound", withExtension: nil) {
             soundURL = url
-            print("✅ soundディレクトリ発見（方法2）: \(url.path)")
+            print("✅ soundディレクトリ発見（forResource）: \(url.path)")
         }
-        // 方法3: Bundle.main.bundleURL.appendingPathComponent("sound")
-        else if let url = try? Bundle.main.bundleURL.appendingPathComponent("sound", isDirectory: true) {
-            soundURL = url
-            print("✅ soundディレクトリ発見（方法3）: \(url.path)")
+
+        // 方法3: Bundle.main.bundlePath を使用
+        if soundURL == nil {
+            let bundlePath = Bundle.main.bundlePath
+            let candidateURL = URL(fileURLWithPath: bundlePath).appendingPathComponent("sound")
+            if fileManager.fileExists(atPath: candidateURL.path) {
+                soundURL = candidateURL
+                print("✅ soundディレクトリ発見（bundlePath）: \(candidateURL.path)")
+            }
         }
 
         guard let finalSoundURL = soundURL else {
             print("❌ soundディレクトリが見つかりません")
-            print("Bundle.main.bundlePath: \(Bundle.main.bundlePath)")
-            print("Bundle.main.resourcePath: \(Bundle.main.resourcePath ?? "nil")")
+            print("📋 Bundle情報:")
+            print("  - bundlePath: \(Bundle.main.bundlePath)")
+            print("  - resourcePath: \(Bundle.main.resourcePath ?? "nil")")
+            print("  - resourceURL: \(Bundle.main.resourceURL?.path ?? "nil")")
             return []
         }
 
         // soundディレクトリ内の音声ファイルを検索
-        let fileManager = FileManager.default
-
         // ディレクトリが存在するか確認
         var isDirectory: ObjCBool = false
         let exists = fileManager.fileExists(atPath: finalSoundURL.path, isDirectory: &isDirectory)
