@@ -68,6 +68,12 @@ final class PodcastPlayerViewModel {
         audioManager.loadAudio(fileName: episode.audioFileName)
     }
 
+    /// エピソードを選択して読み込む
+    /// - Parameter episode: 選択するエピソード
+    func selectEpisode(_ episode: PodcastEpisode) {
+        loadEpisode(episode)
+    }
+
     // MARK: - Playback Controls
 
     /// 再生/一時停止のトグル
