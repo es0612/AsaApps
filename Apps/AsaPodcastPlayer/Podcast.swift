@@ -2,7 +2,7 @@ import Foundation
 import UIKit
 
 struct Podcast: Identifiable, Equatable {
-    let id = UUID()
+    var id: UUID  // letからvarに変更してIDを保持可能に
     let name: String
     let description: String
     let author: String
@@ -15,8 +15,9 @@ struct Podcast: Identifiable, Equatable {
     var autoDownload: Bool
     var playbackRate: Float
     let feedURL: URL?
-    
+
     init(
+        id: UUID = UUID(),  // デフォルトで新しいUUIDを生成
         name: String,
         description: String = "",
         author: String,
@@ -29,6 +30,7 @@ struct Podcast: Identifiable, Equatable {
         playbackRate: Float = 1.0,
         feedURL: URL? = nil
     ) {
+        self.id = id  // IDを引数から設定
         self.name = name
         self.description = description
         self.author = author

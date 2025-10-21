@@ -2,7 +2,7 @@ import Foundation
 import UIKit
 
 struct PodcastEpisode: Identifiable, Equatable {
-    let id = UUID()
+    var id: UUID  // letからvarに変更してIDを保持可能に
     let title: String
     let description: String
     let duration: TimeInterval
@@ -16,8 +16,9 @@ struct PodcastEpisode: Identifiable, Equatable {
     var isBookmarked: Bool
     let episodeNumber: Int?
     let seasonNumber: Int?
-    
+
     init(
+        id: UUID = UUID(),  // デフォルトで新しいUUIDを生成
         title: String,
         description: String = "",
         duration: TimeInterval,
@@ -32,6 +33,7 @@ struct PodcastEpisode: Identifiable, Equatable {
         episodeNumber: Int? = nil,
         seasonNumber: Int? = nil
     ) {
+        self.id = id  // IDを引数から設定
         self.title = title
         self.description = description
         self.duration = duration

@@ -138,28 +138,35 @@ final class PodcastPlayerViewModel {
     }
     
     // MARK: - Setup Methods
-    
+
     private func setupBindings() {
-        // Sleep timer
+        // Sleep timerチェック - sleepTimerEnabledのときだけTimerを起動
+        // これにより不要なポーリングを削減
         Timer.publish(every: 1, on: .main, in: .common)
             .autoconnect()
             .sink { [weak self] _ in
-                self?.checkSleepTimer()
-                // 定期的にaudioManagerの状態をチェック
-                self?.syncWithAudioManager()
+                guard let self = self else { return }
+                // スリープタイマーが有効な場合のみチェック
+                if self.sleepTimerEnabled {
+                    self.checkSleepTimer()
+                }
+                // AudioManagerの状態変更を監視（@Observableなので自動的に通知される）
+                self.handleAudioManagerStateChanges()
             }
             .store(in: &cancellables)
     }
-    
-    private func syncWithAudioManager() {
-        // AudioManagerの状態と同期
-        if currentEpisode != audioManager.currentEpisode {
+
+    private func handleAudioManagerStateChanges() {
+        // @Observableによる自動通知で状態が変わったかチェック
+        // currentEpisodeの同期
+        if currentEpisode?.id != audioManager.currentEpisode?.id {
             currentEpisode = audioManager.currentEpisode
             if let episode = currentEpisode {
                 updateCurrentEpisodeIndex(for: episode)
             }
         }
-        
+
+        // エピソード終了時の処理
         if audioManager.playerState == .finished {
             handleEpisodeFinished()
         }

@@ -20,16 +20,21 @@ final class PodcastLibraryManager {
     func loadPodcasts() {
         isLoading = true
         errorMessage = nil
-        
+
         // Load from UserDefaults
         loadPodcastsFromStorage()
-        
+
         // Load sample data if no podcasts exist
         if subscribedPodcasts.isEmpty {
-            loadSamplePodcasts()
+            Task {
+                await loadSamplePodcasts()
+                await MainActor.run {
+                    isLoading = false
+                }
+            }
+        } else {
+            isLoading = false
         }
-        
-        isLoading = false
     }
     
     func savePodcast(_ podcast: Podcast) {
@@ -95,22 +100,22 @@ final class PodcastLibraryManager {
         }
     }
     
-    private func loadSamplePodcasts() {
+    private func loadSamplePodcasts() async {
         // まずバンドルから実際の音声ファイルを読み込む
-        let bundledPodcasts = loadBundledAudioFiles()
+        let bundledPodcasts = await loadBundledAudioFiles()
 
         if !bundledPodcasts.isEmpty {
             // 実際のファイルが見つかった場合はそれを使用
             subscribedPodcasts = bundledPodcasts
         } else {
             // 実際のファイルがない場合はサンプルデータを使用
-            let samplePodcasts = createSamplePodcasts()
+            let samplePodcasts = await createSamplePodcasts()
             subscribedPodcasts = samplePodcasts
         }
         savePodcastsToStorage()
     }
 
-    private func loadBundledAudioFiles() -> [Podcast] {
+    private func loadBundledAudioFiles() async -> [Podcast] {
         var podcasts: [Podcast] = []
         let fileManager = FileManager.default
 
@@ -190,9 +195,10 @@ final class PodcastLibraryManager {
         var episodes: [PodcastEpisode] = []
 
         for audioURL in audioFileURLs {
-            let duration = getAudioDuration(from: audioURL)
-            let metadata = extractMetadata(from: audioURL)
-            let artwork = extractArtwork(from: audioURL)
+            // async関数を呼び出し
+            let duration = await getAudioDuration(from: audioURL)
+            let metadata = await extractMetadata(from: audioURL)
+            let artwork = await extractArtwork(from: audioURL)
 
             // ファイル名から拡張子を除いたものをタイトルとして使用（メタデータがない場合）
             let fileName = audioURL.deletingPathExtension().lastPathComponent
@@ -249,20 +255,20 @@ final class PodcastLibraryManager {
         }
     }
     
-    private func createSamplePodcasts() -> [Podcast] {
+    private func createSamplePodcasts() async -> [Podcast] {
         var podcasts: [Podcast] = []
-        
+
         // Sample Podcast 1: 朝活ラジオ
-        let morningEpisodes = createSampleEpisodes(
+        let morningEpisodes = await createSampleEpisodes(
             podcastName: "朝活パパラジオ",
             episodeTitles: [
                 "第1回：朝活を始めるコツ",
-                "第2回：効率的な時間管理術", 
+                "第2回：効率的な時間管理術",
                 "第3回：家族との時間を大切にする方法"
             ],
             baseDuration: 1800 // 30分
         )
-        
+
         let morningPodcast = Podcast(
             name: "朝活パパラジオ",
             description: "朝活を頑張るパパエンジニアのための番組です。家族、仕事、プログラミングについて毎週お話しします。",
@@ -272,9 +278,9 @@ final class PodcastLibraryManager {
             isSubscribed: true
         )
         podcasts.append(morningPodcast)
-        
+
         // Sample Podcast 2: テックトーク
-        let techEpisodes = createSampleEpisodes(
+        let techEpisodes = await createSampleEpisodes(
             podcastName: "エンジニア朝トーク",
             episodeTitles: [
                 "SwiftUI最新情報",
@@ -283,9 +289,9 @@ final class PodcastLibraryManager {
             ],
             baseDuration: 2400 // 40分
         )
-        
+
         let techPodcast = Podcast(
-            name: "エンジニア朝トーク", 
+            name: "エンジニア朝トーク",
             description: "エンジニアリングと朝活をテーマにした技術系ポッドキャストです。",
             author: "テックトーカー",
             category: "テクノロジー",
@@ -293,9 +299,9 @@ final class PodcastLibraryManager {
             isSubscribed: true
         )
         podcasts.append(techPodcast)
-        
+
         // Sample Podcast 3: ライフスタイル
-        let lifestyleEpisodes = createSampleEpisodes(
+        let lifestyleEpisodes = await createSampleEpisodes(
             podcastName: "パパのライフハック",
             episodeTitles: [
                 "朝の習慣で人生が変わる",
@@ -304,7 +310,7 @@ final class PodcastLibraryManager {
             ],
             baseDuration: 1200 // 20分
         )
-        
+
         let lifestylePodcast = Podcast(
             name: "パパのライフハック",
             description: "忙しいパパのためのライフスタイル改善番組です。",
@@ -314,28 +320,30 @@ final class PodcastLibraryManager {
             isSubscribed: true
         )
         podcasts.append(lifestylePodcast)
-        
+
         return podcasts
     }
     
-    private func createSampleEpisodes(podcastName: String, episodeTitles: [String], baseDuration: TimeInterval) -> [PodcastEpisode] {
-        return episodeTitles.enumerated().map { (index, title) in
+    private func createSampleEpisodes(podcastName: String, episodeTitles: [String], baseDuration: TimeInterval) async -> [PodcastEpisode] {
+        var episodes: [PodcastEpisode] = []
+
+        for (index, title) in episodeTitles.enumerated() {
             let publishDate = Calendar.current.date(byAdding: .day, value: -(episodeTitles.count - index - 1) * 7, to: Date()) ?? Date()
-            
+
             // Create dummy audio file URL (in real app, these would be actual files)
             let documentsPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
             let audioFileName = "\(podcastName)_\(index + 1).caf"
             let audioURL = documentsPath.appendingPathComponent(audioFileName)
-            
+
             // Ensure silent audio placeholder exists so playback does not fail
             let preferredSampleDuration: TimeInterval = min(baseDuration, 300) // 最大5分の無音音声
-            let actualDuration = ensureSampleAudioFile(at: audioURL, preferredDuration: preferredSampleDuration)
+            let actualDuration = await ensureSampleAudioFile(at: audioURL, preferredDuration: preferredSampleDuration)
             let duration = actualDuration > 0 ? actualDuration : preferredSampleDuration
             
             // Create some sample episodes with different playback states
             let playbackPosition: TimeInterval
             let isPlayed: Bool
-            
+
             switch index {
             case 0:
                 // First episode - fully played
@@ -350,8 +358,8 @@ final class PodcastLibraryManager {
                 playbackPosition = 0
                 isPlayed = false
             }
-            
-            return PodcastEpisode(
+
+            let episode = PodcastEpisode(
                 title: title,
                 description: "\(title)についての詳細な内容をお届けします。朝活をテーマに、実践的なアドバイスや経験談を共有します。",
                 duration: duration,
@@ -362,11 +370,15 @@ final class PodcastLibraryManager {
                 isPlayed: isPlayed,
                 episodeNumber: index + 1
             )
+
+            episodes.append(episode)
         }
+
+        return episodes
     }
     
     @discardableResult
-    private func ensureSampleAudioFile(at url: URL, preferredDuration: TimeInterval) -> TimeInterval {
+    private func ensureSampleAudioFile(at url: URL, preferredDuration: TimeInterval) async -> TimeInterval {
         let fileManager = FileManager.default
         
         if !fileManager.fileExists(atPath: url.path) {
@@ -402,53 +414,82 @@ final class PodcastLibraryManager {
         }
         
         let asset = AVAsset(url: url)
-        let duration = CMTimeGetSeconds(asset.duration)
-        return duration.isFinite ? duration : 0
+        // iOS 16+ の新しいAPI使用
+        if let duration = try? await asset.load(.duration) {
+            let seconds = CMTimeGetSeconds(duration)
+            return seconds.isFinite ? seconds : 0
+        }
+        return 0
     }
     
     // MARK: - Audio File Utilities
-    
-    func getAudioDuration(from url: URL) -> TimeInterval {
+
+    func getAudioDuration(from url: URL) async -> TimeInterval {
         let asset = AVAsset(url: url)
-        let duration = asset.duration
-        return CMTimeGetSeconds(duration)
-    }
-    
-    func extractArtwork(from url: URL) -> UIImage? {
-        let asset = AVAsset(url: url)
-        let metadataItems = asset.metadata
-        
-        for item in metadataItems {
-            if item.commonKey == .commonKeyArtwork,
-               let data = item.dataValue,
-               let image = UIImage(data: data) {
-                return image
-            }
+
+        // iOS 16+ の新しいAPI使用
+        do {
+            let duration = try await asset.load(.duration)
+            return CMTimeGetSeconds(duration)
+        } catch {
+            print("⚠️ デュレーション取得エラー: \(error.localizedDescription)")
+            return 0
         }
+    }
+
+    func extractArtwork(from url: URL) async -> UIImage? {
+        let asset = AVAsset(url: url)
+
+        // iOS 16+ の新しいAPI使用
+        do {
+            let metadataItems = try await asset.load(.metadata)
+
+            for item in metadataItems {
+                guard let commonKey = try? await item.load(.commonKey) else { continue }
+
+                if commonKey == .commonKeyArtwork {
+                    if let data = try? await item.load(.dataValue),
+                       let image = UIImage(data: data) {
+                        return image
+                    }
+                }
+            }
+        } catch {
+            print("⚠️ アートワーク取得エラー: \(error.localizedDescription)")
+        }
+
         return nil
     }
-    
-    func extractMetadata(from url: URL) -> (title: String?, artist: String?, album: String?) {
+
+    func extractMetadata(from url: URL) async -> (title: String?, artist: String?, album: String?) {
         let asset = AVAsset(url: url)
-        let metadataItems = asset.metadata
-        
+
         var title: String?
         var artist: String?
         var album: String?
-        
-        for item in metadataItems {
-            switch item.commonKey {
-            case .commonKeyTitle:
-                title = item.stringValue
-            case .commonKeyArtist:
-                artist = item.stringValue
-            case .commonKeyAlbumName:
-                album = item.stringValue
-            default:
-                break
+
+        // iOS 16+ の新しいAPI使用
+        do {
+            let metadataItems = try await asset.load(.metadata)
+
+            for item in metadataItems {
+                guard let commonKey = try? await item.load(.commonKey) else { continue }
+
+                switch commonKey {
+                case .commonKeyTitle:
+                    title = try? await item.load(.stringValue)
+                case .commonKeyArtist:
+                    artist = try? await item.load(.stringValue)
+                case .commonKeyAlbumName:
+                    album = try? await item.load(.stringValue)
+                default:
+                    break
+                }
             }
+        } catch {
+            print("⚠️ メタデータ取得エラー: \(error.localizedDescription)")
         }
-        
+
         return (title, artist, album)
     }
 }
@@ -487,8 +528,10 @@ private struct PodcastData: Codable {
     func toPodcast() -> Podcast {
         let feedURL = feedURLString.flatMap { URL(string: $0) }
         let podcastEpisodes = episodes.map { $0.toPodcastEpisode() }
-        
+        let podcastId = UUID(uuidString: id) ?? UUID()  // 保存されたUUIDを復元
+
         return Podcast(
+            id: podcastId,  // 保存されたIDを使用
             name: name,
             description: description,
             author: author,
@@ -607,8 +650,10 @@ private struct PodcastEpisodeData: Codable {
     
     func toPodcastEpisode() -> PodcastEpisode {
         let filePath = resolveFileURL()
-        
+        let episodeId = UUID(uuidString: id) ?? UUID()  // 保存されたUUIDを復元
+
         return PodcastEpisode(
+            id: episodeId,  // 保存されたIDを使用
             title: title,
             description: description,
             duration: duration,
