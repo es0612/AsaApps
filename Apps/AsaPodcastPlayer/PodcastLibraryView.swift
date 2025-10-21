@@ -3,7 +3,6 @@ import SwiftUI
 struct PodcastLibraryView: View {
     @Bindable var viewModel: PodcastPlayerViewModel
     @Environment(\.dismiss) private var dismiss
-    @State private var selectedPodcast: Podcast?
     
     var body: some View {
         NavigationView {
@@ -33,8 +32,8 @@ struct PodcastLibraryView: View {
                     .foregroundColor(Color("AsaCoffeeBrown"))
                 }
             }
-            .sheet(item: $selectedPodcast) { podcast in
-                EpisodeListView(podcast: podcast, viewModel: viewModel)
+            .sheet(item: $viewModel.selectedPodcast) { _ in
+                EpisodeListView(viewModel: viewModel)
             }
         }
     }
@@ -89,7 +88,6 @@ struct PodcastLibraryView: View {
                 PodcastRowView(
                     podcast: podcast,
                     action: {
-                        selectedPodcast = podcast
                         viewModel.selectPodcast(podcast)
                     }
                 )
@@ -207,30 +205,43 @@ struct PodcastRowView: View {
 // MARK: - Episode List View
 
 struct EpisodeListView: View {
-    let podcast: Podcast
     @Bindable var viewModel: PodcastPlayerViewModel
     @Environment(\.dismiss) private var dismiss
     
     var body: some View {
         NavigationView {
-            List {
-                ForEach(podcast.episodes) { episode in
-                    EpisodeRowView(
-                        episode: episode,
-                        isCurrentlyPlaying: viewModel.currentEpisode?.id == episode.id,
-                        action: {
-                            viewModel.playEpisode(episode)
-                            dismiss()
+            Group {
+                if let podcast = viewModel.selectedPodcast {
+                    List {
+                        ForEach(podcast.episodes) { episode in
+                            EpisodeRowView(
+                                episode: episode,
+                                isCurrentlyPlaying: viewModel.currentEpisode?.id == episode.id,
+                                action: {
+                                    viewModel.playEpisode(episode)
+                                    dismiss()
+                                }
+                            )
+                            .listRowSeparator(.hidden)
+                            .listRowInsets(EdgeInsets())
+                            .padding(.horizontal)
+                            .padding(.vertical, 4)
                         }
-                    )
-                    .listRowSeparator(.hidden)
-                    .listRowInsets(EdgeInsets())
-                    .padding(.horizontal)
-                    .padding(.vertical, 4)
+                    }
+                    .listStyle(.plain)
+                } else {
+                    VStack(spacing: 16) {
+                        Image(systemName: "exclamationmark.triangle")
+                            .font(.system(size: 40))
+                            .foregroundColor(.secondary)
+                        Text("ポッドキャストが選択されていません。")
+                            .font(.headline)
+                            .foregroundColor(.secondary)
+                    }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
                 }
             }
-            .listStyle(.plain)
-            .navigationTitle(podcast.displayName)
+            .navigationTitle(viewModel.selectedPodcast?.displayName ?? "ポッドキャスト")
             .navigationBarTitleDisplayMode(.large)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
@@ -325,4 +336,3 @@ struct EpisodeRowView: View {
         .buttonStyle(.plain)
     }
 }
-

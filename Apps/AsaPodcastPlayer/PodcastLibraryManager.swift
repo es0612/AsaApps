@@ -320,14 +320,17 @@ final class PodcastLibraryManager {
     
     private func createSampleEpisodes(podcastName: String, episodeTitles: [String], baseDuration: TimeInterval) -> [PodcastEpisode] {
         return episodeTitles.enumerated().map { (index, title) in
-            let variation = Double.random(in: 0.8...1.2)
-            let duration = baseDuration * variation
             let publishDate = Calendar.current.date(byAdding: .day, value: -(episodeTitles.count - index - 1) * 7, to: Date()) ?? Date()
             
             // Create dummy audio file URL (in real app, these would be actual files)
             let documentsPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-            let audioFileName = "\(podcastName)_\(index + 1).mp3"
+            let audioFileName = "\(podcastName)_\(index + 1).caf"
             let audioURL = documentsPath.appendingPathComponent(audioFileName)
+            
+            // Ensure silent audio placeholder exists so playback does not fail
+            let preferredSampleDuration: TimeInterval = min(baseDuration, 300) // 最大5分の無音音声
+            let actualDuration = ensureSampleAudioFile(at: audioURL, preferredDuration: preferredSampleDuration)
+            let duration = actualDuration > 0 ? actualDuration : preferredSampleDuration
             
             // Create some sample episodes with different playback states
             let playbackPosition: TimeInterval
@@ -360,6 +363,47 @@ final class PodcastLibraryManager {
                 episodeNumber: index + 1
             )
         }
+    }
+    
+    @discardableResult
+    private func ensureSampleAudioFile(at url: URL, preferredDuration: TimeInterval) -> TimeInterval {
+        let fileManager = FileManager.default
+        
+        if !fileManager.fileExists(atPath: url.path) {
+            do {
+                let format = AVAudioFormat(standardFormatWithSampleRate: 44100, channels: 1)
+                guard let format = format else {
+                    throw NSError(domain: "PodcastLibraryManager", code: -1, userInfo: [NSLocalizedDescriptionKey: "AVAudioFormatの生成に失敗しました"])
+                }
+                
+                let directory = url.deletingLastPathComponent()
+                if !fileManager.fileExists(atPath: directory.path) {
+                    try fileManager.createDirectory(at: directory, withIntermediateDirectories: true)
+                }
+                
+                let audioFile = try AVAudioFile(forWriting: url, settings: format.settings)
+                let totalFrames = AVAudioFrameCount(preferredDuration * format.sampleRate)
+                let chunkSize = min(totalFrames, AVAudioFrameCount(format.sampleRate)) // 1秒単位で書き込み
+                
+                var framesRemaining = totalFrames
+                while framesRemaining > 0 {
+                    let framesToWrite = min(framesRemaining, chunkSize)
+                    guard let buffer = AVAudioPCMBuffer(pcmFormat: format, frameCapacity: framesToWrite) else {
+                        throw NSError(domain: "PodcastLibraryManager", code: -2, userInfo: [NSLocalizedDescriptionKey: "AVAudioPCMBufferの生成に失敗しました"])
+                    }
+                    buffer.frameLength = framesToWrite
+                    try audioFile.write(from: buffer)
+                    framesRemaining -= framesToWrite
+                }
+            } catch {
+                print("❌ サンプル音声ファイルの生成に失敗しました: \(error.localizedDescription)")
+                return 0
+            }
+        }
+        
+        let asset = AVAsset(url: url)
+        let duration = CMTimeGetSeconds(asset.duration)
+        return duration.isFinite ? duration : 0
     }
     
     // MARK: - Audio File Utilities
@@ -465,7 +509,9 @@ private struct PodcastEpisodeData: Codable {
     let title: String
     let description: String
     let duration: TimeInterval
-    let filePathString: String
+    let filePathString: String?
+    let bundleRelativePath: String?
+    let isBundledResource: Bool
     let podcastName: String
     let author: String
     let publishDate: Date
@@ -475,12 +521,29 @@ private struct PodcastEpisodeData: Codable {
     let episodeNumber: Int?
     let seasonNumber: Int?
     
+    private enum CodingKeys: String, CodingKey {
+        case id
+        case title
+        case description
+        case duration
+        case filePathString
+        case bundleRelativePath
+        case isBundledResource
+        case podcastName
+        case author
+        case publishDate
+        case playbackPosition
+        case isPlayed
+        case isBookmarked
+        case episodeNumber
+        case seasonNumber
+    }
+    
     init(from episode: PodcastEpisode) {
         self.id = episode.id.uuidString
         self.title = episode.title
         self.description = episode.description
         self.duration = episode.duration
-        self.filePathString = episode.filePath.absoluteString
         self.podcastName = episode.podcastName
         self.author = episode.author
         self.publishDate = episode.publishDate
@@ -489,10 +552,61 @@ private struct PodcastEpisodeData: Codable {
         self.isBookmarked = episode.isBookmarked
         self.episodeNumber = episode.episodeNumber
         self.seasonNumber = episode.seasonNumber
+        
+        let standardizedFileURL = episode.filePath.standardizedFileURL
+        if let bundleURL = Bundle.main.resourceURL?.standardizedFileURL,
+           standardizedFileURL.path.hasPrefix(bundleURL.path) {
+            self.isBundledResource = true
+            let relativePath = String(standardizedFileURL.path.dropFirst(bundleURL.path.count + 1))
+            self.bundleRelativePath = relativePath
+            self.filePathString = nil
+        } else {
+            self.isBundledResource = false
+            self.bundleRelativePath = nil
+            self.filePathString = standardizedFileURL.absoluteString
+        }
+    }
+    
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.id = try container.decode(String.self, forKey: .id)
+        self.title = try container.decode(String.self, forKey: .title)
+        self.description = try container.decode(String.self, forKey: .description)
+        self.duration = try container.decode(TimeInterval.self, forKey: .duration)
+        self.filePathString = try container.decodeIfPresent(String.self, forKey: .filePathString)
+        self.bundleRelativePath = try container.decodeIfPresent(String.self, forKey: .bundleRelativePath)
+        self.isBundledResource = try container.decodeIfPresent(Bool.self, forKey: .isBundledResource) ?? false
+        self.podcastName = try container.decode(String.self, forKey: .podcastName)
+        self.author = try container.decode(String.self, forKey: .author)
+        self.publishDate = try container.decode(Date.self, forKey: .publishDate)
+        self.playbackPosition = try container.decode(TimeInterval.self, forKey: .playbackPosition)
+        self.isPlayed = try container.decode(Bool.self, forKey: .isPlayed)
+        self.isBookmarked = try container.decode(Bool.self, forKey: .isBookmarked)
+        self.episodeNumber = try container.decodeIfPresent(Int.self, forKey: .episodeNumber)
+        self.seasonNumber = try container.decodeIfPresent(Int.self, forKey: .seasonNumber)
+    }
+    
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(id, forKey: .id)
+        try container.encode(title, forKey: .title)
+        try container.encode(description, forKey: .description)
+        try container.encode(duration, forKey: .duration)
+        try container.encodeIfPresent(filePathString, forKey: .filePathString)
+        try container.encodeIfPresent(bundleRelativePath, forKey: .bundleRelativePath)
+        try container.encode(isBundledResource, forKey: .isBundledResource)
+        try container.encode(podcastName, forKey: .podcastName)
+        try container.encode(author, forKey: .author)
+        try container.encode(publishDate, forKey: .publishDate)
+        try container.encode(playbackPosition, forKey: .playbackPosition)
+        try container.encode(isPlayed, forKey: .isPlayed)
+        try container.encode(isBookmarked, forKey: .isBookmarked)
+        try container.encodeIfPresent(episodeNumber, forKey: .episodeNumber)
+        try container.encodeIfPresent(seasonNumber, forKey: .seasonNumber)
     }
     
     func toPodcastEpisode() -> PodcastEpisode {
-        let filePath = URL(string: filePathString) ?? URL(fileURLWithPath: "/tmp/unknown.mp3")
+        let filePath = resolveFileURL()
         
         return PodcastEpisode(
             title: title,
@@ -509,5 +623,106 @@ private struct PodcastEpisodeData: Codable {
             episodeNumber: episodeNumber,
             seasonNumber: seasonNumber
         )
+    }
+    
+    private func resolveFileURL() -> URL {
+        let fileManager = FileManager.default
+        
+        // 1. Stored absolute path still valid
+        if let filePathString,
+           let storedURL = URL(string: filePathString),
+           storedURL.isFileURL,
+           fileManager.fileExists(atPath: storedURL.path) {
+            return storedURL
+        }
+        
+        // 2. Bundled resource using stored relative path
+        if let bundleURL = Bundle.main.resourceURL {
+            if let relativePath = bundleRelativePath {
+                let candidate = bundleURL.appendingPathComponent(relativePath)
+                if fileManager.fileExists(atPath: candidate.path) {
+                    return candidate
+                }
+                
+                if let searchResult = searchBundledResource(relativePath: relativePath) {
+                    return searchResult
+                }
+            }
+            
+            // 3. Legacy absolute path pointing into previous bundle location
+            if let legacyURL = legacyBundleURL(from: filePathString, bundleBase: bundleURL) {
+                return legacyURL
+            }
+        }
+        
+        // 4. Documents directory fallback
+        if let fileName = extractFileName(),
+           let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
+            let candidate = documentsDirectory.appendingPathComponent(fileName)
+            if fileManager.fileExists(atPath: candidate.path) {
+                return candidate
+            }
+        }
+        
+        return URL(fileURLWithPath: "/tmp/unknown.mp3")
+    }
+    
+    private func extractFileName() -> String? {
+        if let relativePath = bundleRelativePath {
+            return URL(fileURLWithPath: relativePath).lastPathComponent
+        }
+        
+        if let filePathString,
+           let storedURL = URL(string: filePathString),
+           storedURL.isFileURL {
+            return storedURL.lastPathComponent
+        }
+        
+        if let filePathString, filePathString.hasPrefix("/") {
+            return URL(fileURLWithPath: filePathString).lastPathComponent
+        }
+        
+        return nil
+    }
+    
+    private func legacyBundleURL(from pathString: String?, bundleBase: URL) -> URL? {
+        guard let pathString = pathString else { return nil }
+        
+        let possibleURL: URL
+        if let url = URL(string: pathString), url.isFileURL {
+            possibleURL = url.standardizedFileURL
+        } else if pathString.hasPrefix("/") {
+            possibleURL = URL(fileURLWithPath: pathString).standardizedFileURL
+        } else {
+            return nil
+        }
+        
+        let standardizedPath = possibleURL.path
+        guard let range = standardizedPath.range(of: ".app/") else { return nil }
+        let relativePath = String(standardizedPath[range.upperBound...])
+        let candidate = bundleBase.appendingPathComponent(relativePath)
+        if FileManager.default.fileExists(atPath: candidate.path) {
+            return candidate
+        }
+        
+        return searchBundledResource(relativePath: relativePath)
+    }
+    
+    private func searchBundledResource(relativePath: String) -> URL? {
+        let fileName = URL(fileURLWithPath: relativePath).lastPathComponent
+        let fileBase = (fileName as NSString).deletingPathExtension
+        let fileExtension = (fileName as NSString).pathExtension
+        
+        if !fileExtension.isEmpty,
+           let url = Bundle.main.url(forResource: fileBase, withExtension: fileExtension, subdirectory: "sound") {
+            return url
+        }
+        
+        if !fileExtension.isEmpty,
+           let url = Bundle.main.url(forResource: fileBase, withExtension: fileExtension) {
+            return url
+        }
+        
+        return nil
     }
 }

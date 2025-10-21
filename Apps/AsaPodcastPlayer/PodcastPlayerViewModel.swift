@@ -348,7 +348,11 @@ final class PodcastPlayerViewModel {
     }
     
     func selectPodcast(_ podcast: Podcast) {
-        selectedPodcast = podcast
+        if let index = subscribedPodcasts.firstIndex(where: { $0.id == podcast.id }) {
+            selectedPodcast = subscribedPodcasts[index]
+        } else {
+            selectedPodcast = podcast
+        }
     }
     
     // MARK: - Private Helper Methods
@@ -408,13 +412,20 @@ final class PodcastPlayerViewModel {
     }
     
     private func updateEpisodeInPodcasts(_ updatedEpisode: PodcastEpisode) {
+        var updatedPodcast: Podcast?
+        
         for (podcastIndex, var podcast) in subscribedPodcasts.enumerated() {
             if let episodeIndex = podcast.episodes.firstIndex(where: { $0.id == updatedEpisode.id }) {
                 podcast.episodes[episodeIndex] = updatedEpisode
                 subscribedPodcasts[podcastIndex] = podcast
                 libraryManager.savePodcast(podcast)
+                updatedPodcast = podcast
                 break
             }
+        }
+        
+        if let podcast = updatedPodcast, selectedPodcast?.id == podcast.id {
+            selectedPodcast = podcast
         }
         
         // Update current playlist if needed
