@@ -71,3 +71,7 @@ fastlane/test_output
 # Serena MCP files
 .serena/cache
 .serena/memories/
+
+## XcodeGen
+# Xcode project files are generated from project.yml
+*.xcodeproj
