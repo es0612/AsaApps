@@ -434,5 +434,4 @@ struct RoundedCorner: Shape {
 
 #Preview {
     ContentView()
-        .preferredColorScheme(.light)
 }
