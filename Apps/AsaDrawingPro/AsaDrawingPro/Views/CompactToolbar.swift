@@ -64,8 +64,8 @@ struct CompactToolbar: View {
                     .background(
                         RoundedRectangle(cornerRadius: 12)
                             .fill(
-                                viewModel.selectedTool == tool ? 
-                                ColorColor.asaCoffeeBrown : .clear
+                                viewModel.selectedTool == tool ?
+                                Color.asaCoffeeBrown : .clear
                             )
                     )
                 }
@@ -277,8 +277,8 @@ struct BrushSettingsSheet: View {
                                     .background(
                                         RoundedRectangle(cornerRadius: 6)
                                             .fill(
-                                                viewModel.brushSize == CGFloat(size) ? 
-                                                ColorColor.asaCoffeeBrown : Color.asaSoftCream.opacity(0.5)
+                                                viewModel.brushSize == CGFloat(size) ?
+                                                Color.asaCoffeeBrown : Color.asaSoftCream.opacity(0.5)
                                             )
                                     )
                             }
