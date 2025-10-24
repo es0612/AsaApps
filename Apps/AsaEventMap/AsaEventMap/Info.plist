@@ -29,5 +29,10 @@
     <string>AsaEventMapはイベントの位置を地図上に表示するために位置情報を使用します。</string>
     <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
     <string>AsaEventMapはイベントの位置を地図上に表示するために位置情報を使用します。</string>
+    <key>UILaunchScreen</key>
+    <dict>
+        <key>UIColorName</key>
+        <string>AsaSoftCream</string>
+    </dict>
 </dict>
 </plist>
