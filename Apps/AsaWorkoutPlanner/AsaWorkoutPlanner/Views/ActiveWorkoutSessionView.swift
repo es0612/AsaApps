@@ -16,9 +16,8 @@ struct ActiveWorkoutSessionView: View {
     @Environment(\.dismiss) private var dismiss
 
     @State private var currentExerciseIndex = 0
-    @State private var isRestTimerActive = false
-    @State private var restTimeRemaining: TimeInterval = 0
-    @State private var timer: Timer?
+    @State private var showingRestTimer = false
+    @State private var restTimeDuration: TimeInterval = 60
 
     // セット入力用の状態
     @State private var repsInput: String = ""
@@ -41,11 +40,6 @@ struct ActiveWorkoutSessionView: View {
                             // 進捗バー
                             progressSection(session)
 
-                            // レストタイマー（アクティブ時のみ）
-                            if isRestTimerActive {
-                                restTimerView
-                            }
-
                             // 現在のエクササイズ
                             if !session.completedExercises.isEmpty {
                                 currentExerciseCard(session)
@@ -60,11 +54,6 @@ struct ActiveWorkoutSessionView: View {
                     }
                     .padding()
                 }
-
-                // レストタイマーオーバーレイ
-                if isRestTimerActive {
-                    restTimerOverlay
-                }
             }
             .navigationTitle("ワークアウト実行中")
             .navigationBarTitleDisplayMode(.inline)
@@ -73,6 +62,15 @@ struct ActiveWorkoutSessionView: View {
                     Button("キャンセル") {
                         cancelSession()
                     }
+                }
+            }
+            .fullScreenCover(isPresented: $showingRestTimer) {
+                RestTimerView(
+                    initialTime: restTimeDuration,
+                    exerciseName: getCurrentExercise()?.exerciseName
+                ) {
+                    // タイマー完了時の処理
+                    print("休憩完了")
                 }
             }
             .onAppear {
@@ -151,94 +149,6 @@ struct ActiveWorkoutSessionView: View {
                 .tint(Color(AsaColors.coffeeBrown))
                 .scaleEffect(x: 1, y: 2)
         }
-    }
-
-    private var restTimerView: some View {
-        AsaCard {
-            VStack(spacing: 12) {
-                Text("休憩時間")
-                    .font(.headline)
-
-                Text(formatTime(restTimeRemaining))
-                    .font(.system(size: 48, weight: .bold, design: .rounded))
-                    .monospacedDigit()
-
-                SwiftUI.ProgressView(value: 1 - (restTimeRemaining / getCurrentRestTime()))
-                    .tint(Color(AsaColors.coffeeBrown))
-                    .scaleEffect(x: 1, y: 2)
-
-                HStack(spacing: 12) {
-                    Button {
-                        adjustRestTime(-10)
-                    } label: {
-                        Label("-10秒", systemImage: "minus.circle")
-                            .font(.caption)
-                    }
-                    .buttonStyle(.bordered)
-
-                    Button {
-                        skipRest()
-                    } label: {
-                        Text("スキップ")
-                            .font(.caption)
-                    }
-                    .buttonStyle(.borderedProminent)
-                    .tint(Color(AsaColors.coffeeBrown))
-
-                    Button {
-                        adjustRestTime(10)
-                    } label: {
-                        Label("+10秒", systemImage: "plus.circle")
-                            .font(.caption)
-                    }
-                    .buttonStyle(.bordered)
-                }
-            }
-            .padding()
-        }
-    }
-
-    private var restTimerOverlay: some View {
-        Color.black.opacity(0.3)
-            .ignoresSafeArea()
-            .overlay {
-                VStack(spacing: 20) {
-                    ZStack {
-                        Circle()
-                            .stroke(Color.white.opacity(0.3), lineWidth: 10)
-                            .frame(width: 200, height: 200)
-
-                        Circle()
-                            .trim(from: 0, to: 1 - (restTimeRemaining / getCurrentRestTime()))
-                            .stroke(Color.white, style: StrokeStyle(lineWidth: 10, lineCap: .round))
-                            .frame(width: 200, height: 200)
-                            .rotationEffect(.degrees(-90))
-                            .animation(.linear(duration: 1), value: restTimeRemaining)
-
-                        VStack(spacing: 4) {
-                            Text(formatTime(restTimeRemaining))
-                                .font(.system(size: 48, weight: .bold, design: .rounded))
-                                .foregroundColor(.white)
-                                .monospacedDigit()
-
-                            Text("休憩中")
-                                .font(.headline)
-                                .foregroundColor(.white.opacity(0.8))
-                        }
-                    }
-
-                    Button("スキップ") {
-                        skipRest()
-                    }
-                    .font(.headline)
-                    .foregroundColor(.white)
-                    .padding(.horizontal, 40)
-                    .padding(.vertical, 12)
-                    .background(Color(AsaColors.coffeeBrown))
-                    .cornerRadius(25)
-                }
-            }
-            .transition(.opacity)
     }
 
     private func currentExerciseCard(_ session: WorkoutSession) -> some View {
@@ -497,27 +407,8 @@ struct ActiveWorkoutSessionView: View {
     }
 
     private func startRestTimer(duration: TimeInterval) {
-        restTimeRemaining = duration
-        isRestTimerActive = true
-
-        timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
-            if restTimeRemaining > 0 {
-                restTimeRemaining -= 1
-            } else {
-                skipRest()
-            }
-        }
-    }
-
-    private func skipRest() {
-        timer?.invalidate()
-        timer = nil
-        isRestTimerActive = false
-        restTimeRemaining = 0
-    }
-
-    private func adjustRestTime(_ seconds: TimeInterval) {
-        restTimeRemaining = max(0, restTimeRemaining + seconds)
+        restTimeDuration = duration
+        showingRestTimer = true
     }
 
     private func formatTime(_ timeInterval: TimeInterval) -> String {

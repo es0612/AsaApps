@@ -18,6 +18,7 @@ struct PlanDetailView: View {
     @State private var showingExerciseLibrary = false
     @State private var showingCreateExercise = false
     @State private var showingExerciseOptions = false
+    @State private var showingScheduleEditor = false
     @State private var selectedExercise: Exercise?
     
     // MARK: - Body
@@ -59,6 +60,9 @@ struct PlanDetailView: View {
             }
             .sheet(item: $selectedExercise) { exercise in
                 ExerciseEditorView(plan: plan, exerciseToEdit: exercise, viewModel: viewModel)
+            }
+            .sheet(isPresented: $showingScheduleEditor) {
+                PlanScheduleEditorView(plan: plan)
             }
             .confirmationDialog("エクササイズを追加", isPresented: $showingExerciseOptions) {
                 Button("ライブラリから選択") {
@@ -130,9 +134,22 @@ struct PlanDetailView: View {
     
     private var scheduleSection: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text("スケジュール")
-                .font(.headline)
-            
+            HStack {
+                Text("スケジュール")
+                    .font(.headline)
+
+                Spacer()
+
+                Button {
+                    showingScheduleEditor = true
+                } label: {
+                    Label("編集", systemImage: "calendar.badge.clock")
+                        .font(.caption)
+                }
+                .buttonStyle(.bordered)
+                .tint(Color(AsaColors.coffeeBrown))
+            }
+
             HStack(spacing: 8) {
                 ForEach(WeekDay.allCases, id: \.self) { day in
                     VStack(spacing: 4) {

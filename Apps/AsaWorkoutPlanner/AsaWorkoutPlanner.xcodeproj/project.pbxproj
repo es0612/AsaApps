@@ -13,11 +13,13 @@
 		2981E18FB7CF98B31C964053 /* WorkoutPlannerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C717A44028A8A8EAB729257F /* WorkoutPlannerViewModel.swift */; };
 		319BB49F4A9DA46D2F965DDC /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58A5B0D6CAB4D9FE8CCF6B75 /* HomeView.swift */; };
 		3449168166DF9B45B7DA545B /* AsaWorkoutPlannerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44104AB16F37860C61400C81 /* AsaWorkoutPlannerTests.swift */; };
+		3A592102553D3B4EF16BC61B /* PlanScheduleEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 438C5B30DD4634B08BC8DC27 /* PlanScheduleEditorView.swift */; };
 		48D4195620A74891D885C572 /* AsaHealthKit in Frameworks */ = {isa = PBXBuildFile; productRef = 2F343D28202B5FB7B81E8A08 /* AsaHealthKit */; };
 		61FC872075304E535B8D3BF6 /* WorkoutSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F84E50C037DA0AC411F59CD /* WorkoutSession.swift */; };
 		663D691032635EAA651E093F /* PresetExercises.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBBA4D2DB614055151612495 /* PresetExercises.swift */; };
 		6ED8917A165BD0158AF0484E /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 39229AF3E2EDEBCD95FB19F2 /* SwiftUI.framework */; };
 		6F83FC098AC1FB37D554FA49 /* SwiftData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D4E7AE01327C9613FD997BC /* SwiftData.framework */; };
+		76265670D37A583078A8D1F9 /* RestTimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0086373DA124EB3170B247B9 /* RestTimerView.swift */; };
 		7D87B78B0F23C0695282A829 /* WorkoutStartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2925A4AC92689F2AF104630 /* WorkoutStartView.swift */; };
 		8288C4D844288A60B23F92DE /* AsaUIKit in Frameworks */ = {isa = PBXBuildFile; productRef = D6F28457FAB82D2797FDBAEF /* AsaUIKit */; };
 		82CEFF50E770C536719E4A0B /* Charts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 097B141125BB699DF392A3C3 /* Charts.framework */; };
@@ -43,6 +45,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0086373DA124EB3170B247B9 /* RestTimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestTimerView.swift; sourceTree = "<group>"; };
 		011F0816EDD21C1323C2C441 /* PlanListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanListView.swift; sourceTree = "<group>"; };
 		097B141125BB699DF392A3C3 /* Charts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Charts.framework; sourceTree = "<group>"; };
 		0F84E50C037DA0AC411F59CD /* WorkoutSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutSession.swift; sourceTree = "<group>"; };
@@ -51,6 +54,7 @@
 		306EAA93CA256F731B95917A /* Exercise.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Exercise.swift; sourceTree = "<group>"; };
 		3585EB6DD5364FD56E411D65 /* AsaUIKit */ = {isa = PBXFileReference; lastKnownFileType = folder; name = AsaUIKit; path = ../../Packages/AsaUIKit; sourceTree = SOURCE_ROOT; };
 		39229AF3E2EDEBCD95FB19F2 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SwiftUI.framework; sourceTree = "<group>"; };
+		438C5B30DD4634B08BC8DC27 /* PlanScheduleEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanScheduleEditorView.swift; sourceTree = "<group>"; };
 		44104AB16F37860C61400C81 /* AsaWorkoutPlannerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsaWorkoutPlannerTests.swift; sourceTree = "<group>"; };
 		55312B724D21E4BC0858C839 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		5694EF570ED810A8123D0751 /* ActiveWorkoutSessionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveWorkoutSessionView.swift; sourceTree = "<group>"; };
@@ -118,6 +122,8 @@
 				58A5B0D6CAB4D9FE8CCF6B75 /* HomeView.swift */,
 				E3CB6A7723C72FD3AA8BA031 /* PlanDetailView.swift */,
 				011F0816EDD21C1323C2C441 /* PlanListView.swift */,
+				438C5B30DD4634B08BC8DC27 /* PlanScheduleEditorView.swift */,
+				0086373DA124EB3170B247B9 /* RestTimerView.swift */,
 				55312B724D21E4BC0858C839 /* SettingsView.swift */,
 				D4F0D1E6C8FD10CFF0ECAAFC /* WorkoutProgressView.swift */,
 				A2925A4AC92689F2AF104630 /* WorkoutStartView.swift */,
@@ -298,7 +304,9 @@
 				319BB49F4A9DA46D2F965DDC /* HomeView.swift in Sources */,
 				016AB73E94C74C77D41D502B /* PlanDetailView.swift in Sources */,
 				8BFF7CEDFF4300E1997225E3 /* PlanListView.swift in Sources */,
+				3A592102553D3B4EF16BC61B /* PlanScheduleEditorView.swift in Sources */,
 				663D691032635EAA651E093F /* PresetExercises.swift in Sources */,
+				76265670D37A583078A8D1F9 /* RestTimerView.swift in Sources */,
 				C22EF5B7B5E90CD1D416A688 /* SettingsView.swift in Sources */,
 				079E92EDBBBD0FCD888731B5 /* WorkoutPlan.swift in Sources */,
 				2981E18FB7CF98B31C964053 /* WorkoutPlannerViewModel.swift in Sources */,
