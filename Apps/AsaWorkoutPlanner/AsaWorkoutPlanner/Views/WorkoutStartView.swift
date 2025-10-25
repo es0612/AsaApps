@@ -20,7 +20,8 @@ struct WorkoutStartView: View {
         NavigationStack {
             VStack(spacing: 24) {
                 if viewModel.hasActiveSession {
-                    activeSessionView
+                    // アクティブセッションがある場合は専用画面へ遷移
+                    activeSessionPlaceholder
                 } else {
                     startNewSessionView
                 }
@@ -28,57 +29,44 @@ struct WorkoutStartView: View {
             .padding()
             .navigationTitle("ワークアウト")
             .navigationBarTitleDisplayMode(.large)
+            .fullScreenCover(isPresented: $viewModel.showingSession) {
+                if viewModel.hasActiveSession {
+                    ActiveWorkoutSessionView(viewModel: viewModel)
+                }
+            }
         }
     }
-    
+
     // MARK: - Components
-    
-    private var activeSessionView: some View {
+
+    private var activeSessionPlaceholder: some View {
         VStack(spacing: 20) {
             Image(systemName: "figure.run.circle.fill")
                 .font(.system(size: 80))
                 .foregroundColor(Color(AsaColors.coffeeBrown))
-            
+
             Text("セッション進行中")
                 .font(.title2)
                 .fontWeight(.bold)
-            
+
             if let session = viewModel.currentSession {
                 Text(session.workoutPlan?.name ?? "ワークアウト")
                     .font(.headline)
                     .foregroundColor(Color(AsaColors.mutedSage))
-                
-                Text(session.displayDuration)
-                    .font(.largeTitle)
-                    .fontWeight(.bold)
-                    .monospacedDigit()
-                
-                HStack(spacing: 20) {
-                    AsaButton(
-                        title: session.isPaused ? "再開" : "一時停止",
-                        action: {
-                            if session.isPaused {
-                                viewModel.resumeSession()
-                            } else {
-                                viewModel.pauseSession()
-                            }
-                        },
-                        color: AsaColors.softCream
-                    )
-                    
-                    AsaButton(
-                        title: "完了",
-                        action: {
-                            viewModel.completeSession()
-                        },
-                        color: AsaColors.coffeeBrown
-                    )
-                }
-                
-                Button("キャンセル") {
-                    viewModel.cancelSession()
-                }
-                .foregroundColor(.red)
+
+                AsaButton(
+                    title: "セッション画面を開く",
+                    action: {
+                        viewModel.showingSession = true
+                    },
+                    color: AsaColors.coffeeBrown
+                )
+            }
+        }
+        .onAppear {
+            // セッションがある場合は自動的に画面を開く
+            if viewModel.hasActiveSession {
+                viewModel.showingSession = true
             }
         }
     }

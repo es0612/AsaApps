@@ -99,9 +99,9 @@ struct WorkoutProgressView: View {
                     .font(.headline)
                 
                 Chart {
-                    ForEach(mockChartData(), id: \.date) { data in
+                    ForEach(workoutChartData(), id: \.date) { data in
                         BarMark(
-                            x: .value("日付", data.date, unit: .day),
+                            x: .value("日付", data.date, unit: selectedTimeRange == .week ? .day : (selectedTimeRange == .month ? .weekOfMonth : .month)),
                             y: .value("回数", data.count)
                         )
                         .foregroundStyle(Color(AsaColors.coffeeBrown))
@@ -109,8 +109,23 @@ struct WorkoutProgressView: View {
                 }
                 .frame(height: 200)
                 .chartXAxis {
-                    AxisMarks(values: .stride(by: .day)) { _ in
-                        AxisValueLabel(format: .dateTime.weekday(.abbreviated), centered: true)
+                    switch selectedTimeRange {
+                    case .week:
+                        AxisMarks(values: .stride(by: .day)) { _ in
+                            AxisValueLabel(format: .dateTime.weekday(.abbreviated), centered: true)
+                        }
+                    case .month:
+                        AxisMarks(values: .stride(by: .weekOfMonth)) { value in
+                            if let date = value.as(Date.self) {
+                                AxisValueLabel {
+                                    Text(weekLabel(for: date))
+                                }
+                            }
+                        }
+                    case .year:
+                        AxisMarks(values: .stride(by: .month)) { _ in
+                            AxisValueLabel(format: .dateTime.month(.abbreviated), centered: true)
+                        }
                     }
                 }
                 .chartYAxis {
@@ -210,25 +225,77 @@ struct WorkoutProgressView: View {
     private func formatHours(_ duration: TimeInterval) -> String {
         let hours = Int(duration) / 3600
         let minutes = (Int(duration) % 3600) / 60
-        
+
         if hours > 0 {
             return "\(hours)時間\(minutes)分"
         } else {
             return "\(minutes)分"
         }
     }
-    
-    private func mockChartData() -> [ChartData] {
+
+    private func weekLabel(for date: Date) -> String {
+        let calendar = Calendar.current
+        let weekOfMonth = calendar.component(.weekOfMonth, from: date)
+        return "第\(weekOfMonth)週"
+    }
+
+    private func workoutChartData() -> [ChartData] {
         let calendar = Calendar.current
         var data: [ChartData] = []
-        
-        for i in 0..<7 {
-            let date = calendar.date(byAdding: .day, value: -i, to: Date())!
-            let count = Int.random(in: 0...2)
-            data.append(ChartData(date: date, count: count))
+
+        // 期間に応じてデータを集計
+        switch selectedTimeRange {
+        case .week:
+            // 週間データ（過去7日）
+            for i in 0..<7 {
+                let date = calendar.date(byAdding: .day, value: -i, to: Date())!
+                let dayStart = calendar.startOfDay(for: date)
+                let dayEnd = calendar.date(byAdding: .day, value: 1, to: dayStart)!
+
+                let count = viewModel.recentSessions.filter { session in
+                    session.isCompleted &&
+                    session.startTime >= dayStart &&
+                    session.startTime < dayEnd
+                }.count
+
+                data.append(ChartData(date: dayStart, count: count))
+            }
+            return data.reversed()
+
+        case .month:
+            // 月間データ（過去4週）
+            for i in 0..<4 {
+                let date = calendar.date(byAdding: .weekOfYear, value: -i, to: Date())!
+                let weekStart = calendar.dateInterval(of: .weekOfYear, for: date)?.start ?? date
+                let weekEnd = calendar.date(byAdding: .weekOfYear, value: 1, to: weekStart)!
+
+                let count = viewModel.recentSessions.filter { session in
+                    session.isCompleted &&
+                    session.startTime >= weekStart &&
+                    session.startTime < weekEnd
+                }.count
+
+                data.append(ChartData(date: weekStart, count: count))
+            }
+            return data.reversed()
+
+        case .year:
+            // 年間データ（過去12ヶ月）
+            for i in 0..<12 {
+                let date = calendar.date(byAdding: .month, value: -i, to: Date())!
+                let monthStart = calendar.dateInterval(of: .month, for: date)?.start ?? date
+                let monthEnd = calendar.date(byAdding: .month, value: 1, to: monthStart)!
+
+                let count = viewModel.recentSessions.filter { session in
+                    session.isCompleted &&
+                    session.startTime >= monthStart &&
+                    session.startTime < monthEnd
+                }.count
+
+                data.append(ChartData(date: monthStart, count: count))
+            }
+            return data.reversed()
         }
-        
-        return data.reversed()
     }
 }
 

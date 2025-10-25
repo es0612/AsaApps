@@ -318,8 +318,8 @@ final class WorkoutPlannerViewModel {
         var currentDate = Date()
         
         let sortedSessions = sessions.sorted { $0.startTime > $1.startTime }
-        var sessionDates = Set(sortedSessions.map { calendar.startOfDay(for: $0.startTime) })
-        
+        let sessionDates = Set(sortedSessions.map { calendar.startOfDay(for: $0.startTime) })
+
         while sessionDates.contains(calendar.startOfDay(for: currentDate)) {
             streak += 1
             currentDate = calendar.date(byAdding: .day, value: -1, to: currentDate)!

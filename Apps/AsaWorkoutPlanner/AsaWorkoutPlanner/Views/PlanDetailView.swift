@@ -15,6 +15,9 @@ struct PlanDetailView: View {
     @Bindable var viewModel: WorkoutPlannerViewModel
     @Environment(\.dismiss) private var dismiss
     @State private var showingEditExercise = false
+    @State private var showingExerciseLibrary = false
+    @State private var showingCreateExercise = false
+    @State private var showingExerciseOptions = false
     @State private var selectedExercise: Exercise?
     
     // MARK: - Body
@@ -47,6 +50,24 @@ struct PlanDetailView: View {
                         dismiss()
                     }
                 }
+            }
+            .sheet(isPresented: $showingExerciseLibrary) {
+                ExerciseLibraryView(plan: plan, viewModel: viewModel)
+            }
+            .sheet(isPresented: $showingCreateExercise) {
+                ExerciseEditorView(plan: plan, viewModel: viewModel)
+            }
+            .sheet(item: $selectedExercise) { exercise in
+                ExerciseEditorView(plan: plan, exerciseToEdit: exercise, viewModel: viewModel)
+            }
+            .confirmationDialog("エクササイズを追加", isPresented: $showingExerciseOptions) {
+                Button("ライブラリから選択") {
+                    showingExerciseLibrary = true
+                }
+                Button("新規作成") {
+                    showingCreateExercise = true
+                }
+                Button("キャンセル", role: .cancel) {}
             }
         }
     }
@@ -145,7 +166,7 @@ struct PlanDetailView: View {
                 Spacer()
                 
                 Button {
-                    // エクササイズ追加
+                    showingExerciseOptions = true
                 } label: {
                     Image(systemName: "plus.circle")
                         .foregroundColor(Color(AsaColors.coffeeBrown))
@@ -166,7 +187,7 @@ struct PlanDetailView: View {
                         AsaButton(
                             title: "エクササイズを追加",
                             action: {
-                                // エクササイズ追加画面を開く
+                                showingExerciseOptions = true
                             },
                             color: AsaColors.softCream
                         )
@@ -179,8 +200,29 @@ struct PlanDetailView: View {
                     ExerciseCard(exercise: exercise)
                         .onTapGesture {
                             selectedExercise = exercise
-                            showingEditExercise = true
                         }
+                        .contextMenu {
+                            Button {
+                                selectedExercise = exercise
+                            } label: {
+                                Label("編集", systemImage: "pencil")
+                            }
+
+                            Button(role: .destructive) {
+                                plan.removeExercise(exercise)
+                            } label: {
+                                Label("削除", systemImage: "trash")
+                            }
+                        }
+                }
+                .onMove { from, to in
+                    var exercises = plan.exercises.sorted(by: { $0.order < $1.order })
+                    exercises.move(fromOffsets: from, toOffset: to)
+
+                    // 順序を更新
+                    for (index, exercise) in exercises.enumerated() {
+                        exercise.order = index
+                    }
                 }
             }
         }
