@@ -19,7 +19,8 @@ final class WorkoutPlannerViewModel {
     // データ管理
     private var modelContext: ModelContext?
     private var healthManager: HealthManager
-    
+    private let progressiveOverloadService = ProgressiveOverloadService()
+
     // ワークアウトプラン
     var workoutPlans: [WorkoutPlan] = []
     var activeWorkoutPlan: WorkoutPlan?
@@ -395,5 +396,23 @@ final class WorkoutPlannerViewModel {
         
         saveContext()
         loadWorkoutPlans()
+    }
+
+    // MARK: - Progressive Overload
+
+    func getProgressiveOverloadSuggestions(for plan: WorkoutPlan) -> [OverloadSuggestion] {
+        progressiveOverloadService.suggestWeightIncreases(
+            for: plan.exercises,
+            sessions: recentSessions
+        )
+    }
+
+    func applyProgressiveOverloadSuggestion(_ suggestion: OverloadSuggestion, to plan: WorkoutPlan) {
+        if let exercise = plan.exercises.first(where: { $0.name == suggestion.exerciseName }) {
+            exercise.weight = suggestion.suggestedWeight
+            exercise.updatedAt = Date()
+            plan.updatedAt = Date()
+            saveContext()
+        }
     }
 }

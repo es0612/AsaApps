@@ -15,6 +15,7 @@
 		3449168166DF9B45B7DA545B /* AsaWorkoutPlannerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44104AB16F37860C61400C81 /* AsaWorkoutPlannerTests.swift */; };
 		3A592102553D3B4EF16BC61B /* PlanScheduleEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 438C5B30DD4634B08BC8DC27 /* PlanScheduleEditorView.swift */; };
 		48D4195620A74891D885C572 /* AsaHealthKit in Frameworks */ = {isa = PBXBuildFile; productRef = 2F343D28202B5FB7B81E8A08 /* AsaHealthKit */; };
+		5665683D12CB5E0A043695EC /* ProgressiveOverloadSuggestionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8609939497ED815EF9A16431 /* ProgressiveOverloadSuggestionView.swift */; };
 		61FC872075304E535B8D3BF6 /* WorkoutSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F84E50C037DA0AC411F59CD /* WorkoutSession.swift */; };
 		663D691032635EAA651E093F /* PresetExercises.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBBA4D2DB614055151612495 /* PresetExercises.swift */; };
 		6ED8917A165BD0158AF0484E /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 39229AF3E2EDEBCD95FB19F2 /* SwiftUI.framework */; };
@@ -31,6 +32,7 @@
 		B3AB0AC1F7A8CD2067460488 /* ActiveWorkoutSessionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5694EF570ED810A8123D0751 /* ActiveWorkoutSessionView.swift */; };
 		B54B755F52550CFEDA2F7CB7 /* Combine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 81BD08ADA5AF7C9C07751963 /* Combine.framework */; };
 		C22EF5B7B5E90CD1D416A688 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55312B724D21E4BC0858C839 /* SettingsView.swift */; };
+		EF13D83D0023DADE483D8BAA /* ProgressiveOverloadService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1F1E79F3631BF108CAFE1E8 /* ProgressiveOverloadService.swift */; };
 		EFD5DA947A7993E72E2B9F65 /* ExerciseLibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F249833547B7E02971840F7 /* ExerciseLibraryView.swift */; };
 /* End PBXBuildFile section */
 
@@ -64,6 +66,7 @@
 		7A2B5A0214D12A85E7ABCB8F /* WorkoutPlan.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutPlan.swift; sourceTree = "<group>"; };
 		81BD08ADA5AF7C9C07751963 /* Combine.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Combine.framework; sourceTree = "<group>"; };
 		81C373ACACAF819608F0617D /* AsaWorkoutPlannerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsaWorkoutPlannerApp.swift; sourceTree = "<group>"; };
+		8609939497ED815EF9A16431 /* ProgressiveOverloadSuggestionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressiveOverloadSuggestionView.swift; sourceTree = "<group>"; };
 		93691F96E355965930AAC0BF /* AsaWorkoutPlannerTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = AsaWorkoutPlannerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A2925A4AC92689F2AF104630 /* WorkoutStartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutStartView.swift; sourceTree = "<group>"; };
 		C717A44028A8A8EAB729257F /* WorkoutPlannerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutPlannerViewModel.swift; sourceTree = "<group>"; };
@@ -71,6 +74,7 @@
 		E3CB6A7723C72FD3AA8BA031 /* PlanDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanDetailView.swift; sourceTree = "<group>"; };
 		EA8AD0ABE0050C82DEA69CC7 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		EBBA4D2DB614055151612495 /* PresetExercises.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresetExercises.swift; sourceTree = "<group>"; };
+		F1F1E79F3631BF108CAFE1E8 /* ProgressiveOverloadService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressiveOverloadService.swift; sourceTree = "<group>"; };
 		F951E14172B042B05A687B8E /* AsaHealthKit */ = {isa = PBXFileReference; lastKnownFileType = folder; name = AsaHealthKit; path = ../../Packages/AsaHealthKit; sourceTree = SOURCE_ROOT; };
 		FA19652609FA7C2CCF10420B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -100,10 +104,19 @@
 				FA19652609FA7C2CCF10420B /* Info.plist */,
 				36D548CCAAB09FFBB17A8B6D /* Components */,
 				64F5130DCDDC9495E7392CA6 /* Models */,
+				241D637544884797799A1445 /* Services */,
 				97BAB813F4C205F9654D3D58 /* ViewModels */,
 				4F5D99B30A6C4B073419A767 /* Views */,
 			);
 			path = AsaWorkoutPlanner;
+			sourceTree = "<group>";
+		};
+		241D637544884797799A1445 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				F1F1E79F3631BF108CAFE1E8 /* ProgressiveOverloadService.swift */,
+			);
+			path = Services;
 			sourceTree = "<group>";
 		};
 		36D548CCAAB09FFBB17A8B6D /* Components */ = {
@@ -123,6 +136,7 @@
 				E3CB6A7723C72FD3AA8BA031 /* PlanDetailView.swift */,
 				011F0816EDD21C1323C2C441 /* PlanListView.swift */,
 				438C5B30DD4634B08BC8DC27 /* PlanScheduleEditorView.swift */,
+				8609939497ED815EF9A16431 /* ProgressiveOverloadSuggestionView.swift */,
 				0086373DA124EB3170B247B9 /* RestTimerView.swift */,
 				55312B724D21E4BC0858C839 /* SettingsView.swift */,
 				D4F0D1E6C8FD10CFF0ECAAFC /* WorkoutProgressView.swift */,
@@ -306,6 +320,8 @@
 				8BFF7CEDFF4300E1997225E3 /* PlanListView.swift in Sources */,
 				3A592102553D3B4EF16BC61B /* PlanScheduleEditorView.swift in Sources */,
 				663D691032635EAA651E093F /* PresetExercises.swift in Sources */,
+				EF13D83D0023DADE483D8BAA /* ProgressiveOverloadService.swift in Sources */,
+				5665683D12CB5E0A043695EC /* ProgressiveOverloadSuggestionView.swift in Sources */,
 				76265670D37A583078A8D1F9 /* RestTimerView.swift in Sources */,
 				C22EF5B7B5E90CD1D416A688 /* SettingsView.swift in Sources */,
 				079E92EDBBBD0FCD888731B5 /* WorkoutPlan.swift in Sources */,

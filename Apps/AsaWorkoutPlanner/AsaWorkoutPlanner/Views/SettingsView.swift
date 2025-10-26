@@ -17,6 +17,8 @@ struct SettingsView: View {
     @AppStorage("autoProgressiveOverload") private var autoProgressiveOverload = false
     @AppStorage("reminderEnabled") private var reminderEnabled = false
     @State private var showingAbout = false
+    @State private var showingExportSheet = false
+    @State private var showingImportSheet = false
     
     // MARK: - Body
     
@@ -51,9 +53,21 @@ struct SettingsView: View {
                     } label: {
                         Label("サンプルプランを追加", systemImage: "plus.square")
                     }
-                    
+
+                    Button {
+                        showingExportSheet = true
+                    } label: {
+                        Label("データをエクスポート", systemImage: "square.and.arrow.up")
+                    }
+
+                    Button {
+                        showingImportSheet = true
+                    } label: {
+                        Label("データをインポート", systemImage: "square.and.arrow.down")
+                    }
+
                     LabeledContent("総ワークアウト数", value: "\(viewModel.totalWorkouts)")
-                    
+
                     LabeledContent("総運動時間", value: formatDuration(viewModel.totalDuration))
                 }
                 
@@ -86,6 +100,16 @@ struct SettingsView: View {
             .navigationBarTitleDisplayMode(.large)
             .sheet(isPresented: $showingAbout) {
                 AboutView()
+            }
+            .alert("データのエクスポート", isPresented: $showingExportSheet) {
+                Button("OK") { }
+            } message: {
+                Text("エクスポート機能は実装予定です。全てのワークアウトデータをJSON形式でエクスポートできるようになります。")
+            }
+            .alert("データのインポート", isPresented: $showingImportSheet) {
+                Button("OK") { }
+            } message: {
+                Text("インポート機能は実装予定です。JSON形式のワークアウトデータをインポートできるようになります。")
             }
         }
     }

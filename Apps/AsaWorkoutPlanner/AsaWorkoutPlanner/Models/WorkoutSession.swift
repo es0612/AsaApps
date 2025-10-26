@@ -121,12 +121,29 @@ final class WorkoutSession {
     }
     
     private func calculateCalories() {
-        // 簡易的なカロリー計算（MET値ベース）
         let durationInMinutes = duration / 60
-        let averageMET = 6.0  // 中強度の運動として仮定
         let bodyWeight = 70.0  // デフォルト体重（将来的にユーザー設定から取得）
-        
-        totalCaloriesBurned = averageMET * bodyWeight * durationInMinutes / 60
+        let age = 30.0  // デフォルト年齢
+        let isMale = true  // デフォルト性別
+
+        // 心拍数データがある場合は心拍数ベースの計算
+        if let avgHR = averageHeartRate, avgHR > 0 {
+            // Keytel式: より正確なカロリー計算
+            // 男性: ((年齢 × 0.2017) + (体重 × 0.09036) + (心拍数 × 0.6309) - 55.0969) × 時間 / 4.184
+            // 女性: ((年齢 × 0.074) + (体重 × 0.05741) + (心拍数 × 0.4472) - 20.4022) × 時間 / 4.184
+
+            let caloriesPerMinute = if isMale {
+                ((age * 0.2017) + (bodyWeight * 0.09036) + (Double(avgHR) * 0.6309) - 55.0969) / 4.184
+            } else {
+                ((age * 0.074) + (bodyWeight * 0.05741) + (Double(avgHR) * 0.4472) - 20.4022) / 4.184
+            }
+
+            totalCaloriesBurned = caloriesPerMinute * durationInMinutes
+        } else {
+            // 心拍数データがない場合はMET値ベース
+            let averageMET = 6.0  // 中強度の運動として仮定
+            totalCaloriesBurned = averageMET * bodyWeight * durationInMinutes / 60
+        }
     }
     
     func exportSummary() -> String {

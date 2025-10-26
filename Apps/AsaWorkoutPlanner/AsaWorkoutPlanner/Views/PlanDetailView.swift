@@ -34,7 +34,10 @@ struct PlanDetailView: View {
                     if !plan.scheduledDays.isEmpty {
                         scheduleSection
                     }
-                    
+
+                    // プログレッシブ・オーバーロード提案
+                    progressiveOverloadSection
+
                     // エクササイズリスト
                     exerciseListSection
                     
@@ -173,7 +176,19 @@ struct PlanDetailView: View {
             )
         }
     }
-    
+
+    private var progressiveOverloadSection: some View {
+        let suggestions = viewModel.getProgressiveOverloadSuggestions(for: plan)
+
+        return Group {
+            if !suggestions.isEmpty {
+                ProgressiveOverloadSuggestionView(suggestions: suggestions) { suggestion in
+                    viewModel.applyProgressiveOverloadSuggestion(suggestion, to: plan)
+                }
+            }
+        }
+    }
+
     private var exerciseListSection: some View {
         VStack(alignment: .leading, spacing: 12) {
             HStack {
