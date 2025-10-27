@@ -14,6 +14,7 @@ struct SettingsView: View {
     @Bindable var viewModel: WorkoutPlannerViewModel
     @AppStorage("weeklyGoal") private var weeklyGoal = 3
     @AppStorage("restTimerSound") private var restTimerSound = true
+    @AppStorage("restTimerAutoStart") private var restTimerAutoStart = true
     @AppStorage("autoProgressiveOverload") private var autoProgressiveOverload = false
     @AppStorage("reminderEnabled") private var reminderEnabled = false
     @State private var showingAbout = false
@@ -40,9 +41,11 @@ struct SettingsView: View {
                 // ワークアウト設定
                 Section("ワークアウト設定") {
                     Toggle("休憩タイマー音", isOn: $restTimerSound)
-                    
+
+                    Toggle("休憩タイマーを自動開始", isOn: $restTimerAutoStart)
+
                     Toggle("自動プログレッシブオーバーロード", isOn: $autoProgressiveOverload)
-                    
+
                     Toggle("リマインダー通知", isOn: $reminderEnabled)
                 }
                 

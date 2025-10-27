@@ -27,6 +27,7 @@ struct RestTimerView: View {
 
     let onComplete: () -> Void
     let exerciseName: String?
+    let autoStart: Bool
 
     // タイマープリセット
     private let presets: [TimeInterval] = [30, 60, 90, 120, 180]
@@ -36,12 +37,14 @@ struct RestTimerView: View {
     init(
         initialTime: TimeInterval = 60,
         exerciseName: String? = nil,
+        autoStart: Bool = true,
         onComplete: @escaping () -> Void
     ) {
         self._timeRemaining = State(initialValue: initialTime)
         self._totalTime = State(initialValue: initialTime)
         self._selectedPreset = State(initialValue: initialTime)
         self.exerciseName = exerciseName
+        self.autoStart = autoStart
         self.onComplete = onComplete
     }
 
@@ -82,6 +85,16 @@ struct RestTimerView: View {
             .padding()
         }
         .preferredColorScheme(.dark)
+        .onAppear {
+            if autoStart {
+                // ハプティックフィードバック
+                let generator = UIImpactFeedbackGenerator(style: .medium)
+                generator.impactOccurred()
+
+                // タイマー自動開始
+                startTimer()
+            }
+        }
         .onDisappear {
             timerTask?.cancel()
         }

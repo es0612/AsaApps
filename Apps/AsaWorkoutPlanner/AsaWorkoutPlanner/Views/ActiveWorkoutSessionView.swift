@@ -15,9 +15,15 @@ struct ActiveWorkoutSessionView: View {
     @Bindable var viewModel: WorkoutPlannerViewModel
     @Environment(\.dismiss) private var dismiss
 
+    @AppStorage("restTimerAutoStart") private var restTimerAutoStart = true
+
     @State private var currentExerciseIndex = 0
     @State private var showingRestTimer = false
     @State private var restTimeDuration: TimeInterval = 60
+
+    // リアルタイム表示用の時刻状態
+    @State private var currentTime = Date()
+    @State private var displayUpdateTask: Task<Void, Never>?
 
     // セット入力用の状態
     @State private var repsInput: String = ""
@@ -67,7 +73,8 @@ struct ActiveWorkoutSessionView: View {
             .fullScreenCover(isPresented: $showingRestTimer) {
                 RestTimerView(
                     initialTime: restTimeDuration,
-                    exerciseName: getCurrentExercise()?.exerciseName
+                    exerciseName: getCurrentExercise()?.exerciseName,
+                    autoStart: restTimerAutoStart
                 ) {
                     // タイマー完了時の処理
                     print("休憩完了")
@@ -75,6 +82,10 @@ struct ActiveWorkoutSessionView: View {
             }
             .onAppear {
                 initializeInputs()
+                startDisplayUpdateTask()
+            }
+            .onDisappear {
+                stopDisplayUpdateTask()
             }
         }
     }
@@ -98,7 +109,7 @@ struct ActiveWorkoutSessionView: View {
                     Spacer()
 
                     VStack(alignment: .trailing, spacing: 4) {
-                        Text(session.displayDuration)
+                        Text(getRealtimeDuration(session))
                             .font(.title2)
                             .fontWeight(.bold)
                             .monospacedDigit()
@@ -425,6 +436,41 @@ struct ActiveWorkoutSessionView: View {
     private func cancelSession() {
         viewModel.cancelSession()
         dismiss()
+    }
+
+    // リアルタイム表示用のヘルパー
+    private func getRealtimeDuration(_ session: WorkoutSession) -> String {
+        // currentTimeを参照することで、状態変化を検知
+        _ = currentTime
+
+        let end = session.endTime ?? Date()
+        let duration = end.timeIntervalSince(session.startTime) - session.pausedDuration
+        let totalSeconds = Int(duration)
+        let hours = totalSeconds / 3600
+        let minutes = (totalSeconds % 3600) / 60
+        let seconds = totalSeconds % 60
+
+        if hours > 0 {
+            return String(format: "%d:%02d:%02d", hours, minutes, seconds)
+        } else {
+            return String(format: "%d:%02d", minutes, seconds)
+        }
+    }
+
+    private func startDisplayUpdateTask() {
+        displayUpdateTask = Task {
+            while !Task.isCancelled {
+                try? await Task.sleep(nanoseconds: 1_000_000_000) // 1秒
+                await MainActor.run {
+                    currentTime = Date()
+                }
+            }
+        }
+    }
+
+    private func stopDisplayUpdateTask() {
+        displayUpdateTask?.cancel()
+        displayUpdateTask = nil
     }
 }
 
