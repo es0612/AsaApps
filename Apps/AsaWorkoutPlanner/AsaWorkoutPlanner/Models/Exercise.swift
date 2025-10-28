@@ -25,7 +25,11 @@ final class Exercise {
     var reps: Int = 10
     var weight: Double?  // kg単位
     var duration: TimeInterval?  // 秒単位（時間ベースの運動用）
-    var restTime: TimeInterval = 60  // 秒単位
+
+    /// セット間の休憩時間（秒単位）
+    /// - Note: WorkoutPlanの推定時間計算時には分単位に変換される
+    var restTime: TimeInterval = 60  // デフォルト: 60秒
+
     var tempo: String?  // 例: "3-1-2-1" (下降-停止-上昇-停止)
     
     // 詳細情報

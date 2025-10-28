@@ -32,6 +32,10 @@ final class WorkoutPlan {
     
     // スケジュール設定
     var scheduledDays: [WeekDay] = []
+
+    /// ワークアウトの推定所要時間（分単位）
+    /// - Note: updateEstimatedDuration()で自動計算、またはユーザーが手動設定可能
+    /// - Note: 表示時は分単位、または時:分形式に変換される
     var estimatedDuration: TimeInterval = 0  // 分単位
     
     // MARK: - Initialization
@@ -82,8 +86,12 @@ final class WorkoutPlan {
     
     func updateEstimatedDuration() {
         estimatedDuration = exercises.reduce(0) { total, exercise in
+            // エクササイズ実行時間（分）
             let exerciseDuration = exercise.duration ?? (Double(exercise.sets) * 2)  // デフォルト: 1セット2分
-            let restDuration = Double(exercise.sets - 1) * exercise.restTime
+
+            // 休憩時間（秒 → 分に変換）
+            let restDuration = Double(exercise.sets - 1) * (exercise.restTime / 60.0)
+
             return total + exerciseDuration + restDuration
         }
     }
