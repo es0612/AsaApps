@@ -154,7 +154,7 @@ class NetworkManager: ObservableObject {
         let cacheAge = now.timeIntervalSince(cached.timestamp)
         
         // キャッシュ有効期限チェック
-        if cacheAge < Constants.API.cacheExpirationMinutes * 60 {
+        if cacheAge < TimeInterval(Constants.API.cacheExpirationMinutes * 60) {
             return cached.data
         } else {
             cache.removeObject(forKey: key as NSString)

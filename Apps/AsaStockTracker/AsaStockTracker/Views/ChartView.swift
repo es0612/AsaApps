@@ -125,10 +125,11 @@ struct RealChartView: View {
                     .onTapGesture { location in
                         // タップ位置から最も近いデータポイントを選択
                         let xPosition = location.x
-                        let xRange = chartProxy.plotAreaFrame.origin.x...chartProxy.plotAreaFrame.maxX
-                        
+                        let plotAreaFrame = geometry[chartProxy.plotAreaFrame]
+                        let xRange = plotAreaFrame.origin.x...plotAreaFrame.maxX
+
                         if xRange.contains(xPosition) {
-                            let relativeX = (xPosition - chartProxy.plotAreaFrame.origin.x) / chartProxy.plotAreaFrame.width
+                            let relativeX = (xPosition - plotAreaFrame.origin.x) / plotAreaFrame.width
                             let index = Int(relativeX * CGFloat(data.count))
                             
                             if index >= 0 && index < data.count {

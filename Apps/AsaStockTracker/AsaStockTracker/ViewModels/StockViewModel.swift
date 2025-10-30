@@ -24,7 +24,7 @@ final class StockViewModel {
     var searchText = ""
     
     private let apiService = StockAPIService.shared
-    private var updateTimer: Timer?
+    nonisolated(unsafe) private var updateTimer: Timer?
     
     // MARK: - Initialization
     init() {
@@ -33,7 +33,8 @@ final class StockViewModel {
     }
     
     deinit {
-        stopAutoUpdate()
+        updateTimer?.invalidate()
+        updateTimer = nil
     }
     
     // MARK: - Public Methods
