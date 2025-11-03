@@ -25,6 +25,13 @@
         <key>UIApplicationSupportsMultipleScenes</key>
         <false/>
     </dict>
+    <key>UILaunchScreen</key>
+    <dict>
+        <key>UIColorName</key>
+        <string></string>
+        <key>UIImageName</key>
+        <string></string>
+    </dict>
     <key>UIRequiredDeviceCapabilities</key>
     <array>
         <string>armv7</string>
