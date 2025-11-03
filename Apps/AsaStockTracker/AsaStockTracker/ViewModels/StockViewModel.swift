@@ -22,8 +22,9 @@ final class StockViewModel {
     var isRefreshing = false
     var errorMessage: String?
     var searchText = ""
-    
-    private let apiService = StockAPIService.shared
+
+    // Yahoo Finance APIを使用
+    private let apiService = YahooFinanceService.shared
     nonisolated(unsafe) private var updateTimer: Timer?
     
     // MARK: - Initialization
@@ -44,12 +45,9 @@ final class StockViewModel {
         Task {
             isLoading = true
             defer { isLoading = false }
-            
-            // デモモードでサンプルデータを使用
-            stocks = await apiService.fetchDemoData()
-            
-            // 実際のAPI使用時は以下をコメントアウト解除
-            // await fetchStocks(symbols: Constants.SampleSymbols.defaultSymbols)
+
+            // Yahoo Finance APIで実際のデータを取得
+            await fetchStocks(symbols: Constants.SampleSymbols.defaultSymbols)
         }
     }
     
@@ -100,11 +98,11 @@ final class StockViewModel {
     }
     
     // チャートデータの取得
-    func fetchChartData(for stock: Stock) async {
+    func fetchChartData(for stock: Stock, range: String = "1d", interval: String = "5m") async {
         selectedStock = stock
-        
+
         do {
-            chartData = try await apiService.fetchIntradayData(for: stock.symbol)
+            chartData = try await apiService.fetchChartData(for: stock.symbol, range: range, interval: interval)
         } catch {
             handleError(error)
             chartData = []

@@ -10,21 +10,25 @@ import Foundation
 enum Constants {
     // MARK: - API Configuration
     enum API {
-        // Alpha Vantage API設定
-        // 注意: 本番環境では、APIキーを安全に管理してください
-        // デモ用のキーを使用しています
-        static let apiKey = "demo"
-        static let baseURL = "https://www.alphavantage.co/query"
-        
-        // APIレート制限
-        static let requestsPerMinute = 5
-        static let requestsPerDay = 500
-        
+        // Yahoo Finance API設定（無料・登録不要）
+        static let baseURL = "https://query1.finance.yahoo.com"
+        static let chartURL = "https://query1.finance.yahoo.com/v8/finance/chart"
+        static let searchURL = "https://query2.finance.yahoo.com/v1/finance/search"
+
+        // APIレート制限（Yahoo Finance: 2000リクエスト/時間 ≈ 33リクエスト/分）
+        static let requestsPerHour = 2000
+        static let requestsPerMinute = 33
+
         // キャッシュ設定
         static let cacheExpirationMinutes = 5
-        
+
         // タイムアウト設定
         static let timeoutInterval: TimeInterval = 30
+
+        // DEPRECATED: Alpha Vantage設定（参考用に保持）
+        // static let alphaVantageBaseURL = "https://www.alphavantage.co/query"
+        // static let alphaVantageAPIKey = "demo"
+        // static let alphaVantageRequestsPerMinute = 5
     }
     
     // MARK: - Update Intervals

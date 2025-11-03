@@ -18,8 +18,11 @@ class StockAPIService: ObservableObject {
     // MARK: - Public Methods
     
     // 株価の取得
+    // DEPRECATED: Alpha Vantage実装（参考用）
     func fetchQuote(for symbol: String) async throws -> Stock {
-        let urlString = "\(Constants.API.baseURL)?function=GLOBAL_QUOTE&symbol=\(symbol)&apikey=\(Constants.API.apiKey)"
+        let apiKey = "demo" // Alpha Vantage demo key
+        let baseURL = "https://www.alphavantage.co/query"
+        let urlString = "\(baseURL)?function=GLOBAL_QUOTE&symbol=\(symbol)&apikey=\(apiKey)"
         
         guard let url = URL(string: urlString) else {
             throw NetworkError.invalidURL
@@ -57,9 +60,12 @@ class StockAPIService: ObservableObject {
     }
     
     // 銘柄検索
+    // DEPRECATED: Alpha Vantage実装（参考用）
     func searchSymbols(query: String) async throws -> [SearchResult] {
+        let apiKey = "demo" // Alpha Vantage demo key
+        let baseURL = "https://www.alphavantage.co/query"
         let encodedQuery = query.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? query
-        let urlString = "\(Constants.API.baseURL)?function=SYMBOL_SEARCH&keywords=\(encodedQuery)&apikey=\(Constants.API.apiKey)"
+        let urlString = "\(baseURL)?function=SYMBOL_SEARCH&keywords=\(encodedQuery)&apikey=\(apiKey)"
         
         guard let url = URL(string: urlString) else {
             throw NetworkError.invalidURL
@@ -70,8 +76,11 @@ class StockAPIService: ObservableObject {
     }
     
     // チャートデータの取得（5分足）
+    // DEPRECATED: Alpha Vantage実装（参考用）
     func fetchIntradayData(for symbol: String, interval: String = "5min") async throws -> [ChartDataPoint] {
-        let urlString = "\(Constants.API.baseURL)?function=TIME_SERIES_INTRADAY&symbol=\(symbol)&interval=\(interval)&apikey=\(Constants.API.apiKey)"
+        let apiKey = "demo" // Alpha Vantage demo key
+        let baseURL = "https://www.alphavantage.co/query"
+        let urlString = "\(baseURL)?function=TIME_SERIES_INTRADAY&symbol=\(symbol)&interval=\(interval)&apikey=\(apiKey)"
         
         guard let url = URL(string: urlString) else {
             throw NetworkError.invalidURL

@@ -21,8 +21,9 @@ struct Stock: Identifiable, Codable, Hashable {
     var marketCap: Double?
     var high52Week: Double?
     var low52Week: Double?
+    var currency: String?
     var lastUpdated: Date
-    
+
     init(
         id: UUID = UUID(),
         symbol: String,
@@ -35,6 +36,7 @@ struct Stock: Identifiable, Codable, Hashable {
         marketCap: Double? = nil,
         high52Week: Double? = nil,
         low52Week: Double? = nil,
+        currency: String? = nil,
         lastUpdated: Date = Date()
     ) {
         self.id = id
@@ -48,6 +50,7 @@ struct Stock: Identifiable, Codable, Hashable {
         self.marketCap = marketCap
         self.high52Week = high52Week
         self.low52Week = low52Week
+        self.currency = currency
         self.lastUpdated = lastUpdated
     }
     
