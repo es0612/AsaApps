@@ -97,6 +97,37 @@ struct SearchView: View {
         }
         .navigationTitle(isPresented ? "銘柄を追加" : "銘柄検索")
         .navigationBarTitleDisplayMode(.inline)
+        // エラーアラート
+        .alert("エラー", isPresented: Binding(
+            get: { watchListViewModel.showingError },
+            set: { watchListViewModel.showingError = $0 }
+        )) {
+            Button("OK") {
+                watchListViewModel.showingError = false
+            }
+        } message: {
+            Text(watchListViewModel.errorMessage ?? "不明なエラーが発生しました")
+        }
+        // 成功通知（トースト風）
+        .overlay(alignment: .top) {
+            if watchListViewModel.showingSuccess {
+                HStack(spacing: 8) {
+                    Image(systemName: "checkmark.circle.fill")
+                        .foregroundColor(.green)
+                    Text(watchListViewModel.successMessage ?? "追加しました")
+                        .font(.subheadline)
+                }
+                .padding()
+                .background(
+                    RoundedRectangle(cornerRadius: 10)
+                        .fill(.ultraThinMaterial)
+                        .shadow(radius: 4)
+                )
+                .padding(.top, 8)
+                .transition(.move(edge: .top).combined(with: .opacity))
+            }
+        }
+        .animation(.spring(response: 0.3), value: watchListViewModel.showingSuccess)
         .toolbar {
             if isPresented {
                 ToolbarItem(placement: .navigationBarLeading) {

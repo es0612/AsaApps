@@ -97,6 +97,16 @@ struct Stock: Identifiable, Codable, Hashable {
         }
         return String(format: "$%.0f", marketCap)
     }
+
+    var formattedLastUpdated: String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "HH:mm"
+        return formatter.string(from: lastUpdated)
+    }
+
+    var dataSourceLabel: String {
+        "Yahoo Finance • \(formattedLastUpdated)更新"
+    }
 }
 
 // MARK: - Sample Data

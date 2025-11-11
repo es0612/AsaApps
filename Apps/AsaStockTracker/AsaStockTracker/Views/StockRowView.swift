@@ -20,18 +20,23 @@ struct StockRowView: View {
                     Text(stock.symbol)
                         .font(.headline)
                         .fontWeight(.semibold)
-                    
+
                     if isFavorite {
                         Image(systemName: "star.fill")
                             .font(.caption)
                             .foregroundColor(.yellow)
                     }
                 }
-                
+
                 Text(stock.name)
                     .font(.caption)
                     .foregroundColor(.secondary)
                     .lineLimit(1)
+
+                // データソース表示
+                Text(stock.dataSourceLabel)
+                    .font(.caption2)
+                    .foregroundColor(.secondary.opacity(0.8))
             }
             
             Spacer()

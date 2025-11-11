@@ -19,8 +19,14 @@ final class WatchListViewModel {
     var isEditing = false
     var showingAddStock = false
     var sortOption: StockViewModel.SortOption = .symbol
-    
-    private let apiService = StockAPIService.shared
+
+    // エラー通知
+    var errorMessage: String?
+    var showingError = false
+    var successMessage: String?
+    var showingSuccess = false
+
+    private let apiService = YahooFinanceService.shared
     
     // MARK: - Computed Properties
     var sortedStocks: [Stock] {
@@ -117,11 +123,52 @@ final class WatchListViewModel {
     
     // 検索結果から銘柄を追加
     func addFromSearch(_ searchResult: SearchResult) async {
+        print("🔍 検索結果から追加開始: \(searchResult.symbol)")
+
+        // 既にウォッチリストにあるかチェック
+        if watchList.contains(symbol: searchResult.symbol) {
+            print("⚠️ すでにウォッチリストに追加済み: \(searchResult.symbol)")
+            errorMessage = "\(searchResult.symbol) はすでにウォッチリストに追加されています"
+            showingError = true
+            return
+        }
+
+        // 上限チェック
+        guard canAddMoreStocks else {
+            print("⚠️ ウォッチリスト上限に達しています")
+            errorMessage = "ウォッチリストの上限（\(Constants.UI.maxStocksInWatchlist)銘柄）に達しています"
+            showingError = true
+            return
+        }
+
         do {
+            print("📡 Yahoo Finance APIから株価取得中...")
             let stock = try await apiService.fetchQuote(for: searchResult.symbol)
+            print("✅ 株価取得成功: \(stock.name) - $\(stock.currentPrice)")
+
             addToWatchList(stock)
+            print("💾 ウォッチリストに追加完了: 現在\(watchListCount)銘柄")
+
+            // 成功メッセージ
+            successMessage = "\(stock.name) をウォッチリストに追加しました"
+            showingSuccess = true
+
+            // 3秒後にメッセージをクリア
+            Task {
+                try? await Task.sleep(nanoseconds: 3_000_000_000)
+                successMessage = nil
+                showingSuccess = false
+            }
         } catch {
-            print("Error adding stock from search: \(error)")
+            print("❌ エラー発生: \(error.localizedDescription)")
+
+            // ユーザーフレンドリーなエラーメッセージ
+            if let networkError = error as? NetworkError {
+                errorMessage = networkError.errorDescription
+            } else {
+                errorMessage = "銘柄の追加に失敗しました: \(error.localizedDescription)"
+            }
+            showingError = true
         }
     }
     
