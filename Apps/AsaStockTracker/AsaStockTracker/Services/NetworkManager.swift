@@ -11,19 +11,25 @@ import Foundation
 enum NetworkError: LocalizedError {
     case invalidURL
     case noData
+    case priceUnavailable
+    case marketClosed
     case decodingError
     case serverError(String)
     case apiLimitReached
     case networkUnavailable
     case unauthorized
     case unknown
-    
+
     var errorDescription: String? {
         switch self {
         case .invalidURL:
             return "無効なURLです"
         case .noData:
             return "データが取得できませんでした"
+        case .priceUnavailable:
+            return "この銘柄の価格データが現在利用できません"
+        case .marketClosed:
+            return "市場時間外のため、価格データが利用できません"
         case .decodingError:
             return "データの解析に失敗しました"
         case .serverError(let message):

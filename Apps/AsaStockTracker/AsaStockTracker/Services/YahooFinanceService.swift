@@ -22,18 +22,27 @@ class YahooFinanceService: ObservableObject {
     /// - Parameter symbol: 銘柄シンボル（例: "AAPL", "7203.T"）
     /// - Returns: Stock オブジェクト
     func fetchQuote(for symbol: String) async throws -> Stock {
+        print("📡 [YahooFinanceService] fetchQuote開始: \(symbol)")
         let urlString = "\(Constants.API.chartURL)/\(symbol)?interval=1d&range=1d"
 
         guard let url = URL(string: urlString) else {
+            print("❌ [YahooFinanceService] 無効なURL: \(urlString)")
             throw NetworkError.invalidURL
         }
 
+        print("🌐 [YahooFinanceService] APIリクエスト: \(url.absoluteString)")
         let response = try await networkManager.fetch(YahooChartResponse.self, from: url)
 
+        print("📦 [YahooFinanceService] APIレスポンス受信")
+        print("   - result数: \(response.chart.result.count)")
+        print("   - error: \(response.chart.error?.description ?? "なし")")
+
         guard let result = response.chart.result.first else {
+            print("❌ [YahooFinanceService] resultが空です")
             throw NetworkError.noData
         }
 
+        print("🔍 [YahooFinanceService] result取得成功: \(result.meta.symbol)")
         return try result.toStock()
     }
 
@@ -121,6 +130,10 @@ struct YahooChartResponse: Codable {
             let symbol: String
             let regularMarketPrice: Double?
             let previousClose: Double?
+            let postMarketPrice: Double?        // アフターマーケット価格
+            let preMarketPrice: Double?         // プレマーケット価格
+            let fiftyTwoWeekHigh: Double?       // 52週高値
+            let fiftyTwoWeekLow: Double?        // 52週安値
             let currency: String?
             let longName: String?
             let shortName: String?
@@ -140,13 +153,56 @@ struct YahooChartResponse: Codable {
 
         /// StockモデルUへ変換
         func toStock() throws -> Stock {
-            guard let currentPrice = meta.regularMarketPrice,
-                  let previousClose = meta.previousClose else {
+            print("🔄 [toStock] 変換開始: \(meta.symbol)")
+            print("   - symbol: \(meta.symbol)")
+            print("   - longName: \(meta.longName ?? "nil")")
+            print("   - shortName: \(meta.shortName ?? "nil")")
+            print("   - currency: \(meta.currency ?? "nil")")
+            print("   - regularMarketPrice: \(meta.regularMarketPrice?.description ?? "nil")")
+            print("   - postMarketPrice: \(meta.postMarketPrice?.description ?? "nil")")
+            print("   - preMarketPrice: \(meta.preMarketPrice?.description ?? "nil")")
+            print("   - previousClose: \(meta.previousClose?.description ?? "nil")")
+
+            // 価格データのフォールバック処理
+            // 1. regularMarketPrice（通常時）
+            // 2. postMarketPrice（アフターマーケット）
+            // 3. preMarketPrice（プレマーケット）
+            // 4. previousClose（前日終値）
+            let currentPrice: Double
+            if let regularPrice = meta.regularMarketPrice {
+                currentPrice = regularPrice
+                print("💰 [toStock] 価格取得: regularMarketPrice = $\(regularPrice)")
+            } else if let postPrice = meta.postMarketPrice {
+                currentPrice = postPrice
+                print("🌙 [toStock] 価格取得: postMarketPrice (アフターマーケット) = $\(postPrice)")
+            } else if let prePrice = meta.preMarketPrice {
+                currentPrice = prePrice
+                print("🌅 [toStock] 価格取得: preMarketPrice (プレマーケット) = $\(prePrice)")
+            } else if let prevClose = meta.previousClose {
+                currentPrice = prevClose
+                print("📅 [toStock] 価格取得: previousClose (前日終値) = $\(prevClose)")
+            } else {
+                print("❌ [toStock] エラー: すべての価格データが nil です")
+                print("   - regularMarketPrice: nil")
+                print("   - postMarketPrice: nil")
+                print("   - preMarketPrice: nil")
+                print("   - previousClose: nil")
+                throw NetworkError.noData
+            }
+
+            guard let previousClose = meta.previousClose else {
+                print("❌ [toStock] エラー: previousClose が nil です")
                 throw NetworkError.noData
             }
 
             let change = currentPrice - previousClose
             let changePercent = (change / previousClose) * 100
+
+            print("💰 [toStock] 価格計算完了")
+            print("   - currentPrice: $\(currentPrice)")
+            print("   - previousClose: $\(previousClose)")
+            print("   - change: $\(change)")
+            print("   - changePercent: \(changePercent)%")
 
             // 出来高を取得（最新のデータ）
             let volume: Int
@@ -159,7 +215,9 @@ struct YahooChartResponse: Codable {
                 volume = 0
             }
 
-            return Stock(
+            print("📊 [toStock] 出来高: \(volume)")
+
+            let stock = Stock(
                 symbol: meta.symbol,
                 name: meta.longName ?? meta.shortName ?? meta.symbol,
                 currentPrice: currentPrice,
@@ -169,6 +227,9 @@ struct YahooChartResponse: Codable {
                 volume: volume,
                 currency: meta.currency
             )
+
+            print("✅ [toStock] Stock変換成功: \(stock.symbol) - $\(stock.currentPrice)")
+            return stock
         }
 
         /// ChartDataPointへ変換
