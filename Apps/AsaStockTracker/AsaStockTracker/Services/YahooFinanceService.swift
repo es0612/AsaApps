@@ -190,13 +190,15 @@ struct YahooChartResponse: Codable {
                 throw NetworkError.noData
             }
 
-            guard let previousClose = meta.previousClose else {
-                print("❌ [toStock] エラー: previousClose が nil です")
-                throw NetworkError.noData
+            // previousCloseのフォールバック処理（nil の場合は currentPrice を使用）
+            let previousClose = meta.previousClose ?? currentPrice
+            if meta.previousClose == nil {
+                print("⚠️ [toStock] 警告: previousClose が nil のため currentPrice を使用")
+                print("   結果: 変動額・変動率は 0.0 になります")
             }
 
             let change = currentPrice - previousClose
-            let changePercent = (change / previousClose) * 100
+            let changePercent = previousClose != 0 ? (change / previousClose) * 100 : 0.0
 
             print("💰 [toStock] 価格計算完了")
             print("   - currentPrice: $\(currentPrice)")
