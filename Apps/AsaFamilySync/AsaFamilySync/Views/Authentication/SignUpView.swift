@@ -130,9 +130,8 @@ struct SignUpView: View {
                                 }
                             },
                             color: AsaColors.coffeeBrown,
-                            isLoading: authViewModel.isLoading
+                            isEnabled: !authViewModel.isLoading && isFormValid
                         )
-                        .disabled(!isFormValid)
                     }
                     .padding(.horizontal, 30)
 

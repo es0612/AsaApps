@@ -3,7 +3,7 @@ import AsaUIKit
 
 struct CreateFamilyView: View {
     @Environment(\.dismiss) private var dismiss
-    @StateObject private var familyViewModel = FamilyGroupViewModel()
+    @EnvironmentObject var familyViewModel: FamilyGroupViewModel
     @EnvironmentObject var authViewModel: AuthViewModel
 
     @State private var familyName = ""
@@ -57,19 +57,26 @@ struct CreateFamilyView: View {
                             title: "グループを作成",
                             action: {
                                 Task {
+                                    guard let user = authViewModel.currentUser else { return }
                                     await familyViewModel.createFamilyGroup(
                                         name: familyName,
-                                        description: familyDescription.isEmpty ? nil : familyDescription
+                                        description: familyDescription.isEmpty ? nil : familyDescription,
+                                        userId: user.uid,
+                                        userName: user.displayName,
+                                        userEmail: user.email
                                     )
                                     if familyViewModel.familyGroup != nil {
+                                        // 家族IDを更新
+                                        if let groupId = familyViewModel.familyGroup?.id {
+                                            await authViewModel.updateUserFamilyId(groupId)
+                                        }
                                         dismiss()
                                     }
                                 }
                             },
                             color: AsaColors.coffeeBrown,
-                            isLoading: familyViewModel.isLoading
+                            isEnabled: !familyViewModel.isLoading && !familyName.isEmpty
                         )
-                        .disabled(familyName.isEmpty)
                     }
                     .padding(.horizontal, 30)
 

@@ -79,9 +79,8 @@ struct LoginView: View {
                                 }
                             },
                             color: AsaColors.coffeeBrown,
-                            isLoading: authViewModel.isLoading
+                            isEnabled: !authViewModel.isLoading && !email.isEmpty && !password.isEmpty
                         )
-                        .disabled(email.isEmpty || password.isEmpty)
 
                         // パスワードリセット
                         Button("パスワードを忘れた方はこちら") {
@@ -104,8 +103,7 @@ struct LoginView: View {
                         AsaButton(
                             title: "新規登録",
                             action: { isSignUp = true },
-                            color: AsaColors.mutedSage,
-                            icon: "person.badge.plus"
+                            color: AsaColors.mutedSage
                         )
                         .padding(.horizontal, 30)
                     }
@@ -171,9 +169,8 @@ struct ResetPasswordView: View {
                         }
                     },
                     color: AsaColors.coffeeBrown,
-                    isLoading: authViewModel.isLoading
+                    isEnabled: !authViewModel.isLoading && !email.isEmpty
                 )
-                .disabled(email.isEmpty)
                 .padding(.horizontal, 30)
 
                 Spacer()

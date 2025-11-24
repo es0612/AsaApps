@@ -1,61 +1,46 @@
 import Foundation
+#if FIREBASE_ENABLED
 import FirebaseFirestore
 import FirebaseAuth
+#endif
 
 @MainActor
 class FamilyGroupViewModel: ObservableObject {
     @Published var familyGroup: FamilyGroup?
     @Published var familyMembers: [FamilyMember] = []
+    @Published var familyEvents: [FamilyEvent] = []
     @Published var isLoading = false
     @Published var errorMessage: String?
 
-    private let db = Firestore.firestore()
-    private var groupListener: ListenerRegistration?
-    private var membersListener: ListenerRegistration?
+    private let dataService: FamilyDataService
+    private var currentGroupId: String?
 
-    deinit {
-        groupListener?.remove()
-        membersListener?.remove()
+    init(dataService: FamilyDataService) {
+        self.dataService = dataService
     }
 
-    func createFamilyGroup(name: String, description: String?) async {
+    // MARK: - Group Management
+
+    func createFamilyGroup(name: String, description: String?, userId: String, userName: String, userEmail: String) async {
         isLoading = true
         errorMessage = nil
 
-        guard let userId = Auth.auth().currentUser?.uid,
-              let userEmail = Auth.auth().currentUser?.email,
-              let userName = Auth.auth().currentUser?.displayName else {
-            errorMessage = "ユーザー情報の取得に失敗しました"
-            isLoading = false
-            return
-        }
-
-        let newGroup = FamilyGroup(
-            name: name,
-            description: description,
-            ownerId: userId
-        )
-
         do {
-            let docRef = try db.collection("families").addDocument(from: newGroup)
-            let groupId = docRef.documentID
-
-            // オーナーをメンバーとして追加
-            let ownerMember = FamilyMember(
-                userId: userId,
-                name: userName,
-                email: userEmail,
-                role: .owner
+            let result = try await dataService.createFamilyGroup(
+                name: name,
+                description: description,
+                ownerId: userId,
+                ownerName: userName,
+                ownerEmail: userEmail
             )
 
-            try await db.collection("families").document(groupId)
-                .collection("members").document(userId).setData(from: ownerMember)
+            familyGroup = result.group
+            currentGroupId = result.groupId
 
-            // ユーザープロファイルを更新
-            await updateUserFamilyId(groupId)
-
-            // リスナーを開始
-            listenToFamilyGroup(groupId: groupId)
+            // メンバーとイベントも取得
+            await refreshData()
+        } catch let error as DataServiceError {
+            errorMessage = error.errorDescription
         } catch {
             errorMessage = "家族グループの作成に失敗しました: \(error.localizedDescription)"
         }
@@ -63,70 +48,25 @@ class FamilyGroupViewModel: ObservableObject {
         isLoading = false
     }
 
-    func joinFamilyGroup(inviteCode: String) async {
+    func joinFamilyGroup(inviteCode: String, userId: String, userName: String, userEmail: String) async {
         isLoading = true
         errorMessage = nil
 
-        guard let userId = Auth.auth().currentUser?.uid,
-              let userEmail = Auth.auth().currentUser?.email,
-              let userName = Auth.auth().currentUser?.displayName else {
-            errorMessage = "ユーザー情報の取得に失敗しました"
-            isLoading = false
-            return
-        }
-
         do {
-            // 招待コードでグループを検索
-            let snapshot = try await db.collection("families")
-                .whereField("inviteCode", isEqualTo: inviteCode.uppercased())
-                .limit(to: 1)
-                .getDocuments()
-
-            guard let document = snapshot.documents.first else {
-                errorMessage = "招待コードが無効です"
-                isLoading = false
-                return
-            }
-
-            let groupId = document.documentID
-            let group = try document.data(as: FamilyGroup.self)
-
-            // メンバー数の確認
-            let membersCount = try await db.collection("families").document(groupId)
-                .collection("members").getDocuments().count
-
-            if membersCount >= group.maxMembers {
-                errorMessage = "このグループは最大人数に達しています"
-                isLoading = false
-                return
-            }
-
-            // 既にメンバーかチェック
-            let memberDoc = try await db.collection("families").document(groupId)
-                .collection("members").document(userId).getDocument()
-
-            if memberDoc.exists {
-                errorMessage = "既にこのグループのメンバーです"
-                isLoading = false
-                return
-            }
-
-            // メンバーとして追加
-            let newMember = FamilyMember(
+            let result = try await dataService.joinFamilyGroup(
+                inviteCode: inviteCode,
                 userId: userId,
-                name: userName,
-                email: userEmail,
-                role: .member
+                userName: userName,
+                userEmail: userEmail
             )
 
-            try await db.collection("families").document(groupId)
-                .collection("members").document(userId).setData(from: newMember)
+            familyGroup = result.group
+            currentGroupId = result.groupId
 
-            // ユーザープロファイルを更新
-            await updateUserFamilyId(groupId)
-
-            // リスナーを開始
-            listenToFamilyGroup(groupId: groupId)
+            // メンバーとイベントも取得
+            await refreshData()
+        } catch let error as DataServiceError {
+            errorMessage = error.errorDescription
         } catch {
             errorMessage = "グループへの参加に失敗しました: \(error.localizedDescription)"
         }
@@ -134,51 +74,51 @@ class FamilyGroupViewModel: ObservableObject {
         isLoading = false
     }
 
-    func listenToFamilyGroup(groupId: String) {
-        // グループ情報のリスナー
-        groupListener = db.collection("families").document(groupId)
-            .addSnapshotListener { [weak self] documentSnapshot, error in
-                guard let document = documentSnapshot else {
-                    self?.errorMessage = "グループ情報の取得に失敗: \(error?.localizedDescription ?? "Unknown error")"
-                    return
-                }
+    func loadFamilyGroup(groupId: String) async {
+        isLoading = true
+        errorMessage = nil
+        currentGroupId = groupId
 
-                do {
-                    self?.familyGroup = try document.data(as: FamilyGroup.self)
-                } catch {
-                    self?.errorMessage = "グループデータの解析に失敗: \(error.localizedDescription)"
-                }
-            }
+        do {
+            familyGroup = try await dataService.fetchFamilyGroup(groupId: groupId)
+            await refreshData()
+        } catch let error as DataServiceError {
+            errorMessage = error.errorDescription
+        } catch {
+            errorMessage = "グループ情報の取得に失敗しました: \(error.localizedDescription)"
+        }
 
-        // メンバーリストのリスナー
-        membersListener = db.collection("families").document(groupId)
-            .collection("members")
-            .order(by: "joinedAt")
-            .addSnapshotListener { [weak self] querySnapshot, error in
-                guard let documents = querySnapshot?.documents else {
-                    self?.errorMessage = "メンバー情報の取得に失敗: \(error?.localizedDescription ?? "Unknown error")"
-                    return
-                }
+        isLoading = false
+    }
 
-                self?.familyMembers = documents.compactMap { doc in
-                    try? doc.data(as: FamilyMember.self)
-                }
-            }
+    func refreshData() async {
+        guard let groupId = currentGroupId else { return }
+
+        do {
+            // グループ、メンバー、イベントを並行取得
+            async let group = dataService.fetchFamilyGroup(groupId: groupId)
+            async let members = dataService.fetchFamilyMembers(groupId: groupId)
+            async let events = dataService.fetchEvents(groupId: groupId)
+
+            familyGroup = try await group
+            familyMembers = try await members
+            familyEvents = try await events
+        } catch {
+            errorMessage = "データの更新に失敗しました: \(error.localizedDescription)"
+        }
     }
 
     func removeMember(memberId: String) async {
-        guard let groupId = familyGroup?.id else { return }
+        guard let groupId = currentGroupId else { return }
 
         isLoading = true
         errorMessage = nil
 
         do {
-            try await db.collection("families").document(groupId)
-                .collection("members").document(memberId).delete()
-
-            // ユーザーのfamilyIdをクリア
-            try await db.collection("users").document(memberId)
-                .updateData(["familyId": FieldValue.delete()])
+            try await dataService.removeMember(groupId: groupId, memberId: memberId)
+            await refreshData()
+        } catch let error as DataServiceError {
+            errorMessage = error.errorDescription
         } catch {
             errorMessage = "メンバーの削除に失敗しました: \(error.localizedDescription)"
         }
@@ -187,15 +127,16 @@ class FamilyGroupViewModel: ObservableObject {
     }
 
     func updateMemberRole(memberId: String, newRole: MemberRole) async {
-        guard let groupId = familyGroup?.id else { return }
+        guard let groupId = currentGroupId else { return }
 
         isLoading = true
         errorMessage = nil
 
         do {
-            try await db.collection("families").document(groupId)
-                .collection("members").document(memberId)
-                .updateData(["role": newRole.rawValue])
+            try await dataService.updateMemberRole(groupId: groupId, memberId: memberId, newRole: newRole)
+            await refreshData()
+        } catch let error as DataServiceError {
+            errorMessage = error.errorDescription
         } catch {
             errorMessage = "権限の変更に失敗しました: \(error.localizedDescription)"
         }
@@ -204,19 +145,17 @@ class FamilyGroupViewModel: ObservableObject {
     }
 
     func regenerateInviteCode() async {
-        guard let groupId = familyGroup?.id else { return }
+        guard let groupId = currentGroupId else { return }
 
         isLoading = true
         errorMessage = nil
 
-        let newCode = FamilyGroup.generateInviteCode()
-
         do {
-            try await db.collection("families").document(groupId)
-                .updateData([
-                    "inviteCode": newCode,
-                    "updatedAt": Date()
-                ])
+            let newCode = try await dataService.regenerateInviteCode(groupId: groupId)
+            familyGroup?.inviteCode = newCode
+            await refreshData()
+        } catch let error as DataServiceError {
+            errorMessage = error.errorDescription
         } catch {
             errorMessage = "招待コードの更新に失敗しました: \(error.localizedDescription)"
         }
@@ -224,28 +163,21 @@ class FamilyGroupViewModel: ObservableObject {
         isLoading = false
     }
 
-    func leaveFamilyGroup() async {
-        guard let groupId = familyGroup?.id,
-              let userId = Auth.auth().currentUser?.uid else { return }
+    func leaveFamilyGroup(userId: String) async {
+        guard let groupId = currentGroupId else { return }
 
         isLoading = true
         errorMessage = nil
 
         do {
-            // メンバーから削除
-            try await db.collection("families").document(groupId)
-                .collection("members").document(userId).delete()
-
-            // ユーザーのfamilyIdをクリア
-            try await db.collection("users").document(userId)
-                .updateData(["familyId": FieldValue.delete()])
-
-            // リスナーを停止
-            groupListener?.remove()
-            membersListener?.remove()
+            try await dataService.leaveFamilyGroup(groupId: groupId, userId: userId)
 
             familyGroup = nil
             familyMembers = []
+            familyEvents = []
+            currentGroupId = nil
+        } catch let error as DataServiceError {
+            errorMessage = error.errorDescription
         } catch {
             errorMessage = "グループからの退出に失敗しました: \(error.localizedDescription)"
         }
@@ -253,17 +185,76 @@ class FamilyGroupViewModel: ObservableObject {
         isLoading = false
     }
 
-    private func updateUserFamilyId(_ familyId: String) async {
-        guard let userId = Auth.auth().currentUser?.uid else { return }
+    // MARK: - Event Management
+
+    func createEvent(_ event: FamilyEvent) async {
+        guard let groupId = currentGroupId else { return }
+
+        isLoading = true
+        errorMessage = nil
 
         do {
-            try await db.collection("users").document(userId)
-                .updateData([
-                    "familyId": familyId,
-                    "updatedAt": Date()
-                ])
+            _ = try await dataService.createEvent(groupId: groupId, event: event)
+            await refreshData()
+        } catch let error as DataServiceError {
+            errorMessage = error.errorDescription
         } catch {
-            print("ユーザープロファイルの更新に失敗: \(error)")
+            errorMessage = "イベントの作成に失敗しました: \(error.localizedDescription)"
         }
+
+        isLoading = false
+    }
+
+    func updateEvent(eventId: String, event: FamilyEvent) async {
+        guard let groupId = currentGroupId else { return }
+
+        isLoading = true
+        errorMessage = nil
+
+        do {
+            try await dataService.updateEvent(groupId: groupId, eventId: eventId, event: event)
+            await refreshData()
+        } catch let error as DataServiceError {
+            errorMessage = error.errorDescription
+        } catch {
+            errorMessage = "イベントの更新に失敗しました: \(error.localizedDescription)"
+        }
+
+        isLoading = false
+    }
+
+    func deleteEvent(eventId: String) async {
+        guard let groupId = currentGroupId else { return }
+
+        isLoading = true
+        errorMessage = nil
+
+        do {
+            try await dataService.deleteEvent(groupId: groupId, eventId: eventId)
+            await refreshData()
+        } catch let error as DataServiceError {
+            errorMessage = error.errorDescription
+        } catch {
+            errorMessage = "イベントの削除に失敗しました: \(error.localizedDescription)"
+        }
+
+        isLoading = false
+    }
+
+    func fetchEvents(from startDate: Date, to endDate: Date) async {
+        guard let groupId = currentGroupId else { return }
+
+        isLoading = true
+        errorMessage = nil
+
+        do {
+            familyEvents = try await dataService.fetchEvents(groupId: groupId, from: startDate, to: endDate)
+        } catch let error as DataServiceError {
+            errorMessage = error.errorDescription
+        } catch {
+            errorMessage = "イベントの取得に失敗しました: \(error.localizedDescription)"
+        }
+
+        isLoading = false
     }
 }

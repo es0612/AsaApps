@@ -1,8 +1,14 @@
 import Foundation
+#if FIREBASE_ENABLED
 import FirebaseFirestoreSwift
+#endif
 
 struct FamilyGroup: Codable, Identifiable {
+    #if FIREBASE_ENABLED
     @DocumentID var id: String?
+    #else
+    var id: String?
+    #endif
     var name: String
     var description: String?
     var ownerId: String

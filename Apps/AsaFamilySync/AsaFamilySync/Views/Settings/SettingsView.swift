@@ -3,7 +3,7 @@ import AsaUIKit
 
 struct SettingsView: View {
     @EnvironmentObject var authViewModel: AuthViewModel
-    @StateObject private var familyViewModel = FamilyGroupViewModel()
+    @EnvironmentObject var familyViewModel: FamilyGroupViewModel
     @State private var showSignOutAlert = false
     @State private var showLeaveGroupAlert = false
 
@@ -111,7 +111,9 @@ struct SettingsView: View {
             .navigationBarTitleDisplayMode(.large)
             .onAppear {
                 if let familyId = authViewModel.currentUser?.familyId {
-                    familyViewModel.listenToFamilyGroup(groupId: familyId)
+                    Task {
+                        await familyViewModel.loadFamilyGroup(groupId: familyId)
+                    }
                 }
             }
         }
@@ -127,7 +129,8 @@ struct SettingsView: View {
             Button("キャンセル", role: .cancel) {}
             Button("退出", role: .destructive) {
                 Task {
-                    await familyViewModel.leaveFamilyGroup()
+                    guard let userId = authViewModel.currentUser?.uid else { return }
+                    await familyViewModel.leaveFamilyGroup(userId: userId)
                 }
             }
         } message: {

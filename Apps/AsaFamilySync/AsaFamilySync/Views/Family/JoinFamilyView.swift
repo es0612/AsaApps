@@ -3,7 +3,7 @@ import AsaUIKit
 
 struct JoinFamilyView: View {
     @Environment(\.dismiss) private var dismiss
-    @StateObject private var familyViewModel = FamilyGroupViewModel()
+    @EnvironmentObject var familyViewModel: FamilyGroupViewModel
     @EnvironmentObject var authViewModel: AuthViewModel
 
     @State private var inviteCode = ""
@@ -60,16 +60,25 @@ struct JoinFamilyView: View {
                             title: "参加する",
                             action: {
                                 Task {
-                                    await familyViewModel.joinFamilyGroup(inviteCode: inviteCode)
+                                    guard let user = authViewModel.currentUser else { return }
+                                    await familyViewModel.joinFamilyGroup(
+                                        inviteCode: inviteCode,
+                                        userId: user.uid,
+                                        userName: user.displayName,
+                                        userEmail: user.email
+                                    )
                                     if familyViewModel.familyGroup != nil {
+                                        // 家族IDを更新
+                                        if let groupId = familyViewModel.familyGroup?.id {
+                                            await authViewModel.updateUserFamilyId(groupId)
+                                        }
                                         dismiss()
                                     }
                                 }
                             },
                             color: AsaColors.mocha,
-                            isLoading: familyViewModel.isLoading
+                            isEnabled: !familyViewModel.isLoading && inviteCode.count == 6
                         )
-                        .disabled(inviteCode.count != 6)
                     }
                     .padding(.horizontal, 30)
 

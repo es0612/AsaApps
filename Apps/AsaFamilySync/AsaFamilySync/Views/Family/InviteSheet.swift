@@ -44,8 +44,7 @@ struct InviteSheet: View {
                                 UIPasteboard.general.string = group.inviteCode
                                 dismiss()
                             },
-                            color: AsaColors.coffeeBrown,
-                            icon: "doc.on.doc"
+                            color: AsaColors.coffeeBrown
                         )
                         .padding(.horizontal, 30)
                     }

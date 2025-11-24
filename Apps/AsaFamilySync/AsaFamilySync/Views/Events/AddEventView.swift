@@ -3,6 +3,9 @@ import AsaUIKit
 
 struct AddEventView: View {
     @Environment(\.dismiss) private var dismiss
+    @EnvironmentObject var familyViewModel: FamilyGroupViewModel
+    @EnvironmentObject var authViewModel: AuthViewModel
+
     @State private var title = ""
     @State private var description = ""
     @State private var startDate = Date()
@@ -52,7 +55,10 @@ struct AddEventView: View {
                     TextField("場所（任意）", text: $location)
 
                     NavigationLink {
-                        SelectMembersView(selectedMembers: $selectedMembers)
+                        SelectMembersView(
+                            members: familyViewModel.familyMembers,
+                            selectedMembers: $selectedMembers
+                        )
                     } label: {
                         HStack {
                             Text("参加者")
@@ -94,8 +100,29 @@ struct AddEventView: View {
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button("保存") {
-                        // イベント保存ロジック
-                        dismiss()
+                        Task {
+                            guard let user = authViewModel.currentUser else { return }
+
+                            let event = FamilyEvent(
+                                title: title,
+                                description: description.isEmpty ? nil : description,
+                                startTime: startDate,
+                                endTime: endDate,
+                                category: selectedCategory,
+                                createdBy: user.uid,
+                                createdByName: user.displayName,
+                                assignedTo: Array(selectedMembers)
+                            )
+
+                            var newEvent = event
+                            newEvent.location = location.isEmpty ? nil : location
+                            newEvent.isAllDay = isAllDay
+                            newEvent.recurring = recurring
+                            newEvent.reminders = Array(reminders)
+
+                            await familyViewModel.createEvent(newEvent)
+                            dismiss()
+                        }
                     }
                     .disabled(title.isEmpty)
                 }
@@ -105,26 +132,37 @@ struct AddEventView: View {
 }
 
 struct SelectMembersView: View {
+    let members: [FamilyMember]
     @Binding var selectedMembers: Set<String>
 
     var body: some View {
         List {
-            // プレースホルダー
-            ForEach(["太郎", "花子", "次郎"], id: \.self) { member in
-                HStack {
-                    Text(member)
-                    Spacer()
-                    if selectedMembers.contains(member) {
-                        Image(systemName: "checkmark")
-                            .foregroundColor(AsaColors.coffeeBrown)
+            if members.isEmpty {
+                Text("メンバーがいません")
+                    .foregroundColor(.secondary)
+            } else {
+                ForEach(members) { member in
+                    HStack {
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text(member.name)
+                                .font(.body)
+                            Text(member.email)
+                                .font(.caption)
+                                .foregroundColor(.secondary)
+                        }
+                        Spacer()
+                        if selectedMembers.contains(member.userId) {
+                            Image(systemName: "checkmark")
+                                .foregroundColor(AsaColors.coffeeBrown)
+                        }
                     }
-                }
-                .contentShape(Rectangle())
-                .onTapGesture {
-                    if selectedMembers.contains(member) {
-                        selectedMembers.remove(member)
-                    } else {
-                        selectedMembers.insert(member)
+                    .contentShape(Rectangle())
+                    .onTapGesture {
+                        if selectedMembers.contains(member.userId) {
+                            selectedMembers.remove(member.userId)
+                        } else {
+                            selectedMembers.insert(member.userId)
+                        }
                     }
                 }
             }

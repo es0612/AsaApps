@@ -16,9 +16,6 @@ struct ContentView: View {
                 AuthenticationView()
             }
         }
-        .onAppear {
-            authViewModel.checkAuthState()
-        }
     }
 }
 
@@ -81,15 +78,13 @@ struct FamilySetupView: View {
                     AsaButton(
                         title: "新しい家族グループを作成",
                         action: { showCreateFamily = true },
-                        color: AsaColors.coffeeBrown,
-                        icon: "plus.circle.fill"
+                        color: AsaColors.coffeeBrown
                     )
 
                     AsaButton(
                         title: "招待コードで参加",
                         action: { showJoinFamily = true },
-                        color: AsaColors.mocha,
-                        icon: "person.badge.plus.fill"
+                        color: AsaColors.mocha
                     )
                 }
                 .padding(.horizontal)

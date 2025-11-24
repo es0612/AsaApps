@@ -2,10 +2,23 @@ import SwiftUI
 import AsaUIKit
 
 struct EventListView: View {
+    @EnvironmentObject var familyViewModel: FamilyGroupViewModel
     @State private var selectedCategory: EventCategory? = nil
     @State private var showAddEvent = false
 
     let categories = EventCategory.allCases
+
+    var filteredEvents: [FamilyEvent] {
+        if let category = selectedCategory {
+            return familyViewModel.familyEvents.filter { $0.category == category }
+        }
+        return familyViewModel.familyEvents
+    }
+
+    var upcomingEvents: [FamilyEvent] {
+        filteredEvents.filter { $0.startTime > Date() }
+            .sorted { $0.startTime < $1.startTime }
+    }
 
     var body: some View {
         NavigationStack {
@@ -42,22 +55,20 @@ struct EventListView: View {
                             .fontWeight(.bold)
                             .padding(.horizontal)
 
-                        // プレースホルダーイベント
-                        EventCard(
-                            title: "家族旅行",
-                            category: .leisure,
-                            startTime: Date().addingTimeInterval(86400 * 3),
-                            assignedMembers: ["太郎", "花子"]
-                        )
-                        .padding(.horizontal)
-
-                        EventCard(
-                            title: "学校の面談",
-                            category: .school,
-                            startTime: Date().addingTimeInterval(86400 * 7),
-                            assignedMembers: ["太郎"]
-                        )
-                        .padding(.horizontal)
+                        if upcomingEvents.isEmpty {
+                            Text("予定がありません")
+                                .foregroundColor(.secondary)
+                                .frame(maxWidth: .infinity, alignment: .center)
+                                .padding(.vertical, 40)
+                        } else {
+                            ForEach(upcomingEvents) { event in
+                                EventCard(
+                                    event: event,
+                                    members: familyViewModel.familyMembers
+                                )
+                                .padding(.horizontal)
+                            }
+                        }
                     }
 
                     Spacer(minLength: 100)
@@ -109,24 +120,28 @@ struct CategoryChip: View {
 }
 
 struct EventCard: View {
-    let title: String
-    let category: EventCategory
-    let startTime: Date
-    let assignedMembers: [String]
+    let event: FamilyEvent
+    let members: [FamilyMember]
+
+    var assignedMemberNames: [String] {
+        event.assignedTo.compactMap { userId in
+            members.first(where: { $0.userId == userId })?.name
+        }
+    }
 
     var body: some View {
         AsaCard {
             HStack(spacing: 12) {
                 RoundedRectangle(cornerRadius: 4)
-                    .fill(category.color)
+                    .fill(event.category.color)
                     .frame(width: 4)
 
                 VStack(alignment: .leading, spacing: 8) {
                     HStack {
-                        Image(systemName: category.icon)
+                        Image(systemName: event.category.icon)
                             .font(.caption)
-                            .foregroundColor(category.color)
-                        Text(title)
+                            .foregroundColor(event.category.color)
+                        Text(event.title)
                             .font(.body)
                             .fontWeight(.medium)
                         Spacer()
@@ -136,17 +151,17 @@ struct EventCard: View {
                         Image(systemName: "calendar")
                             .font(.caption)
                             .foregroundColor(.secondary)
-                        Text(startTime.formatted(date: .abbreviated, time: .shortened))
+                        Text(event.startTime.formatted(date: .abbreviated, time: .shortened))
                             .font(.caption)
                             .foregroundColor(.secondary)
                     }
 
-                    if !assignedMembers.isEmpty {
+                    if !assignedMemberNames.isEmpty {
                         HStack(spacing: 4) {
                             Image(systemName: "person.fill")
                                 .font(.caption)
                                 .foregroundColor(.secondary)
-                            Text(assignedMembers.joined(separator: ", "))
+                            Text(assignedMemberNames.joined(separator: ", "))
                                 .font(.caption)
                                 .foregroundColor(.secondary)
                                 .lineLimit(1)

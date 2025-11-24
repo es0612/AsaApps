@@ -1,5 +1,7 @@
 import Foundation
+#if FIREBASE_ENABLED
 import FirebaseFirestoreSwift
+#endif
 
 enum MemberRole: String, Codable, CaseIterable {
     case owner = "owner"
@@ -24,7 +26,11 @@ enum MemberRole: String, Codable, CaseIterable {
 }
 
 struct FamilyMember: Codable, Identifiable {
+    #if FIREBASE_ENABLED
     @DocumentID var id: String?
+    #else
+    var id: String?
+    #endif
     var userId: String
     var name: String
     var email: String

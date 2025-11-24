@@ -2,7 +2,7 @@ import SwiftUI
 import AsaUIKit
 
 struct FamilyDashboardView: View {
-    @StateObject private var familyViewModel = FamilyGroupViewModel()
+    @EnvironmentObject var familyViewModel: FamilyGroupViewModel
     @EnvironmentObject var authViewModel: AuthViewModel
 
     @State private var showInviteSheet = false
@@ -59,7 +59,9 @@ struct FamilyDashboardView: View {
             .navigationBarTitleDisplayMode(.large)
             .onAppear {
                 if let familyId = authViewModel.currentUser?.familyId {
-                    familyViewModel.listenToFamilyGroup(groupId: familyId)
+                    Task {
+                        await familyViewModel.loadFamilyGroup(groupId: familyId)
+                    }
                 }
             }
         }
@@ -116,9 +118,7 @@ struct GroupInfoCard: View {
                 AsaButton(
                     title: "メンバーを招待",
                     action: onInvite,
-                    color: AsaColors.coffeeBrown,
-                    icon: "person.badge.plus",
-                    size: .small
+                    color: AsaColors.coffeeBrown
                 )
             }
             .padding()

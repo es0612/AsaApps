@@ -1,6 +1,8 @@
 import Foundation
+#if FIREBASE_ENABLED
 import FirebaseAuth
 import FirebaseFirestore
+#endif
 import Combine
 
 struct UserProfile: Codable {
@@ -21,56 +23,44 @@ class AuthViewModel: ObservableObject {
     @Published var isLoading = false
     @Published var errorMessage: String?
 
-    private var authStateListenerHandle: AuthStateDidChangeListenerHandle?
-    private let db = Firestore.firestore()
+    private let authService: AuthService
+    private var cancellables = Set<AnyCancellable>()
 
-    init() {
-        checkAuthState()
+    init(authService: AuthService) {
+        self.authService = authService
+        setupAuthStateObserver()
     }
 
-    deinit {
-        if let handle = authStateListenerHandle {
-            Auth.auth().removeStateDidChangeListener(handle)
-        }
-    }
+    // MARK: - Private Methods
 
-    func checkAuthState() {
-        authStateListenerHandle = Auth.auth().addStateDidChangeListener { [weak self] _, user in
+    private func setupAuthStateObserver() {
+        // AuthServiceの認証状態を監視
+        authService.observeAuthState { [weak self] isAuth, user in
             Task { @MainActor in
-                if let user = user {
-                    self?.isAuthenticated = true
-                    await self?.fetchUserProfile(uid: user.uid)
-                } else {
-                    self?.isAuthenticated = false
-                    self?.currentUser = nil
-                }
+                self?.isAuthenticated = isAuth
+                self?.currentUser = user
             }
         }
+
+        // 初期状態を設定
+        isAuthenticated = authService.isAuthenticated
+        currentUser = authService.currentUser
     }
+
+    // MARK: - Public Methods
 
     func signUp(email: String, password: String, displayName: String) async {
         isLoading = true
         errorMessage = nil
 
         do {
-            let result = try await Auth.auth().createUser(withEmail: email, password: password)
-            let changeRequest = result.user.createProfileChangeRequest()
-            changeRequest.displayName = displayName
-            try await changeRequest.commitChanges()
-
-            let userProfile = UserProfile(
-                uid: result.user.uid,
-                email: email,
-                displayName: displayName,
-                createdAt: Date(),
-                updatedAt: Date()
-            )
-
-            try await saveUserProfile(userProfile)
-            currentUser = userProfile
+            try await authService.signUp(email: email, password: password, displayName: displayName)
+            currentUser = authService.currentUser
             isAuthenticated = true
+        } catch let error as AuthError {
+            errorMessage = error.errorDescription
         } catch {
-            errorMessage = handleAuthError(error)
+            errorMessage = "登録に失敗しました: \(error.localizedDescription)"
         }
 
         isLoading = false
@@ -81,11 +71,13 @@ class AuthViewModel: ObservableObject {
         errorMessage = nil
 
         do {
-            let result = try await Auth.auth().signIn(withEmail: email, password: password)
-            await fetchUserProfile(uid: result.user.uid)
+            try await authService.signIn(email: email, password: password)
+            currentUser = authService.currentUser
             isAuthenticated = true
+        } catch let error as AuthError {
+            errorMessage = error.errorDescription
         } catch {
-            errorMessage = handleAuthError(error)
+            errorMessage = "ログインに失敗しました: \(error.localizedDescription)"
         }
 
         isLoading = false
@@ -93,7 +85,7 @@ class AuthViewModel: ObservableObject {
 
     func signOut() {
         do {
-            try Auth.auth().signOut()
+            try authService.signOut()
             isAuthenticated = false
             currentUser = nil
         } catch {
@@ -106,65 +98,25 @@ class AuthViewModel: ObservableObject {
         errorMessage = nil
 
         do {
-            try await Auth.auth().sendPasswordReset(withEmail: email)
+            try await authService.resetPassword(email: email)
             errorMessage = "パスワードリセットメールを送信しました"
+        } catch let error as AuthError {
+            errorMessage = error.errorDescription
         } catch {
-            errorMessage = handleAuthError(error)
+            errorMessage = "パスワードリセットに失敗しました: \(error.localizedDescription)"
         }
 
         isLoading = false
     }
 
-    private func fetchUserProfile(uid: String) async {
-        do {
-            let document = try await db.collection("users").document(uid).getDocument()
-            if document.exists {
-                currentUser = try document.data(as: UserProfile.self)
-            }
-        } catch {
-            print("ユーザープロファイルの取得に失敗: \(error)")
-        }
-    }
-
-    private func saveUserProfile(_ profile: UserProfile) async throws {
-        try db.collection("users").document(profile.uid).setData(from: profile)
-    }
-
     func updateUserFamilyId(_ familyId: String) async {
-        guard var user = currentUser else { return }
-        user.familyId = familyId
-        if !user.familyIds.contains(familyId) {
-            user.familyIds.append(familyId)
-        }
-        user.updatedAt = Date()
+        guard currentUser != nil else { return }
 
         do {
-            try await saveUserProfile(user)
-            currentUser = user
+            try await authService.updateUserFamilyId(familyId)
+            currentUser = authService.currentUser
         } catch {
             errorMessage = "家族IDの更新に失敗しました: \(error.localizedDescription)"
         }
-    }
-
-    private func handleAuthError(_ error: Error) -> String {
-        if let authError = error as NSError? {
-            switch authError.code {
-            case AuthErrorCode.emailAlreadyInUse.rawValue:
-                return "このメールアドレスは既に使用されています"
-            case AuthErrorCode.invalidEmail.rawValue:
-                return "無効なメールアドレスです"
-            case AuthErrorCode.weakPassword.rawValue:
-                return "パスワードは6文字以上で設定してください"
-            case AuthErrorCode.wrongPassword.rawValue:
-                return "パスワードが正しくありません"
-            case AuthErrorCode.userNotFound.rawValue:
-                return "ユーザーが見つかりません"
-            case AuthErrorCode.networkError.rawValue:
-                return "ネットワークエラーが発生しました"
-            default:
-                return "認証エラー: \(error.localizedDescription)"
-            }
-        }
-        return error.localizedDescription
     }
 }
