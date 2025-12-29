@@ -33,6 +33,7 @@ targets:
       INFOPLIST_KEY_NSCalendarsUsageDescription: "カレンダーに家族の予定を同期するため"
       INFOPLIST_KEY_NSRemindersUsageDescription: "予定のリマインダーを設定するため"
       INFOPLIST_KEY_UIBackgroundModes: "fetch remote-notification"
+      OTHER_SWIFT_FLAGS: "$(inherited) -DFIREBASE_ENABLED"
     dependencies:
       - sdk: SwiftUI.framework
       - sdk: Foundation.framework
@@ -40,15 +41,11 @@ targets:
       - sdk: UserNotifications.framework
       - package: AsaUIKit
         product: AsaUIKit
-      # Firebase依存関係はコメントアウト（将来の統合用に保持）
-      # - package: FirebaseAuth
-      #   product: FirebaseAuth
-      # - package: FirebaseFirestore
-      #   product: FirebaseFirestore
-      # - package: FirebaseFirestoreSwift
-      #   product: FirebaseFirestoreSwift
-      # - package: FirebaseAnalytics
-      #   product: FirebaseAnalytics
+      - package: Firebase
+        product: FirebaseAuth
+      - package: Firebase
+        product: FirebaseFirestore
+      # FirebaseFirestoreSwiftは不要（FirebaseFirestoreに統合済み）
 
   AsaFamilySyncTests:
     type: bundle.unit-test
@@ -74,16 +71,6 @@ targets:
 packages:
   AsaUIKit:
     path: ../../Packages/AsaUIKit
-  # Firebase パッケージ定義（将来の統合用にコメントアウトで保持）
-  # FirebaseAuth:
-  #   url: https://github.com/firebase/firebase-ios-sdk
-  #   from: 11.0.0
-  # FirebaseFirestore:
-  #   url: https://github.com/firebase/firebase-ios-sdk
-  #   from: 11.0.0
-  # FirebaseFirestoreSwift:
-  #   url: https://github.com/firebase/firebase-ios-sdk
-  #   from: 11.0.0
-  # FirebaseAnalytics:
-  #   url: https://github.com/firebase/firebase-ios-sdk
-  #   from: 11.0.0
+  Firebase:
+    url: https://github.com/firebase/firebase-ios-sdk
+    from: 11.0.0

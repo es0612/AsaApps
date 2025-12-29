@@ -9,6 +9,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         FirebaseApp.configure()
+        print("🔥 Firebase初期化完了")
         return true
     }
 }
@@ -28,40 +29,16 @@ struct AsaFamilySyncApp: App {
     @StateObject private var familyGroupViewModel: FamilyGroupViewModel
 
     init() {
-        #if DEBUG
-        // DEBUGモード: ローカルサービスを使用
-        print("🔧 DEBUG モード: ローカルサービスを使用します")
-        let localAuthService = LocalAuthService()
-        let localDataService = LocalFamilyDataService()
+        // Firebaseサービスを使用
+        print("🔥 Firebase モード: Firebaseサービスを使用します")
+        let firebaseAuthService = FirebaseAuthService()
+        let firebaseDataService = FirebaseDataService()
 
-        self.authService = localAuthService
-        self.dataService = localDataService
+        self.authService = firebaseAuthService
+        self.dataService = firebaseDataService
 
-        _authViewModel = StateObject(wrappedValue: AuthViewModel(authService: localAuthService))
-        _familyGroupViewModel = StateObject(wrappedValue: FamilyGroupViewModel(dataService: localDataService))
-        #else
-        // RELEASEモード: Firebaseサービスを使用
-        print("🔥 RELEASE モード: Firebaseサービスを使用します")
-        // TODO: Firebase版のサービスを実装
-        // let firebaseAuthService = FirebaseAuthService()
-        // let firebaseDataService = FirebaseDataService()
-        //
-        // self.authService = firebaseAuthService
-        // self.dataService = firebaseDataService
-        //
-        // _authViewModel = StateObject(wrappedValue: AuthViewModel(authService: firebaseAuthService))
-        // _familyGroupViewModel = StateObject(wrappedValue: FamilyGroupViewModel(dataService: firebaseDataService))
-
-        // 暫定的にローカルサービスを使用
-        let localAuthService = LocalAuthService()
-        let localDataService = LocalFamilyDataService()
-
-        self.authService = localAuthService
-        self.dataService = localDataService
-
-        _authViewModel = StateObject(wrappedValue: AuthViewModel(authService: localAuthService))
-        _familyGroupViewModel = StateObject(wrappedValue: FamilyGroupViewModel(dataService: localDataService))
-        #endif
+        _authViewModel = StateObject(wrappedValue: AuthViewModel(authService: firebaseAuthService))
+        _familyGroupViewModel = StateObject(wrappedValue: FamilyGroupViewModel(dataService: firebaseDataService))
     }
 
     var body: some Scene {

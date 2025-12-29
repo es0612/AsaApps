@@ -75,3 +75,7 @@ fastlane/test_output
 ## XcodeGen
 # Xcode project files are generated from project.yml
 *.xcodeproj
+
+## Firebase
+# Firebase configuration files contain API keys and should not be committed
+**/GoogleService-Info.plist
