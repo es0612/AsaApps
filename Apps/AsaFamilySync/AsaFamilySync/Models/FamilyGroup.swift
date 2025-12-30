@@ -1,6 +1,6 @@
 import Foundation
 #if FIREBASE_ENABLED
-import FirebaseFirestoreSwift
+import FirebaseFirestore
 #endif
 
 struct FamilyGroup: Codable, Identifiable {

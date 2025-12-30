@@ -143,8 +143,9 @@ class FirebaseAuthService: AuthService {
     private func mapAuthError(_ error: Error) -> AuthError {
         let nsError = error as NSError
 
-        if nsError.domain == AuthErrorDomain {
-            switch AuthErrorCode(_nsError: nsError).code {
+        if nsError.domain == AuthErrorDomain,
+           let authError = AuthErrorCode(_bridgedNSError: nsError) {
+            switch authError.code {
             case .emailAlreadyInUse:
                 return .emailAlreadyInUse
             case .invalidEmail:

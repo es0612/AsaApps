@@ -52,6 +52,9 @@ enum AuthError: Error, LocalizedError {
     case wrongPassword
     case userNotFound
     case networkError
+    case notAuthenticated
+    case invalidCredentials
+    case updateFailed(String)
     case unknown(String)
 
     var errorDescription: String? {
@@ -68,6 +71,12 @@ enum AuthError: Error, LocalizedError {
             return "ユーザーが見つかりません"
         case .networkError:
             return "ネットワークエラーが発生しました"
+        case .notAuthenticated:
+            return "ログインしてください"
+        case .invalidCredentials:
+            return "メールアドレスまたはパスワードが正しくありません"
+        case .updateFailed(let message):
+            return "更新に失敗しました: \(message)"
         case .unknown(let message):
             return "認証エラー: \(message)"
         }

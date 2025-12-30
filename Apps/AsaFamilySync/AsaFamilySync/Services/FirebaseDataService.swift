@@ -41,8 +41,7 @@ class FirebaseDataService: FamilyDataService {
                 userId: ownerId,
                 name: ownerName,
                 email: ownerEmail,
-                role: .owner,
-                joinedAt: Date()
+                role: .owner
             )
 
             try await membersCollection(groupId: docRef.documentID).document(ownerId).setData(from: owner)
@@ -88,8 +87,7 @@ class FirebaseDataService: FamilyDataService {
                 userId: userId,
                 name: userName,
                 email: userEmail,
-                role: .member,
-                joinedAt: Date()
+                role: .member
             )
 
             try await membersCollection(groupId: groupId).document(userId).setData(from: member)
@@ -263,8 +261,9 @@ class FirebaseDataService: FamilyDataService {
     private func mapDataError(_ error: Error) -> DataServiceError {
         let nsError = error as NSError
 
-        if nsError.domain == FirestoreErrorDomain {
-            switch FirestoreErrorCode(rawValue: nsError.code) {
+        if nsError.domain == FirestoreErrorDomain,
+           let errorCode = FirestoreErrorCode.Code(rawValue: nsError.code) {
+            switch errorCode {
             case .notFound:
                 return .groupNotFound
             case .permissionDenied:
