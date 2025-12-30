@@ -29,6 +29,12 @@ struct AsaFamilySyncApp: App {
     @StateObject private var familyGroupViewModel: FamilyGroupViewModel
 
     init() {
+        #if FIREBASE_ENABLED
+        // Firebase初期化（サービス作成前に必須）
+        FirebaseApp.configure()
+        print("🔥 Firebase初期化完了")
+        #endif
+
         // Firebaseサービスを使用
         print("🔥 Firebase モード: Firebaseサービスを使用します")
         let firebaseAuthService = FirebaseAuthService()
