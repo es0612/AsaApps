@@ -1,357 +1,255 @@
+//
+//  SmartTodoViewModel.swift
+//  AsaSmartTodo
+//
+//  メインViewModel
+//  タスク管理、AI予測、分析データの統括
+//
+
 import Foundation
 import SwiftUI
-import SwiftData
-import AsaUIKit
 
 @MainActor
-class SmartTodoViewModel: ObservableObject {
-    // MARK: - Published Properties
+@Observable
+final class SmartTodoViewModel {
+    // MARK: - Dependencies
 
-    @Published var tasks: [SmartTask] = []
-    @Published var filteredTasks: [SmartTask] = []
-    @Published var selectedTask: SmartTask?
-    @Published var isLoading = false
-    @Published var errorMessage: String?
-    @Published var currentFilter: TaskFilter = .all
-    @Published var searchText = ""
+    private let dataService: DataService
+    private let predictor: TaskPriorityPredictor
 
-    // AI関連
-    @Published var isPredicting = false
-    @Published var lastPredictionResult: PredictionResult?
-    @Published var showAIInsights = false
+    // MARK: - State
 
-    // UI状態
-    @Published var showingAddTask = false
-    @Published var showingTaskDetail = false
-    @Published var showingAnalytics = false
+    private(set) var tasks: [SmartTask] = []
+    private(set) var todayAnalytics: TaskAnalytics?
+    private(set) var isLoading = false
+    private(set) var errorMessage: String?
 
-    // 統計情報
-    @Published var todayAnalytics: TaskAnalytics?
-    @Published var weeklyReport: WeeklyReport?
+    // MARK: - UI State
 
-    // MARK: - Private Properties
-
-    private var modelContext: ModelContext?
-    private var taskPredictor: TaskPriorityPredictor?
-    private var analyticsManager: AnalyticsManager?
+    var showingAddTask = false
+    var selectedTask: SmartTask?
+    var filterCategory: TaskCategory?
+    var filterPriority: PriorityLevel?
+    var filterCompleted: Bool?
 
     // MARK: - Computed Properties
 
-    var todayCompletedCount: Int {
-        tasks.filter { task in
-            if let completedAt = task.completedAt {
-                return Calendar.current.isDateInToday(completedAt)
-            }
-            return false
-        }.count
+    /// アクティブなタスク（未完了）
+    var activeTasks: [SmartTask] {
+        tasks.filter { !$0.isCompleted }
     }
 
-    var pendingTasksCount: Int {
-        tasks.filter { $0.status == .todo }.count
+    /// 完了済みタスク
+    var completedTasks: [SmartTask] {
+        tasks.filter { $0.isCompleted }
     }
 
-    var overdueTasksCount: Int {
-        tasks.filter { $0.isOverdue }.count
+    /// 期限切れタスク
+    var overdueTasks: [SmartTask] {
+        tasks.filter { $0.isOverdue }
     }
 
-    var aiAccuracyRate: Double {
-        let acceptedTasks = tasks.filter { $0.feedbackProvided && $0.priorityAccepted }
-        let totalFeedback = tasks.filter { $0.feedbackProvided }
-        guard !totalFeedback.isEmpty else { return 0 }
-        return Double(acceptedTasks.count) / Double(totalFeedback.count)
-    }
+    /// 表示するタスク（フィルタ適用後）
+    var displayTasks: [SmartTask] {
+        var filtered = tasks
 
-    // MARK: - Initialization
-
-    init() {
-        setupPredictor()
-        setupAnalytics()
-    }
-
-    // MARK: - Setup Methods
-
-    private func setupPredictor() {
-        Task {
-            taskPredictor = await TaskPriorityPredictor()
+        if let completed = filterCompleted {
+            filtered = filtered.filter { $0.isCompleted == completed }
         }
+
+        if let category = filterCategory {
+            filtered = filtered.filter { $0.category == category }
+        }
+
+        if let priority = filterPriority {
+            filtered = filtered.filter { $0.finalPriority == priority }
+        }
+
+        return filtered
     }
 
-    private func setupAnalytics() {
-        analyticsManager = AnalyticsManager()
+    /// AI予測精度（採用率）
+    var aiAcceptanceRate: Double {
+        guard let analytics = todayAnalytics else { return 0.0 }
+        return analytics.aiAcceptanceRate
     }
 
-    func setModelContext(_ context: ModelContext) {
-        self.modelContext = context
-        loadTasks()
-        loadTodayAnalytics()
+    // MARK: - Initializer
+
+    init(dataService: DataService) {
+        self.dataService = dataService
+        self.predictor = TaskPriorityPredictor()
     }
 
     // MARK: - Data Loading
 
+    /// タスクを読み込み
     func loadTasks() {
-        guard let modelContext = modelContext else { return }
-
         isLoading = true
-        defer { isLoading = false }
+        errorMessage = nil
 
-        do {
-            let descriptor = FetchDescriptor<SmartTask>(
-                sortBy: [
-                    SortDescriptor(\.createdAt, order: .reverse)
-                ]
-            )
-            tasks = try modelContext.fetch(descriptor)
-            applyFilter()
-        } catch {
-            errorMessage = "タスクの読み込みに失敗しました: \(error.localizedDescription)"
-        }
+        tasks = dataService.fetchAllTasks()
+        todayAnalytics = dataService.getTodayAnalytics()
+
+        isLoading = false
     }
 
-    func loadTodayAnalytics() {
-        guard let modelContext = modelContext else { return }
+    /// フィルタ付きでタスクを読み込み
+    func loadFilteredTasks() {
+        isLoading = true
 
-        do {
-            let today = Calendar.current.startOfDay(for: Date())
-            let descriptor = FetchDescriptor<TaskAnalytics>(
-                predicate: #Predicate<TaskAnalytics> { analytics in
-                    analytics.date >= today
-                }
-            )
+        tasks = dataService.fetchTasks(
+            isCompleted: filterCompleted,
+            category: filterCategory,
+            priority: filterPriority
+        )
 
-            if let analytics = try modelContext.fetch(descriptor).first {
-                todayAnalytics = analytics
-            } else {
-                // 今日の分析データを作成
-                let newAnalytics = TaskAnalytics(date: today)
-                modelContext.insert(newAnalytics)
-                todayAnalytics = newAnalytics
-                try modelContext.save()
-            }
-        } catch {
-            print("Analytics loading error: \(error)")
-        }
+        isLoading = false
     }
 
-    // MARK: - Task Management
+    // MARK: - Task CRUD
 
-    func addTask(
+    /// タスクを作成（AI予測付き）
+    func createTask(
         title: String,
         description: String?,
         category: TaskCategory,
+        userPriority: PriorityLevel,
         dueDate: Date?
-    ) async {
-        guard let modelContext = modelContext else { return }
-
-        let newTask = SmartTask(
+    ) {
+        let task = SmartTask(
             title: title,
             description: description,
             category: category,
+            userPriority: userPriority,
             dueDate: dueDate
         )
 
         // AI予測を実行
-        if let predictor = taskPredictor {
-            isPredicting = true
-            defer { isPredicting = false }
+        let prediction = predictor.predictPriority(for: task)
+        task.applyPrediction(prediction)
 
-            let prediction = await predictor.predictPriority(for: newTask)
-            newTask.updatePrediction(prediction)
-            lastPredictionResult = prediction
+        // タスクを保存
+        dataService.saveTask(task)
+
+        // 分析データを更新
+        if let analytics = todayAnalytics {
+            let hour = Calendar.current.component(.hour, from: Date())
+            analytics.recordTaskCreation(at: hour, category: category)
+            dataService.save()
         }
 
-        modelContext.insert(newTask)
-        todayAnalytics?.recordTaskCreated()
-
-        do {
-            try modelContext.save()
-            await MainActor.run {
-                tasks.append(newTask)
-                applyFilter()
-                showAIInsights = true
-            }
-        } catch {
-            await MainActor.run {
-                errorMessage = "タスクの追加に失敗しました: \(error.localizedDescription)"
-            }
-        }
+        // リストを再読み込み
+        loadTasks()
     }
 
-    func updateTask(_ task: SmartTask) async {
-        guard let modelContext = modelContext else { return }
+    /// タスクを更新
+    func updateTask(
+        _ task: SmartTask,
+        title: String? = nil,
+        description: String? = nil,
+        category: TaskCategory? = nil,
+        userPriority: PriorityLevel? = nil,
+        dueDate: Date? = nil
+    ) {
+        task.updateDetails(
+            title: title,
+            description: description,
+            category: category,
+            userPriority: userPriority,
+            dueDate: dueDate
+        )
 
-        // 再予測を実行
-        if let predictor = taskPredictor {
-            isPredicting = true
-            defer { isPredicting = false }
-
-            let prediction = await predictor.predictPriority(for: task)
-            task.updatePrediction(prediction)
+        // 優先度が変更された場合、AI予測を再実行
+        if userPriority != nil {
+            let prediction = predictor.predictPriority(for: task)
+            task.applyPrediction(prediction)
         }
 
-        task.updatedAt = Date()
-
-        do {
-            try modelContext.save()
-            await MainActor.run {
-                loadTasks()
-            }
-        } catch {
-            await MainActor.run {
-                errorMessage = "タスクの更新に失敗しました: \(error.localizedDescription)"
-            }
-        }
+        dataService.save()
+        loadTasks()
     }
 
-    func completeTask(_ task: SmartTask) {
-        guard let modelContext = modelContext else { return }
-
-        task.complete()
-        todayAnalytics?.recordTaskCompleted(task: task)
-
-        do {
-            try modelContext.save()
-            loadTasks()
-        } catch {
-            errorMessage = "タスクの完了処理に失敗しました: \(error.localizedDescription)"
-        }
-    }
-
+    /// タスクを削除
     func deleteTask(_ task: SmartTask) {
-        guard let modelContext = modelContext else { return }
-
-        modelContext.delete(task)
-
-        do {
-            try modelContext.save()
-            tasks.removeAll { $0.id == task.id }
-            applyFilter()
-        } catch {
-            errorMessage = "タスクの削除に失敗しました: \(error.localizedDescription)"
-        }
+        dataService.deleteTask(task)
+        loadTasks()
     }
 
-    // MARK: - AI Feedback
+    /// タスクの完了状態を切り替え
+    func toggleTaskCompletion(_ task: SmartTask) {
+        if task.isCompleted {
+            task.uncomplete()
+        } else {
+            task.complete()
 
-    func acceptAIPriority(for task: SmartTask) {
-        task.provideFeedback(accepted: true)
-        todayAnalytics?.recordAIFeedback(accepted: true, confidenceScore: task.confidenceScore)
-        saveContext()
-    }
-
-    func rejectAIPriority(for task: SmartTask) {
-        task.provideFeedback(accepted: false)
-        todayAnalytics?.recordAIFeedback(accepted: false, confidenceScore: task.confidenceScore)
-        saveContext()
-    }
-
-    // MARK: - Filtering and Searching
-
-    func applyFilter() {
-        var filtered = tasks
-
-        // フィルタリング
-        switch currentFilter {
-        case .all:
-            break
-        case .today:
-            filtered = filtered.filter { task in
-                guard let dueDate = task.dueDate else { return false }
-                return Calendar.current.isDateInToday(dueDate)
-            }
-        case .overdue:
-            filtered = filtered.filter { $0.isOverdue }
-        case .highPriority:
-            filtered = filtered.filter { $0.userPriority == .high }
-        case .aiSuggested:
-            filtered = filtered.filter { $0.confidenceScore >= 0.7 }
-        case .completed:
-            filtered = filtered.filter { $0.status == .done }
-        case .pending:
-            filtered = filtered.filter { $0.status == .todo || $0.status == .inProgress }
-        }
-
-        // 検索
-        if !searchText.isEmpty {
-            filtered = filtered.filter { task in
-                task.title.localizedCaseInsensitiveContains(searchText) ||
-                (task.taskDescription?.localizedCaseInsensitiveContains(searchText) ?? false)
+            // 完了時に分析データを更新
+            if let analytics = todayAnalytics {
+                let hour = Calendar.current.component(.hour, from: Date())
+                analytics.recordTaskCompletion(at: hour, category: task.category)
+                dataService.save()
             }
         }
 
-        // 優先度でソート
-        filtered.sort { first, second in
-            if first.userPriority.rawValue != second.userPriority.rawValue {
-                return first.userPriority.rawValue < second.userPriority.rawValue
-            }
-            return first.createdAt > second.createdAt
+        dataService.save()
+        loadTasks()
+    }
+
+    // MARK: - AI Prediction
+
+    /// AI予測を採用
+    func acceptAIPrediction(for task: SmartTask) {
+        task.acceptAIPrediction()
+
+        // 分析データにフィードバックを記録
+        if let analytics = todayAnalytics {
+            analytics.recordAIFeedback(accepted: true, confidenceScore: task.confidenceScore)
+            dataService.save()
         }
 
-        filteredTasks = filtered
+        dataService.save()
+        loadTasks()
     }
 
-    func setFilter(_ filter: TaskFilter) {
-        currentFilter = filter
-        applyFilter()
-    }
+    /// AI予測を却下
+    func rejectAIPrediction(for task: SmartTask) {
+        task.rejectAIPrediction()
 
-    // MARK: - Analytics
-
-    func generateWeeklyReport() async {
-        guard let modelContext = modelContext else { return }
-
-        do {
-            let oneWeekAgo = Calendar.current.date(byAdding: .day, value: -7, to: Date())!
-            let descriptor = FetchDescriptor<TaskAnalytics>(
-                predicate: #Predicate<TaskAnalytics> { analytics in
-                    analytics.date >= oneWeekAgo
-                }
-            )
-
-            let weeklyAnalytics = try modelContext.fetch(descriptor)
-            await MainActor.run {
-                weeklyReport = TaskAnalytics.generateWeeklyReport(from: weeklyAnalytics)
-                showingAnalytics = true
-            }
-        } catch {
-            await MainActor.run {
-                errorMessage = "週次レポートの生成に失敗しました: \(error.localizedDescription)"
-            }
+        // 分析データにフィードバックを記録
+        if let analytics = todayAnalytics {
+            analytics.recordAIFeedback(accepted: false, confidenceScore: task.confidenceScore)
+            dataService.save()
         }
+
+        dataService.save()
+        loadTasks()
     }
 
-    // MARK: - Helper Methods
+    // MARK: - Filters
 
-    private func saveContext() {
-        guard let modelContext = modelContext else { return }
-
-        do {
-            try modelContext.save()
-        } catch {
-            errorMessage = "保存に失敗しました: \(error.localizedDescription)"
-        }
+    /// フィルタをリセット
+    func resetFilters() {
+        filterCategory = nil
+        filterPriority = nil
+        filterCompleted = nil
+        loadTasks()
     }
 
-    func clearError() {
-        errorMessage = nil
+    /// カテゴリフィルタを設定
+    func setFilterCategory(_ category: TaskCategory?) {
+        filterCategory = category
+        loadFilteredTasks()
     }
-}
 
-// MARK: - Supporting Types
+    /// 優先度フィルタを設定
+    func setFilterPriority(_ priority: PriorityLevel?) {
+        filterPriority = priority
+        loadFilteredTasks()
+    }
 
-enum TaskFilter: String, CaseIterable {
-    case all = "すべて"
-    case today = "今日"
-    case overdue = "期限切れ"
-    case highPriority = "高優先度"
-    case aiSuggested = "AI推奨"
-    case completed = "完了済み"
-    case pending = "未完了"
-}
-
-// Analytics Manager（簡易実装）
-class AnalyticsManager {
-    func trackEvent(_ event: String, parameters: [String: Any]? = nil) {
-        // イベントトラッキング実装
-        print("Event tracked: \(event)")
+    /// 完了状態フィルタを設定
+    func setFilterCompleted(_ completed: Bool?) {
+        filterCompleted = completed
+        loadFilteredTasks()
     }
 }

@@ -1,207 +1,226 @@
+//
+//  SmartTask.swift
+//  AsaSmartTodo
+//
+//  AI予測機能付きタスクモデル
+//  Swift Dataで永続化し、AI予測結果とユーザーフィードバックを保存
+//
+
 import Foundation
 import SwiftData
-import AsaUIKit
-
-// タスクカテゴリの定義
-public enum TaskCategory: String, CaseIterable, Codable {
-    case work = "仕事"
-    case personal = "個人"
-    case family = "家族"
-    case health = "健康"
-    case learning = "学習"
-    case other = "その他"
-}
-
-// AI予測結果
-public struct PredictionResult {
-    let suggestedPriority: TaskPriority
-    let confidenceScore: Double
-    let reasoning: String
-    let features: TaskFeatures
-}
-
-// タスク特徴量
-public struct TaskFeatures: Codable {
-    let titleWordCount: Int
-    let descriptionComplexity: Double
-    let daysUntilDue: Int?
-    let createdHour: Int // 作成時刻（朝活判定用）
-    let categoryImportanceScore: Double
-    let historicalCompletionRate: Double?
-}
 
 @Model
-public final class SmartTask {
-    // MARK: - Properties
+final class SmartTask {
+    // MARK: - 基本情報
 
-    public var id: UUID
-    public var title: String
-    public var taskDescription: String?
+    @Attribute(.unique) var id: UUID
+    var title: String
+    var taskDescription: String?
+    var createdAt: Date
+    var updatedAt: Date
 
-    // 優先度（ユーザー設定とAI提案）
-    public var userPriorityRawValue: String
-    public var aiSuggestedPriorityRawValue: String
-    public var confidenceScore: Double
-    public var predictionReason: String
+    // MARK: - 優先度（Raw Value保存でSwift Data対応）
 
-    // カテゴリとステータス
-    public var categoryRawValue: String
-    public var statusRawValue: String
+    /// ユーザーが設定した優先度
+    var userPriorityRawValue: String
 
-    // 日時情報
-    public var dueDate: Date?
-    public var createdAt: Date
-    public var updatedAt: Date
-    public var completedAt: Date?
+    /// AIが提案した優先度（nilの場合は未予測）
+    var aiPriorityRawValue: String?
 
-    // 学習用メタデータ
-    public var titleWordCount: Int
-    public var descriptionComplexity: Double
-    public var daysUntilDue: Int?
-    public var createdHour: Int
-    public var feedbackProvided: Bool
-    public var feedbackIsPositive: Bool?
+    /// 最終的に採用された優先度（ユーザー選択またはAI提案）
+    var finalPriorityRawValue: String
+
+    // MARK: - AI予測関連
+
+    /// 信頼度スコア（0.0-1.0）
+    var confidenceScore: Double
+
+    /// 予測理由のリスト（JSON形式で保存）
+    var predictionReasonsJSON: Data?
+
+    /// ユーザーがAI予測を採用したか（nil=未判定、true=採用、false=却下）
+    var wasAIPredictionAccepted: Bool?
+
+    // MARK: - タスク属性
+
+    /// カテゴリ（Raw Value保存）
+    var categoryRawValue: String
+
+    /// 期限（任意）
+    var dueDate: Date?
+
+    /// 完了フラグ
+    var isCompleted: Bool
+
+    /// 完了日時（任意）
+    var completedAt: Date?
+
+    // MARK: - 特徴量（学習データ用）
+
+    /// タイトルの複雑度（0.0-1.0）
+    var titleComplexity: Double
+
+    /// 説明文の複雑度（0.0-1.0）
+    var descriptionComplexity: Double
+
+    /// 作成時刻（0-23時）朝活判定用
+    var createdHour: Int
 
     // MARK: - Computed Properties
 
-    public var userPriority: TaskPriority {
-        get { TaskPriority(rawValue: userPriorityRawValue) ?? .medium }
+    /// ユーザー設定優先度
+    var userPriority: PriorityLevel {
+        get { PriorityLevel(rawValue: userPriorityRawValue) ?? .medium }
         set { userPriorityRawValue = newValue.rawValue }
     }
 
-    public var aiSuggestedPriority: TaskPriority {
-        get { TaskPriority(rawValue: aiSuggestedPriorityRawValue) ?? .medium }
-        set { aiSuggestedPriorityRawValue = newValue.rawValue }
+    /// AI提案優先度
+    var aiPriority: PriorityLevel? {
+        get {
+            guard let raw = aiPriorityRawValue else { return nil }
+            return PriorityLevel(rawValue: raw)
+        }
+        set { aiPriorityRawValue = newValue?.rawValue }
     }
 
-    public var category: TaskCategory {
+    /// 最終採用優先度
+    var finalPriority: PriorityLevel {
+        get { PriorityLevel(rawValue: finalPriorityRawValue) ?? .medium }
+        set { finalPriorityRawValue = newValue.rawValue }
+    }
+
+    /// カテゴリ
+    var category: TaskCategory {
         get { TaskCategory(rawValue: categoryRawValue) ?? .other }
         set { categoryRawValue = newValue.rawValue }
     }
 
-    public var status: TaskStatus {
-        get { TaskStatus(rawValue: statusRawValue) ?? .todo }
-        set { statusRawValue = newValue.rawValue }
+    /// 予測理由（デコード）
+    var predictionReasons: [PredictionReason] {
+        get {
+            guard let data = predictionReasonsJSON else { return [] }
+            return (try? JSONDecoder().decode([PredictionReason].self, from: data)) ?? []
+        }
+        set {
+            predictionReasonsJSON = try? JSONEncoder().encode(newValue)
+        }
     }
 
-    public var isOverdue: Bool {
-        guard let dueDate = dueDate else { return false }
-        return dueDate < Date() && status != .done
+    /// 期限切れかどうか
+    var isOverdue: Bool {
+        guard let dueDate = dueDate, !isCompleted else { return false }
+        return dueDate < Date()
     }
 
-    public var priorityAccepted: Bool {
-        return userPriority == aiSuggestedPriority
+    /// 期限までの日数（nilは期限未設定）
+    var daysUntilDue: Int? {
+        guard let dueDate = dueDate else { return nil }
+        let calendar = Calendar.current
+        let components = calendar.dateComponents([.day], from: Date(), to: dueDate)
+        return components.day
     }
 
     // MARK: - Initializer
 
-    public init(
+    init(
         title: String,
         description: String? = nil,
         category: TaskCategory = .other,
+        userPriority: PriorityLevel = .medium,
         dueDate: Date? = nil
     ) {
         self.id = UUID()
         self.title = title
         self.taskDescription = description
-        self.categoryRawValue = category.rawValue
-        self.dueDate = dueDate
-
-        // デフォルト値
-        self.userPriorityRawValue = TaskPriority.medium.rawValue
-        self.aiSuggestedPriorityRawValue = TaskPriority.medium.rawValue
-        self.confidenceScore = 0.0
-        self.predictionReason = "分析中..."
-        self.statusRawValue = TaskStatus.todo.rawValue
-
-        // 日時
         self.createdAt = Date()
         self.updatedAt = Date()
 
-        // 特徴量の初期計算
-        self.titleWordCount = title.split(separator: " ").count
-        self.descriptionComplexity = Double(description?.count ?? 0) / 100.0
+        // 優先度の初期化
+        self.userPriorityRawValue = userPriority.rawValue
+        self.aiPriorityRawValue = nil
+        self.finalPriorityRawValue = userPriority.rawValue
+
+        // AI予測の初期化
+        self.confidenceScore = 0.0
+        self.predictionReasonsJSON = nil
+        self.wasAIPredictionAccepted = nil
+
+        // タスク属性の初期化
+        self.categoryRawValue = category.rawValue
+        self.dueDate = dueDate
+        self.isCompleted = false
+        self.completedAt = nil
+
+        // 特徴量の初期化
+        self.titleComplexity = 0.0
+        self.descriptionComplexity = 0.0
         self.createdHour = Calendar.current.component(.hour, from: Date())
-
-        if let dueDate = dueDate {
-            let days = Calendar.current.dateComponents([.day], from: Date(), to: dueDate).day ?? 0
-            self.daysUntilDue = days
-        }
-
-        self.feedbackProvided = false
     }
 
     // MARK: - Methods
 
-    public func updatePrediction(_ result: PredictionResult) {
-        self.aiSuggestedPriority = result.suggestedPriority
+    /// AI予測結果を適用
+    func applyPrediction(_ result: PredictionResult) {
+        self.aiPriority = result.suggestedPriority
         self.confidenceScore = result.confidenceScore
-        self.predictionReason = result.reasoning
+        self.predictionReasons = result.reasons
         self.updatedAt = Date()
     }
 
-    public func provideFeedback(accepted: Bool) {
-        self.feedbackProvided = true
-        self.feedbackIsPositive = accepted
-        if accepted {
-            self.userPriority = self.aiSuggestedPriority
-        }
+    /// AI予測を採用
+    func acceptAIPrediction() {
+        guard let aiPriority = aiPriority else { return }
+        self.finalPriority = aiPriority
+        self.wasAIPredictionAccepted = true
         self.updatedAt = Date()
     }
 
-    public func complete() {
-        self.status = .done
+    /// AI予測を却下（ユーザー選択を維持）
+    func rejectAIPrediction() {
+        self.finalPriority = userPriority
+        self.wasAIPredictionAccepted = false
+        self.updatedAt = Date()
+    }
+
+    /// タスクを完了
+    func complete() {
+        self.isCompleted = true
         self.completedAt = Date()
         self.updatedAt = Date()
     }
 
-    public func updateDetails(
+    /// タスクを未完了に戻す
+    func uncomplete() {
+        self.isCompleted = false
+        self.completedAt = nil
+        self.updatedAt = Date()
+    }
+
+    /// タスク情報を更新
+    func updateDetails(
         title: String? = nil,
         description: String? = nil,
         category: TaskCategory? = nil,
+        userPriority: PriorityLevel? = nil,
         dueDate: Date? = nil
     ) {
         if let title = title {
             self.title = title
-            self.titleWordCount = title.split(separator: " ").count
         }
-
         if let description = description {
             self.taskDescription = description
-            self.descriptionComplexity = Double(description.count) / 100.0
         }
-
         if let category = category {
             self.category = category
         }
-
-        if dueDate != nil {
+        if let userPriority = userPriority {
+            self.userPriority = userPriority
+            // ユーザーが優先度を変更した場合、AI予測を再実行する必要がある
+            self.wasAIPredictionAccepted = nil
+        }
+        if let dueDate = dueDate {
             self.dueDate = dueDate
-            if let date = dueDate {
-                let days = Calendar.current.dateComponents([.day], from: Date(), to: date).day ?? 0
-                self.daysUntilDue = days
-            } else {
-                self.daysUntilDue = nil
-            }
         }
-
         self.updatedAt = Date()
-    }
-}
-
-// TaskStatus定義（AsaTaskKitと統一）
-public enum TaskStatus: String, CaseIterable, Codable {
-    case todo = "todo"
-    case inProgress = "inProgress"
-    case done = "done"
-    case cancelled = "cancelled"
-
-    public var displayName: String {
-        switch self {
-        case .todo: return "未着手"
-        case .inProgress: return "進行中"
-        case .done: return "完了"
-        case .cancelled: return "キャンセル"
-        }
     }
 }

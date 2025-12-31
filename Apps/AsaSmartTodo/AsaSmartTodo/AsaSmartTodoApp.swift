@@ -1,38 +1,32 @@
+//
+//  AsaSmartTodoApp.swift
+//  AsaSmartTodo
+//
+//  AIでタスク優先度を提案するスマートToDo管理アプリ
+//  朝活パパエンジニアによるSwiftUI学習プロジェクト
+//
+
 import SwiftUI
 import SwiftData
 
 @main
 struct AsaSmartTodoApp: App {
-    @StateObject private var viewModel = SmartTodoViewModel()
+    // DataServiceのインスタンスを作成
+    private let dataService = DataService()
 
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .environmentObject(viewModel)
-                .modelContainer(sharedModelContainer)
+                .modelContainer(dataService.modelContainer)
+                .onAppear {
+                    // ViewModelを初期化
+                    setupViewModel()
+                }
         }
     }
-}
 
-// MARK: - Model Container
-
-var sharedModelContainer: ModelContainer = {
-    let schema = Schema([
-        SmartTask.self,
-        TaskAnalytics.self
-    ])
-
-    let modelConfiguration = ModelConfiguration(
-        schema: schema,
-        isStoredInMemoryOnly: false
-    )
-
-    do {
-        return try ModelContainer(
-            for: schema,
-            configurations: [modelConfiguration]
-        )
-    } catch {
-        fatalError("Could not create ModelContainer: \(error)")
+    private func setupViewModel() {
+        // アプリ起動時の初期化処理
+        print("AsaSmartTodo起動: AI優先度予測システム稼働中")
     }
-}()
+}

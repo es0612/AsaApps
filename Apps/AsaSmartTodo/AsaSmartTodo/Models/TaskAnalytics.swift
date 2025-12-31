@@ -1,202 +1,230 @@
+//
+//  TaskAnalytics.swift
+//  AsaSmartTodo
+//
+//  生産性分析とAI精度トラッキングのデータモデル
+//  日別の統計情報を記録し、AI予測の精度改善に活用
+//
+
 import Foundation
 import SwiftData
 
 @Model
-public final class TaskAnalytics {
-    // MARK: - Properties
+final class TaskAnalytics {
+    // MARK: - 識別情報
 
-    public var id: UUID
-    public var date: Date
+    @Attribute(.unique) var id: UUID
+    var date: Date  // 分析対象日（日付のみ、時刻は00:00:00）
 
-    // 生産性メトリクス
-    public var totalTasksCreated: Int
-    public var totalTasksCompleted: Int
-    public var highPriorityCompleted: Int
-    public var mediumPriorityCompleted: Int
-    public var lowPriorityCompleted: Int
+    // MARK: - タスク統計
 
-    // AI精度メトリクス
-    public var aiSuggestionsAccepted: Int
-    public var aiSuggestionsRejected: Int
-    public var averageConfidenceScore: Double
+    /// 総タスク数
+    var totalTasks: Int
 
-    // 時間帯別パフォーマンス
-    public var morningTasksCompleted: Int // 5:00-9:00
-    public var dayTasksCompleted: Int      // 9:00-17:00
-    public var eveningTasksCompleted: Int  // 17:00-21:00
-    public var nightTasksCompleted: Int    // 21:00-5:00
+    /// 完了したタスク数
+    var completedTasks: Int
 
-    // カテゴリ別統計
-    public var categoryCompletionRates: [String: Double]
-    public var averageCompletionTime: [String: Double] // カテゴリ別平均完了時間（時間）
+    /// 新規作成タスク数
+    var createdTasks: Int
 
-    // 朝活特化メトリクス
-    public var earlyMorningProductivityScore: Double // 5:00-7:00の生産性スコア
-    public var bestProductiveHour: Int?
+    /// 期限切れタスク数
+    var overdueTasks: Int
+
+    // MARK: - AI精度メトリクス
+
+    /// 総予測数
+    var totalPredictions: Int
+
+    /// 採用された予測数
+    var acceptedPredictions: Int
+
+    /// 却下された予測数
+    var rejectedPredictions: Int
+
+    /// 平均信頼度スコア
+    var averageConfidence: Double
+
+    // MARK: - 時間帯別統計（JSON形式で保存）
+
+    /// 時間帯別タスク作成数（24時間、0-23時）
+    var hourlyTaskCreationJSON: Data?
+
+    /// 時間帯別完了率（24時間、0-23時）
+    var hourlyCompletionRateJSON: Data?
+
+    // MARK: - 朝活スコア（5:00-7:00）
+
+    /// 朝活時間帯に作成されたタスク数
+    var earlyMorningTasksCreated: Int
+
+    /// 朝活時間帯に完了したタスク数
+    var earlyMorningTasksCompleted: Int
+
+    /// 朝活生産性スコア（0.0-1.0）
+    var earlyMorningProductivityScore: Double
 
     // MARK: - Computed Properties
 
-    public var completionRate: Double {
-        guard totalTasksCreated > 0 else { return 0 }
-        return Double(totalTasksCompleted) / Double(totalTasksCreated)
+    /// タスク完了率（0.0-1.0）
+    var completionRate: Double {
+        guard totalTasks > 0 else { return 0.0 }
+        return Double(completedTasks) / Double(totalTasks)
     }
 
-    public var aiAcceptanceRate: Double {
-        let total = aiSuggestionsAccepted + aiSuggestionsRejected
-        guard total > 0 else { return 0 }
-        return Double(aiSuggestionsAccepted) / Double(total)
+    /// AI予測採用率（0.0-1.0）
+    var aiAcceptanceRate: Double {
+        guard totalPredictions > 0 else { return 0.0 }
+        return Double(acceptedPredictions) / Double(totalPredictions)
     }
 
-    public var priorityDistribution: [String: Double] {
-        let total = highPriorityCompleted + mediumPriorityCompleted + lowPriorityCompleted
-        guard total > 0 else { return [:] }
+    /// 時間帯別タスク作成数（デコード）
+    var hourlyTaskCreation: [Int] {
+        get {
+            guard let data = hourlyTaskCreationJSON else { return Array(repeating: 0, count: 24) }
+            return (try? JSONDecoder().decode([Int].self, from: data)) ?? Array(repeating: 0, count: 24)
+        }
+        set {
+            hourlyTaskCreationJSON = try? JSONEncoder().encode(newValue)
+        }
+    }
 
-        return [
-            "high": Double(highPriorityCompleted) / Double(total),
-            "medium": Double(mediumPriorityCompleted) / Double(total),
-            "low": Double(lowPriorityCompleted) / Double(total)
-        ]
+    /// 時間帯別完了率（デコード）
+    var hourlyCompletionRate: [Double] {
+        get {
+            guard let data = hourlyCompletionRateJSON else { return Array(repeating: 0.0, count: 24) }
+            return (try? JSONDecoder().decode([Double].self, from: data)) ?? Array(repeating: 0.0, count: 24)
+        }
+        set {
+            hourlyCompletionRateJSON = try? JSONEncoder().encode(newValue)
+        }
     }
 
     // MARK: - Initializer
 
-    public init(date: Date = Date()) {
+    init(date: Date) {
         self.id = UUID()
-        self.date = date
-        self.totalTasksCreated = 0
-        self.totalTasksCompleted = 0
-        self.highPriorityCompleted = 0
-        self.mediumPriorityCompleted = 0
-        self.lowPriorityCompleted = 0
-        self.aiSuggestionsAccepted = 0
-        self.aiSuggestionsRejected = 0
-        self.averageConfidenceScore = 0.0
-        self.morningTasksCompleted = 0
-        self.dayTasksCompleted = 0
-        self.eveningTasksCompleted = 0
-        self.nightTasksCompleted = 0
-        self.categoryCompletionRates = [:]
-        self.averageCompletionTime = [:]
+
+        // 日付のみを保持（時刻は00:00:00）
+        let calendar = Calendar.current
+        self.date = calendar.startOfDay(for: date)
+
+        // タスク統計の初期化
+        self.totalTasks = 0
+        self.completedTasks = 0
+        self.createdTasks = 0
+        self.overdueTasks = 0
+
+        // AI精度メトリクスの初期化
+        self.totalPredictions = 0
+        self.acceptedPredictions = 0
+        self.rejectedPredictions = 0
+        self.averageConfidence = 0.0
+
+        // 時間帯別統計の初期化（24時間分）
+        self.hourlyTaskCreationJSON = try? JSONEncoder().encode(Array(repeating: 0, count: 24))
+        self.hourlyCompletionRateJSON = try? JSONEncoder().encode(Array(repeating: 0.0, count: 24))
+
+        // 朝活スコアの初期化
+        self.earlyMorningTasksCreated = 0
+        self.earlyMorningTasksCompleted = 0
         self.earlyMorningProductivityScore = 0.0
     }
 
     // MARK: - Methods
 
-    public func recordTaskCreated() {
-        totalTasksCreated += 1
-    }
+    /// タスク作成を記録
+    func recordTaskCreation(at hour: Int, category: TaskCategory) {
+        guard hour >= 0 && hour < 24 else { return }
 
-    public func recordTaskCompleted(task: SmartTask) {
-        totalTasksCompleted += 1
+        var creation = hourlyTaskCreation
+        creation[hour] += 1
+        hourlyTaskCreation = creation
 
-        // 優先度別カウント
-        switch task.userPriority {
-        case .high:
-            highPriorityCompleted += 1
-        case .medium:
-            mediumPriorityCompleted += 1
-        case .low:
-            lowPriorityCompleted += 1
-        }
+        createdTasks += 1
+        totalTasks += 1
 
-        // 時間帯別カウント
-        let hour = Calendar.current.component(.hour, from: task.completedAt ?? Date())
-        switch hour {
-        case 5..<9:
-            morningTasksCompleted += 1
-        case 9..<17:
-            dayTasksCompleted += 1
-        case 17..<21:
-            eveningTasksCompleted += 1
-        default:
-            nightTasksCompleted += 1
-        }
-
-        // カテゴリ別統計更新
-        let categoryKey = task.category.rawValue
-        let currentRate = categoryCompletionRates[categoryKey] ?? 0
-        categoryCompletionRates[categoryKey] = currentRate + 1
-
-        // 朝活スコア更新（5:00-7:00）
+        // 朝活時間帯（5:00-7:00）の記録
         if hour >= 5 && hour < 7 {
-            earlyMorningProductivityScore += 1.0
+            earlyMorningTasksCreated += 1
         }
+
+        updateEarlyMorningScore()
     }
 
-    public func recordAIFeedback(accepted: Bool, confidenceScore: Double) {
+    /// タスク完了を記録
+    func recordTaskCompletion(at hour: Int, category: TaskCategory) {
+        guard hour >= 0 && hour < 24 else { return }
+
+        completedTasks += 1
+
+        // 時間帯別完了率の更新
+        var rates = hourlyCompletionRate
+        let creation = hourlyTaskCreation
+        if creation[hour] > 0 {
+            rates[hour] = Double(completedTasks) / Double(creation[hour])
+        }
+        hourlyCompletionRate = rates
+
+        // 朝活時間帯の完了記録
+        if hour >= 5 && hour < 7 {
+            earlyMorningTasksCompleted += 1
+        }
+
+        updateEarlyMorningScore()
+    }
+
+    /// AI予測フィードバックを記録
+    func recordAIFeedback(accepted: Bool, confidenceScore: Double) {
+        totalPredictions += 1
+
         if accepted {
-            aiSuggestionsAccepted += 1
+            acceptedPredictions += 1
         } else {
-            aiSuggestionsRejected += 1
+            rejectedPredictions += 1
         }
 
-        // 信頼度スコアの移動平均を更新
-        let totalFeedbacks = aiSuggestionsAccepted + aiSuggestionsRejected
-        averageConfidenceScore = (averageConfidenceScore * Double(totalFeedbacks - 1) + confidenceScore) / Double(totalFeedbacks)
+        // 移動平均で信頼度スコアを更新
+        let previousTotal = Double(totalPredictions - 1)
+        averageConfidence = (averageConfidence * previousTotal + confidenceScore) / Double(totalPredictions)
     }
 
-    public func calculateBestProductiveHour(from tasks: [SmartTask]) {
-        var hourProductivity: [Int: Int] = [:]
-
-        for task in tasks where task.status == .done {
-            let hour = Calendar.current.component(.hour, from: task.completedAt ?? Date())
-            hourProductivity[hour, default: 0] += 1
-        }
-
-        bestProductiveHour = hourProductivity.max(by: { $0.value < $1.value })?.key
+    /// 期限切れタスクを記録
+    func recordOverdueTask() {
+        overdueTasks += 1
     }
 
-    public static func generateWeeklyReport(from analytics: [TaskAnalytics]) -> WeeklyReport {
-        WeeklyReport(analytics: analytics)
+    /// 朝活生産性スコアを更新
+    private func updateEarlyMorningScore() {
+        guard earlyMorningTasksCreated > 0 else {
+            earlyMorningProductivityScore = 0.0
+            return
+        }
+
+        let completionRate = Double(earlyMorningTasksCompleted) / Double(earlyMorningTasksCreated)
+        earlyMorningProductivityScore = completionRate
     }
-}
 
-// 週次レポート構造体
-public struct WeeklyReport {
-    public let totalTasksCompleted: Int
-    public let averageCompletionRate: Double
-    public let aiAcceptanceRate: Double
-    public let bestProductiveTimeSlot: String
-    public let mostProductiveCategory: String?
-    public let earlyMorningScore: Double
+    /// 統計情報をリセット（新しい日用）
+    func reset(for newDate: Date) {
+        let calendar = Calendar.current
+        self.date = calendar.startOfDay(for: newDate)
 
-    init(analytics: [TaskAnalytics]) {
-        self.totalTasksCompleted = analytics.reduce(0) { $0 + $1.totalTasksCompleted }
+        // すべての統計をリセット
+        totalTasks = 0
+        completedTasks = 0
+        createdTasks = 0
+        overdueTasks = 0
 
-        let avgRate = analytics.reduce(0.0) { $0 + $1.completionRate } / Double(max(analytics.count, 1))
-        self.averageCompletionRate = avgRate
+        totalPredictions = 0
+        acceptedPredictions = 0
+        rejectedPredictions = 0
+        averageConfidence = 0.0
 
-        let totalAccepted = analytics.reduce(0) { $0 + $1.aiSuggestionsAccepted }
-        let totalRejected = analytics.reduce(0) { $0 + $1.aiSuggestionsRejected }
-        self.aiAcceptanceRate = Double(totalAccepted) / Double(max(totalAccepted + totalRejected, 1))
+        hourlyTaskCreationJSON = try? JSONEncoder().encode(Array(repeating: 0, count: 24))
+        hourlyCompletionRateJSON = try? JSONEncoder().encode(Array(repeating: 0.0, count: 24))
 
-        // 時間帯別の生産性判定
-        let morningTotal = analytics.reduce(0) { $0 + $1.morningTasksCompleted }
-        let dayTotal = analytics.reduce(0) { $0 + $1.dayTasksCompleted }
-        let eveningTotal = analytics.reduce(0) { $0 + $1.eveningTasksCompleted }
-        let nightTotal = analytics.reduce(0) { $0 + $1.nightTasksCompleted }
-
-        let maxTime = max(morningTotal, dayTotal, eveningTotal, nightTotal)
-        if maxTime == morningTotal {
-            self.bestProductiveTimeSlot = "朝（5:00-9:00）"
-        } else if maxTime == dayTotal {
-            self.bestProductiveTimeSlot = "日中（9:00-17:00）"
-        } else if maxTime == eveningTotal {
-            self.bestProductiveTimeSlot = "夕方（17:00-21:00）"
-        } else {
-            self.bestProductiveTimeSlot = "夜（21:00-5:00）"
-        }
-
-        // カテゴリ別の生産性
-        var categoryTotals: [String: Double] = [:]
-        for analytic in analytics {
-            for (category, count) in analytic.categoryCompletionRates {
-                categoryTotals[category, default: 0] += count
-            }
-        }
-        self.mostProductiveCategory = categoryTotals.max(by: { $0.value < $1.value })?.key
-
-        // 朝活スコア
-        self.earlyMorningScore = analytics.reduce(0.0) { $0 + $1.earlyMorningProductivityScore } / Double(max(analytics.count, 1))
+        earlyMorningTasksCreated = 0
+        earlyMorningTasksCompleted = 0
+        earlyMorningProductivityScore = 0.0
     }
 }
