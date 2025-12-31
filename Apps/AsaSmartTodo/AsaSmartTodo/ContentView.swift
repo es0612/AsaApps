@@ -11,11 +11,13 @@ import AsaUIKit
 
 struct ContentView: View {
     @State private var viewModel: SmartTodoViewModel
+    @State private var analyticsViewModel: AnalyticsViewModel
     @State private var selectedTab = 0
 
     init() {
         let dataService = DataService()
         _viewModel = State(initialValue: SmartTodoViewModel(dataService: dataService))
+        _analyticsViewModel = State(initialValue: AnalyticsViewModel(dataService: dataService))
     }
 
     var body: some View {
@@ -27,10 +29,10 @@ struct ContentView: View {
                 }
                 .tag(0)
 
-            // AI分析タブ（簡易版）
-            AIPlaceholderView()
+            // 分析タブ
+            AnalyticsView(viewModel: analyticsViewModel)
                 .tabItem {
-                    Label("AI分析", systemImage: "brain.head.profile")
+                    Label("分析", systemImage: "chart.bar.fill")
                 }
                 .tag(1)
 
