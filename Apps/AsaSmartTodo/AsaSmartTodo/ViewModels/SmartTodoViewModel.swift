@@ -16,6 +16,7 @@ final class SmartTodoViewModel {
 
     private let dataService: DataService
     private let predictor: TaskPriorityPredictor
+    private let notificationService: NotificationService
 
     // MARK: - State
 
@@ -79,6 +80,23 @@ final class SmartTodoViewModel {
     init(dataService: DataService) {
         self.dataService = dataService
         self.predictor = TaskPriorityPredictor()
+        self.notificationService = NotificationService.shared
+
+        // AI重み変更の監視を開始
+        NotificationCenter.default.addObserver(
+            forName: .aiWeightsDidChange,
+            object: nil,
+            queue: .main
+        ) { [weak self] notification in
+            if let newWeights = notification.object as? PriorityWeights {
+                self?.predictor.updateWeights(newWeights)
+            }
+        }
+    }
+
+    deinit {
+        // 監視を解除
+        NotificationCenter.default.removeObserver(self, name: .aiWeightsDidChange, object: nil)
     }
 
     // MARK: - Data Loading
@@ -139,6 +157,13 @@ final class SmartTodoViewModel {
             dataService.save()
         }
 
+        // 通知をスケジュール
+        if let settings = dataService.getUserSettings(), task.dueDate != nil {
+            Task {
+                await notificationService.scheduleTaskNotification(for: task, settings: settings)
+            }
+        }
+
         // リストを再読み込み
         loadTasks()
     }
@@ -167,11 +192,24 @@ final class SmartTodoViewModel {
         }
 
         dataService.save()
+
+        // 期限が変更された場合、通知を再スケジュール
+        if dueDate != nil, let settings = dataService.getUserSettings() {
+            Task {
+                await notificationService.scheduleTaskNotification(for: task, settings: settings)
+            }
+        }
+
         loadTasks()
     }
 
     /// タスクを削除
     func deleteTask(_ task: SmartTask) {
+        // 通知をキャンセル
+        Task {
+            await notificationService.cancelNotification(for: task.id)
+        }
+
         dataService.deleteTask(task)
         loadTasks()
     }

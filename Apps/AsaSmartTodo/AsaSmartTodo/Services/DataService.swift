@@ -20,7 +20,9 @@ final class DataService {
             // ModelContainerの作成
             let schema = Schema([
                 SmartTask.self,
-                TaskAnalytics.self
+                TaskAnalytics.self,
+                UserSettings.self,
+                CustomCategory.self
             ])
 
             let modelConfiguration = ModelConfiguration(
@@ -198,6 +200,88 @@ final class DataService {
         } catch {
             print("分析データの取得に失敗: \(error)")
             return []
+        }
+    }
+
+    // MARK: - 設定操作
+
+    /// ユーザー設定を取得（存在しない場合はnil）
+    func getUserSettings() -> UserSettings? {
+        let descriptor = FetchDescriptor<UserSettings>()
+
+        do {
+            let results = try modelContext.fetch(descriptor)
+            return results.first
+        } catch {
+            print("設定の取得に失敗: \(error)")
+            return nil
+        }
+    }
+
+    /// ユーザー設定を保存
+    func saveUserSettings(_ settings: UserSettings) {
+        modelContext.insert(settings)
+
+        do {
+            try modelContext.save()
+        } catch {
+            print("設定の保存に失敗: \(error)")
+        }
+    }
+
+    /// ユーザー設定を更新
+    func updateUserSettings(_ settings: UserSettings) {
+        do {
+            try modelContext.save()
+        } catch {
+            print("設定の更新に失敗: \(error)")
+        }
+    }
+
+    // MARK: - カスタムカテゴリ操作
+
+    /// すべてのカスタムカテゴリを取得
+    func getCustomCategories() -> [CustomCategory] {
+        let descriptor = FetchDescriptor<CustomCategory>(
+            sortBy: [SortDescriptor(\.createdAt)]
+        )
+
+        do {
+            return try modelContext.fetch(descriptor)
+        } catch {
+            print("カスタムカテゴリの取得に失敗: \(error)")
+            return []
+        }
+    }
+
+    /// カスタムカテゴリを保存
+    func saveCustomCategory(_ category: CustomCategory) {
+        modelContext.insert(category)
+
+        do {
+            try modelContext.save()
+        } catch {
+            print("カスタムカテゴリの保存に失敗: \(error)")
+        }
+    }
+
+    /// カスタムカテゴリを更新
+    func updateCustomCategory(_ category: CustomCategory) {
+        do {
+            try modelContext.save()
+        } catch {
+            print("カスタムカテゴリの更新に失敗: \(error)")
+        }
+    }
+
+    /// カスタムカテゴリを削除
+    func deleteCustomCategory(_ category: CustomCategory) {
+        modelContext.delete(category)
+
+        do {
+            try modelContext.save()
+        } catch {
+            print("カスタムカテゴリの削除に失敗: \(error)")
         }
     }
 }

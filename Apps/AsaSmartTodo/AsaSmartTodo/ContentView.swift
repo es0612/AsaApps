@@ -12,12 +12,14 @@ import AsaUIKit
 struct ContentView: View {
     @State private var viewModel: SmartTodoViewModel
     @State private var analyticsViewModel: AnalyticsViewModel
+    @State private var settingsViewModel: SettingsViewModel
     @State private var selectedTab = 0
 
     init() {
         let dataService = DataService()
         _viewModel = State(initialValue: SmartTodoViewModel(dataService: dataService))
         _analyticsViewModel = State(initialValue: AnalyticsViewModel(dataService: dataService))
+        _settingsViewModel = State(initialValue: SettingsViewModel(dataService: dataService))
     }
 
     var body: some View {
@@ -36,8 +38,8 @@ struct ContentView: View {
                 }
                 .tag(1)
 
-            // 設定タブ（簡易版）
-            SettingsPlaceholderView()
+            // 設定タブ
+            SettingsView(viewModel: settingsViewModel)
                 .tabItem {
                     Label("設定", systemImage: "gearshape.fill")
                 }

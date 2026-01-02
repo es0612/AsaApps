@@ -29,12 +29,17 @@ struct PriorityWeights {
 
 /// AI優先度予測エンジン
 final class TaskPriorityPredictor {
-    private let weights: PriorityWeights
+    private var weights: PriorityWeights
     private let featureExtractor: TaskFeatureExtractor
 
     init(weights: PriorityWeights = .default) {
         self.weights = weights
         self.featureExtractor = TaskFeatureExtractor()
+    }
+
+    /// 重みを更新（設定変更時に呼ばれる）
+    func updateWeights(_ newWeights: PriorityWeights) {
+        self.weights = newWeights
     }
 
     /// タスクの優先度を予測
