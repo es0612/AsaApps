@@ -15,7 +15,7 @@ final class DataService {
     let modelContainer: ModelContainer
     let modelContext: ModelContext
 
-    init() {
+    init(inMemory: Bool = false) {
         do {
             // ModelContainerの作成
             let schema = Schema([
@@ -27,7 +27,7 @@ final class DataService {
 
             let modelConfiguration = ModelConfiguration(
                 schema: schema,
-                isStoredInMemoryOnly: false
+                isStoredInMemoryOnly: inMemory
             )
 
             modelContainer = try ModelContainer(
