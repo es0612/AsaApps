@@ -481,8 +481,38 @@ Test Navigator > AsaSmartTodoUITests
 **Phase 4: テスト・ドキュメント（完了 - 2025/01）**
 - 129テスト実装（95%カバレッジ達成）
 - README.md詳細セクション追加
-- デモ動画作成（予定）
+- デモ動画・スクリーンショット撮影ガイド作成
 - DocC APIドキュメント生成（予定）
+
+#### 📸 スクリーンショット
+
+<div align="center">
+  <img src="Docs/Screenshot/AsaSmartTodo/TaskList.png" width="200" alt="タスクリスト" />
+  <img src="Docs/Screenshot/AsaSmartTodo/AddTask.png" width="200" alt="タスク作成" />
+  <img src="Docs/Screenshot/AsaSmartTodo/Analytics.png" width="200" alt="分析画面" />
+  <img src="Docs/Screenshot/AsaSmartTodo/Settings.png" width="200" alt="設定画面" />
+</div>
+
+**タスクリスト**: AI優先度予測バッジ付きのタスクリスト表示
+**タスク作成**: リアルタイムAI予測カード表示
+**分析画面**: 週間サマリーと生産性トレンドチャート
+**設定画面**: AI予測重みのカスタマイズスライダー
+
+> **撮影ガイド**: スクリーンショット撮影手順は[Screenshot-Guide.md](Docs/Screenshot/AsaSmartTodo/Screenshot-Guide.md)を参照
+
+#### 🎥 デモ動画
+
+[![AsaSmartTodo Demo](https://img.shields.io/badge/Demo-Watch%20on%20YouTube-red?style=for-the-badge&logo=youtube)](Docs/Screenshot/AsaSmartTodo/Demo_Full.mp4)
+
+**デモ動画** (5分): [直接ダウンロード](Docs/Screenshot/AsaSmartTodo/Demo_Full.mp4)
+
+動画では以下の機能を実演しています：
+- ✅ AI優先度予測とリアルタイム提案（信頼度スコア表示）
+- ✅ タスク作成・編集・完了のワークフロー
+- ✅ 生産性ダッシュボードと週間トレンド分析（24時間チャート、週間トレンド）
+- ✅ AI重みカスタマイズと通知設定（6つの重みスライダー調整）
+
+> **撮影ガイド**: デモ動画撮影手順は[Demo-Video-Script.md](Docs/Screenshot/AsaSmartTodo/Demo-Video-Script.md)を参照
 
 **Phase 5: Core ML統合（今後の予定）**
 - .mlmodel作成（Create ML使用）
