@@ -9,7 +9,33 @@
 import Foundation
 import SwiftData
 
-/// SwiftDataの永続化を管理するサービス
+/// Swift Dataを使用したデータ永続化サービス
+///
+/// タスク、分析データ、ユーザー設定、カスタムカテゴリの
+/// CRUD操作を一元管理します。
+///
+/// ## 管理対象モデル
+/// - **SmartTask**: タスクデータ
+/// - **TaskAnalytics**: 日別の生産性分析データ
+/// - **UserSettings**: AI重み設定と通知設定
+/// - **CustomCategory**: ユーザー定義カテゴリ
+///
+/// ## 使用例
+/// ```swift
+/// // 本番環境（ディスクに永続化）
+/// let dataService = DataService()
+///
+/// // テスト環境（メモリ内のみ）
+/// let testDataService = DataService(inMemory: true)
+///
+/// // タスク操作
+/// let tasks = dataService.fetchAllTasks()
+/// dataService.saveTask(newTask)
+/// dataService.save() // 変更をコミット
+/// ```
+///
+/// - Note: すべての操作は`@MainActor`で実行され、スレッドセーフです
+/// - Warning: `save()`を呼び出さないと変更が永続化されません
 @MainActor
 final class DataService {
     let modelContainer: ModelContainer

@@ -8,7 +8,31 @@
 
 import Foundation
 
-/// 優先度予測の重み設定
+/// AI優先度予測エンジンの重み設定
+///
+/// 6つの要因に対する重み付けを定義します。
+/// 各重みは0.0〜1.0の範囲で、合計が1.0になるよう設計されています。
+///
+/// ## デフォルト重み配分
+/// - **期限**: 35% - 最も重要な要因
+/// - **カテゴリ**: 20% - タスクの種類による重要度
+/// - **タイトル複雑度**: 15% - タスクの複雑さ
+/// - **説明詳細度**: 10% - 詳細情報の充実度
+/// - **朝活時間帯**: 10% - 早朝作成タスクへのボーナス
+/// - **履歴完了率**: 10% - 過去の実績（将来のCore ML統合予定）
+///
+/// ## カスタマイズ例
+/// ```swift
+/// let customWeights = PriorityWeights(
+///     dueDateWeight: 0.5,  // 期限を最重視
+///     categoryWeight: 0.3,
+///     titleComplexityWeight: 0.1,
+///     descriptionWeight: 0.05,
+///     timeOfDayWeight: 0.03,
+///     historicalWeight: 0.02
+/// )
+/// predictor.updateWeights(customWeights)
+/// ```
 struct PriorityWeights {
     let dueDateWeight: Double           // 期限（35%）
     let categoryWeight: Double          // カテゴリ（20%）
@@ -27,7 +51,45 @@ struct PriorityWeights {
     )
 }
 
-/// AI優先度予測エンジン
+/// AsaSmartTodoのAI優先度予測エンジン
+///
+/// タスクの6要因を分析し、最適な優先度を自動提案します。
+/// 重み付きスコアリングアルゴリズムにより、高精度な予測を実現します。
+///
+/// ## アルゴリズム
+/// ```
+/// totalScore = Σ(featureScore × weight)
+///
+/// where:
+///   - dueDateScore × dueDateWeight (35%)
+///   - categoryScore × categoryWeight (20%)
+///   - titleComplexity × titleComplexityWeight (15%)
+///   - descriptionComplexity × descriptionWeight (10%)
+///   - timeOfDayScore × timeOfDayWeight (10%)
+///   - historicalScore × historicalWeight (10%)
+/// ```
+///
+/// ## スコアから優先度への変換
+/// - **0.7以上**: 高優先度（信頼度: 最大95%）
+/// - **0.4〜0.7**: 中優先度（信頼度: 70〜85%）
+/// - **0.4未満**: 低優先度（信頼度: 50〜70%）
+///
+/// ## 使用例
+/// ```swift
+/// let predictor = TaskPriorityPredictor()
+/// let task = SmartTask(
+///     title: "緊急の報告書作成",
+///     category: .work,
+///     userPriority: .medium,
+///     dueDate: Date().addingTimeInterval(86400)
+/// )
+/// let result = predictor.predictPriority(for: task)
+/// print("推奨優先度: \(result.suggestedPriority)")
+/// print("信頼度: \(result.confidenceScore)")
+/// ```
+///
+/// - Note: リアルタイム予測には`predictPriorityRealtime()`を使用します
+/// - Warning: 重みのカスタマイズ時は合計が1.0になるよう注意してください
 final class TaskPriorityPredictor {
     private var weights: PriorityWeights
     private let featureExtractor: TaskFeatureExtractor

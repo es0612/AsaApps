@@ -9,6 +9,33 @@
 import Foundation
 import SwiftUI
 
+/// AsaSmartTodoアプリのメインViewModel
+///
+/// タスク管理、AI優先度予測、分析データの統括を担当します。
+/// SwiftUIの`@Observable`マクロを使用した状態管理を実装しています。
+///
+/// ## 主要機能
+/// - **タスクCRUD**: タスクの作成、読み込み、更新、削除
+/// - **AI優先度予測**: `TaskPriorityPredictor`を使用した自動優先度提案
+/// - **フィルタリング**: カテゴリ、優先度、完了状態によるタスクフィルタ
+/// - **分析データ統合**: 今日のタスク作成・完了の記録
+/// - **通知管理**: 期限前通知のスケジューリング
+///
+/// ## 使用例
+/// ```swift
+/// let viewModel = SmartTodoViewModel(dataService: DataService())
+/// viewModel.loadTasks()
+/// viewModel.createTask(
+///     title: "重要な会議の準備",
+///     description: "プレゼン資料を完成させる",
+///     category: .work,
+///     userPriority: .medium,
+///     dueDate: Date().addingTimeInterval(86400)
+/// )
+/// ```
+///
+/// - Note: このクラスは`@MainActor`でマークされており、すべてのメソッドはメインスレッドで実行されます
+/// - Warning: `DataService`は必須の依存関係です。`inMemory: true`でテスト用のインスタンスを作成できます
 @MainActor
 @Observable
 final class SmartTodoViewModel {
@@ -127,7 +154,21 @@ final class SmartTodoViewModel {
 
     // MARK: - Task CRUD
 
-    /// タスクを作成（AI予測付き）
+    /// 新しいタスクを作成し、AI優先度予測を実行します
+    ///
+    /// タスク作成時に以下の処理を自動実行します：
+    /// - AI優先度予測の実行と適用
+    /// - 分析データへのタスク作成記録
+    /// - 期限通知のスケジューリング
+    ///
+    /// - Parameters:
+    ///   - title: タスクのタイトル（必須）
+    ///   - description: タスクの詳細説明（オプション）
+    ///   - category: タスクのカテゴリ（work, personal, family等）
+    ///   - userPriority: ユーザーが指定する優先度
+    ///   - dueDate: タスクの期限（オプション）
+    ///
+    /// - Note: AI予測は`TaskPriorityPredictor`により6要因分析で実行されます
     func createTask(
         title: String,
         description: String?,

@@ -10,6 +10,36 @@ import Foundation
 import UserNotifications
 import UIKit
 
+/// タスク期限通知を管理するサービス
+///
+/// UserNotificationsフレームワークを使用して、タスクの期限前通知を
+/// スケジューリング・キャンセル・管理します。
+///
+/// ## 主要機能
+/// - **通知権限管理**: ユーザーからの通知許可リクエスト
+/// - **通知スケジューリング**: 期限前通知の自動スケジュール（1時間前/1日前）
+/// - **通知キャンセル**: タスク削除・完了時の通知削除
+/// - **デリゲート処理**: フォアグラウンド通知の処理
+///
+/// ## 使用例
+/// ```swift
+/// let notificationService = NotificationService.shared
+///
+/// // 権限リクエスト
+/// let granted = await notificationService.requestNotificationPermission()
+///
+/// // タスク通知をスケジュール
+/// await notificationService.scheduleTaskNotification(
+///     for: task,
+///     settings: userSettings
+/// )
+///
+/// // 通知をキャンセル
+/// await notificationService.cancelNotification(for: task.id)
+/// ```
+///
+/// - Note: シングルトンパターンで実装されています（`NotificationService.shared`）
+/// - Warning: iOS 10以降、`UNUserNotificationCenter`を使用します
 final class NotificationService: NSObject, Sendable {
     static let shared = NotificationService()
 
