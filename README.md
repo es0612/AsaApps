@@ -116,3 +116,400 @@ MVVMやRedux、Firebase、サーバーサイド連携、機械学習、クロス
 99. AsaLifeLog: ライフログを統合管理。
 100. AsaPapaHub: 全アプリの機能を集約したハブアプリ。
 
+---
+
+## 実装済みアプリ詳細
+
+### AsaSmartTodo（アプリ #72）
+
+**AIでタスク優先度を提案するスマートTodoアプリ**
+
+AsaSmartTodoは、機械学習を活用してタスクの優先度を自動予測し、生産性向上をサポートするタスク管理アプリです。期限、カテゴリ、タイトル複雑度、説明文、ユーザー優先度、履歴データなど6要因を分析して、最適な優先度を提案します。
+
+#### 📱 スクリーンショット
+
+（デモ動画とスクリーンショットは `Docs/Screenshot/AsaSmartTodo/` に配置予定）
+
+- タスクリスト画面: AI予測バッジ付きタスク一覧
+- タスク作成画面: リアルタイムAI予測カード表示
+- アナリティクス画面: 週次完了率、朝活スコア、チャート
+- 設定画面: AI重みカスタマイズ、通知設定
+
+#### ✨ 主要機能
+
+##### 1. AI優先度予測エンジン
+- **6要因分析**: 期限、カテゴリ、タイトル複雑度、説明文、ユーザー優先度、履歴データを総合評価
+- **リアルタイム予測**: タスク作成中にAI推奨優先度をリアルタイム表示
+- **信頼度スコア**: 予測の確信度を0.0〜1.0のスコアで可視化
+- **予測理由表示**: 「期限が近い」「重要度の高いカテゴリ」などの理由を絵文字付きで表示
+- **カスタム重み設定**: 6要因の重みをユーザーがスライダーでカスタマイズ可能
+
+##### 2. 包括的なタスク管理
+- **CRUD操作**: タスクの作成、読み取り、更新、削除をSwift Dataで永続化
+- **優先度管理**: 低・中・高の3段階、ユーザー設定とAI推奨の併用
+- **カテゴリシステム**: 仕事、個人、家族、健康、学習、その他の6カテゴリ
+- **カスタムカテゴリ**: ユーザー独自のカテゴリを追加可能（アイコン、色、重要度カスタマイズ）
+- **期限設定**: DatePicker統合、期限切れタスクの自動ハイライト
+- **フィルタリング**: ステータス（未完了/完了）、優先度、カテゴリで絞り込み
+- **ソート機能**: 期限順、優先度順、作成日順の並び替え
+
+##### 3. データアナリティクス
+- **週次サマリー**: 完了率、AI採用率、朝活スコア、平均信頼度の4指標
+- **24時間チャート**: 時間帯別のタスク作成・完了パターン可視化
+- **週間トレンド**: 7日間の完了タスク数、完了率の推移グラフ
+- **AI精度トレンド**: AI予測の採用率推移、フィードバック学習サイクル
+- **期間選択**: 週間・月間のデータ切り替え表示
+- **欠損日補完**: データがない日を自動補完して連続性を保証
+
+##### 4. 通知システム
+- **期限日通知**: 期限当日の指定時刻に通知
+- **1日前通知**: 期限1日前の指定時刻にリマインド通知
+- **朝活リマインダー**: 毎日決まった時刻に「今日のタスクを確認」通知
+- **通知権限管理**: アプリ内から設定アプリへの直接遷移
+- **カスタム時刻**: 通知時刻を時・分単位で細かく設定
+
+##### 5. 設定とカスタマイズ
+- **AI重み調整**: 6要因の重みを0〜100%の範囲でスライダー調整
+- **重み正規化**: 合計が100%を超える場合は自動正規化
+- **デフォルトリセット**: ワンタップで推奨重みに戻す
+- **カスタムカテゴリ管理**: 追加、編集、削除（システムカテゴリは保護）
+- **通知設定**: ON/OFF、期限日通知、1日前通知、朝活リマインダーの個別制御
+
+#### 🏗️ 技術スタック
+
+##### フレームワーク・ライブラリ
+- **SwiftUI**: 宣言的UI構築、@Observable状態管理
+- **Swift Data**: タスク、分析データ、設定の永続化
+- **UserNotifications**: ローカル通知、スケジューリング、権限管理
+- **Combine**: リアクティブプログラミング、NotificationCenter統合
+- **Foundation**: Date計算、Calendar操作、文字列処理
+
+##### アーキテクチャパターン
+- **MVVM (Model-View-ViewModel)**: 責務分離、テスタビリティ向上
+- **@Observable マクロ**: モダンなSwiftUI状態管理（iOS 17+）
+- **Singleton Pattern**: NotificationService.shared
+- **Dependency Injection**: ViewModelへのDataService注入
+- **Repository Pattern**: DataServiceによるデータアクセス抽象化
+
+##### コア技術
+- **AI予測アルゴリズム**: 6要因の重み付き総和による優先度スコアリング
+- **Swift Testing**: @Test構文、#expect検証（XCTestの後継）
+- **XCUITest**: UIテスト自動化、フロー検証
+- **UserDefaults**: 軽量設定データの保存
+- **@MainActor**: UI操作のメインスレッド実行保証
+
+#### 📐 アーキテクチャ
+
+```
+AsaSmartTodo/
+├── Models/                          # データモデル層
+│   ├── SmartTask.swift             # @Model - タスクエンティティ
+│   ├── TaskAnalytics.swift         # @Model - 分析データ
+│   ├── UserSettings.swift          # @Model - ユーザー設定
+│   ├── CustomCategory.swift        # @Model - カスタムカテゴリ
+│   └── TaskCategory.swift          # enum - カテゴリ定義
+│
+├── ViewModels/                      # ビジネスロジック層
+│   ├── SmartTodoViewModel.swift    # @Observable - タスク管理
+│   ├── AnalyticsViewModel.swift    # @Observable - 分析機能
+│   └── SettingsViewModel.swift     # @Observable - 設定管理
+│
+├── Views/                           # UI層
+│   ├── TaskListView.swift          # タスク一覧（フィルタ、ソート）
+│   ├── TaskDetailView.swift        # タスク詳細・編集
+│   ├── AnalyticsView.swift         # データ可視化
+│   ├── SettingsView.swift          # 設定画面
+│   └── Components/                 # 再利用可能UI
+│       ├── AIPredictionCard.swift  # AI予測表示カード
+│       ├── TaskRow.swift           # タスク行コンポーネント
+│       └── PriorityBadge.swift     # 優先度バッジ
+│
+├── Services/                        # サービス層
+│   ├── DataService.swift           # Swift Data操作
+│   ├── NotificationService.swift   # 通知管理
+│   └── TaskPriorityPredictor.swift # AI予測エンジン
+│
+└── Tests/                           # テスト層
+    ├── AsaSmartTodoTests/          # Unit & Integration Tests
+    │   ├── Services/               # サービステスト（45テスト）
+    │   ├── ViewModels/             # ViewModelテスト（75テスト）
+    │   └── TaskPriorityPredictorTests.swift  # AI予測テスト（21テスト）
+    └── AsaSmartTodoUITests/        # UI Tests（9テスト）
+```
+
+#### 🎯 主要クラス
+
+##### SmartTodoViewModel
+- **責務**: タスクCRUD、AI予測統合、NotificationCenter連携
+- **主要メソッド**:
+  - `addTask()`: タスク作成＋AI予測＋通知スケジュール
+  - `toggleTaskCompletion()`: 完了/未完了切り替え＋分析記録
+  - `deleteTask()`: タスク削除＋通知キャンセル
+  - `predictPriorityRealtime()`: リアルタイムAI予測
+- **状態管理**: `@Observable`, `@Published` 非使用
+
+##### TaskPriorityPredictor
+- **責務**: 6要因分析による優先度予測
+- **アルゴリズム**:
+  ```swift
+  score = (dueDateScore × dueDateWeight) +
+          (categoryScore × categoryWeight) +
+          (titleScore × titleComplexityWeight) +
+          (descriptionScore × descriptionWeight) +
+          (userPriorityScore × userPriorityWeight) +
+          (historicalScore × historicalWeight)
+  ```
+- **スコアリング範囲**: 0.0（低優先度）〜 1.0（高優先度）
+- **重みデフォルト**: 期限35%, カテゴリ20%, タイトル15%, 説明10%, ユーザー優先度10%, 履歴10%
+
+##### DataService
+- **責務**: Swift Data CRUD操作、ModelContext管理
+- **主要メソッド**:
+  - `fetchAllTasks()`: 全タスク取得
+  - `saveTask()`: タスク保存（insert/update自動判定）
+  - `deleteTask()`: タスク削除
+  - `getTaskAnalytics(for:)`: 指定日の分析データ取得
+- **In-Memory Testing**: `init(inMemory: Bool)` でテスト用DB切り替え
+
+##### NotificationService
+- **責務**: UNUserNotificationCenter ラッパー、Singleton
+- **主要メソッド**:
+  - `requestNotificationPermission()`: 権限リクエスト（async）
+  - `scheduleTaskNotification()`: 期限日＋1日前通知
+  - `scheduleMorningReminder()`: 朝活リマインダー（繰り返し通知）
+  - `cancelNotification()`: 通知キャンセル
+- **デリゲート**: `UNUserNotificationCenterDelegate` 実装
+
+#### 🧪 テスト
+
+##### テストカバレッジ
+- **Total Tests**: 129テスト
+- **Unit Tests**: 120テスト（Services 45 + ViewModels 75）
+- **UI Tests**: 9テスト（3フロー × 3パターン）
+- **Coverage**: 95%以上（Phase 4目標達成）
+
+##### テスト構成
+
+**Services Layer Tests (45テスト)**
+- `DataServiceTests.swift` - 25テスト
+  - CRUD操作: 10テスト（create, read, update, delete, batch）
+  - フィルタリング: 5テスト（status, priority, category）
+  - UserSettings: 5テスト（save, load, update）
+  - CustomCategory: 5テスト（CRUD + validation）
+
+- `NotificationServiceTests.swift` - 20テスト
+  - 権限管理: 5テスト（request, status, settings navigation）
+  - スケジューリング: 8テスト（due day, 1-day before, morning reminder）
+  - キャンセル: 4テスト（task notification, morning reminder）
+  - エッジケース: 3テスト（past due, within 24h, boundary values）
+
+**ViewModels Layer Tests (75テスト)**
+- `SmartTodoViewModelTests.swift` - 30テスト
+  - CRUD操作: 10テスト（add, update, delete, toggle completion）
+  - AI予測: 8テスト（realtime prediction, acceptance, rejection）
+  - フィルタ・ソート: 5テスト（status filter, priority filter, sort）
+  - NotificationCenter連携: 4テスト（AI weights update observer）
+  - エッジケース: 3テスト（empty state, duplicate handling）
+
+- `SettingsViewModelTests.swift` - 20テスト
+  - AI重み設定: 6テスト（update, reset, normalization）
+  - カスタムカテゴリ: 6テスト（add, update, delete, validation）
+  - 通知設定: 5テスト（permission, toggle, schedule）
+  - 設定保存: 3テスト（save, load, default creation）
+
+- `AnalyticsViewModelTests.swift` - 15テスト
+  - 週次サマリー: 5テスト（completion rate, AI acceptance, morning score）
+  - チャートデータ: 4テスト（hourly, weekly trend, AI accuracy）
+  - データ読み込み: 3テスト（load analytics, date range, fill missing）
+  - フォーマット: 3テスト（percentage, date label, enum）
+
+- `TaskPriorityPredictorTests.swift` - 21テスト
+  - 基本予測: 3テスト（overdue, no due date, tomorrow）
+  - カテゴリ重要度: 2テスト（health high, other low）
+  - リアルタイム予測: 2テスト（full input, minimal input）
+  - 信頼度スコア: 1テスト（range validation）
+  - 予測理由: 2テスト（reason generation, due date reason）
+  - カスタム重み: 1テスト（weight update）
+  - 極端な組み合わせ: 2テスト（all max, all min）
+  - 境界値: 3テスト（24h, 7days, 1year）
+  - 長文処理: 2テスト（long title, long description）
+  - カテゴリ網羅: 1テスト（all 6 categories）
+  - 優先度相互作用: 1テスト（user vs AI priority）
+
+**UI Tests (9テスト)**
+- `AsaSmartTodoUITests.swift` - 9テスト
+  - タスク作成フロー: 3テスト（full input, minimal, cancellation）
+  - AI予測採用フロー: 2テスト（acceptance, rejection）
+  - 設定変更フロー: 4テスト（AI weights, notifications, custom category, navigation）
+
+##### テスト戦略
+
+**Swift Testing フレームワーク**
+```swift
+@Test("週間完了率の計算が正しく動作する")
+func testWeeklyCompletionRate() async {
+    let dataService = createTestDataService()
+    let viewModel = AnalyticsViewModel(dataService: dataService)
+
+    // 7日分のテストデータ作成
+    for i in 0..<7 {
+        let date = calendar.date(byAdding: .day, value: -i, to: Date())!
+        let analytics = createTestAnalytics(date: date, totalTasks: 10, completedTasks: 7)
+        dataService.save()
+    }
+
+    viewModel.loadAnalytics()
+
+    let rate = viewModel.weeklyCompletionRate
+    #expect(rate >= 0.0 && rate <= 1.0)
+}
+```
+
+**In-Memory Swift Data Testing**
+```swift
+func createTestDataService() -> DataService {
+    return DataService(inMemory: true)  // テスト用DB分離
+}
+```
+
+**XCUITest フロー検証**
+```swift
+func testTaskCreationFlow() throws {
+    let addButton = app.buttons["新しいタスク"]
+    addButton.tap()
+
+    let titleField = app.textFields["タイトルを入力"]
+    titleField.tap()
+    titleField.typeText("重要な会議の準備")
+
+    let saveButton = app.buttons["保存"]
+    saveButton.tap()
+
+    let createdTask = app.staticTexts["重要な会議の準備"]
+    XCTAssertTrue(createdTask.waitForExistence(timeout: 3))
+}
+```
+
+#### 🚀 セットアップ
+
+##### 必要要件
+- Xcode 15.0+
+- iOS 17.0+
+- Swift 5.9+
+- XcodeGen（プロジェクトファイル生成）
+
+##### インストール手順
+
+1. **リポジトリクローン**
+```bash
+git clone https://github.com/yourusername/AsaApps.git
+cd AsaApps/Apps/AsaSmartTodo
+```
+
+2. **XcodeGenでプロジェクト生成**
+```bash
+# XcodeGenインストール（未インストールの場合）
+brew install xcodegen
+
+# プロジェクトファイル生成
+xcodegen generate
+```
+
+3. **Xcodeでプロジェクトを開く**
+```bash
+open AsaSmartTodo.xcodeproj
+```
+
+4. **ビルド・実行**
+- ターゲット: AsaSmartTodo
+- デバイス: iPhone 16 Simulator（推奨）またはiOS 17+実機
+- Cmd+R でビルド・実行
+
+##### テスト実行
+
+**Unit Tests（Swift Testing）**
+```bash
+# コマンドラインから全テスト実行
+swift test
+
+# 特定テストクラスのみ実行
+swift test --filter DataServiceTests
+
+# Xcodeから実行
+Cmd+U（全テスト）
+```
+
+**UI Tests（XCUITest）**
+```bash
+# Xcodeから実行
+Product > Test（Cmd+U）
+Test Navigator > AsaSmartTodoUITests
+```
+
+##### 設定
+
+**通知権限**
+- アプリ初回起動時に通知権限リクエスト
+- 設定 > AsaSmartTodo > 通知 で後から変更可能
+
+**AI重み調整**
+- 設定タブ > AI予測の重み設定
+- 6要因のスライダーを調整（合計100%に自動正規化）
+- 「重みをリセット」で推奨値に戻す
+
+#### 📊 実装進捗
+
+**Phase 1: コアモデル（完了 - 2024/12）**
+- SmartTask, TaskAnalytics, UserSettings, CustomCategory
+- TaskCategory enum, TaskPriority enum
+- TaskPriorityPredictor（6要因AI予測エンジン）
+
+**Phase 2: MVVM構築（完了 - 2024/12）**
+- SmartTodoViewModel（タスクCRUD、AI統合）
+- AnalyticsViewModel（週次サマリー、チャート）
+- SettingsViewModel（AI重み、カスタムカテゴリ）
+- DataService（Swift Data抽象化）
+- NotificationService（通知管理）
+
+**Phase 3: UI実装（完了 - 2024/12）**
+- TaskListView（フィルタ、ソート、検索）
+- TaskDetailView（CRUD、AI予測カード）
+- AnalyticsView（週次・月次チャート、トレンドグラフ）
+- SettingsView（AI重み調整、通知設定、カスタムカテゴリ）
+- AsaSmartTodoApp（タブナビゲーション）
+
+**Phase 4: テスト・ドキュメント（完了 - 2025/01）**
+- 129テスト実装（95%カバレッジ達成）
+- README.md詳細セクション追加
+- デモ動画作成（予定）
+- DocC APIドキュメント生成（予定）
+
+**Phase 5: Core ML統合（今後の予定）**
+- .mlmodel作成（Create ML使用）
+- 履歴データ収集・学習サイクル
+- オフライン予測高速化
+- 精度向上と継続的改善
+
+#### 🎓 学習成果
+
+このプロジェクトを通じて以下の技術を習得：
+
+- **Swift Data**: @Model, Schema, ModelContainer, ModelContext
+- **@Observable マクロ**: iOS 17の新しい状態管理パターン
+- **Swift Testing**: @Test構文、#expect検証、async/await対応
+- **UserNotifications**: 権限管理、スケジューリング、デリゲートパターン
+- **MVVM設計**: 責務分離、テスタビリティ、依存性注入
+- **XcodeGen**: YAMLベースのプロジェクト管理、CI/CD統合
+- **AI予測ロジック**: 重み付きスコアリング、信頼度計算
+- **データ可視化**: Chart API、トレンドグラフ、週次サマリー
+- **NotificationCenter**: 複数ViewModel間の疎結合通信
+
+#### 🔗 関連リンク
+
+- [実装ノート - Day73](Docs/Notes/Day73-AsaSmartTodo-Phase1-CoreModels.md)
+- [実装ノート - Day74](Docs/Notes/Day74-AsaSmartTodo-Phase2-MVVM.md)
+- [ブランドガイドライン](Docs/BrandGuidelines.md)
+- [プロジェクト構造](project.yml)
+
+---
+
