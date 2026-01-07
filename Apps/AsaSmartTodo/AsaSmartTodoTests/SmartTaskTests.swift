@@ -58,7 +58,7 @@ struct SmartTaskTests {
             suggestedPriority: .high,
             confidenceScore: 0.85,
             reasons: [
-                PredictionReason(emoji: "⏰", description: "期限が近い", weight: 0.35)
+                "⏰ 期限が近い"
             ]
         )
 
@@ -67,7 +67,7 @@ struct SmartTaskTests {
         #expect(task.aiPriority == .high)
         #expect(task.confidenceScore == 0.85)
         #expect(task.predictionReasons.count == 1)
-        #expect(task.predictionReasons.first?.emoji == "⏰")
+        #expect(task.predictionReasons.first == "⏰ 期限が近い")
     }
 
     // MARK: - AI予測フィードバックテスト

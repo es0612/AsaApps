@@ -96,10 +96,10 @@ final class SmartTask {
     }
 
     /// 予測理由（デコード）
-    var predictionReasons: [PredictionReason] {
+    var predictionReasons: [String] {
         get {
             guard let data = predictionReasonsJSON else { return [] }
-            return (try? JSONDecoder().decode([PredictionReason].self, from: data)) ?? []
+            return (try? JSONDecoder().decode([String].self, from: data)) ?? []
         }
         set {
             predictionReasonsJSON = try? JSONEncoder().encode(newValue)

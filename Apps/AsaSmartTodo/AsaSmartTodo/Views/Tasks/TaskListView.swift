@@ -12,6 +12,10 @@ import AsaUIKit
 struct TaskListView: View {
     @Bindable var viewModel: SmartTodoViewModel
 
+    @State private var selectedTaskForAIDetail: SmartTask?
+    @State private var aiDetailPrediction: EnhancedPredictionResult?
+    @State private var showingAIDetail = false
+
     var body: some View {
         NavigationStack {
             ZStack {
@@ -36,6 +40,11 @@ struct TaskListView: View {
             .sheet(isPresented: $viewModel.showingAddTask) {
                 AddTaskView(viewModel: viewModel)
             }
+            .sheet(isPresented: $showingAIDetail) {
+                if let task = selectedTaskForAIDetail, let prediction = aiDetailPrediction {
+                    AIAnalysisDetailView(prediction: prediction, task: task)
+                }
+            }
         }
     }
 
@@ -47,9 +56,15 @@ struct TaskListView: View {
             if !viewModel.activeTasks.isEmpty {
                 Section("アクティブ") {
                     ForEach(viewModel.activeTasks, id: \.id) { task in
-                        TaskRowView(task: task) {
+                        TaskRowView(task: task, onToggleComplete: {
                             viewModel.toggleTaskCompletion(task)
-                        }
+                        }, onShowAIDetail: {
+                            selectedTaskForAIDetail = task
+                            Task {
+                                aiDetailPrediction = await viewModel.getEnhancedPrediction(for: task)
+                                showingAIDetail = true
+                            }
+                        })
                     }
                     .onDelete { indexSet in
                         indexSet.forEach { index in
@@ -63,9 +78,15 @@ struct TaskListView: View {
             if !viewModel.completedTasks.isEmpty {
                 Section("完了") {
                     ForEach(viewModel.completedTasks, id: \.id) { task in
-                        TaskRowView(task: task) {
+                        TaskRowView(task: task, onToggleComplete: {
                             viewModel.toggleTaskCompletion(task)
-                        }
+                        }, onShowAIDetail: {
+                            selectedTaskForAIDetail = task
+                            Task {
+                                aiDetailPrediction = await viewModel.getEnhancedPrediction(for: task)
+                                showingAIDetail = true
+                            }
+                        })
                     }
                     .onDelete { indexSet in
                         indexSet.forEach { index in

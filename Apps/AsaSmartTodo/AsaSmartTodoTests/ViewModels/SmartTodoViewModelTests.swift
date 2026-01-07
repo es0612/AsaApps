@@ -78,7 +78,7 @@ struct SmartTodoViewModelTests {
 
         let task = viewModel.tasks.first
         #expect(task != nil)
-        #expect(task?.aiPredictedPriority != nil)
+        #expect(task?.aiPriority != nil)
         #expect(task?.confidenceScore != nil)
     }
 
@@ -121,14 +121,14 @@ struct SmartTodoViewModelTests {
         )
 
         let task = viewModel.tasks.first!
-        let initialPrediction = task.aiPredictedPriority
+        let initialPrediction = task.aiPriority
 
         // 優先度を変更（AI予測再実行トリガー）
         viewModel.updateTask(task, userPriority: .high)
 
         // AI予測が再実行される
         #expect(task.userPriority == .high)
-        #expect(task.aiPredictedPriority != nil)
+        #expect(task.aiPriority != nil)
     }
 
     @Test("タスク削除が正しく動作する")
@@ -216,7 +216,7 @@ struct SmartTodoViewModelTests {
         let dataService = createTestDataService()
 
         // 分析データを初期化
-        let analytics = TaskAnalytics()
+        let analytics = TaskAnalytics(date: Date())
         dataService.save()
 
         let viewModel = SmartTodoViewModel(dataService: dataService)
@@ -239,7 +239,7 @@ struct SmartTodoViewModelTests {
         let dataService = createTestDataService()
 
         // 分析データを初期化
-        let analytics = TaskAnalytics()
+        let analytics = TaskAnalytics(date: Date())
         dataService.save()
 
         let viewModel = SmartTodoViewModel(dataService: dataService)
@@ -307,7 +307,7 @@ struct SmartTodoViewModelTests {
         let dataService = createTestDataService()
 
         // 分析データを初期化
-        let analytics = TaskAnalytics()
+        let analytics = TaskAnalytics(date: Date())
         dataService.save()
 
         let viewModel = SmartTodoViewModel(dataService: dataService)
@@ -333,7 +333,7 @@ struct SmartTodoViewModelTests {
         let dataService = createTestDataService()
 
         // 分析データを初期化
-        let analytics = TaskAnalytics()
+        let analytics = TaskAnalytics(date: Date())
         dataService.save()
 
         let viewModel = SmartTodoViewModel(dataService: dataService)
@@ -359,7 +359,7 @@ struct SmartTodoViewModelTests {
         let dataService = createTestDataService()
 
         // 分析データを初期化
-        let analytics = TaskAnalytics()
+        let analytics = TaskAnalytics(date: Date())
         analytics.recordAIFeedback(accepted: true, confidenceScore: 0.9)
         analytics.recordAIFeedback(accepted: false, confidenceScore: 0.7)
         dataService.save()
@@ -420,8 +420,8 @@ struct SmartTodoViewModelTests {
             dueDateWeight: 0.40,
             categoryWeight: 0.25,
             titleComplexityWeight: 0.15,
-            userPriorityWeight: 0.10,
             descriptionWeight: 0.05,
+            timeOfDayWeight: 0.10,
             historicalWeight: 0.05
         )
 

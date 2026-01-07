@@ -74,7 +74,7 @@ struct TaskPriorityPredictorTests {
         let result = predictor.predictPriority(for: task)
 
         // 健康カテゴリは importanceWeight が 0.9 なので高優先度になりやすい
-        #expect(result.reasons.contains { $0.emoji == "❤️" })
+        #expect(result.reasons.contains(where: { $0.hasPrefix("❤️") }))
     }
 
     @Test("その他カテゴリは重要度が低い")
@@ -118,7 +118,6 @@ struct TaskPriorityPredictorTests {
             dueDate: nil
         )
 
-        #expect(result.suggestedPriority != nil)
         #expect(result.confidenceScore >= 0.0)
     }
 
@@ -168,7 +167,7 @@ struct TaskPriorityPredictorTests {
         let result = predictor.predictPriority(for: task)
 
         // 期限に関する理由が含まれているか確認
-        #expect(result.reasons.contains { $0.emoji == "⏰" || $0.emoji == "📅" })
+        #expect(result.reasons.contains(where: { $0.hasPrefix("⏰") || $0.hasPrefix("📅") }))
     }
 
     // MARK: - カスタム重み設定テスト
@@ -190,8 +189,8 @@ struct TaskPriorityPredictorTests {
             dueDateWeight: 0.1,
             categoryWeight: 0.7,  // カテゴリ重視
             titleComplexityWeight: 0.05,
-            userPriorityWeight: 0.05,
             descriptionWeight: 0.05,
+            timeOfDayWeight: 0.05,
             historicalWeight: 0.05
         )
         predictor.updateWeights(customWeights)

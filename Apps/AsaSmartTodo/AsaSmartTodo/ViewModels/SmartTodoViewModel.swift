@@ -42,7 +42,7 @@ final class SmartTodoViewModel {
     // MARK: - Dependencies
 
     private let dataService: DataService
-    private let predictor: TaskPriorityPredictor
+    private let predictor: EnhancedPriorityPredictor
     private let notificationService: NotificationService
 
     // MARK: - State
@@ -106,24 +106,8 @@ final class SmartTodoViewModel {
 
     init(dataService: DataService) {
         self.dataService = dataService
-        self.predictor = TaskPriorityPredictor()
+        self.predictor = EnhancedPriorityPredictor()
         self.notificationService = NotificationService.shared
-
-        // AI重み変更の監視を開始
-        NotificationCenter.default.addObserver(
-            forName: .aiWeightsDidChange,
-            object: nil,
-            queue: .main
-        ) { [weak self] notification in
-            if let newWeights = notification.object as? PriorityWeights {
-                self?.predictor.updateWeights(newWeights)
-            }
-        }
-    }
-
-    deinit {
-        // 監視を解除
-        NotificationCenter.default.removeObserver(self, name: .aiWeightsDidChange, object: nil)
     }
 
     // MARK: - Data Loading
@@ -157,7 +141,7 @@ final class SmartTodoViewModel {
     /// 新しいタスクを作成し、AI優先度予測を実行します
     ///
     /// タスク作成時に以下の処理を自動実行します：
-    /// - AI優先度予測の実行と適用
+    /// - ハイブリッドAI優先度予測の実行と適用（iOS 18ではLLM統合、iOS 17以下はルールベースのみ）
     /// - 分析データへのタスク作成記録
     /// - 期限通知のスケジューリング
     ///
@@ -168,7 +152,7 @@ final class SmartTodoViewModel {
     ///   - userPriority: ユーザーが指定する優先度
     ///   - dueDate: タスクの期限（オプション）
     ///
-    /// - Note: AI予測は`TaskPriorityPredictor`により6要因分析で実行されます
+    /// - Note: AI予測は`EnhancedPriorityPredictor`によりハイブリッド分析（ルールベース40% + LLM60%）で実行されます
     func createTask(
         title: String,
         description: String?,
@@ -184,29 +168,37 @@ final class SmartTodoViewModel {
             dueDate: dueDate
         )
 
-        // AI予測を実行
-        let prediction = predictor.predictPriority(for: task)
-        task.applyPrediction(prediction)
+        // AI予測を非同期実行（LLM分析は300-500ms）
+        Task {
+            let enhancedPrediction = await predictor.predictPriority(for: task)
 
-        // タスクを保存
-        dataService.saveTask(task)
+            // EnhancedPredictionResultをPredictionResultに変換
+            let prediction = PredictionResult(
+                suggestedPriority: enhancedPrediction.suggestedPriority,
+                confidenceScore: enhancedPrediction.confidenceScore,
+                reasons: enhancedPrediction.reasons
+            )
 
-        // 分析データを更新
-        if let analytics = todayAnalytics {
-            let hour = Calendar.current.component(.hour, from: Date())
-            analytics.recordTaskCreation(at: hour, category: category)
-            dataService.save()
-        }
+            task.applyPrediction(prediction)
 
-        // 通知をスケジュール
-        if let settings = dataService.getUserSettings(), task.dueDate != nil {
-            Task {
+            // タスクを保存
+            dataService.saveTask(task)
+
+            // 分析データを更新
+            if let analytics = todayAnalytics {
+                let hour = Calendar.current.component(.hour, from: Date())
+                analytics.recordTaskCreation(at: hour, category: category)
+                dataService.save()
+            }
+
+            // 通知をスケジュール
+            if let settings = dataService.getUserSettings(), task.dueDate != nil {
                 await notificationService.scheduleTaskNotification(for: task, settings: settings)
             }
-        }
 
-        // リストを再読み込み
-        loadTasks()
+            // リストを再読み込み
+            loadTasks()
+        }
     }
 
     /// タスクを更新
@@ -226,13 +218,21 @@ final class SmartTodoViewModel {
             dueDate: dueDate
         )
 
-        // 優先度が変更された場合、AI予測を再実行
+        // 優先度が変更された場合、AI予測を再実行（非同期）
         if userPriority != nil {
-            let prediction = predictor.predictPriority(for: task)
-            task.applyPrediction(prediction)
+            Task {
+                let enhancedPrediction = await predictor.predictPriority(for: task)
+                let prediction = PredictionResult(
+                    suggestedPriority: enhancedPrediction.suggestedPriority,
+                    confidenceScore: enhancedPrediction.confidenceScore,
+                    reasons: enhancedPrediction.reasons
+                )
+                task.applyPrediction(prediction)
+                dataService.save()
+            }
+        } else {
+            dataService.save()
         }
-
-        dataService.save()
 
         // 期限が変更された場合、通知を再スケジュール
         if dueDate != nil, let settings = dataService.getUserSettings() {
@@ -275,6 +275,16 @@ final class SmartTodoViewModel {
     }
 
     // MARK: - AI Prediction
+
+    /// タスクのAI予測を再実行して結果を取得
+    ///
+    /// AI分析詳細画面で表示するために、ハイブリッドAI予測を実行します。
+    ///
+    /// - Parameter task: 分析対象のSmartTask
+    /// - Returns: EnhancedPredictionResult（ハイブリッド予測結果）
+    func getEnhancedPrediction(for task: SmartTask) async -> EnhancedPredictionResult {
+        return await predictor.predictPriority(for: task)
+    }
 
     /// AI予測を採用
     func acceptAIPrediction(for task: SmartTask) {

@@ -16,7 +16,7 @@ struct PredictionResult: Codable, Sendable {
     let confidenceScore: Double
 
     /// 予測理由のリスト
-    let reasons: [PredictionReason]
+    let reasons: [String]
 
     /// 信頼度をパーセンテージで取得
     var confidencePercentage: Int {
@@ -25,7 +25,7 @@ struct PredictionResult: Codable, Sendable {
 
     /// 予測理由を日本語テキストに変換
     var reasonsText: String {
-        reasons.map { "\($0.emoji) \($0.description)" }.joined(separator: " / ")
+        reasons.joined(separator: " / ")
     }
 
     /// 信頼度の表示テキスト

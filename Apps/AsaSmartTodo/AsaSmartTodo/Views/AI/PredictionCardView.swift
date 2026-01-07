@@ -69,10 +69,9 @@ struct PredictionCardView: View {
                         .font(.caption)
                         .foregroundColor(.secondary)
 
-                    ForEach(prediction.reasons) { reason in
+                    ForEach(Array(prediction.reasons.enumerated()), id: \.offset) { index, reason in
                         HStack(spacing: 6) {
-                            Text(reason.emoji)
-                            Text(reason.description)
+                            Text(reason)
                                 .font(.caption)
                         }
                     }

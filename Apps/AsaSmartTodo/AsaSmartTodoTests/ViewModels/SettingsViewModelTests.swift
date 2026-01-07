@@ -197,6 +197,7 @@ struct SettingsViewModelTests {
         let systemCategory = CustomCategory(
             name: "システム",
             icon: "star.fill",
+            importanceWeight: 0.5,
             colorHex: "#000000"
         )
         // CustomCategoryモデルはisSystemプロパティがないため、
@@ -222,8 +223,8 @@ struct SettingsViewModelTests {
         let dataService = createTestDataService()
 
         // 直接DataServiceにカテゴリを保存
-        let category1 = CustomCategory(name: "副業", icon: "briefcase.fill", colorHex: "#FF5733")
-        let category2 = CustomCategory(name: "趣味", icon: "paintbrush.fill", colorHex: "#33FF57")
+        let category1 = CustomCategory(name: "副業", icon: "briefcase.fill", importanceWeight: 0.5, colorHex: "#FF5733")
+        let category2 = CustomCategory(name: "趣味", icon: "paintbrush.fill", importanceWeight: 0.5, colorHex: "#33FF57")
         dataService.saveCustomCategory(category1)
         dataService.saveCustomCategory(category2)
 

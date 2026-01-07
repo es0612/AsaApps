@@ -110,14 +110,20 @@ final class TaskPriorityPredictor {
         let features = featureExtractor.extractFeatures(from: task)
 
         var totalScore: Double = 0.0
-        var reasons: [PredictionReason] = []
+        var reasons: [String] = []
 
         // 1. 期限スコア（35%）
         let dueDateScore = features.dueDateScore * weights.dueDateWeight
         totalScore += dueDateScore
 
         if let days = features.daysUntilDue, days <= 1 {
-            reasons.append(.dueDateUrgent(days))
+            if days < 0 {
+                reasons.append("🚨 期限切れ（緊急）")
+            } else if days == 0 {
+                reasons.append("🚨 今日が期限")
+            } else if days == 1 {
+                reasons.append("🚨 明日が期限")
+            }
         }
 
         // 2. カテゴリスコア（20%）
@@ -125,7 +131,7 @@ final class TaskPriorityPredictor {
         totalScore += categoryScore
 
         if features.categoryImportanceScore >= 0.7 {
-            reasons.append(.categoryImportant(task.category))
+            reasons.append("\(task.category.icon) \(task.category.displayName)関連")
         }
 
         // 3. タイトル複雑度スコア（15%）
@@ -133,8 +139,8 @@ final class TaskPriorityPredictor {
         totalScore += titleScore
 
         if features.titleComplexity >= 0.6 {
-            let wordCount = task.title.split(separator: " ").count
-            reasons.append(.complexTitle(wordCount))
+            let wordCount = task.title.count
+            reasons.append("📝 詳細なタスク内容")
         }
 
         // 4. 説明文スコア（10%）
@@ -142,7 +148,7 @@ final class TaskPriorityPredictor {
         totalScore += descriptionScore
 
         if features.descriptionComplexity >= 0.5, let desc = task.taskDescription {
-            reasons.append(.detailedDescription(desc.count))
+            reasons.append("📋 詳細な説明あり（\(desc.count)文字）")
         }
 
         // 5. 時間帯スコア（10%）朝活ボーナス
@@ -150,7 +156,7 @@ final class TaskPriorityPredictor {
         totalScore += timeScore
 
         if features.createdHour >= 5 && features.createdHour < 7 {
-            reasons.append(.morningBoost())
+            reasons.append("🌅 朝活時間（5:00-7:00）に作成")
         }
 
         // 6. 履歴完了率スコア（10%）

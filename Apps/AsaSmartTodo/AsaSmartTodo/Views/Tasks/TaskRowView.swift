@@ -12,6 +12,13 @@ import AsaUIKit
 struct TaskRowView: View {
     let task: SmartTask
     let onToggleComplete: () -> Void
+    let onShowAIDetail: (() -> Void)?
+
+    init(task: SmartTask, onToggleComplete: @escaping () -> Void, onShowAIDetail: (() -> Void)? = nil) {
+        self.task = task
+        self.onToggleComplete = onToggleComplete
+        self.onShowAIDetail = onShowAIDetail
+    }
 
     var body: some View {
         HStack(spacing: 12) {
@@ -62,14 +69,23 @@ struct TaskRowView: View {
 
                     Spacer()
 
-                    // AI予測インジケータ
+                    // AI予測インジケータ（タップ可能）
                     if task.aiPriority != nil {
-                        HStack(spacing: 2) {
-                            Image(systemName: "brain.head.profile")
-                            Text("\(task.confidenceScore, format: .percent.precision(.fractionLength(0)))")
+                        Button(action: {
+                            onShowAIDetail?()
+                        }) {
+                            HStack(spacing: 2) {
+                                Image(systemName: "brain.head.profile")
+                                Text("\(task.confidenceScore, format: .percent.precision(.fractionLength(0)))")
+                            }
+                            .font(.caption2)
+                            .foregroundColor(AsaColors.coffeeBrown)
+                            .padding(.horizontal, 6)
+                            .padding(.vertical, 2)
+                            .background(AsaColors.softCream)
+                            .cornerRadius(4)
                         }
-                        .font(.caption2)
-                        .foregroundColor(AsaColors.coffeeBrown)
+                        .buttonStyle(.plain)
                     }
                 }
             }

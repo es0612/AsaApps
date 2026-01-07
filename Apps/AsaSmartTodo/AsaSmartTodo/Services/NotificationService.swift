@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import UserNotifications
+@preconcurrency import UserNotifications
 import UIKit
 
 /// タスク期限通知を管理するサービス
@@ -40,7 +40,7 @@ import UIKit
 ///
 /// - Note: シングルトンパターンで実装されています（`NotificationService.shared`）
 /// - Warning: iOS 10以降、`UNUserNotificationCenter`を使用します
-final class NotificationService: NSObject, Sendable {
+final class NotificationService: NSObject {
     static let shared = NotificationService()
 
     private let center = UNUserNotificationCenter.current()

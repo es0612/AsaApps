@@ -393,6 +393,7 @@ struct DataServiceTests {
         let category = CustomCategory(
             name: "副業",
             icon: "briefcase.fill",
+            importanceWeight: 0.5,
             colorHex: "#FF5733"
         )
 
@@ -407,9 +408,9 @@ struct DataServiceTests {
     func testSaveMultipleCustomCategories() async {
         let dataService = createTestDataService()
 
-        let category1 = CustomCategory(name: "副業", icon: "briefcase.fill", colorHex: "#FF5733")
-        let category2 = CustomCategory(name: "趣味", icon: "paintbrush.fill", colorHex: "#33FF57")
-        let category3 = CustomCategory(name: "家事", icon: "house.fill", colorHex: "#3357FF")
+        let category1 = CustomCategory(name: "副業", icon: "briefcase.fill", importanceWeight: 0.5, colorHex: "#FF5733")
+        let category2 = CustomCategory(name: "趣味", icon: "paintbrush.fill", importanceWeight: 0.5, colorHex: "#33FF57")
+        let category3 = CustomCategory(name: "家事", icon: "house.fill", importanceWeight: 0.5, colorHex: "#3357FF")
 
         dataService.saveCustomCategory(category1)
         dataService.saveCustomCategory(category2)
@@ -422,7 +423,7 @@ struct DataServiceTests {
     @Test("CustomCategory更新が正しく動作する")
     func testUpdateCustomCategory() async {
         let dataService = createTestDataService()
-        let category = CustomCategory(name: "副業", icon: "briefcase.fill", colorHex: "#FF5733")
+        let category = CustomCategory(name: "副業", icon: "briefcase.fill", importanceWeight: 0.5, colorHex: "#FF5733")
 
         dataService.saveCustomCategory(category)
 
@@ -439,7 +440,7 @@ struct DataServiceTests {
     @Test("CustomCategory削除が正しく動作する")
     func testDeleteCustomCategory() async {
         let dataService = createTestDataService()
-        let category = CustomCategory(name: "副業", icon: "briefcase.fill", colorHex: "#FF5733")
+        let category = CustomCategory(name: "副業", icon: "briefcase.fill", importanceWeight: 0.5, colorHex: "#FF5733")
 
         dataService.saveCustomCategory(category)
         #expect(dataService.getCustomCategories().count == 1)
@@ -457,6 +458,7 @@ struct DataServiceTests {
             let category = CustomCategory(
                 name: "カテゴリ\(i)",
                 icon: "star.fill",
+                importanceWeight: 0.5,
                 colorHex: "#FF5733"
             )
             dataService.saveCustomCategory(category)
