@@ -82,6 +82,7 @@ Core Data、Combine、外部API、複雑なアニメーション、デバイス�
 68. AsaHabitPro: 習慣の進捗をグラフ化。
 69. AsaFamilyBudget: 家族の予算を共有。
 70. AsaTimeZone: 複数タイムゾーンの時計。
+
 ### 上級（71〜100本目）: 複雑なアーキテクチャ・クラウド連携・高度な機能
 MVVMやRedux、Firebase、サーバーサイド連携、機械学習、クロスプラットフォーム対応など。
 
@@ -535,9 +536,6 @@ Test Navigator > AsaSmartTodoUITests
 - **NotificationCenter**: 複数ViewModel間の疎結合通信
 
 #### 🔗 関連リンク
-
-- [実装ノート - Day73](Docs/Notes/Day73-AsaSmartTodo-Phase1-CoreModels.md)
-- [実装ノート - Day74](Docs/Notes/Day74-AsaSmartTodo-Phase2-MVVM.md)
 - [ブランドガイドライン](Docs/BrandGuidelines.md)
 - [プロジェクト構造](project.yml)
 
