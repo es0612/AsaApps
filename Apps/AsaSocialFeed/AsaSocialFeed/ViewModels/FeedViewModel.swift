@@ -106,4 +106,11 @@ final class FeedViewModel {
         currentUserName = trimmed
         UserDefaults.standard.set(trimmed, forKey: "currentUserName")
     }
+
+    // MARK: - Error Handling
+
+    /// エラーメッセージをクリア
+    func clearError() {
+        errorMessage = nil
+    }
 }

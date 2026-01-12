@@ -52,10 +52,11 @@ struct ContentView: View {
                 }
                 viewModel.loadPosts()
             }
-            .alert("エラー", isPresented: .constant(viewModel.errorMessage != nil)) {
-                Button("OK") {
-                    viewModel.errorMessage = nil
-                }
+            .alert("エラー", isPresented: Binding(
+                get: { viewModel.errorMessage != nil },
+                set: { _ in viewModel.clearError() }
+            )) {
+                Button("OK", role: .cancel) {}
             } message: {
                 if let error = viewModel.errorMessage {
                     Text(error)
