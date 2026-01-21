@@ -49,8 +49,9 @@ targets:
         product: FirebaseAuth
       - package: Firebase
         product: FirebaseFirestore
-      - package: Firebase
-        product: FirebaseStorage
+      # FirebaseStorage は Spark プラン制限のため無効化
+      # - package: Firebase
+      #   product: FirebaseStorage
       - package: Firebase
         product: FirebaseMessaging
       - sdk: SwiftUI.framework

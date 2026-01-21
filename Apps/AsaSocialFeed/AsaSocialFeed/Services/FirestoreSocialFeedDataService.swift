@@ -2,7 +2,7 @@ import Foundation
 import UIKit
 #if FIREBASE_ENABLED
 import FirebaseFirestore
-import FirebaseStorage
+// import FirebaseStorage  // Spark プラン制限のため無効化
 #endif
 
 // MARK: - Firestore Social Feed Data Service
@@ -12,7 +12,7 @@ final class FirestoreSocialFeedDataService: SocialFeedDataServiceProtocol, @unch
     // MARK: - Properties
 
     private let db = Firestore.firestore()
-    private let storage = Storage.storage()
+    // private let storage = Storage.storage()  // Spark プラン制限のため無効化
     private let postsCollection = "posts"
 
     // MARK: - Fetch Posts
@@ -42,19 +42,18 @@ final class FirestoreSocialFeedDataService: SocialFeedDataServiceProtocol, @unch
         imageData: Data?
     ) async throws -> FirebasePost {
         do {
-            var imageURL: String?
-
-            // 画像がある場合はアップロード
-            if let imageData = imageData {
-                imageURL = try await uploadImage(imageData)
-            }
+            // 画像機能は無効化（Firebase Storage Spark プラン制限）
+            // var imageURL: String?
+            // if let imageData = imageData {
+            //     imageURL = try await uploadImage(imageData)
+            // }
 
             var post = FirebasePost(
                 content: content,
                 authorId: authorId,
                 authorName: authorName,
                 authorPhotoURL: authorPhotoURL,
-                imageURL: imageURL,
+                imageURL: nil,  // 画像URL は常に nil（Storage 未使用）
                 likeCount: 0,
                 likedByUserIds: []
             )
@@ -74,12 +73,12 @@ final class FirestoreSocialFeedDataService: SocialFeedDataServiceProtocol, @unch
 
     func deletePost(_ postId: String) async throws {
         do {
-            // 画像がある場合は削除
-            let document = try await db.collection(postsCollection).document(postId).getDocument()
-            if let post = try? document.data(as: FirebasePost.self),
-               let imageURL = post.imageURL {
-                try? await deleteImage(imageURL)
-            }
+            // 画像削除は無効化（Firebase Storage Spark プラン制限）
+            // let document = try await db.collection(postsCollection).document(postId).getDocument()
+            // if let post = try? document.data(as: FirebasePost.self),
+            //    let imageURL = post.imageURL {
+            //     try? await deleteImage(imageURL)
+            // }
 
             try await db.collection(postsCollection).document(postId).delete()
         } catch {
@@ -155,9 +154,13 @@ final class FirestoreSocialFeedDataService: SocialFeedDataServiceProtocol, @unch
         }
     }
 
-    // MARK: - Upload Image
+    // MARK: - Upload Image（Firebase Storage Spark プラン制限のため無効化）
 
     func uploadImage(_ data: Data) async throws -> String {
+        // Firebase Storage は Spark プランでは使用できないため、エラーを返す
+        throw SocialFeedDataError.uploadFailed("Firebase Storage は現在無効化されています（Spark プラン制限）")
+
+        /*
         let fileName = "\(UUID().uuidString).jpg"
         let storageRef = storage.reference().child("posts/\(fileName)")
 
@@ -174,10 +177,12 @@ final class FirestoreSocialFeedDataService: SocialFeedDataServiceProtocol, @unch
         } catch {
             throw SocialFeedDataError.uploadFailed(error.localizedDescription)
         }
+        */
     }
 
-    // MARK: - Private Methods
+    // MARK: - Private Methods（Firebase Storage Spark プラン制限のため無効化）
 
+    /*
     private func deleteImage(_ urlString: String) async throws {
         guard let url = URL(string: urlString) else { return }
 
@@ -201,6 +206,7 @@ final class FirestoreSocialFeedDataService: SocialFeedDataServiceProtocol, @unch
 
         return compressedData
     }
+    */
 }
 
 #else

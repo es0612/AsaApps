@@ -1,5 +1,5 @@
 import SwiftUI
-import PhotosUI
+// import PhotosUI  // Firebase Storage無効化のため一時的にコメントアウト
 
 // MARK: - Firebase New Post View
 
@@ -10,9 +10,10 @@ struct FirebaseNewPostView: View {
     @Environment(\.dismiss) private var dismiss
 
     @State private var content = ""
-    @State private var selectedItem: PhotosPickerItem?
-    @State private var selectedImageData: Data?
-    @State private var selectedImage: UIImage?
+    // 画像機能は一時的に無効化（Firebase Storage未使用）
+    // @State private var selectedItem: PhotosPickerItem?
+    // @State private var selectedImageData: Data?
+    // @State private var selectedImage: UIImage?
 
     @FocusState private var isTextEditorFocused: Bool
 
@@ -34,8 +35,8 @@ struct FirebaseNewPostView: View {
                         // テキスト入力
                         textEditor
 
-                        // 画像選択
-                        imageSection
+                        // 画像選択（Firebase Storage未使用のため無効化）
+                        // imageSection
 
                         Spacer()
                     }
@@ -55,11 +56,12 @@ struct FirebaseNewPostView: View {
                     postButton
                 }
             }
-            .onChange(of: selectedItem) { _, newItem in
-                Task {
-                    await loadImage(from: newItem)
-                }
-            }
+            // 画像選択のonChangeは無効化
+            // .onChange(of: selectedItem) { _, newItem in
+            //     Task {
+            //         await loadImage(from: newItem)
+            //     }
+            // }
             .onAppear {
                 isTextEditorFocused = true
             }
@@ -127,8 +129,8 @@ struct FirebaseNewPostView: View {
         }
     }
 
-    // MARK: - Image Section
-
+    // MARK: - Image Section (Firebase Storage未使用のため無効化)
+    /*
     private var imageSection: some View {
         VStack(alignment: .leading, spacing: 12) {
             // 選択された画像
@@ -173,13 +175,15 @@ struct FirebaseNewPostView: View {
             }
         }
     }
+    */
 
     // MARK: - Post Button
 
     private var postButton: some View {
         Button {
             Task {
-                await viewModel.createPost(content: content, imageData: selectedImageData)
+                // 画像は常にnilを渡す（Firebase Storage未使用）
+                await viewModel.createPost(content: content, imageData: nil)
             }
         } label: {
             if viewModel.isLoading {
@@ -200,8 +204,8 @@ struct FirebaseNewPostView: View {
         return !trimmedContent.isEmpty && content.count <= maxCharacters
     }
 
-    // MARK: - Methods
-
+    // MARK: - Methods (Firebase Storage未使用のため無効化)
+    /*
     private func loadImage(from item: PhotosPickerItem?) async {
         guard let item = item else { return }
 
@@ -214,6 +218,7 @@ struct FirebaseNewPostView: View {
             print("Failed to load image: \(error.localizedDescription)")
         }
     }
+    */
 }
 
 // MARK: - Preview

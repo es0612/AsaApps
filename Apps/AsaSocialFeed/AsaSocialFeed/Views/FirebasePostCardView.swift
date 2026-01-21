@@ -10,7 +10,7 @@ struct FirebasePostCardView: View {
 
     @State private var isLikeAnimating = false
     @State private var showingDeleteConfirmation = false
-    @State private var showingImageViewer = false
+    // @State private var showingImageViewer = false  // Firebase Storage未使用
 
     // MARK: - Body
 
@@ -25,10 +25,10 @@ struct FirebasePostCardView: View {
                 .foregroundStyle(Color("AsaDarkSlate"))
                 .lineLimit(nil)
 
-            // 画像（あれば）
-            if let imageURL = post.imageURL, let url = URL(string: imageURL) {
-                imageView(url: url)
-            }
+            // 画像（Firebase Storage未使用のため無効化）
+            // if let imageURL = post.imageURL, let url = URL(string: imageURL) {
+            //     imageView(url: url)
+            // }
 
             // フッター（いいね・時間）
             footerView
@@ -54,11 +54,12 @@ struct FirebasePostCardView: View {
             }
             Button("キャンセル", role: .cancel) {}
         }
-        .fullScreenCover(isPresented: $showingImageViewer) {
-            if let imageURL = post.imageURL, let url = URL(string: imageURL) {
-                ImageViewerView(url: url, isPresented: $showingImageViewer)
-            }
-        }
+        // 画像ビューアは無効化（Firebase Storage未使用）
+        // .fullScreenCover(isPresented: $showingImageViewer) {
+        //     if let imageURL = post.imageURL, let url = URL(string: imageURL) {
+        //         ImageViewerView(url: url, isPresented: $showingImageViewer)
+        //     }
+        // }
     }
 
     // MARK: - Header View
@@ -115,8 +116,8 @@ struct FirebasePostCardView: View {
             }
     }
 
-    // MARK: - Image View
-
+    // MARK: - Image View (Firebase Storage未使用のため無効化)
+    /*
     private func imageView(url: URL) -> some View {
         AsyncImage(url: url) { phase in
             switch phase {
@@ -151,6 +152,7 @@ struct FirebasePostCardView: View {
             }
         }
     }
+    */
 
     // MARK: - Footer View
 
@@ -194,8 +196,8 @@ struct FirebasePostCardView: View {
     }
 }
 
-// MARK: - Image Viewer View
-
+// MARK: - Image Viewer View (Firebase Storage未使用のため無効化)
+/*
 struct ImageViewerView: View {
     let url: URL
     @Binding var isPresented: Bool
@@ -245,6 +247,7 @@ struct ImageViewerView: View {
         }
     }
 }
+*/
 
 // MARK: - Preview
 
