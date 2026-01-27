@@ -1,0 +1,74 @@
+name: AsaLiveChat
+options:
+  bundleIdPrefix: com.asapapa.apps
+  deploymentTarget:
+    iOS: "17.0"
+  createIntermediateGroups: true
+  generateEmptyDirectories: true
+
+packages:
+  AsaUIKit:
+    path: ../../Packages/AsaUIKit
+
+targets:
+  AsaLiveChat:
+    type: application
+    platform: iOS
+    sources:
+      - AsaLiveChat
+    resources:
+      - path: AsaLiveChat/Assets.xcassets
+        optional: true
+    dependencies:
+      - package: AsaUIKit
+        product: AsaUIKit
+      - sdk: SwiftData.framework
+    settings:
+      base:
+        SWIFT_VERSION: "5.9"
+        DEVELOPMENT_TEAM: ""
+        INFOPLIST_KEY_UILaunchScreen_Generation: true
+        INFOPLIST_KEY_CFBundleDisplayName: "AsaLiveChat"
+        GENERATE_INFOPLIST_FILE: true
+    info:
+      path: AsaLiveChat/Info.plist
+      properties:
+        CFBundleDisplayName: AsaLiveChat
+        UILaunchScreen: {}
+
+  AsaLiveChatTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - Tests/AsaLiveChatTests
+    dependencies:
+      - target: AsaLiveChat
+    settings:
+      base:
+        SWIFT_VERSION: "5.9"
+
+  AsaLiveChatUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources:
+      - Tests/AsaLiveChatUITests
+    dependencies:
+      - target: AsaLiveChat
+    settings:
+      base:
+        SWIFT_VERSION: "5.9"
+
+schemes:
+  AsaLiveChat:
+    build:
+      targets:
+        AsaLiveChat: all
+        AsaLiveChatTests: [test]
+        AsaLiveChatUITests: [test]
+    run:
+      config: Debug
+    test:
+      config: Debug
+      targets:
+        - AsaLiveChatTests
+        - AsaLiveChatUITests
