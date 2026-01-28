@@ -1,0 +1,51 @@
+name: AsaPhotoEditor
+options:
+  bundleIdPrefix: com.asapapa.apps
+  deploymentTarget:
+    iOS: "17.0"
+  createIntermediateGroups: true
+  generateEmptyDirectories: true
+
+settings:
+  SWIFT_VERSION: "5.9"
+  INFOPLIST_KEY_NSPhotoLibraryUsageDescription: "写真を編集するために写真ライブラリへのアクセスが必要です"
+  INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription: "編集した写真を保存するために写真ライブラリへの書き込み権限が必要です"
+  INFOPLIST_KEY_UILaunchScreen_Generation: true
+
+targets:
+  AsaPhotoEditor:
+    type: application
+    platform: iOS
+    sources:
+      - AsaPhotoEditor
+      - ../../Shared
+    resources:
+      - AsaPhotoEditor/Assets.xcassets
+      - ../../Shared/Assets.xcassets
+    dependencies:
+      - sdk: SwiftUI.framework
+      - sdk: CoreImage.framework
+      - sdk: Photos.framework
+      - sdk: PhotosUI.framework
+      - sdk: SwiftData.framework
+      - package: AsaUIKit
+        product: AsaUIKit
+    settings:
+      GENERATE_INFOPLIST_FILE: YES
+      INFOPLIST_KEY_NSPhotoLibraryUsageDescription: "写真を編集するために写真ライブラリへのアクセスが必要です"
+      INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription: "編集した写真を保存するために写真ライブラリへの書き込み権限が必要です"
+      INFOPLIST_KEY_UILaunchScreen_Generation: true
+
+  AsaPhotoEditorTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - AsaPhotoEditorTests
+    dependencies:
+      - target: AsaPhotoEditor
+    settings:
+      GENERATE_INFOPLIST_FILE: YES
+
+packages:
+  AsaUIKit:
+    path: ../../Packages/AsaUIKit
