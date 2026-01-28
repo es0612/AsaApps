@@ -1,0 +1,73 @@
+name: AsaMultiplayerGame
+options:
+  bundleIdPrefix: com.asapapa.apps
+  deploymentTarget:
+    iOS: "17.0"
+  createIntermediateGroups: true
+  generateEmptyDirectories: true
+
+packages:
+  AsaUIKit:
+    path: ../../Packages/AsaUIKit
+
+targets:
+  AsaMultiplayerGame:
+    type: application
+    platform: iOS
+    sources:
+      - AsaMultiplayerGame
+    resources:
+      - path: AsaMultiplayerGame/Assets.xcassets
+        optional: true
+    dependencies:
+      - package: AsaUIKit
+        product: AsaUIKit
+    settings:
+      base:
+        SWIFT_VERSION: "5.9"
+        DEVELOPMENT_TEAM: ""
+        INFOPLIST_KEY_UILaunchScreen_Generation: true
+        INFOPLIST_KEY_CFBundleDisplayName: "お絵かきバトル"
+        GENERATE_INFOPLIST_FILE: true
+    info:
+      path: AsaMultiplayerGame/Info.plist
+      properties:
+        CFBundleDisplayName: お絵かきバトル
+        UILaunchScreen: {}
+
+  AsaMultiplayerGameTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - Tests/AsaMultiplayerGameTests
+    dependencies:
+      - target: AsaMultiplayerGame
+    settings:
+      base:
+        SWIFT_VERSION: "5.9"
+
+  AsaMultiplayerGameUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources:
+      - Tests/AsaMultiplayerGameUITests
+    dependencies:
+      - target: AsaMultiplayerGame
+    settings:
+      base:
+        SWIFT_VERSION: "5.9"
+
+schemes:
+  AsaMultiplayerGame:
+    build:
+      targets:
+        AsaMultiplayerGame: all
+        AsaMultiplayerGameTests: [test]
+        AsaMultiplayerGameUITests: [test]
+    run:
+      config: Debug
+    test:
+      config: Debug
+      targets:
+        - AsaMultiplayerGameTests
+        - AsaMultiplayerGameUITests
