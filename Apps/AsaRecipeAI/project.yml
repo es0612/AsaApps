@@ -1,0 +1,92 @@
+name: AsaRecipeAI
+options:
+  bundleIdPrefix: com.asapapa.apps
+  deploymentTarget:
+    iOS: "26.0"  # Foundation Models フレームワーク必須
+  xcodeVersion: "26.0"
+  generateEmptyDirectories: true
+  createIntermediateGroups: true
+
+settings:
+  SWIFT_VERSION: "6.0"
+  ENABLE_USER_SCRIPT_SANDBOXING: false
+
+targets:
+  AsaRecipeAI:
+    type: application
+    platform: iOS
+    sources:
+      - path: AsaRecipeAI
+        excludes:
+          - "**/.DS_Store"
+    settings:
+      GENERATE_INFOPLIST_FILE: true
+      INFOPLIST_KEY_UIApplicationSceneManifest_Generation: true
+      INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents: true
+      INFOPLIST_KEY_UILaunchScreen_Generation: true
+      INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone: "UIInterfaceOrientationPortrait"
+      INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad: "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight"
+      INFOPLIST_KEY_CFBundleDisplayName: "AsaRecipeAI"
+      INFOPLIST_KEY_NSPhotoLibraryUsageDescription: "写真から食材を認識するために写真ライブラリへのアクセスが必要です"
+      INFOPLIST_KEY_NSCameraUsageDescription: "食材を撮影するためにカメラへのアクセスが必要です"
+      SWIFT_EMIT_LOC_STRINGS: true
+      ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+      ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+      DEVELOPMENT_TEAM: ""
+      CODE_SIGN_STYLE: Automatic
+      PRODUCT_BUNDLE_IDENTIFIER: com.asapapa.apps.AsaRecipeAI
+      MARKETING_VERSION: "1.0"
+      CURRENT_PROJECT_VERSION: "1"
+    dependencies:
+      - package: AsaUIKit
+        product: AsaUIKit
+
+  AsaRecipeAITests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - path: AsaRecipeAITests
+        excludes:
+          - "**/.DS_Store"
+    dependencies:
+      - target: AsaRecipeAI
+    settings:
+      GENERATE_INFOPLIST_FILE: true
+      BUNDLE_LOADER: "$(TEST_HOST)"
+      TEST_HOST: "$(BUILT_PRODUCTS_DIR)/AsaRecipeAI.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/AsaRecipeAI"
+
+  AsaRecipeAIUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources:
+      - path: AsaRecipeAIUITests
+        excludes:
+          - "**/.DS_Store"
+    dependencies:
+      - target: AsaRecipeAI
+    settings:
+      GENERATE_INFOPLIST_FILE: true
+      TEST_TARGET_NAME: AsaRecipeAI
+
+packages:
+  AsaUIKit:
+    path: ../../Packages/AsaUIKit
+
+schemes:
+  AsaRecipeAI:
+    build:
+      targets:
+        AsaRecipeAI: all
+    run:
+      config: Debug
+    test:
+      config: Debug
+      targets:
+        - AsaRecipeAITests
+        - AsaRecipeAIUITests
+    profile:
+      config: Release
+    analyze:
+      config: Debug
+    archive:
+      config: Release
