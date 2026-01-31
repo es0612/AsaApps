@@ -1,0 +1,109 @@
+{
+  "courses": [
+    {
+      "id": "course-greetings",
+      "title": "基本の挨拶",
+      "subtitle": "英語での挨拶表現をマスターしよう",
+      "category": "greetings",
+      "difficulty": 1,
+      "estimatedMinutes": 15,
+      "lessons": [
+        {
+          "id": "lesson-morning",
+          "title": "朝の挨拶",
+          "description": "Good morning などの朝の挨拶表現",
+          "items": [
+            {
+              "englishText": "Good morning",
+              "japaneseText": "おはようございます",
+              "pronunciation": "/ɡʊd ˈmɔːrnɪŋ/",
+              "exampleSentence": "Good morning! How are you today?",
+              "exampleTranslation": "おはようございます！今日の調子はいかがですか？",
+              "pronunciationTip": "「グッモーニン」と発音。morningの「r」は舌を丸めずに。"
+            },
+            {
+              "englishText": "Good morning, everyone",
+              "japaneseText": "皆さん、おはようございます",
+              "pronunciation": "/ɡʊd ˈmɔːrnɪŋ ˈevriwʌn/",
+              "exampleSentence": "Good morning, everyone. Let's get started.",
+              "exampleTranslation": "皆さん、おはようございます。始めましょう。",
+              "pronunciationTip": "everyoneの「ry」は「リ」ではなく「リィ」に近い音。"
+            },
+            {
+              "englishText": "Have a nice day",
+              "japaneseText": "良い一日を",
+              "pronunciation": "/hæv ə naɪs deɪ/",
+              "exampleSentence": "See you later. Have a nice day!",
+              "exampleTranslation": "また後で。良い一日を！",
+              "pronunciationTip": "Have aは「ハヴァ」とつなげて発音。"
+            }
+          ]
+        },
+        {
+          "id": "lesson-afternoon",
+          "title": "午後の挨拶",
+          "description": "Good afternoon などの午後の挨拶表現",
+          "items": [
+            {
+              "englishText": "Good afternoon",
+              "japaneseText": "こんにちは（午後）",
+              "pronunciation": "/ɡʊd ˌæftərˈnuːn/",
+              "exampleSentence": "Good afternoon. How can I help you?",
+              "exampleTranslation": "こんにちは。何かお手伝いしましょうか？",
+              "pronunciationTip": "afternoonの強勢は後半の「noon」にある。"
+            },
+            {
+              "englishText": "Good evening",
+              "japaneseText": "こんばんは",
+              "pronunciation": "/ɡʊd ˈiːvnɪŋ/",
+              "exampleSentence": "Good evening, ladies and gentlemen.",
+              "exampleTranslation": "紳士淑女の皆様、こんばんは。",
+              "pronunciationTip": "eveningの「e」は長く伸ばす。"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "course-travel",
+      "title": "旅行英会話",
+      "subtitle": "空港・ホテル・観光で使えるフレーズ",
+      "category": "travel",
+      "difficulty": 2,
+      "estimatedMinutes": 30,
+      "lessons": [
+        {
+          "id": "lesson-airport",
+          "title": "空港で使うフレーズ",
+          "description": "入国審査やチェックインで使う表現",
+          "items": [
+            {
+              "englishText": "Where is the check-in counter?",
+              "japaneseText": "チェックインカウンターはどこですか？",
+              "pronunciation": "/weər ɪz ðə ˈtʃekɪn ˈkaʊntər/",
+              "exampleSentence": "Excuse me, where is the check-in counter for Japan Airlines?",
+              "exampleTranslation": "すみません、日本航空のチェックインカウンターはどこですか？",
+              "pronunciationTip": "Where isは「ウェアリズ」とつなげて発音。"
+            },
+            {
+              "englishText": "I'd like a window seat",
+              "japaneseText": "窓側の席がいいです",
+              "pronunciation": "/aɪd laɪk ə ˈwɪndoʊ siːt/",
+              "exampleSentence": "I'd like a window seat, please.",
+              "exampleTranslation": "窓側の席をお願いします。",
+              "pronunciationTip": "I'd likeは「アイドライク」と発音。"
+            },
+            {
+              "englishText": "Where is the boarding gate?",
+              "japaneseText": "搭乗ゲートはどこですか？",
+              "pronunciation": "/weər ɪz ðə ˈbɔːrdɪŋ ɡeɪt/",
+              "exampleSentence": "Where is the boarding gate for flight 123?",
+              "exampleTranslation": "123便の搭乗ゲートはどこですか？",
+              "pronunciationTip": "boardingの「oa」は「オー」と発音。"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
