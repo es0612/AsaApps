@@ -110,6 +110,7 @@ extension UserSettings {
     /// 利用可能なサーバーURLリスト
     static let availableServers: [(name: String, url: String)] = [
         ("Echo Server", "wss://echo.websocket.org"),
+        ("SocketsBay Echo", "wss://socketsbay.com/wss/v2/1/demo/"),
         ("ローカル開発", "ws://localhost:8080"),
         ("カスタム", "")
     ]

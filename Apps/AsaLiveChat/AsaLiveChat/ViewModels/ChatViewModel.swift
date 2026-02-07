@@ -81,6 +81,12 @@ final class ChatViewModel {
         }
     }
 
+    /// エコーサーバーに接続中かどうか
+    private var isEchoServer: Bool {
+        let url = userSettings.serverURL.lowercased()
+        return url.contains("echo") || url.contains("socketsbay.com")
+    }
+
     /// 送信可能かどうか
     var canSend: Bool {
         !messageText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty &&
@@ -131,8 +137,8 @@ final class ChatViewModel {
         self.room = room
         self.dataService = dataService
         self.userSettings = userSettings
-        // モックサービスをデフォルトで使用
-        self.webSocketService = webSocketService ?? MockWebSocketService()
+        // 実際のWebSocketServiceをデフォルトで使用
+        self.webSocketService = webSocketService ?? WebSocketService()
 
         // 既存のメッセージを読み込み
         self.messages = dataService.fetchMessages(for: room)
@@ -307,10 +313,24 @@ final class ChatViewModel {
               let senderId = wsMessage.payload.senderId,
               let senderName = wsMessage.payload.senderName else { return }
 
-        // 自分のメッセージはスキップ（既にローカル保存済み）
-        if senderId == currentUser.id { return }
+        // 自分のメッセージが返ってきた場合
+        if senderId == currentUser.id {
+            if isEchoServer {
+                // エコーサーバー: "Echo 🔊" として表示
+                let message = dataService.createMessage(
+                    content: content,
+                    senderName: "Echo 🔊",
+                    senderId: "echo-server",
+                    isSentByMe: false,
+                    room: room
+                )
+                messages.append(message)
+            }
+            // 通常サーバー: スキップ（既にローカル保存済み）
+            return
+        }
 
-        // ローカルに保存
+        // 他のユーザーからのメッセージ
         let message = dataService.createMessage(
             content: content,
             senderName: senderName,
