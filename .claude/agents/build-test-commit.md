@@ -25,14 +25,15 @@ color: green
 ```bash
 # 特定のアプリディレクトリに移動
 cd Apps/[AppName]
-# Xcodeプロジェクトのビルド
-xcodebuild -project [AppName].xcodeproj -scheme [AppName] clean build
+# Xcodeプロジェクトのビルド（シミュレータ向け）
+xcodebuild -project [AppName].xcodeproj -scheme [AppName] -sdk iphonesimulator clean build
 ```
 
 ### 3. テスト実行
 ```bash
 # テストの実行（テストターゲットが存在する場合）
-xcodebuild test -project [AppName].xcodeproj -scheme [AppName] -destination 'platform=iOS Simulator,name=iPhone 15'
+xcodebuild test -project [AppName].xcodeproj -scheme [AppName] \
+  -destination 'platform=iOS Simulator,name=iPhone 17 Pro'
 ```
 
 ### 4. 品質チェック
@@ -56,6 +57,10 @@ git commit -m "[適切なコミットメッセージ]"
 - **リファクタリング**: `refactor([AppName]): [リファクタリング内容]`
 
 ## エラーハンドリング
+
+### ビルドエラー診断
+ビルドエラーが発生した場合、CLAUDE.mdの「Swift ビルドエラー防止ルール」を参照し、
+既知の11パターンに該当するか確認すること。
 
 ### ビルドエラーの場合
 1. エラーメッセージを詳細に分析

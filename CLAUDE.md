@@ -75,13 +75,13 @@ name: AsaNewApp
 options:
   bundleIdPrefix: com.asaapps
   deploymentTarget:
-    iOS: "17.0"
-  
+    iOS: "18.0"
+
 targets:
   AsaNewApp:
     type: application
     platform: iOS
-    sources: 
+    sources:
       - Sources
     dependencies:
       - package: AsaUIKit
@@ -90,7 +90,9 @@ targets:
         product: AsaTaskKit
     settings:
       SWIFT_VERSION: "5.9"
-      
+      GENERATE_INFOPLIST_FILE: true
+      INFOPLIST_KEY_UILaunchScreen_Generation: true
+
 packages:
   AsaUIKit:
     path: ../../Packages/AsaUIKit
@@ -101,15 +103,185 @@ packages:
 #### ビルド・実行コマンド
 
 ```bash
-# コマンドラインからビルド
-xcodebuild -project AsaNumberGame.xcodeproj -scheme AsaNumberGame
+# コマンドラインからビルド（シミュレータ向け）
+xcodebuild -project AsaNumberGame.xcodeproj -scheme AsaNumberGame -sdk iphonesimulator build
 
-# テスト実行
+# テスト実行（Swiftパッケージ）
 swift test
 
-# 特定のターゲットをビルド・実行
-xcodebuild -project AsaNumberGame.xcodeproj -scheme AsaNumberGame -destination 'platform=iOS Simulator,name=iPhone 16'
+# シミュレータ指定でビルド・実行
+xcodebuild -project AsaNumberGame.xcodeproj -scheme AsaNumberGame \
+  -sdk iphonesimulator \
+  -destination 'platform=iOS Simulator,name=iPhone 17 Pro' \
+  build
 ```
+
+## Swift ビルドエラー防止ルール
+
+過去の実装で頻発した12種類のビルドエラーパターンと防止策。**実装時に必ず参照すること。**
+
+### 標準ビルド・テストコマンド
+
+```bash
+# 標準シミュレータ: iPhone 17 Pro
+# SDKフラグ: -sdk iphonesimulator（必須）
+
+# ビルド
+xcodebuild -project [AppName].xcodeproj -scheme [AppName] -sdk iphonesimulator build
+
+# テスト
+xcodebuild test -project [AppName].xcodeproj -scheme [AppName] \
+  -sdk iphonesimulator \
+  -destination 'platform=iOS Simulator,name=iPhone 17 Pro'
+
+# デバイス確認
+xcrun simctl list devices available
+```
+
+### エラーパターン一覧
+
+#### 1. @Model と Sendable の競合
+`@Model` クラスに `Sendable` を付けると SwiftData マクロと衝突する。
+```swift
+// ❌ NG
+@Model final class Item: Sendable { }
+
+// ✅ OK
+@Model final class Item { }
+```
+
+#### 2. @MainActor + Timer の deinit
+`@MainActor` クラスで Timer を `deinit` で invalidate するとコンパイルエラー。
+```swift
+// ❌ NG
+@MainActor @Observable final class VM {
+    var timer: Timer?
+    deinit { timer?.invalidate() }
+}
+
+// ✅ OK
+@MainActor @Observable final class VM {
+    nonisolated(unsafe) var timer: Timer?
+    deinit { timer?.invalidate() }
+}
+```
+
+#### 3. Info.plist / UILaunchScreen 未設定
+project.yml に UILaunchScreen が未設定だとシミュレータで黒帯が表示される。
+```yaml
+# ✅ project.yml に必ず含める
+settings:
+  GENERATE_INFOPLIST_FILE: true
+  INFOPLIST_KEY_UILaunchScreen_Generation: true
+```
+
+#### 4. 型の不一致（Int → TimeInterval、Anchor → GeometryProxy）
+```swift
+// ❌ NG
+let interval: TimeInterval = someIntValue
+
+// ✅ OK
+let interval: TimeInterval = TimeInterval(someIntValue)
+
+// ❌ NG: Anchor<CGRect> を直接使う
+func layout(bounds: Anchor<CGRect>) { }
+
+// ✅ OK: GeometryProxy 経由で解決
+GeometryReader { proxy in ... }
+```
+
+#### 5. @Observable と private(set)
+パッケージ外から `@Bindable` でバインディングする場合、`private(set)` だと書き込み不可。
+```swift
+// ❌ NG: パッケージ外からバインディングできない
+@Observable public final class VM {
+    public private(set) var name: String = ""
+}
+
+// ✅ OK: public メソッドで変更を公開
+@Observable public final class VM {
+    public var name: String = ""
+}
+```
+
+#### 6. Codable の id プロパティ
+`let id = UUID()` だとデコード時に新しいIDが生成されてしまう。
+```swift
+// ❌ NG
+struct Item: Codable, Identifiable {
+    let id = UUID()
+}
+
+// ✅ OK
+struct Item: Codable, Identifiable {
+    var id: UUID = UUID()
+}
+```
+
+#### 7. SwiftData ModelContext の actor isolation
+`ModelContext` は `@MainActor` でアクセスする必要がある。
+```swift
+// ❌ NG: バックグラウンドからの直接アクセス
+func save() { modelContext.save() }
+
+// ✅ OK
+@MainActor func save() throws { try modelContext.save() }
+```
+
+#### 8. Firebase 互換性
+`FirebaseFirestoreSwift` は非推奨。`FirebaseFirestore` に統一。
+```swift
+// ❌ NG
+import FirebaseFirestoreSwift
+
+// ✅ OK
+import FirebaseFirestore
+```
+
+#### 9. システム型との命名衝突
+`Color`、`Scene`、`ProgressView` 等のシステム型名をモデル名に使わない。
+```swift
+// ❌ NG
+struct Scene: Identifiable { }  // SwiftUI.Scene と衝突
+
+// ✅ OK: Asa プレフィックスを使用
+struct AsaScene: Identifiable { }
+```
+
+#### 10. デプロイメントターゲットと API の整合性
+最新APIの積極的な使用を推奨。使用するAPIに合わせて `project.yml` のデプロイメントターゲットを更新する。
+```yaml
+# iOS 18+ API を使う場合
+deploymentTarget:
+  iOS: "18.0"
+
+# iOS 17 API のみの場合
+deploymentTarget:
+  iOS: "17.0"
+```
+
+#### 11. import 漏れ
+SwiftData、Foundation の import を忘れずに含める。
+```swift
+// ❌ NG: import 漏れでビルドエラー
+@Model final class Item { }  // SwiftData が未 import
+
+// ✅ OK
+import SwiftData
+import Foundation
+
+@Model final class Item { }
+```
+
+### コミット前ビルドチェックリスト
+
+1. `xcodegen generate` 成功
+2. `xcodebuild -sdk iphonesimulator build` エラー0件
+3. `@Model` に `Sendable` がないか確認
+4. UILaunchScreen 設定済み（project.yml）
+5. import 漏れなし（SwiftData, Foundation）
+6. 使用APIのiOSバージョン要件と project.yml ターゲットが一致
+7. システム型との命名衝突なし
 
 ## アーキテクチャパターン
 
