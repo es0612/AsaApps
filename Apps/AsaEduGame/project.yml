@@ -1,0 +1,43 @@
+name: AsaEduGame
+options:
+  bundleIdPrefix: com.asapapa.apps
+  deploymentTarget:
+    iOS: "18.0"
+  createIntermediateGroups: true
+  generateEmptyDirectories: true
+settings:
+  MARKETING_VERSION: "1.0"
+  CURRENT_PROJECT_VERSION: "1"
+  DEVELOPMENT_TEAM: ""
+  CODE_SIGN_STYLE: Automatic
+packages:
+  AsaUIKit:
+    path: ../../Packages/AsaUIKit
+  AsaEduGameKit:
+    path: ../../Packages/AsaEduGameKit
+targets:
+  AsaEduGame:
+    type: application
+    platform: iOS
+    sources: [Sources]
+    resources: [Sources/Assets.xcassets]
+    settings:
+      PRODUCT_BUNDLE_IDENTIFIER: com.asapapa.apps.asaedugame
+      GENERATE_INFOPLIST_FILE: true
+      INFOPLIST_KEY_UIApplicationSceneManifest_Generation: true
+      INFOPLIST_KEY_UILaunchScreen_Generation: true
+      INFOPLIST_KEY_CFBundleDisplayName: "AsaEduGame"
+      SWIFT_STRICT_CONCURRENCY: complete
+    dependencies:
+      - package: AsaUIKit
+        product: AsaUIKit
+      - package: AsaEduGameKit
+        product: AsaEduGameKit
+  AsaEduGameUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources: [AsaEduGameUITests]
+    settings:
+      GENERATE_INFOPLIST_FILE: true
+    dependencies:
+      - target: AsaEduGame
