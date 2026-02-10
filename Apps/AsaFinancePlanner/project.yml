@@ -1,0 +1,53 @@
+name: AsaFinancePlanner
+options:
+  bundleIdPrefix: com.asapapa.apps
+  deploymentTarget:
+    iOS: "18.0"
+  createIntermediateGroups: true
+  generateEmptyDirectories: true
+settings:
+  MARKETING_VERSION: "1.0"
+  CURRENT_PROJECT_VERSION: "1"
+  DEVELOPMENT_TEAM: ""
+  CODE_SIGN_STYLE: Automatic
+packages:
+  AsaUIKit:
+    path: ../../Packages/AsaUIKit
+  AsaFinancePlannerKit:
+    path: ../../Packages/AsaFinancePlannerKit
+targets:
+  AsaFinancePlanner:
+    type: application
+    platform: iOS
+    sources: [Sources]
+    resources: [Sources/Assets.xcassets]
+    settings:
+      PRODUCT_BUNDLE_IDENTIFIER: com.asapapa.apps.asafinanceplanner
+      GENERATE_INFOPLIST_FILE: true
+      INFOPLIST_KEY_UIApplicationSceneManifest_Generation: true
+      INFOPLIST_KEY_UILaunchScreen_Generation: true
+      INFOPLIST_KEY_CFBundleDisplayName: "AsaFinancePlanner"
+      INFOPLIST_KEY_LSApplicationCategoryType: "public.app-category.finance"
+      INFOPLIST_KEY_NSFaceIDUsageDescription: "資産データを保護するためにFace IDを使用します"
+      SWIFT_STRICT_CONCURRENCY: complete
+    dependencies:
+      - package: AsaUIKit
+        product: AsaUIKit
+      - package: AsaFinancePlannerKit
+        product: AsaFinancePlannerKit
+  AsaFinancePlannerTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources: [AsaFinancePlannerTests]
+    settings:
+      GENERATE_INFOPLIST_FILE: true
+    dependencies:
+      - target: AsaFinancePlanner
+  AsaFinancePlannerUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources: [AsaFinancePlannerUITests]
+    settings:
+      GENERATE_INFOPLIST_FILE: true
+    dependencies:
+      - target: AsaFinancePlanner
