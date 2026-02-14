@@ -1,0 +1,54 @@
+name: AsaCommunity
+options:
+  bundleIdPrefix: com.asapapa.apps
+  deploymentTarget:
+    iOS: "18.0"
+  createIntermediateGroups: true
+  generateEmptyDirectories: true
+settings:
+  MARKETING_VERSION: "1.0"
+  CURRENT_PROJECT_VERSION: "1"
+  DEVELOPMENT_TEAM: ""
+  CODE_SIGN_STYLE: Automatic
+packages:
+  AsaUIKit:
+    path: ../../Packages/AsaUIKit
+  AsaCommunityKit:
+    path: ../../Packages/AsaCommunityKit
+targets:
+  AsaCommunity:
+    type: application
+    platform: iOS
+    sources: [Sources]
+    resources: [Sources/Assets.xcassets]
+    settings:
+      PRODUCT_BUNDLE_IDENTIFIER: com.asapapa.apps.asacommunity
+      GENERATE_INFOPLIST_FILE: true
+      INFOPLIST_KEY_UIApplicationSceneManifest_Generation: true
+      INFOPLIST_KEY_UILaunchScreen_Generation: true
+      INFOPLIST_KEY_CFBundleDisplayName: "AsaCommunity"
+      INFOPLIST_KEY_LSApplicationCategoryType: "public.app-category.social-networking"
+      INFOPLIST_KEY_NSLocationWhenInUseUsageDescription: "近くのイベントやお店を表示するために位置情報を使用します"
+      INFOPLIST_KEY_NSPhotoLibraryUsageDescription: "投稿に写真を添付するためにフォトライブラリを使用します"
+      SWIFT_STRICT_CONCURRENCY: complete
+    dependencies:
+      - package: AsaUIKit
+        product: AsaUIKit
+      - package: AsaCommunityKit
+        product: AsaCommunityKit
+  AsaCommunityTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources: [AsaCommunityTests]
+    settings:
+      GENERATE_INFOPLIST_FILE: true
+    dependencies:
+      - target: AsaCommunity
+  AsaCommunityUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources: [AsaCommunityUITests]
+    settings:
+      GENERATE_INFOPLIST_FILE: true
+    dependencies:
+      - target: AsaCommunity
