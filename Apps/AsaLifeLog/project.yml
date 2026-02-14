@@ -1,0 +1,94 @@
+name: AsaLifeLog
+options:
+  bundleIdPrefix: com.asapapa.apps
+  deploymentTarget:
+    iOS: "18.0"
+  createIntermediateGroups: true
+  generateEmptyDirectories: true
+settings:
+  MARKETING_VERSION: "1.0"
+  CURRENT_PROJECT_VERSION: "1"
+  DEVELOPMENT_TEAM: ""
+  CODE_SIGN_STYLE: Automatic
+packages:
+  AsaUIKit:
+    path: ../../Packages/AsaUIKit
+  AsaLifeLogKit:
+    path: ../../Packages/AsaLifeLogKit
+  AsaHealthKit:
+    path: ../../Packages/AsaHealthKit
+  AsaCoreKit:
+    path: ../../Packages/AsaCoreKit
+targets:
+  AsaLifeLog:
+    type: application
+    platform: iOS
+    sources: [Sources]
+    resources: [Sources/Assets.xcassets]
+    settings:
+      PRODUCT_BUNDLE_IDENTIFIER: com.asapapa.apps.asalifelog
+      GENERATE_INFOPLIST_FILE: true
+      INFOPLIST_KEY_UIApplicationSceneManifest_Generation: true
+      INFOPLIST_KEY_UILaunchScreen_Generation: true
+      INFOPLIST_KEY_CFBundleDisplayName: "AsaLifeLog"
+      INFOPLIST_KEY_LSApplicationCategoryType: "public.app-category.lifestyle"
+      INFOPLIST_KEY_NSLocationWhenInUseUsageDescription: "訪問場所を記録しタイムラインに表示するために位置情報を使用します"
+      INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription: "バックグラウンドでの場所記録のために位置情報を使用します"
+      INFOPLIST_KEY_NSPhotoLibraryUsageDescription: "タイムラインに写真を統合するためにフォトライブラリを使用します"
+      INFOPLIST_KEY_NSMotionUsageDescription: "歩行やランニング等のアクティビティを自動検出するためにモーションデータを使用します"
+      INFOPLIST_KEY_NSHealthShareUsageDescription: "歩数や睡眠等の健康データをライフログに統合するために使用します"
+      SWIFT_STRICT_CONCURRENCY: complete
+      CODE_SIGN_ENTITLEMENTS: Sources/AsaLifeLog.entitlements
+    dependencies:
+      - package: AsaUIKit
+      - package: AsaLifeLogKit
+      - package: AsaHealthKit
+      - package: AsaCoreKit
+      - target: LifeLogWidgetExtension
+        embed: true
+        codeSignOnCopy: true
+  LifeLogWidgetExtension:
+    type: app-extension
+    platform: iOS
+    sources: [LifeLogWidgetExtension, Shared]
+    settings:
+      PRODUCT_BUNDLE_IDENTIFIER: com.asapapa.apps.asalifelog.widget
+      GENERATE_INFOPLIST_FILE: true
+      SKIP_INSTALL: "YES"
+      LD_RUNPATH_SEARCH_PATHS: "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks"
+    dependencies:
+      - package: AsaUIKit
+  AsaLifeLogTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources: [AsaLifeLogTests]
+    settings:
+      GENERATE_INFOPLIST_FILE: true
+    dependencies:
+      - target: AsaLifeLog
+  AsaLifeLogUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources: [AsaLifeLogUITests]
+    settings:
+      GENERATE_INFOPLIST_FILE: true
+    dependencies:
+      - target: AsaLifeLog
+schemes:
+  AsaLifeLog:
+    build:
+      targets:
+        AsaLifeLog: all
+        LifeLogWidgetExtension: all
+        AsaLifeLogTests: [test]
+    run:
+      config: Debug
+    test:
+      config: Debug
+      targets: [AsaLifeLogTests]
+    profile:
+      config: Release
+    analyze:
+      config: Debug
+    archive:
+      config: Release
