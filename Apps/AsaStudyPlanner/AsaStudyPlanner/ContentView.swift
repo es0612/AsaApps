@@ -2,6 +2,7 @@ import SwiftUI
 import SwiftData
 
 struct ContentView: View {
+    @Environment(\.modelContext) private var modelContext
     @State private var selectedTab: Tab = .dashboard
 
     enum Tab: String, CaseIterable {
@@ -65,6 +66,11 @@ struct ContentView: View {
                 .tag(Tab.settings)
         }
         .tint(Color("AsaCoffeeBrown"))
+        #if DEBUG
+        .onAppear {
+            SampleDataLoader.loadIfNeeded(context: modelContext)
+        }
+        #endif
     }
 }
 

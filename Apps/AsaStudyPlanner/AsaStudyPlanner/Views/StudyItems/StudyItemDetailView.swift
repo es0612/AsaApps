@@ -7,6 +7,18 @@ struct StudyItemDetailView: View {
 
     @State private var showingEditSheet = false
     @State private var showingDeleteAlert = false
+    @State private var showingActiveSession = false
+
+    @Query(sort: \LearningAnalytics.date, order: .reverse) private var analytics: [LearningAnalytics]
+    @Query(sort: \StudyPlan.date, order: .reverse) private var plans: [StudyPlan]
+
+    private var todayAnalytics: LearningAnalytics? {
+        analytics.first { Calendar.current.isDateInToday($0.date) }
+    }
+
+    private var todayPlan: StudyPlan? {
+        plans.first { Calendar.current.isDateInToday($0.date) }
+    }
 
     var body: some View {
         List {
@@ -125,7 +137,7 @@ struct StudyItemDetailView: View {
             // アクションセクション
             Section {
                 Button {
-                    // TODO: 学習セッション開始
+                    showingActiveSession = true
                 } label: {
                     Label("学習を開始", systemImage: "play.fill")
                 }
@@ -133,7 +145,7 @@ struct StudyItemDetailView: View {
 
                 if item.needsReview {
                     Button {
-                        // TODO: 復習セッション開始
+                        showingActiveSession = true
                     } label: {
                         Label("復習を開始", systemImage: "arrow.clockwise")
                     }
@@ -178,6 +190,32 @@ struct StudyItemDetailView: View {
         } message: {
             Text("「\(item.title)」を削除しますか？この操作は取り消せません。")
         }
+        .fullScreenCover(isPresented: $showingActiveSession) {
+            ActiveSessionView(
+                studyItem: item,
+                plannedMinutes: item.category.recommendedSessionMinutes,
+                onComplete: { session in
+                    handleSessionComplete(session: session)
+                    showingActiveSession = false
+                }
+            )
+        }
+    }
+
+    private func handleSessionComplete(session: StudySession) {
+        let engine = SpacedRepetitionEngine()
+        engine.updateItemAfterSession(item: item, session: session)
+
+        if let analytics = todayAnalytics {
+            analytics.recordSession(session, category: item.category)
+        } else {
+            let newAnalytics = LearningAnalytics(date: Date())
+            modelContext.insert(newAnalytics)
+            newAnalytics.recordSession(session, category: item.category)
+        }
+
+        todayPlan?.markItemCompleted(item.id, minutes: session.actualMinutes, isMorning: session.isMorningSession)
+        try? modelContext.save()
     }
 }
 

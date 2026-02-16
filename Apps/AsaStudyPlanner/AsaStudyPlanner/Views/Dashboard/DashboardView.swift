@@ -5,8 +5,12 @@ struct DashboardView: View {
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \StudyItem.aiPriorityScore, order: .reverse) private var studyItems: [StudyItem]
     @Query(sort: \LearningAnalytics.date, order: .reverse) private var analytics: [LearningAnalytics]
+    @Query(sort: \StudyPlan.date, order: .reverse) private var plans: [StudyPlan]
 
     @State private var showingAddItem = false
+    @State private var showingActiveSession = false
+    @State private var sessionTargetItem: StudyItem?
+    @State private var sessionPlannedMinutes: Int = 25
 
     private var activeItems: [StudyItem] {
         studyItems.filter { !$0.isArchived && !$0.isCompleted }
@@ -23,6 +27,10 @@ struct DashboardView: View {
 
     private var itemsNeedingReview: [StudyItem] {
         activeItems.filter { $0.needsReview }
+    }
+
+    private var todayPlan: StudyPlan? {
+        plans.first { Calendar.current.isDateInToday($0.date) }
     }
 
     var body: some View {
@@ -49,7 +57,23 @@ struct DashboardView: View {
                     }
 
                     // クイックアクション
-                    QuickActionsCard(showingAddItem: $showingAddItem)
+                    QuickActionsCard(
+                        showingAddItem: $showingAddItem,
+                        onStartStudy: {
+                            if let item = topPriorityItems.first {
+                                sessionTargetItem = item
+                                sessionPlannedMinutes = item.category.recommendedSessionMinutes
+                                showingActiveSession = true
+                            }
+                        },
+                        onStartReview: {
+                            if let item = itemsNeedingReview.first {
+                                sessionTargetItem = item
+                                sessionPlannedMinutes = item.category.recommendedSessionMinutes
+                                showingActiveSession = true
+                            }
+                        }
+                    )
                 }
                 .padding()
             }
@@ -67,7 +91,35 @@ struct DashboardView: View {
             .sheet(isPresented: $showingAddItem) {
                 AddStudyItemView()
             }
+            .fullScreenCover(isPresented: $showingActiveSession) {
+                if let item = sessionTargetItem {
+                    ActiveSessionView(
+                        studyItem: item,
+                        plannedMinutes: sessionPlannedMinutes,
+                        onComplete: { session in
+                            handleSessionComplete(session: session, item: item)
+                            showingActiveSession = false
+                        }
+                    )
+                }
+            }
         }
+    }
+
+    private func handleSessionComplete(session: StudySession, item: StudyItem) {
+        let engine = SpacedRepetitionEngine()
+        engine.updateItemAfterSession(item: item, session: session)
+
+        if let analytics = todayAnalytics {
+            analytics.recordSession(session, category: item.category)
+        } else {
+            let newAnalytics = LearningAnalytics(date: Date())
+            modelContext.insert(newAnalytics)
+            newAnalytics.recordSession(session, category: item.category)
+        }
+
+        todayPlan?.markItemCompleted(item.id, minutes: session.actualMinutes, isMorning: session.isMorningSession)
+        try? modelContext.save()
     }
 }
 
@@ -298,6 +350,8 @@ struct ReviewReminderCard: View {
 
 struct QuickActionsCard: View {
     @Binding var showingAddItem: Bool
+    let onStartStudy: () -> Void
+    let onStartReview: () -> Void
 
     var body: some View {
         VStack(spacing: 12) {
@@ -324,7 +378,7 @@ struct QuickActionsCard: View {
                     title: "学習開始",
                     color: .green
                 ) {
-                    // TODO: セッション開始
+                    onStartStudy()
                 }
 
                 QuickActionButton(
@@ -332,7 +386,7 @@ struct QuickActionsCard: View {
                     title: "復習",
                     color: .blue
                 ) {
-                    // TODO: 復習セッション
+                    onStartReview()
                 }
             }
         }

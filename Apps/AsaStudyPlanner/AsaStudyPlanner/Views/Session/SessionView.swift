@@ -5,6 +5,8 @@ struct SessionView: View {
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \StudyItem.aiPriorityScore, order: .reverse) private var studyItems: [StudyItem]
     @Query(sort: \StudySession.startedAt, order: .reverse) private var recentSessions: [StudySession]
+    @Query(sort: \LearningAnalytics.date, order: .reverse) private var analytics: [LearningAnalytics]
+    @Query(sort: \StudyPlan.date, order: .reverse) private var plans: [StudyPlan]
 
     @State private var selectedItem: StudyItem?
     @State private var isSessionActive = false
@@ -23,6 +25,15 @@ struct SessionView: View {
 
     private var todayTotalMinutes: Int {
         todaySessions.reduce(0) { $0 + $1.actualMinutes }
+    }
+
+    private var todayAnalytics: LearningAnalytics? {
+        let today = Calendar.current.startOfDay(for: Date())
+        return analytics.first { Calendar.current.isDate($0.date, inSameDayAs: today) }
+    }
+
+    private var todayPlan: StudyPlan? {
+        plans.first { Calendar.current.isDateInToday($0.date) }
     }
 
     var body: some View {
@@ -152,8 +163,8 @@ struct SessionView: View {
                         studyItem: item,
                         plannedMinutes: sessionMinutes,
                         onComplete: { session in
+                            handleSessionComplete(session: session, item: item)
                             isSessionActive = false
-                            // セッション完了処理はActiveSessionView内で行う
                         }
                     )
                 }
@@ -164,6 +175,22 @@ struct SessionView: View {
     private func startSession() {
         guard selectedItem != nil else { return }
         isSessionActive = true
+    }
+
+    private func handleSessionComplete(session: StudySession, item: StudyItem) {
+        let engine = SpacedRepetitionEngine()
+        engine.updateItemAfterSession(item: item, session: session)
+
+        if let analytics = todayAnalytics {
+            analytics.recordSession(session, category: item.category)
+        } else {
+            let newAnalytics = LearningAnalytics(date: Date())
+            modelContext.insert(newAnalytics)
+            newAnalytics.recordSession(session, category: item.category)
+        }
+
+        todayPlan?.markItemCompleted(item.id, minutes: session.actualMinutes, isMorning: session.isMorningSession)
+        try? modelContext.save()
     }
 }
 
