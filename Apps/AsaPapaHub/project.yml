@@ -1,0 +1,96 @@
+name: AsaPapaHub
+options:
+  bundleIdPrefix: com.asapapa.apps
+  deploymentTarget:
+    iOS: "26.0"
+  xcodeVersion: "26.0"
+  createIntermediateGroups: true
+  generateEmptyDirectories: true
+settings:
+  MARKETING_VERSION: "1.0"
+  CURRENT_PROJECT_VERSION: "1"
+  DEVELOPMENT_TEAM: ""
+  CODE_SIGN_STYLE: Automatic
+  SWIFT_VERSION: "6.0"
+packages:
+  AsaUIKit:
+    path: ../../Packages/AsaUIKit
+  AsaPapaHubKit:
+    path: ../../Packages/AsaPapaHubKit
+  AsaCoreKit:
+    path: ../../Packages/AsaCoreKit
+targets:
+  AsaPapaHub:
+    type: application
+    platform: iOS
+    sources: [Sources, Shared]
+    resources: [Sources/Assets.xcassets]
+    settings:
+      PRODUCT_BUNDLE_IDENTIFIER: com.asapapa.apps.asapapahub
+      GENERATE_INFOPLIST_FILE: true
+      INFOPLIST_KEY_UIApplicationSceneManifest_Generation: true
+      INFOPLIST_KEY_UILaunchScreen_Generation: true
+      INFOPLIST_KEY_CFBundleDisplayName: "AsaPapaHub"
+      INFOPLIST_KEY_LSApplicationCategoryType: "public.app-category.lifestyle"
+      SWIFT_STRICT_CONCURRENCY: complete
+      SWIFT_EMIT_LOC_STRINGS: true
+      ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+      ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+      CODE_SIGN_ENTITLEMENTS: Sources/AsaPapaHub.entitlements
+      INFOPLIST_KEY_NSUserActivityTypes: "$(PRODUCT_BUNDLE_IDENTIFIER).morning-routine"
+    dependencies:
+      - package: AsaUIKit
+      - package: AsaPapaHubKit
+      - package: AsaCoreKit
+      - target: PapaHubWidgetExtension
+        embed: true
+        codeSignOnCopy: true
+  PapaHubWidgetExtension:
+    type: app-extension
+    platform: iOS
+    sources: [PapaHubWidgetExtension, Shared]
+    settings:
+      PRODUCT_BUNDLE_IDENTIFIER: com.asapapa.apps.asapapahub.widget
+      GENERATE_INFOPLIST_FILE: true
+      SKIP_INSTALL: "YES"
+      LD_RUNPATH_SEARCH_PATHS: "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks"
+      SWIFT_STRICT_CONCURRENCY: complete
+      CODE_SIGN_ENTITLEMENTS: PapaHubWidgetExtension/PapaHubWidgetExtension.entitlements
+      INFOPLIST_KEY_CFBundleDisplayName: "PapaHub Widget"
+      INFOPLIST_KEY_NSExtension_NSExtensionPointIdentifier: com.apple.widgetkit-extension
+    dependencies:
+      - package: AsaUIKit
+  AsaPapaHubTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources: [AsaPapaHubTests]
+    settings:
+      GENERATE_INFOPLIST_FILE: true
+    dependencies:
+      - target: AsaPapaHub
+  AsaPapaHubUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources: [AsaPapaHubUITests]
+    settings:
+      GENERATE_INFOPLIST_FILE: true
+    dependencies:
+      - target: AsaPapaHub
+schemes:
+  AsaPapaHub:
+    build:
+      targets:
+        AsaPapaHub: all
+        PapaHubWidgetExtension: all
+        AsaPapaHubTests: [test]
+    run:
+      config: Debug
+    test:
+      config: Debug
+      targets: [AsaPapaHubTests]
+    profile:
+      config: Release
+    analyze:
+      config: Debug
+    archive:
+      config: Release
