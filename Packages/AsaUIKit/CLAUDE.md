@@ -8,4 +8,10 @@
 | ID | Time | T | Title | Read |
 |----|------|---|-------|------|
 | #130 | 11:51 AM | 🔵 | AsaUIKit Swift 6.0 Package Configuration | ~301 |
+
+### Feb 14, 2026
+
+| ID | Time | T | Title | Read |
+|----|------|---|-------|------|
+| #1065 | 10:48 AM | 🔵 | AsaUIKit Targets iOS 17 for Broader Compatibility | ~493 |
 </claude-mem-context>
