@@ -18,6 +18,7 @@ struct MainMenuView: View {
     @State private var selectedEmoji: String = "🎨"
     @State private var showCreateRoom = false
     @State private var showJoinRoom = false
+    @State private var showAIBattle = false
 
     private let avatarEmojis = ["🎨", "🖌️", "✏️", "🖍️", "🎭", "🎪", "🌟", "🔥"]
 
@@ -28,7 +29,7 @@ struct MainMenuView: View {
             ZStack {
                 // 背景グラデーション
                 LinearGradient(
-                    colors: [Color("AsaSoftCream"), Color.white],
+                    colors: [AsaColors.softCream, Color.white],
                     startPoint: .top,
                     endPoint: .bottom
                 )
@@ -50,6 +51,9 @@ struct MainMenuView: View {
                 }
                 .padding()
             }
+            .sheet(isPresented: $showAIBattle) {
+                aiBattleSheet
+            }
             .sheet(isPresented: $showCreateRoom) {
                 createRoomSheet
             }
@@ -68,7 +72,7 @@ struct MainMenuView: View {
                 Circle()
                     .fill(
                         LinearGradient(
-                            colors: [Color("AsaCoffeeBrown"), Color("AsaMocha")],
+                            colors: [AsaColors.coffeeBrown, AsaColors.mocha],
                             startPoint: .topLeading,
                             endPoint: .bottomTrailing
                         )
@@ -85,11 +89,11 @@ struct MainMenuView: View {
                 Text("お絵かきバトル")
                     .font(.largeTitle)
                     .fontWeight(.bold)
-                    .foregroundColor(Color("AsaDarkSlate"))
+                    .foregroundColor(AsaColors.darkSlate)
 
-                Text("友達とリアルタイムで対戦しよう！")
+                Text("AIや友達とリアルタイムで対戦しよう！")
                     .font(.subheadline)
-                    .foregroundColor(Color("AsaMutedSage"))
+                    .foregroundColor(AsaColors.mutedSage)
             }
         }
         .padding(.top, 40)
@@ -99,6 +103,37 @@ struct MainMenuView: View {
 
     private var menuSection: some View {
         VStack(spacing: 16) {
+            // AI対戦ボタン
+            Button {
+                showAIBattle = true
+            } label: {
+                HStack {
+                    Text("🤖")
+                        .font(.title2)
+                    Text("AIと対戦")
+                        .font(.headline)
+                }
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 16)
+                .background(AsaColors.coffeeBrown)
+                .foregroundColor(.white)
+                .cornerRadius(12)
+            }
+
+            // 区切り
+            HStack {
+                Rectangle()
+                    .fill(AsaColors.mutedSage.opacity(0.3))
+                    .frame(height: 1)
+                Text("or")
+                    .font(.caption)
+                    .foregroundColor(AsaColors.mutedSage)
+                Rectangle()
+                    .fill(AsaColors.mutedSage.opacity(0.3))
+                    .frame(height: 1)
+            }
+            .padding(.vertical, 4)
+
             // ルーム作成ボタン
             Button {
                 showCreateRoom = true
@@ -111,7 +146,7 @@ struct MainMenuView: View {
                 }
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 16)
-                .background(Color("AsaCoffeeBrown"))
+                .background(AsaColors.darkSlate)
                 .foregroundColor(.white)
                 .cornerRadius(12)
             }
@@ -128,8 +163,11 @@ struct MainMenuView: View {
                 }
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 16)
-                .background(Color("AsaDarkSlate"))
-                .foregroundColor(.white)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 12)
+                        .stroke(AsaColors.darkSlate, lineWidth: 2)
+                )
+                .foregroundColor(AsaColors.darkSlate)
                 .cornerRadius(12)
             }
         }
@@ -143,11 +181,11 @@ struct MainMenuView: View {
             Text("遊び方")
                 .font(.caption)
                 .fontWeight(.semibold)
-                .foregroundColor(Color("AsaDarkSlate"))
+                .foregroundColor(AsaColors.darkSlate)
 
             Text("交互に絵を描いて当て合おう！")
                 .font(.caption2)
-                .foregroundColor(Color("AsaMutedSage"))
+                .foregroundColor(AsaColors.mutedSage)
         }
         .padding(.bottom, 20)
     }
@@ -161,7 +199,7 @@ struct MainMenuView: View {
                 VStack(alignment: .leading, spacing: 8) {
                     Text("プレイヤー名")
                         .font(.headline)
-                        .foregroundColor(Color("AsaDarkSlate"))
+                        .foregroundColor(AsaColors.darkSlate)
 
                     TextField("名前を入力", text: $playerName)
                         .textFieldStyle(.roundedBorder)
@@ -172,7 +210,7 @@ struct MainMenuView: View {
                 VStack(alignment: .leading, spacing: 8) {
                     Text("アバター")
                         .font(.headline)
-                        .foregroundColor(Color("AsaDarkSlate"))
+                        .foregroundColor(AsaColors.darkSlate)
 
                     LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 4), spacing: 12) {
                         ForEach(avatarEmojis, id: \.self) { emoji in
@@ -184,11 +222,11 @@ struct MainMenuView: View {
                                     .padding(8)
                                     .background(
                                         Circle()
-                                            .fill(selectedEmoji == emoji ? Color("AsaSoftCream") : Color.clear)
+                                            .fill(selectedEmoji == emoji ? AsaColors.softCream : Color.clear)
                                     )
                                     .overlay(
                                         Circle()
-                                            .stroke(selectedEmoji == emoji ? Color("AsaCoffeeBrown") : Color.clear, lineWidth: 2)
+                                            .stroke(selectedEmoji == emoji ? AsaColors.coffeeBrown : Color.clear, lineWidth: 2)
                                     )
                             }
                         }
@@ -208,7 +246,7 @@ struct MainMenuView: View {
                         .font(.headline)
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 16)
-                        .background(playerName.isEmpty ? Color.gray : Color("AsaCoffeeBrown"))
+                        .background(playerName.isEmpty ? Color.gray : AsaColors.coffeeBrown)
                         .foregroundColor(.white)
                         .cornerRadius(12)
                 }
@@ -237,7 +275,7 @@ struct MainMenuView: View {
                 VStack(alignment: .leading, spacing: 8) {
                     Text("プレイヤー名")
                         .font(.headline)
-                        .foregroundColor(Color("AsaDarkSlate"))
+                        .foregroundColor(AsaColors.darkSlate)
 
                     TextField("名前を入力", text: $playerName)
                         .textFieldStyle(.roundedBorder)
@@ -248,7 +286,7 @@ struct MainMenuView: View {
                 VStack(alignment: .leading, spacing: 8) {
                     Text("ルームコード")
                         .font(.headline)
-                        .foregroundColor(Color("AsaDarkSlate"))
+                        .foregroundColor(AsaColors.darkSlate)
 
                     TextField("6桁のコードを入力", text: $roomCodeInput)
                         .textFieldStyle(.roundedBorder)
@@ -263,7 +301,7 @@ struct MainMenuView: View {
                 VStack(alignment: .leading, spacing: 8) {
                     Text("アバター")
                         .font(.headline)
-                        .foregroundColor(Color("AsaDarkSlate"))
+                        .foregroundColor(AsaColors.darkSlate)
 
                     LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 4), spacing: 12) {
                         ForEach(avatarEmojis, id: \.self) { emoji in
@@ -275,11 +313,11 @@ struct MainMenuView: View {
                                     .padding(8)
                                     .background(
                                         Circle()
-                                            .fill(selectedEmoji == emoji ? Color("AsaSoftCream") : Color.clear)
+                                            .fill(selectedEmoji == emoji ? AsaColors.softCream : Color.clear)
                                     )
                                     .overlay(
                                         Circle()
-                                            .stroke(selectedEmoji == emoji ? Color("AsaCoffeeBrown") : Color.clear, lineWidth: 2)
+                                            .stroke(selectedEmoji == emoji ? AsaColors.coffeeBrown : Color.clear, lineWidth: 2)
                                     )
                             }
                         }
@@ -299,7 +337,7 @@ struct MainMenuView: View {
                         .font(.headline)
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 16)
-                        .background(canJoin ? Color("AsaDarkSlate") : Color.gray)
+                        .background(canJoin ? AsaColors.darkSlate : Color.gray)
                         .foregroundColor(.white)
                         .cornerRadius(12)
                 }
@@ -312,6 +350,86 @@ struct MainMenuView: View {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("キャンセル") {
                         showJoinRoom = false
+                    }
+                }
+            }
+        }
+        .presentationDetents([.medium])
+    }
+
+    // MARK: - AI Battle Sheet
+
+    private var aiBattleSheet: some View {
+        NavigationStack {
+            VStack(spacing: 24) {
+                // 名前入力
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("プレイヤー名")
+                        .font(.headline)
+                        .foregroundColor(AsaColors.darkSlate)
+
+                    TextField("名前を入力", text: $playerName)
+                        .textFieldStyle(.roundedBorder)
+                        .autocorrectionDisabled()
+                }
+
+                // アバター選択
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("アバター")
+                        .font(.headline)
+                        .foregroundColor(AsaColors.darkSlate)
+
+                    LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 4), spacing: 12) {
+                        ForEach(avatarEmojis, id: \.self) { emoji in
+                            Button {
+                                selectedEmoji = emoji
+                            } label: {
+                                Text(emoji)
+                                    .font(.largeTitle)
+                                    .padding(8)
+                                    .background(
+                                        Circle()
+                                            .fill(selectedEmoji == emoji ? AsaColors.softCream : Color.clear)
+                                    )
+                                    .overlay(
+                                        Circle()
+                                            .stroke(selectedEmoji == emoji ? AsaColors.coffeeBrown : Color.clear, lineWidth: 2)
+                                    )
+                            }
+                        }
+                    }
+                }
+
+                Spacer()
+
+                // 対戦開始ボタン
+                Button {
+                    Task {
+                        viewModel.settings.isLocalMode = true
+                        await viewModel.createRoom(playerName: playerName, avatarEmoji: selectedEmoji)
+                        showAIBattle = false
+                    }
+                } label: {
+                    HStack {
+                        Text("🤖")
+                        Text("対戦開始")
+                            .font(.headline)
+                    }
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 16)
+                    .background(playerName.isEmpty ? Color.gray : AsaColors.coffeeBrown)
+                    .foregroundColor(.white)
+                    .cornerRadius(12)
+                }
+                .disabled(playerName.isEmpty)
+            }
+            .padding(24)
+            .navigationTitle("AI対戦")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("キャンセル") {
+                        showAIBattle = false
                     }
                 }
             }

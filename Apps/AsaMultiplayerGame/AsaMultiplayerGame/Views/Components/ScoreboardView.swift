@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import AsaUIKit
 
 /// スコアボードビュー
 ///
@@ -26,7 +27,7 @@ struct ScoreboardView: View {
             HStack {
                 Text("ラウンド \(currentRound)/\(totalRounds)")
                     .font(.headline)
-                    .foregroundColor(Color("AsaDarkSlate"))
+                    .foregroundColor(AsaColors.darkSlate)
 
                 Spacer()
             }
@@ -54,12 +55,12 @@ struct ScoreboardView: View {
                 .frame(width: 50, height: 50)
                 .background(
                     Circle()
-                        .fill(player.id == localPlayerId ? Color("AsaSoftCream") : Color.gray.opacity(0.1))
+                        .fill(player.id == localPlayerId ? AsaColors.softCream : Color.gray.opacity(0.1))
                 )
                 .overlay(
                     Circle()
                         .stroke(
-                            player.id == localPlayerId ? Color("AsaCoffeeBrown") : Color.clear,
+                            player.id == localPlayerId ? AsaColors.coffeeBrown : Color.clear,
                             lineWidth: 2
                         )
                 )
@@ -68,20 +69,20 @@ struct ScoreboardView: View {
             Text(player.name)
                 .font(.caption)
                 .fontWeight(.medium)
-                .foregroundColor(Color("AsaDarkSlate"))
+                .foregroundColor(AsaColors.darkSlate)
                 .lineLimit(1)
 
             // スコア
             Text("\(player.score)")
                 .font(.title2)
                 .fontWeight(.bold)
-                .foregroundColor(Color("AsaCoffeeBrown"))
+                .foregroundColor(AsaColors.coffeeBrown)
 
             // ローカルプレイヤーマーク
             if player.id == localPlayerId {
                 Text("あなた")
                     .font(.caption2)
-                    .foregroundColor(Color("AsaMutedSage"))
+                    .foregroundColor(AsaColors.mutedSage)
             }
         }
         .frame(maxWidth: .infinity)
@@ -110,13 +111,13 @@ struct MiniScoreboardView: View {
                     Text("\(player.score)pt")
                         .font(.caption)
                         .fontWeight(.bold)
-                        .foregroundColor(Color("AsaCoffeeBrown"))
+                        .foregroundColor(AsaColors.coffeeBrown)
                 }
                 .padding(.horizontal, 8)
                 .padding(.vertical, 4)
                 .background(
                     Capsule()
-                        .fill(player.id == localPlayerId ? Color("AsaSoftCream") : Color.gray.opacity(0.1))
+                        .fill(player.id == localPlayerId ? AsaColors.softCream : Color.gray.opacity(0.1))
                 )
             }
         }

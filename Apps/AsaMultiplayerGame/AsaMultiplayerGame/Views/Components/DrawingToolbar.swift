@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import AsaUIKit
 
 /// 描画ツールバー
 ///
@@ -51,7 +52,7 @@ struct DrawingToolbar: View {
             Text("色")
                 .font(.caption)
                 .fontWeight(.semibold)
-                .foregroundColor(Color("AsaDarkSlate"))
+                .foregroundColor(AsaColors.darkSlate)
 
             LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 5), spacing: 8) {
                 ForEach(StrokeColor.allCases, id: \.self) { color in
@@ -65,7 +66,7 @@ struct DrawingToolbar: View {
                                 .overlay(
                                     Circle()
                                         .stroke(
-                                            selectedColor == color ? Color("AsaCoffeeBrown") : Color.gray.opacity(0.3),
+                                            selectedColor == color ? AsaColors.coffeeBrown : Color.gray.opacity(0.3),
                                             lineWidth: selectedColor == color ? 3 : 1
                                         )
                                 )
@@ -89,7 +90,7 @@ struct DrawingToolbar: View {
             Text("太さ")
                 .font(.caption)
                 .fontWeight(.semibold)
-                .foregroundColor(Color("AsaDarkSlate"))
+                .foregroundColor(AsaColors.darkSlate)
 
             HStack(spacing: 12) {
                 ForEach(availableLineWidths, id: \.self) { width in
@@ -98,18 +99,18 @@ struct DrawingToolbar: View {
                     } label: {
                         ZStack {
                             Circle()
-                                .fill(lineWidth == width ? Color("AsaSoftCream") : Color.clear)
+                                .fill(lineWidth == width ? AsaColors.softCream : Color.clear)
                                 .frame(width: 44, height: 44)
                                 .overlay(
                                     Circle()
                                         .stroke(
-                                            lineWidth == width ? Color("AsaCoffeeBrown") : Color.gray.opacity(0.3),
+                                            lineWidth == width ? AsaColors.coffeeBrown : Color.gray.opacity(0.3),
                                             lineWidth: lineWidth == width ? 2 : 1
                                         )
                                 )
 
                             Circle()
-                                .fill(Color("AsaDarkSlate"))
+                                .fill(AsaColors.darkSlate)
                                 .frame(width: width, height: width)
                         }
                     }
@@ -130,10 +131,10 @@ struct DrawingToolbar: View {
                     Text("戻す")
                         .font(.caption2)
                 }
-                .foregroundColor(Color("AsaDarkSlate"))
+                .foregroundColor(AsaColors.darkSlate)
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 8)
-                .background(Color("AsaSoftCream"))
+                .background(AsaColors.softCream)
                 .cornerRadius(8)
             }
 

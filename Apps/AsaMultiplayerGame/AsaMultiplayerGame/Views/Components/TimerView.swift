@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import AsaUIKit
 
 /// タイマー表示ビュー
 ///
@@ -85,7 +86,7 @@ struct TimerView: View {
         } else if remainingTime <= warningThreshold {
             return .orange
         } else {
-            return Color("AsaCoffeeBrown")
+            return AsaColors.coffeeBrown
         }
     }
 
@@ -95,7 +96,7 @@ struct TimerView: View {
         } else if remainingTime <= warningThreshold {
             return .orange.opacity(0.1)
         } else {
-            return Color("AsaSoftCream")
+            return AsaColors.softCream
         }
     }
 }

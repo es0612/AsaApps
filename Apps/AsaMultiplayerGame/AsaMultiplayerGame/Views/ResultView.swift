@@ -21,7 +21,7 @@ struct ResultView: View {
         ZStack {
             // 背景グラデーション
             LinearGradient(
-                colors: [Color("AsaSoftCream"), Color.white],
+                colors: [AsaColors.softCream, Color.white],
                 startPoint: .top,
                 endPoint: .bottom
             )
@@ -91,11 +91,11 @@ struct ResultView: View {
                 Text(resultTitle)
                     .font(.largeTitle)
                     .fontWeight(.bold)
-                    .foregroundColor(Color("AsaDarkSlate"))
+                    .foregroundColor(AsaColors.darkSlate)
 
                 Text(resultSubtitle)
                     .font(.subheadline)
-                    .foregroundColor(Color("AsaMutedSage"))
+                    .foregroundColor(AsaColors.mutedSage)
             }
         }
         .padding(.top, 40)
@@ -124,11 +124,11 @@ struct ResultView: View {
 
     private var resultColors: [Color] {
         if viewModel.gameResult?.isDraw == true {
-            return [Color("AsaMutedSage"), Color("AsaDarkSlate")]
+            return [AsaColors.mutedSage, AsaColors.darkSlate]
         } else if isWinner {
             return [.yellow, .orange]
         } else {
-            return [Color("AsaMutedSage"), .gray]
+            return [AsaColors.mutedSage, .gray]
         }
     }
 
@@ -138,7 +138,7 @@ struct ResultView: View {
         VStack(spacing: 16) {
             Text("最終スコア")
                 .font(.headline)
-                .foregroundColor(Color("AsaDarkSlate"))
+                .foregroundColor(AsaColors.darkSlate)
 
             ForEach(sortedPlayers) { player in
                 playerResultRow(player, rank: rankOf(player))
@@ -177,7 +177,7 @@ struct ResultView: View {
             Text(player.avatarEmoji)
                 .font(.title2)
                 .frame(width: 44, height: 44)
-                .background(Color("AsaSoftCream"))
+                .background(AsaColors.softCream)
                 .clipShape(Circle())
 
             // 名前
@@ -185,12 +185,12 @@ struct ResultView: View {
                 HStack(spacing: 4) {
                     Text(player.name)
                         .font(.headline)
-                        .foregroundColor(Color("AsaDarkSlate"))
+                        .foregroundColor(AsaColors.darkSlate)
 
                     if player.id == viewModel.localPlayer?.id {
                         Text("(あなた)")
                             .font(.caption)
-                            .foregroundColor(Color("AsaMutedSage"))
+                            .foregroundColor(AsaColors.mutedSage)
                     }
                 }
 
@@ -208,16 +208,16 @@ struct ResultView: View {
             Text("\(player.score)")
                 .font(.title)
                 .fontWeight(.bold)
-                .foregroundColor(Color("AsaCoffeeBrown"))
+                .foregroundColor(AsaColors.coffeeBrown)
 
             Text("pt")
                 .font(.caption)
-                .foregroundColor(Color("AsaMutedSage"))
+                .foregroundColor(AsaColors.mutedSage)
         }
         .padding(12)
         .background(
             player.id == viewModel.localPlayer?.id
-                ? Color("AsaSoftCream").opacity(0.5)
+                ? AsaColors.softCream.opacity(0.5)
                 : Color.clear
         )
         .cornerRadius(12)
@@ -228,7 +228,7 @@ struct ResultView: View {
         case 1: return .orange
         case 2: return .gray
         case 3: return .brown
-        default: return Color("AsaMutedSage")
+        default: return AsaColors.mutedSage
         }
     }
 
@@ -249,7 +249,7 @@ struct ResultView: View {
                 .font(.headline)
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 16)
-                .background(Color("AsaCoffeeBrown"))
+                .background(AsaColors.coffeeBrown)
                 .foregroundColor(.white)
                 .cornerRadius(12)
             }
@@ -265,7 +265,7 @@ struct ResultView: View {
                 .font(.headline)
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 16)
-                .background(Color("AsaDarkSlate"))
+                .background(AsaColors.darkSlate)
                 .foregroundColor(.white)
                 .cornerRadius(12)
             }

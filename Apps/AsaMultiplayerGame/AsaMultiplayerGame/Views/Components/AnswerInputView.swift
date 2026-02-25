@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import AsaUIKit
 
 /// 回答入力ビュー
 ///
@@ -44,7 +45,7 @@ struct AnswerInputView: View {
                         .font(.title2)
                         .foregroundColor(.white)
                         .frame(width: 50, height: 50)
-                        .background(isEnabled && !answer.isEmpty ? Color("AsaCoffeeBrown") : Color.gray)
+                        .background(isEnabled && !answer.isEmpty ? AsaColors.coffeeBrown : Color.gray)
                         .cornerRadius(12)
                 }
                 .disabled(!isEnabled || answer.isEmpty)
@@ -53,7 +54,7 @@ struct AnswerInputView: View {
             // ヒント
             Text("お題を当ててください！")
                 .font(.caption)
-                .foregroundColor(Color("AsaMutedSage"))
+                .foregroundColor(AsaColors.mutedSage)
         }
         .padding()
         .background(Color.white)
@@ -72,20 +73,20 @@ struct WordDisplayView: View {
         VStack(spacing: 8) {
             Text("お題")
                 .font(.caption)
-                .foregroundColor(Color("AsaMutedSage"))
+                .foregroundColor(AsaColors.mutedSage)
 
             Text(word)
                 .font(.largeTitle)
                 .fontWeight(.bold)
-                .foregroundColor(Color("AsaDarkSlate"))
+                .foregroundColor(AsaColors.darkSlate)
                 .padding(.horizontal, 24)
                 .padding(.vertical, 12)
-                .background(Color("AsaSoftCream"))
+                .background(AsaColors.softCream)
                 .cornerRadius(12)
 
             Text("このお題を絵で表現してください")
                 .font(.caption2)
-                .foregroundColor(Color("AsaMutedSage"))
+                .foregroundColor(AsaColors.mutedSage)
         }
         .padding()
         .background(Color.white)

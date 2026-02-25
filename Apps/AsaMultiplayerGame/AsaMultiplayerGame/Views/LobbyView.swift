@@ -19,7 +19,7 @@ struct LobbyView: View {
         NavigationStack {
             ZStack {
                 // 背景
-                Color("AsaSoftCream")
+                AsaColors.softCream
                     .ignoresSafeArea()
 
                 VStack(spacing: 24) {
@@ -59,7 +59,7 @@ struct LobbyView: View {
         VStack(spacing: 12) {
             Text("ルームコード")
                 .font(.headline)
-                .foregroundColor(Color("AsaMutedSage"))
+                .foregroundColor(AsaColors.mutedSage)
 
             HStack(spacing: 8) {
                 ForEach(Array(viewModel.roomCode ?? "------"), id: \.self) { char in
@@ -80,7 +80,7 @@ struct LobbyView: View {
             } label: {
                 Label("コードをコピー", systemImage: "doc.on.doc")
                     .font(.caption)
-                    .foregroundColor(Color("AsaCoffeeBrown"))
+                    .foregroundColor(AsaColors.coffeeBrown)
             }
         }
         .padding()
@@ -95,13 +95,13 @@ struct LobbyView: View {
             HStack {
                 Text("プレイヤー")
                     .font(.headline)
-                    .foregroundColor(Color("AsaDarkSlate"))
+                    .foregroundColor(AsaColors.darkSlate)
 
                 Spacer()
 
                 Text("\(viewModel.players.count)/2")
                     .font(.subheadline)
-                    .foregroundColor(Color("AsaMutedSage"))
+                    .foregroundColor(AsaColors.mutedSage)
             }
 
             VStack(spacing: 8) {
@@ -127,7 +127,7 @@ struct LobbyView: View {
             Text(player.avatarEmoji)
                 .font(.title)
                 .frame(width: 44, height: 44)
-                .background(Color("AsaSoftCream"))
+                .background(AsaColors.softCream)
                 .clipShape(Circle())
 
             // 名前
@@ -135,7 +135,7 @@ struct LobbyView: View {
                 HStack(spacing: 4) {
                     Text(player.name)
                         .font(.headline)
-                        .foregroundColor(Color("AsaDarkSlate"))
+                        .foregroundColor(AsaColors.darkSlate)
 
                     if player.isHost {
                         Image(systemName: "crown.fill")
@@ -146,24 +146,24 @@ struct LobbyView: View {
                     if player.id == viewModel.localPlayer?.id {
                         Text("(あなた)")
                             .font(.caption)
-                            .foregroundColor(Color("AsaMutedSage"))
+                            .foregroundColor(AsaColors.mutedSage)
                     }
                 }
 
                 Text(player.isReady ? "準備完了" : "待機中")
                     .font(.caption)
-                    .foregroundColor(player.isReady ? .green : Color("AsaMutedSage"))
+                    .foregroundColor(player.isReady ? .green : AsaColors.mutedSage)
             }
 
             Spacer()
 
             // Ready状態インジケータ
             Image(systemName: player.isReady ? "checkmark.circle.fill" : "circle")
-                .foregroundColor(player.isReady ? .green : Color("AsaMutedSage"))
+                .foregroundColor(player.isReady ? .green : AsaColors.mutedSage)
                 .font(.title2)
         }
         .padding(12)
-        .background(Color("AsaSoftCream").opacity(0.5))
+        .background(AsaColors.softCream.opacity(0.5))
         .cornerRadius(12)
     }
 
@@ -172,14 +172,14 @@ struct LobbyView: View {
             // 空のアバター
             Image(systemName: "person.fill.questionmark")
                 .font(.title2)
-                .foregroundColor(Color("AsaMutedSage"))
+                .foregroundColor(AsaColors.mutedSage)
                 .frame(width: 44, height: 44)
                 .background(Color.gray.opacity(0.1))
                 .clipShape(Circle())
 
             Text("参加者を待っています...")
                 .font(.subheadline)
-                .foregroundColor(Color("AsaMutedSage"))
+                .foregroundColor(AsaColors.mutedSage)
 
             Spacer()
         }
@@ -189,7 +189,7 @@ struct LobbyView: View {
         .overlay(
             RoundedRectangle(cornerRadius: 12)
                 .stroke(style: StrokeStyle(lineWidth: 1, dash: [5]))
-                .foregroundColor(Color("AsaMutedSage").opacity(0.5))
+                .foregroundColor(AsaColors.mutedSage.opacity(0.5))
         )
     }
 
@@ -199,13 +199,13 @@ struct LobbyView: View {
         VStack(alignment: .leading, spacing: 12) {
             Text("ゲーム設定")
                 .font(.headline)
-                .foregroundColor(Color("AsaDarkSlate"))
+                .foregroundColor(AsaColors.darkSlate)
 
             VStack(spacing: 8) {
                 // ラウンド数
                 HStack {
                     Text("ラウンド数")
-                        .foregroundColor(Color("AsaDarkSlate"))
+                        .foregroundColor(AsaColors.darkSlate)
                     Spacer()
                     Picker("ラウンド数", selection: $viewModel.settings.roundCount) {
                         ForEach([3, 5, 7, 10], id: \.self) { count in
@@ -220,7 +220,7 @@ struct LobbyView: View {
                 // 制限時間
                 HStack {
                     Text("制限時間")
-                        .foregroundColor(Color("AsaDarkSlate"))
+                        .foregroundColor(AsaColors.darkSlate)
                     Spacer()
                     Picker("制限時間", selection: $viewModel.settings.roundTimeLimit) {
                         ForEach([20, 30, 45, 60], id: \.self) { seconds in
@@ -255,7 +255,7 @@ struct LobbyView: View {
                     .font(.headline)
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 16)
-                    .background(viewModel.canStartGame ? Color("AsaCoffeeBrown") : Color.gray)
+                    .background(viewModel.canStartGame ? AsaColors.coffeeBrown : Color.gray)
                     .foregroundColor(.white)
                     .cornerRadius(12)
                 }
@@ -264,7 +264,7 @@ struct LobbyView: View {
                 if !viewModel.canStartGame {
                     Text("全員の準備完了を待っています")
                         .font(.caption)
-                        .foregroundColor(Color("AsaMutedSage"))
+                        .foregroundColor(AsaColors.mutedSage)
                 }
             } else {
                 // ゲストの場合：Readyボタン
@@ -280,7 +280,7 @@ struct LobbyView: View {
                     .font(.headline)
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 16)
-                    .background(viewModel.localPlayer?.isReady == true ? .green : Color("AsaDarkSlate"))
+                    .background(viewModel.localPlayer?.isReady == true ? .green : AsaColors.darkSlate)
                     .foregroundColor(.white)
                     .cornerRadius(12)
                 }

@@ -77,6 +77,7 @@ final class GameViewModel {
 
     private var webSocketService: any GameWebSocketServiceProtocol
     private var gameTimer: Timer?
+    private var aiActionTask: Task<Void, Never>?
 
     // MARK: - Initialization
 
@@ -279,6 +280,9 @@ final class GameViewModel {
 
         // タイマー開始
         startRoundTimer()
+
+        // AIプレイヤーの行動をスケジュール
+        scheduleAIAction()
     }
 
     /// ラウンドタイマー開始
@@ -305,6 +309,9 @@ final class GameViewModel {
 
     /// 時間切れ処理
     private func handleTimeUp() async {
+        // 既にラウンド結果処理済み（AIが先に回答した場合など）なら無視
+        guard gamePhase == .drawing else { return }
+
         gameTimer?.invalidate()
         gameTimer = nil
 
@@ -357,6 +364,8 @@ final class GameViewModel {
     private func processRoundResult(_ result: RoundResult) async {
         gameTimer?.invalidate()
         gameTimer = nil
+        aiActionTask?.cancel()
+        aiActionTask = nil
 
         lastRoundResult = result
         gamePhase = .roundResult
@@ -613,6 +622,127 @@ final class GameViewModel {
         errorMessage = nil
         gameTimer?.invalidate()
         gameTimer = nil
+        aiActionTask?.cancel()
+        aiActionTask = nil
+    }
+
+    // MARK: - AI Player Actions
+
+    /// AIプレイヤーのIDを取得（"opponent-"プレフィックスで判別）
+    private var aiPlayerId: String? {
+        players.first { $0.id.hasPrefix("opponent-") }?.id
+    }
+
+    /// ラウンド開始時にAIの役割に応じた行動をスケジュール
+    private func scheduleAIAction() {
+        guard settings.isLocalMode, let aiId = aiPlayerId, let round = currentRound else { return }
+
+        aiActionTask?.cancel()
+        aiActionTask = Task { [weak self] in
+            guard let self else { return }
+
+            if round.guesserId == aiId {
+                // AIが当てる側
+                await self.performAIGuessing()
+            } else if round.drawerId == aiId {
+                // AIが描く側
+                await self.performAIDrawing()
+            }
+        }
+    }
+
+    /// AIの回答行動（5-15秒後にランダム回答、正解率40%）
+    private func performAIGuessing() async {
+        guard let round = currentRound else { return }
+
+        // 5-15秒のランダム待機
+        let delay = Double.random(in: 5...15)
+        do {
+            try await Task.sleep(nanoseconds: UInt64(delay * 1_000_000_000))
+        } catch {
+            return // キャンセルされた
+        }
+
+        // 既にラウンドが終了している場合は何もしない
+        guard gamePhase == .drawing else { return }
+
+        // 40%の確率で正解
+        let isCorrect = Double.random(in: 0...1) < 0.4
+        let answer: String
+        if isCorrect {
+            answer = round.word
+        } else {
+            // 別の単語をランダムに選択
+            var wrongWord = WordProvider.randomWord(excluding: usedWords)
+            // 偶然正解と一致した場合は別の単語を選び直す
+            if WordProvider.isCorrectAnswer(wrongWord, correctWord: round.word) {
+                wrongWord = WordProvider.randomWord()
+            }
+            answer = wrongWord
+        }
+
+        await processAIAnswer(answer: answer)
+    }
+
+    /// AIの描画行動（2秒後から0.8-1.5秒間隔で段階的ストローク追加）
+    private func performAIDrawing() async {
+        guard let round = currentRound else { return }
+
+        // 2秒の初期待機
+        do {
+            try await Task.sleep(nanoseconds: 2_000_000_000)
+        } catch {
+            return
+        }
+
+        // パターンからストロークを取得
+        let strokes = AIDrawingPatterns.generateStrokes(for: round.word)
+
+        // ストロークを段階的に追加
+        for stroke in strokes {
+            guard gamePhase == .drawing else { break }
+
+            canvas.addStroke(stroke)
+
+            // ストロークを送信（相手側にも表示させるため）
+            if let roomCode = roomCode {
+                let message = GameMessage.drawingStroke(roomCode: roomCode, stroke: stroke)
+                try? await webSocketService.send(message)
+            }
+
+            // 0.8-1.5秒のランダム間隔
+            let interval = Double.random(in: 0.8...1.5)
+            do {
+                try await Task.sleep(nanoseconds: UInt64(interval * 1_000_000_000))
+            } catch {
+                return
+            }
+        }
+    }
+
+    /// AIの回答を処理してスコア更新
+    private func processAIAnswer(answer: String) async {
+        guard let round = currentRound else { return }
+
+        // 正解判定
+        let isCorrect = WordProvider.isCorrectAnswer(answer, correctWord: round.word)
+        let answerTime = Date().timeIntervalSince(round.startTime)
+
+        // スコア計算
+        let guesserPoints = GameScoreCalculator.calculateGuesserScore(
+            isCorrect: isCorrect,
+            answerTimeSeconds: answerTime,
+            roundTimeLimit: round.timeLimit
+        )
+
+        let result = RoundResult(
+            isCorrect: isCorrect,
+            answerTime: answerTime,
+            earnedPoints: guesserPoints,
+            answer: answer
+        )
+
+        await processRoundResult(result)
     }
 
     /// 新しいゲームを開始（同じルームで）

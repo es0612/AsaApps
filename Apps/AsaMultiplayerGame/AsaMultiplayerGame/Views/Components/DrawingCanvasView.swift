@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import AsaUIKit
 
 /// 描画キャンバスビュー
 ///
@@ -79,7 +80,7 @@ struct DrawingCanvasView: View {
             .clipShape(RoundedRectangle(cornerRadius: 12))
             .overlay(
                 RoundedRectangle(cornerRadius: 12)
-                    .stroke(Color("AsaMutedSage").opacity(0.3), lineWidth: 2)
+                    .stroke(AsaColors.mutedSage.opacity(0.3), lineWidth: 2)
             )
             .shadow(color: .black.opacity(0.1), radius: 5, y: 2)
         }

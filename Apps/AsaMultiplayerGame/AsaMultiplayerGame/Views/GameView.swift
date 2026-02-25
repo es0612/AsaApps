@@ -19,7 +19,7 @@ struct GameView: View {
     var body: some View {
         ZStack {
             // 背景
-            Color("AsaSoftCream")
+            AsaColors.softCream
                 .ignoresSafeArea()
 
             // メインコンテンツ
@@ -65,7 +65,7 @@ struct GameView: View {
                     Text("ラウンド \(round.roundNumber)/\(round.totalRounds)")
                         .font(.subheadline)
                         .fontWeight(.semibold)
-                        .foregroundColor(Color("AsaDarkSlate"))
+                        .foregroundColor(AsaColors.darkSlate)
 
                     Spacer()
 
@@ -94,7 +94,7 @@ struct GameView: View {
         .foregroundColor(.white)
         .padding(.horizontal, 12)
         .padding(.vertical, 6)
-        .background(viewModel.myRole == .drawer ? Color("AsaCoffeeBrown") : Color("AsaDarkSlate"))
+        .background(viewModel.myRole == .drawer ? AsaColors.coffeeBrown : AsaColors.darkSlate)
         .cornerRadius(12)
     }
 
