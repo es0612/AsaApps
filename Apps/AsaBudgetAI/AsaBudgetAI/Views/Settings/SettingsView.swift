@@ -40,6 +40,7 @@ struct SettingsContent: View {
     @State private var showBudgetSheet = false
     @State private var showCategorySheet = false
     @State private var showResetConfirmation = false
+    @State private var showSampleDataConfirmation = false
 
     var body: some View {
         List {
@@ -157,6 +158,16 @@ struct SettingsContent: View {
                     }
                 }
 
+                Button {
+                    showSampleDataConfirmation = true
+                } label: {
+                    HStack {
+                        Image(systemName: "tray.and.arrow.down.fill")
+                            .foregroundColor(AsaColors.coffeeBrown)
+                        Text("サンプルデータを投入")
+                    }
+                }
+
                 Button(role: .destructive) {
                     showResetConfirmation = true
                 } label: {
@@ -216,6 +227,19 @@ struct SettingsContent: View {
         }
         .sheet(isPresented: $showBudgetSheet) {
             CreateBudgetView(viewModel: mainViewModel)
+        }
+        .confirmationDialog(
+            "サンプルデータを投入しますか？",
+            isPresented: $showSampleDataConfirmation,
+            titleVisibility: .visible
+        ) {
+            Button("投入") {
+                viewModel.insertSampleData()
+                mainViewModel.refreshData()
+            }
+            Button("キャンセル", role: .cancel) { }
+        } message: {
+            Text("3ヶ月分のデモ用家計データ（収入・支出・予算）が追加されます。")
         }
         .confirmationDialog(
             "すべてのデータを削除しますか？",

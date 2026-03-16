@@ -119,6 +119,14 @@ final class SettingsViewModel {
 
     // MARK: - Data Management
 
+    func insertSampleData() {
+        isLoading = true
+        let generator = SampleDataGenerator(dataService: dataService)
+        generator.insertSampleData()
+        categories = dataService.fetchCategories()
+        isLoading = false
+    }
+
     func exportData() -> Data? {
         let transactions = dataService.fetchTransactions()
 
