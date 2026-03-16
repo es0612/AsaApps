@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import AsaUIKit
 
 // MARK: - 曜日選択ビュー
 
@@ -76,7 +77,7 @@ private struct DayButton: View {
 
     private var backgroundColor: Color {
         if isSelected {
-            return Color("AsaCoffeeBrown", bundle: nil)
+            return AsaColors.coffeeBrown
         } else {
             return Color(.systemGray6)
         }
@@ -116,7 +117,7 @@ private struct PresetButton: View {
             Text(title)
                 .padding(.horizontal, 12)
                 .padding(.vertical, 6)
-                .background(isActive ? Color("AsaCoffeeBrown", bundle: nil) : Color(.systemGray5))
+                .background(isActive ? AsaColors.coffeeBrown : Color(.systemGray5))
                 .foregroundStyle(isActive ? .white : .primary)
                 .clipShape(Capsule())
         }

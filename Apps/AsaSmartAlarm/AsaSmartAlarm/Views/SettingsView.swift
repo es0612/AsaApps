@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import AsaUIKit
 
 // MARK: - 設定ビュー
 
@@ -40,7 +41,7 @@ struct SettingsView: View {
                         )) {
                             Text("アラーム通知を有効にする")
                         }
-                        .tint(Color("AsaCoffeeBrown", bundle: nil))
+                        .tint(AsaColors.coffeeBrown)
                     }
                 } header: {
                     Text("通知")
@@ -87,7 +88,7 @@ struct SettingsView: View {
                         )) {
                             Text("天気の自動取得")
                         }
-                        .tint(Color("AsaCoffeeBrown", bundle: nil))
+                        .tint(AsaColors.coffeeBrown)
 
                         Toggle(isOn: Binding(
                             get: { settings.useCurrentLocation },
@@ -95,7 +96,7 @@ struct SettingsView: View {
                         )) {
                             Text("現在地を使用")
                         }
-                        .tint(Color("AsaCoffeeBrown", bundle: nil))
+                        .tint(AsaColors.coffeeBrown)
                         .disabled(!settings.weatherUpdateEnabled)
 
                         if settings.hasSavedLocation {
@@ -122,7 +123,7 @@ struct SettingsView: View {
                         )) {
                             Text("24時間表示")
                         }
-                        .tint(Color("AsaCoffeeBrown", bundle: nil))
+                        .tint(AsaColors.coffeeBrown)
 
                         Toggle(isOn: Binding(
                             get: { settings.showWeatherOnMainScreen },
@@ -130,7 +131,7 @@ struct SettingsView: View {
                         )) {
                             Text("メイン画面に天気を表示")
                         }
-                        .tint(Color("AsaCoffeeBrown", bundle: nil))
+                        .tint(AsaColors.coffeeBrown)
 
                         Toggle(isOn: Binding(
                             get: { settings.showNextEventOnMainScreen },
@@ -138,7 +139,7 @@ struct SettingsView: View {
                         )) {
                             Text("メイン画面に次の予定を表示")
                         }
-                        .tint(Color("AsaCoffeeBrown", bundle: nil))
+                        .tint(AsaColors.coffeeBrown)
                     }
                 }
 

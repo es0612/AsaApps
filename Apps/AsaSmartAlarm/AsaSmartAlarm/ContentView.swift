@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SwiftData
+import AsaUIKit
 
 // MARK: - コンテンツビュー
 
@@ -51,7 +52,7 @@ struct ContentView: View {
                 }
                 .tag(Tab.events)
         }
-        .tint(Color("AsaCoffeeBrown", bundle: nil))
+        .tint(AsaColors.coffeeBrown)
         .task {
             await setupApp()
         }

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import AsaUIKit
 
 // MARK: - アラーム詳細ビュー
 
@@ -111,12 +112,12 @@ struct AlarmDetailView: View {
                     Toggle(isOn: $weatherAdjustmentEnabled) {
                         Label("天気による調整", systemImage: "cloud.sun.fill")
                     }
-                    .tint(Color("AsaCoffeeBrown", bundle: nil))
+                    .tint(AsaColors.coffeeBrown)
 
                     Toggle(isOn: $eventAdjustmentEnabled) {
                         Label("予定による調整", systemImage: "calendar")
                     }
-                    .tint(Color("AsaCoffeeBrown", bundle: nil))
+                    .tint(AsaColors.coffeeBrown)
                 }
 
                 // 天気ルール設定
@@ -211,7 +212,7 @@ private struct WeatherRuleRow: View {
 
                 Toggle("", isOn: $rule.isEnabled)
                     .labelsHidden()
-                    .tint(Color("AsaCoffeeBrown", bundle: nil))
+                    .tint(AsaColors.coffeeBrown)
             }
 
             if rule.isEnabled {

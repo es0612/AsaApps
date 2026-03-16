@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import AsaUIKit
 
 // MARK: - 調整ルール設定ビュー
 
@@ -82,7 +83,7 @@ private struct RuleRow: View {
                 // 有効/無効トグル
                 Toggle("", isOn: $isEnabled)
                     .labelsHidden()
-                    .tint(Color("AsaCoffeeBrown", bundle: nil))
+                    .tint(AsaColors.coffeeBrown)
                     .onChange(of: isEnabled) { _, newValue in
                         rule.isEnabled = newValue
                         onUpdate()

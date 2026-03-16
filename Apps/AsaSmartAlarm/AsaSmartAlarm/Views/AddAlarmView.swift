@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import AsaUIKit
 
 // MARK: - アラーム追加ビュー
 
@@ -62,7 +63,7 @@ struct AddAlarmView: View {
                     Toggle(isOn: $weatherAdjustmentEnabled) {
                         Label("天気による調整", systemImage: "cloud.sun.fill")
                     }
-                    .tint(Color("AsaCoffeeBrown", bundle: nil))
+                    .tint(AsaColors.coffeeBrown)
 
                     if weatherAdjustmentEnabled {
                         Text("雨や雪の場合、自動的に早めに起こします")
@@ -73,7 +74,7 @@ struct AddAlarmView: View {
                     Toggle(isOn: $eventAdjustmentEnabled) {
                         Label("予定による調整", systemImage: "calendar")
                     }
-                    .tint(Color("AsaCoffeeBrown", bundle: nil))
+                    .tint(AsaColors.coffeeBrown)
 
                     if eventAdjustmentEnabled {
                         Text("朝の予定に合わせて、準備時間を考慮した時刻に起こします")

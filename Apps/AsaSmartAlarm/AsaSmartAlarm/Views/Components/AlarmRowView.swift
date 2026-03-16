@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import AsaUIKit
 
 // MARK: - アラーム行ビュー
 
@@ -62,7 +63,7 @@ struct AlarmRowView: View {
             // トグルスイッチ
             Toggle("", isOn: .constant(alarm.isEnabled))
                 .labelsHidden()
-                .tint(Color("AsaCoffeeBrown", bundle: nil))
+                .tint(AsaColors.coffeeBrown)
                 .onChange(of: alarm.isEnabled) { _, _ in }
                 .onTapGesture {
                     onToggle()
