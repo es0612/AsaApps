@@ -194,6 +194,124 @@ actor ImageProcessingService {
         return result
     }
 
+    /// すべての編集を統合パイプラインで適用（プレビュー用に最適化）
+    /// クロップ→調整→フィルターをCIImageチェーンで処理し、createCGImage()を1回だけ呼ぶ
+    func applyAllEditsCombined(
+        to image: UIImage,
+        adjustment: ImageAdjustment,
+        filterSettings: FilterSettings,
+        cropSettings: CropSettings
+    ) -> UIImage? {
+        // 1. クロップ・回転はUIImageレベルで適用（幾何変換はCIImageでは複雑）
+        var source = image
+        if !cropSettings.isDefault {
+            source = applyCropAndRotation(to: source, settings: cropSettings) ?? source
+        }
+
+        // 調整もフィルターも不要ならそのまま返す
+        if adjustment.isDefault && filterSettings.isDefault {
+            return source
+        }
+
+        // 2. CIImageに変換（ここから最後までCIImageチェーン）
+        guard var ciImage = CIImage(image: source) else { return nil }
+
+        // 3. 調整フィルターチェーン（CIImageのまま）
+        if !adjustment.isDefault {
+            ciImage = applyAdjustmentChain(to: ciImage, adjustment: adjustment)
+        }
+
+        // 4. フィルター適用（CIImageのまま）
+        if !filterSettings.isDefault {
+            ciImage = applyFilterChain(
+                to: ciImage,
+                filter: filterSettings.preset,
+                intensity: filterSettings.intensity
+            ) ?? ciImage
+        }
+
+        // 5. 最後に1回だけCGImageに変換（GPU同期は1回のみ）
+        return createUIImage(from: ciImage)
+    }
+
+    // MARK: - CIImage Chain Methods (中間変換なし)
+
+    /// 調整パラメータをCIImageチェーンで適用（UIImage変換なし）
+    private func applyAdjustmentChain(to image: CIImage, adjustment: ImageAdjustment) -> CIImage {
+        var currentImage = image
+
+        // 明るさ・コントラスト・彩度
+        if let result = applyColorControls(
+            to: currentImage,
+            brightness: adjustment.brightness,
+            contrast: adjustment.contrast,
+            saturation: adjustment.saturation
+        ) {
+            currentImage = result
+        }
+
+        // 露出
+        if adjustment.exposure != 0 {
+            if let result = applyExposure(to: currentImage, value: adjustment.exposure) {
+                currentImage = result
+            }
+        }
+
+        // シャープネス
+        if adjustment.sharpness > 0 {
+            if let result = applySharpness(to: currentImage, value: adjustment.sharpness) {
+                currentImage = result
+            }
+        }
+
+        // ハイライト・シャドウ
+        if adjustment.highlights != 0 || adjustment.shadows != 0 {
+            if let result = applyHighlightShadow(
+                to: currentImage,
+                highlights: adjustment.highlights,
+                shadows: adjustment.shadows
+            ) {
+                currentImage = result
+            }
+        }
+
+        return currentImage
+    }
+
+    /// フィルタープリセットをCIImageチェーンで適用（UIImage変換なし）
+    private func applyFilterChain(to image: CIImage, filter: FilterPreset, intensity: Double) -> CIImage? {
+        switch filter {
+        case .none:
+            return image
+        case .sepia:
+            return applySepia(to: image, intensity: intensity)
+        case .noir:
+            return applyPhotoEffect(to: image, filterName: "CIPhotoEffectNoir")
+        case .vintage:
+            return applyPhotoEffect(to: image, filterName: "CIPhotoEffectInstant")
+        case .vivid:
+            return applyVivid(to: image, intensity: intensity)
+        case .dramatic:
+            return applyDramatic(to: image)
+        case .mono:
+            return applyPhotoEffect(to: image, filterName: "CIPhotoEffectMono")
+        case .tonal:
+            return applyPhotoEffect(to: image, filterName: "CIPhotoEffectTonal")
+        case .fade:
+            return applyPhotoEffect(to: image, filterName: "CIPhotoEffectFade")
+        case .chrome:
+            return applyPhotoEffect(to: image, filterName: "CIPhotoEffectChrome")
+        case .process:
+            return applyPhotoEffect(to: image, filterName: "CIPhotoEffectProcess")
+        case .transfer:
+            return applyPhotoEffect(to: image, filterName: "CIPhotoEffectTransfer")
+        case .blur:
+            return applyBlur(to: image, radius: intensity)
+        case .pixellate:
+            return applyPixellate(to: image, scale: intensity)
+        }
+    }
+
     // MARK: - Private Methods - Filters
 
     private func applyColorControls(

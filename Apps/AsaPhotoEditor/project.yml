@@ -17,7 +17,9 @@ targets:
     type: application
     platform: iOS
     sources:
-      - AsaPhotoEditor
+      - path: AsaPhotoEditor
+        excludes:
+          - "**/CLAUDE.md"
       - ../../Shared
     resources:
       - AsaPhotoEditor/Assets.xcassets

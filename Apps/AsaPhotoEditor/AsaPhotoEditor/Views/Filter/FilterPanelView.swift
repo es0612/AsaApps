@@ -46,10 +46,17 @@ struct FilterPanelView: View {
 
                     Slider(
                         value: $viewModel.filterSettings.intensity,
-                        in: viewModel.filterSettings.preset.intensityRange
+                        in: viewModel.filterSettings.preset.intensityRange,
+                        onEditingChanged: { isEditing in
+                            if !isEditing {
+                                // スライダー操作完了時のみ履歴記録
+                                viewModel.recordHistory()
+                            }
+                        }
                     )
                     .tint(Color.asaCoffeeBrown)
                     .onChange(of: viewModel.filterSettings.intensity) { _, _ in
+                        // プレビュー更新のみ（デバウンス付き）
                         viewModel.schedulePreviewUpdate()
                     }
                 }

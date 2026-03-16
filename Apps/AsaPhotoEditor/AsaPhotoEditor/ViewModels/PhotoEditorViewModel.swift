@@ -111,6 +111,9 @@ final class PhotoEditorViewModel {
     /// 履歴マネージャー
     let historyManager = EditHistoryManager(maxHistoryCount: 20)
 
+    /// プレビュー更新タスクの参照（デバウンス＋キャンセル用）
+    private var previewUpdateTask: Task<Void, Never>?
+
     /// 現在のプロジェクト
     var currentProject: EditProject?
 
@@ -179,16 +182,33 @@ final class PhotoEditorViewModel {
     /// プレビューを更新
     func updatePreview() async {
         guard let original = originalImage else { return }
+        guard !Task.isCancelled else { return }
 
         isProcessing = true
 
-        // 基本編集を適用
-        var result = await imageProcessor.applyAllEdits(
-            to: original,
+        // プレビュー用にダウンサンプリング（フル解像度→最大1200px幅）
+        let previewSource = await imageProcessor.resizeForPreview(
+            original,
+            targetSize: CGSize(width: 1200, height: 1200)
+        )
+
+        guard !Task.isCancelled else {
+            isProcessing = false
+            return
+        }
+
+        // CIImage統合パイプラインで基本編集を適用（GPU同期1回のみ）
+        var result = await imageProcessor.applyAllEditsCombined(
+            to: previewSource,
             adjustment: adjustment,
             filterSettings: filterSettings,
             cropSettings: cropSettings
-        ) ?? original
+        ) ?? previewSource
+
+        guard !Task.isCancelled else {
+            isProcessing = false
+            return
+        }
 
         // レイヤーを合成
         if !drawingLayers.isEmpty || !textLayers.isEmpty {
@@ -199,13 +219,24 @@ final class PhotoEditorViewModel {
             )
         }
 
+        guard !Task.isCancelled else {
+            isProcessing = false
+            return
+        }
+
         previewImage = result
         isProcessing = false
     }
 
-    /// プレビューを非同期で更新（debounce用）
+    /// プレビューを非同期で更新（デバウンス＋前タスクキャンセル）
     func schedulePreviewUpdate() {
-        Task {
+        // 前回のタスクをキャンセル
+        previewUpdateTask?.cancel()
+
+        previewUpdateTask = Task {
+            // デバウンス: 150ms待機（スライダー連続操作中は実行しない）
+            try? await Task.sleep(for: .milliseconds(150))
+            guard !Task.isCancelled else { return }
             await updatePreview()
         }
     }
@@ -408,11 +439,38 @@ final class PhotoEditorViewModel {
 
     // MARK: - Export Operations
 
+    /// エクスポート用にフル解像度で編集を適用
+    private func renderFullResolution() async -> UIImage? {
+        guard let original = originalImage else { return nil }
+
+        // フル解像度で統合パイプラインを実行
+        var result = await imageProcessor.applyAllEditsCombined(
+            to: original,
+            adjustment: adjustment,
+            filterSettings: filterSettings,
+            cropSettings: cropSettings
+        ) ?? original
+
+        // レイヤーを合成
+        if !drawingLayers.isEmpty || !textLayers.isEmpty {
+            result = await layerCompositor.compositeAllLayers(
+                baseImage: result,
+                drawingLayers: drawingLayers,
+                textLayers: textLayers
+            )
+        }
+
+        return result
+    }
+
     /// 写真ライブラリに保存
     func saveToPhotoLibrary() async {
-        guard let image = previewImage else { return }
-
         isProcessing = true
+
+        guard let image = await renderFullResolution() else {
+            isProcessing = false
+            return
+        }
 
         do {
             try await exportService.saveToPhotoLibrary(image: image)
@@ -430,7 +488,7 @@ final class PhotoEditorViewModel {
         resolution: ExportService.ExportResolution,
         format: ExportService.ExportFormat
     ) async -> ExportService.ExportResult? {
-        guard let image = previewImage else { return nil }
+        guard let image = await renderFullResolution() else { return nil }
         return await exportService.export(image: image, resolution: resolution, format: format)
     }
 

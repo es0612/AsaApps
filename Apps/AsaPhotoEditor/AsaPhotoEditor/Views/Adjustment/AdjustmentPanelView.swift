@@ -52,11 +52,17 @@ struct AdjustmentPanelView: View {
 
                 Slider(
                     value: bindingForType(selectedType),
-                    in: selectedType.range
+                    in: selectedType.range,
+                    onEditingChanged: { isEditing in
+                        if !isEditing {
+                            // スライダー操作完了時のみ履歴記録
+                            viewModel.recordHistory()
+                        }
+                    }
                 )
                 .tint(Color.asaCoffeeBrown)
                 .onChange(of: viewModel.adjustment) { _, _ in
-                    viewModel.recordHistory()
+                    // プレビュー更新のみ（デバウンス付き）
                     viewModel.schedulePreviewUpdate()
                 }
             }
