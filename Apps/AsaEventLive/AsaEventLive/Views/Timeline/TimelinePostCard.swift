@@ -159,21 +159,16 @@ struct TimelinePostCard: View {
                 }
                 .buttonStyle(.plain)
 
-                // コメントボタン（将来対応）
-                Button {
-                    // TODO: コメント機能
-                } label: {
-                    HStack(spacing: 4) {
-                        Image(systemName: "bubble.left")
+                // コメント表示（将来対応）
+                HStack(spacing: 4) {
+                    Image(systemName: "bubble.left")
+                        .foregroundStyle(AsaColors.mutedSage)
+                    if post.commentCount > 0 {
+                        Text("\(post.commentCount)")
+                            .font(.caption)
                             .foregroundStyle(AsaColors.mutedSage)
-                        if post.commentCount > 0 {
-                            Text("\(post.commentCount)")
-                                .font(.caption)
-                                .foregroundStyle(AsaColors.mutedSage)
-                        }
                     }
                 }
-                .buttonStyle(.plain)
 
                 Spacer()
             }

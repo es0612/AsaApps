@@ -29,9 +29,9 @@ struct AppUser: Identifiable, Codable, Sendable {
     }
 
     static let demo = AppUser(
-        id: "demo-user-id",
-        displayName: "デモユーザー",
-        email: "demo@example.com"
+        id: "user-1",
+        displayName: "山田パパ",
+        email: "yamada@example.com"
     )
 }
 

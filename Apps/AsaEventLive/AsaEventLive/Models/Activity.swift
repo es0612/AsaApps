@@ -154,38 +154,85 @@ extension Activity {
         Activity(
             id: "activity-2",
             eventId: "event-1",
-            userId: "user-2",
-            userName: "佐藤ママ",
-            type: .posted,
-            message: "ケーキが届きました！",
-            relatedObjectId: "post-2",
-            createdAt: Date().addingTimeInterval(-1800)
+            userId: "user-4",
+            userName: "鈴木おばあちゃん",
+            type: .joined,
+            createdAt: Date().addingTimeInterval(-6600)
         ),
         Activity(
             id: "activity-3",
             eventId: "event-1",
-            userId: "user-1",
-            userName: "山田パパ",
-            type: .liked,
+            userId: "user-2",
+            userName: "佐藤ママ",
+            type: .posted,
+            message: "飾り付け完了！",
             relatedObjectId: "post-2",
-            createdAt: Date().addingTimeInterval(-1500)
+            createdAt: Date().addingTimeInterval(-6000)
         ),
         Activity(
             id: "activity-4",
             eventId: "event-1",
-            userId: "user-3",
-            userName: "田中おじいちゃん",
-            type: .milestone,
-            message: "ケーキカット完了！",
-            createdAt: Date().addingTimeInterval(-600)
+            userId: "user-5",
+            userName: "木村おじさん",
+            type: .joined,
+            createdAt: Date().addingTimeInterval(-5000)
         ),
         Activity(
             id: "activity-5",
             eventId: "event-1",
+            userId: "user-4",
+            userName: "鈴木おばあちゃん",
+            type: .posted,
+            message: "手作りのぬいぐるみを持ってきました！",
+            relatedObjectId: "post-4",
+            createdAt: Date().addingTimeInterval(-4800)
+        ),
+        Activity(
+            id: "activity-6",
+            eventId: "event-1",
+            userId: "user-2",
+            userName: "佐藤ママ",
+            type: .posted,
+            message: "ケーキが届きました！",
+            relatedObjectId: "post-5",
+            createdAt: Date().addingTimeInterval(-3600)
+        ),
+        Activity(
+            id: "activity-7",
+            eventId: "event-1",
+            userId: "user-1",
+            userName: "山田パパ",
+            type: .liked,
+            relatedObjectId: "post-5",
+            createdAt: Date().addingTimeInterval(-3300)
+        ),
+        Activity(
+            id: "activity-8",
+            eventId: "event-1",
             userId: "user-5",
             userName: "木村おじさん",
-            type: .joined,
-            createdAt: Date().addingTimeInterval(-300)
+            type: .posted,
+            message: "太郎くん、プレゼントに大喜び！",
+            relatedObjectId: "post-6",
+            createdAt: Date().addingTimeInterval(-2400)
+        ),
+        Activity(
+            id: "activity-9",
+            eventId: "event-1",
+            userId: "user-3",
+            userName: "田中おじいちゃん",
+            type: .milestone,
+            message: "ケーキカット完了！5本のろうそくを一気に消しました",
+            createdAt: Date().addingTimeInterval(-900)
+        ),
+        Activity(
+            id: "activity-10",
+            eventId: "event-1",
+            userId: "user-5",
+            userName: "木村おじさん",
+            type: .milestone,
+            message: "プレゼントタイム開始！",
+            createdAt: Date().addingTimeInterval(-180)
         )
     ]
 }

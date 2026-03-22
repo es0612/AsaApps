@@ -131,15 +131,16 @@ extension EventPost {
 
 extension EventPost {
     static let samplePosts: [EventPost] = [
+        // MARK: - event-1: 太郎の5歳誕生日会（時系列順）
         EventPost(
             id: "post-1",
             eventId: "event-1",
             authorId: "user-1",
             authorName: "山田パパ",
             type: .announcement,
-            content: "太郎の誕生日会、間もなく始まります！",
+            content: "太郎の誕生日会、間もなく始まります！みんな楽しんでいきましょう🎉",
             isPinned: true,
-            createdAt: Date().addingTimeInterval(-3600)
+            createdAt: Date().addingTimeInterval(-7200)
         ),
         EventPost(
             id: "post-2",
@@ -147,30 +148,116 @@ extension EventPost {
             authorId: "user-2",
             authorName: "佐藤ママ",
             type: .text,
-            content: "ケーキが届きました！とても可愛いです",
-            likeCount: 3,
-            likedByUserIds: ["user-1", "user-3", "user-4"],
-            createdAt: Date().addingTimeInterval(-1800)
+            content: "飾り付け完了！風船たくさん膨らませました🎈 部屋がカラフルになったよ",
+            likeCount: 4,
+            likedByUserIds: ["user-1", "user-3", "user-4", "user-5"],
+            commentCount: 1,
+            createdAt: Date().addingTimeInterval(-6000)
         ),
         EventPost(
             id: "post-3",
             eventId: "event-1",
             authorId: "user-3",
             authorName: "田中おじいちゃん",
-            type: .milestone,
-            content: "ケーキカット完了！",
-            likeCount: 5,
-            likedByUserIds: ["user-1", "user-2", "user-4", "user-5", "user-6"],
-            createdAt: Date().addingTimeInterval(-600)
+            type: .text,
+            content: "到着しました！太郎くんに会えるの楽しみです。プレゼントも持ってきたよ",
+            likeCount: 3,
+            likedByUserIds: ["user-1", "user-2", "user-5"],
+            createdAt: Date().addingTimeInterval(-5400)
         ),
         EventPost(
             id: "post-4",
+            eventId: "event-1",
+            authorId: "user-4",
+            authorName: "鈴木おばあちゃん",
+            type: .text,
+            content: "手作りのぬいぐるみを持ってきました！太郎くん気に入ってくれるかな🧸",
+            likeCount: 5,
+            likedByUserIds: ["user-1", "user-2", "user-3", "user-5", "user-4"],
+            commentCount: 2,
+            createdAt: Date().addingTimeInterval(-4800)
+        ),
+        EventPost(
+            id: "post-5",
+            eventId: "event-1",
+            authorId: "user-2",
+            authorName: "佐藤ママ",
+            type: .text,
+            content: "ケーキが届きました！とても可愛いです🎂 太郎の大好きな恐竜デザイン",
+            likeCount: 5,
+            likedByUserIds: ["user-1", "user-3", "user-4", "user-5", "user-2"],
+            commentCount: 3,
+            createdAt: Date().addingTimeInterval(-3600)
+        ),
+        EventPost(
+            id: "post-6",
+            eventId: "event-1",
+            authorId: "user-5",
+            authorName: "木村おじさん",
+            type: .text,
+            content: "太郎くん、プレゼントに大喜び！目がキラキラしてる✨",
+            likeCount: 4,
+            likedByUserIds: ["user-1", "user-2", "user-3", "user-4"],
+            commentCount: 1,
+            createdAt: Date().addingTimeInterval(-2400)
+        ),
+        EventPost(
+            id: "post-7",
+            eventId: "event-1",
+            authorId: "user-1",
+            authorName: "山田パパ",
+            type: .announcement,
+            content: "これからケーキカットです！みんな集まってください🎂🔪",
+            likeCount: 3,
+            likedByUserIds: ["user-2", "user-3", "user-5"],
+            createdAt: Date().addingTimeInterval(-1500)
+        ),
+        EventPost(
+            id: "post-8",
+            eventId: "event-1",
+            authorId: "user-3",
+            authorName: "田中おじいちゃん",
+            type: .milestone,
+            content: "ケーキカット完了！太郎、5本のろうそくを一気に消しました🕯️ すごい！",
+            likeCount: 5,
+            likedByUserIds: ["user-1", "user-2", "user-4", "user-5", "user-3"],
+            commentCount: 4,
+            createdAt: Date().addingTimeInterval(-900)
+        ),
+        EventPost(
+            id: "post-9",
+            eventId: "event-1",
+            authorId: "user-2",
+            authorName: "佐藤ママ",
+            type: .text,
+            content: "Happy Birthday の歌、みんなで歌いました🎵 太郎の笑顔が最高でした！",
+            likeCount: 5,
+            likedByUserIds: ["user-1", "user-3", "user-4", "user-5", "user-2"],
+            commentCount: 2,
+            createdAt: Date().addingTimeInterval(-480)
+        ),
+        EventPost(
+            id: "post-10",
+            eventId: "event-1",
+            authorId: "user-5",
+            authorName: "木村おじさん",
+            type: .milestone,
+            content: "プレゼントタイム開始！太郎くんの反応が楽しみ🎁",
+            likeCount: 3,
+            likedByUserIds: ["user-1", "user-2", "user-4"],
+            commentCount: 1,
+            createdAt: Date().addingTimeInterval(-180)
+        ),
+
+        // MARK: - event-2: 春の運動会
+        EventPost(
+            id: "post-11",
             eventId: "event-2",
             authorId: "user-1",
             authorName: "山田パパ",
             type: .text,
             content: "太郎、かけっこで1位！素晴らしい！",
-            likeCount: 10,
+            likeCount: 4,
             likedByUserIds: ["user-2", "user-3", "user-4", "user-5"],
             createdAt: Date().addingTimeInterval(-300)
         )
