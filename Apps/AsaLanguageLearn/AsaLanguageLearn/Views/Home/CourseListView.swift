@@ -5,6 +5,7 @@
 //  コース一覧画面
 //
 
+import AsaUIKit
 import SwiftUI
 
 struct CourseListView: View {
@@ -25,7 +26,7 @@ struct CourseListView: View {
         }
         .navigationTitle("コース")
         .navigationBarTitleDisplayMode(.large)
-        .background(Color("AsaSoftCream").opacity(0.3))
+        .background(AsaColors.softCream.opacity(0.3))
     }
 
     // MARK: - Category Filter
@@ -111,12 +112,12 @@ struct CategoryChip: View {
                 Text(title)
                     .font(.subheadline.bold())
             }
-            .foregroundColor(isSelected ? .white : Color("AsaDarkSlate"))
+            .foregroundColor(isSelected ? .white : AsaColors.darkSlate)
             .padding(.horizontal, 16)
             .padding(.vertical, 8)
             .background(
                 isSelected
-                    ? Color("AsaCoffeeBrown")
+                    ? AsaColors.coffeeBrown
                     : Color.white
             )
             .clipShape(Capsule())
@@ -149,7 +150,7 @@ struct CourseCardView: View {
                 VStack(alignment: .leading, spacing: 4) {
                     Text(course.title)
                         .font(.headline)
-                        .foregroundColor(Color("AsaDarkSlate"))
+                        .foregroundColor(AsaColors.darkSlate)
 
                     Text(course.subtitle)
                         .font(.caption)
@@ -205,7 +206,7 @@ struct CourseCardView: View {
             if course.progressPercentage > 0 {
                 VStack(spacing: 4) {
                     ProgressView(value: course.progressPercentage)
-                        .tint(Color("AsaCoffeeBrown"))
+                        .tint(AsaColors.coffeeBrown)
 
                     HStack {
                         Text("\(course.completedLessonsCount)/\(course.totalLessonsCount) 完了")
@@ -216,7 +217,7 @@ struct CourseCardView: View {
 
                         Text("\(Int(course.progressPercentage * 100))%")
                             .font(.caption.bold())
-                            .foregroundColor(Color("AsaCoffeeBrown"))
+                            .foregroundColor(AsaColors.coffeeBrown)
                     }
                 }
             }

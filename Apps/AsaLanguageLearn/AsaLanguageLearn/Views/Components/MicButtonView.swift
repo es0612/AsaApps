@@ -5,6 +5,7 @@
 //  マイクボタン（録音開始/停止）
 //
 
+import AsaUIKit
 import SwiftUI
 
 struct MicButtonView: View {
@@ -21,7 +22,7 @@ struct MicButtonView: View {
                 if isRecording {
                     ForEach(0..<3) { index in
                         Circle()
-                            .stroke(Color("AsaCoffeeBrown").opacity(0.3), lineWidth: 2)
+                            .stroke(AsaColors.coffeeBrown.opacity(0.3), lineWidth: 2)
                             .scaleEffect(pulseAnimation ? 1.5 + CGFloat(index) * 0.3 : 1.0)
                             .opacity(pulseAnimation ? 0 : 0.5)
                             .animation(
@@ -36,7 +37,7 @@ struct MicButtonView: View {
                 // 音声レベルのリング
                 Circle()
                     .stroke(
-                        isRecording ? Color("AsaCoffeeBrown") : Color.gray.opacity(0.3),
+                        isRecording ? AsaColors.coffeeBrown : Color.gray.opacity(0.3),
                         lineWidth: 4
                     )
                     .scaleEffect(isRecording ? 1.0 + CGFloat(audioLevel) * 0.2 : 1.0)
@@ -44,9 +45,9 @@ struct MicButtonView: View {
 
                 // メインの円
                 Circle()
-                    .fill(isRecording ? Color("AsaCoffeeBrown") : Color("AsaDarkSlate"))
+                    .fill(isRecording ? AsaColors.coffeeBrown : AsaColors.darkSlate)
                     .shadow(
-                        color: isRecording ? Color("AsaCoffeeBrown").opacity(0.5) : .clear,
+                        color: isRecording ? AsaColors.coffeeBrown.opacity(0.5) : .clear,
                         radius: 10
                     )
 

@@ -5,6 +5,7 @@
 //  録音画面（発音練習のメイン画面）
 //
 
+import AsaUIKit
 import SwiftData
 import SwiftUI
 
@@ -58,14 +59,14 @@ struct RecordingView: View {
             // 英語フレーズ
             Text(viewModel.currentItem?.englishText ?? "")
                 .font(.system(size: 28, weight: .bold, design: .rounded))
-                .foregroundColor(Color("AsaDarkSlate"))
+                .foregroundColor(AsaColors.darkSlate)
                 .multilineTextAlignment(.center)
 
             // 発音記号
             if let pronunciation = viewModel.currentItem?.pronunciation {
                 Text(pronunciation)
                     .font(.subheadline)
-                    .foregroundColor(Color("AsaMocha"))
+                    .foregroundColor(AsaColors.mocha)
             }
         }
         .padding()
@@ -102,7 +103,7 @@ struct RecordingView: View {
 
             Text(viewModel.recognizedText.isEmpty ? "..." : viewModel.recognizedText)
                 .font(.title3)
-                .foregroundColor(viewModel.recognizedText.isEmpty ? .secondary : Color("AsaDarkSlate"))
+                .foregroundColor(viewModel.recognizedText.isEmpty ? .secondary : AsaColors.darkSlate)
                 .multilineTextAlignment(.center)
                 .frame(minHeight: 30)
                 .animation(.easeOut(duration: 0.2), value: viewModel.recognizedText)
@@ -186,7 +187,7 @@ struct RecordingView: View {
                     } label: {
                         HStack {
                             Image(systemName: preset.icon)
-                                .foregroundColor(Color("AsaCoffeeBrown"))
+                                .foregroundColor(AsaColors.coffeeBrown)
                                 .frame(width: 24)
 
                             VStack(alignment: .leading) {
@@ -201,7 +202,7 @@ struct RecordingView: View {
 
                             if currentSpeedPreset == preset {
                                 Image(systemName: "checkmark")
-                                    .foregroundColor(Color("AsaCoffeeBrown"))
+                                    .foregroundColor(AsaColors.coffeeBrown)
                             }
                         }
                     }

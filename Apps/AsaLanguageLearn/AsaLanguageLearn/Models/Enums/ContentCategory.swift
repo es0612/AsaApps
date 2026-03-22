@@ -5,6 +5,7 @@
 //  学習コンテンツのカテゴリ分類
 //
 
+import AsaUIKit
 import SwiftUI
 
 /// 学習コンテンツのカテゴリ
@@ -48,10 +49,10 @@ enum ContentCategory: String, CaseIterable, Codable, Sendable {
 
     var color: Color {
         switch self {
-        case .greetings: return Color("AsaCoffeeBrown")
-        case .dailyConversation: return Color("AsaMocha")
+        case .greetings: return AsaColors.coffeeBrown
+        case .dailyConversation: return AsaColors.mocha
         case .travel: return Color.blue
-        case .business: return Color("AsaDarkSlate")
+        case .business: return AsaColors.darkSlate
         case .shopping: return Color.orange
         case .food: return Color.green
         case .emergency: return Color.red

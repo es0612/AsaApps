@@ -5,6 +5,7 @@
 //  再生ボタン（模範発音再生）
 //
 
+import AsaUIKit
 import SwiftUI
 
 struct PlaybackButton: View {
@@ -22,7 +23,7 @@ struct PlaybackButton: View {
                 Circle()
                     .trim(from: 0, to: progress)
                     .stroke(
-                        Color("AsaCoffeeBrown"),
+                        AsaColors.coffeeBrown,
                         style: StrokeStyle(lineWidth: 3, lineCap: .round)
                     )
                     .rotationEffect(.degrees(-90))
@@ -30,12 +31,12 @@ struct PlaybackButton: View {
 
                 // 背景
                 Circle()
-                    .fill(Color("AsaSoftCream"))
+                    .fill(AsaColors.softCream)
 
                 // アイコン
                 Image(systemName: isPlaying ? "pause.fill" : "speaker.wave.2.fill")
                     .font(.system(size: 18, weight: .semibold))
-                    .foregroundColor(Color("AsaCoffeeBrown"))
+                    .foregroundColor(AsaColors.coffeeBrown)
             }
             .frame(width: 50, height: 50)
         }
@@ -57,10 +58,10 @@ struct SpeedButton: View {
                 Text(currentPreset.displayMultiplier)
                     .font(.caption.bold())
             }
-            .foregroundColor(Color("AsaCoffeeBrown"))
+            .foregroundColor(AsaColors.coffeeBrown)
             .padding(.horizontal, 10)
             .padding(.vertical, 6)
-            .background(Color("AsaSoftCream"))
+            .background(AsaColors.softCream)
             .clipShape(Capsule())
         }
         .buttonStyle(.plain)

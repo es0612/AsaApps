@@ -5,6 +5,7 @@
 //  学習アイテムの習熟レベル（SRSステージ）
 //
 
+import AsaUIKit
 import SwiftUI
 
 /// 学習アイテムの習熟レベル
@@ -42,7 +43,7 @@ enum MasteryLevel: String, CaseIterable, Codable, Sendable {
     var color: Color {
         switch self {
         case .new: return Color.blue
-        case .learning: return Color("AsaCoffeeBrown")
+        case .learning: return AsaColors.coffeeBrown
         case .review: return Color.orange
         case .mastered: return Color.green
         }

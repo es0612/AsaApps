@@ -5,6 +5,7 @@
 //  音声波形表示
 //
 
+import AsaUIKit
 import SwiftUI
 
 struct WaveformView: View {
@@ -73,11 +74,11 @@ struct WaveformView: View {
 
         let level: Float = index < levels.count ? levels[index] : 0
         if level > 0.7 {
-            return Color("AsaCoffeeBrown")
+            return AsaColors.coffeeBrown
         } else if level > 0.4 {
-            return Color("AsaMocha")
+            return AsaColors.mocha
         } else {
-            return Color("AsaMutedSage")
+            return AsaColors.mutedSage
         }
     }
 }

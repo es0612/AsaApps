@@ -5,6 +5,7 @@
 //  ダッシュボード（統計）画面
 //
 
+import AsaUIKit
 import Charts
 import SwiftData
 import SwiftUI
@@ -31,7 +32,7 @@ struct DashboardView: View {
         }
         .navigationTitle("統計")
         .navigationBarTitleDisplayMode(.large)
-        .background(Color("AsaSoftCream").opacity(0.3))
+        .background(AsaColors.softCream.opacity(0.3))
         .task {
             await viewModel.loadData()
         }
@@ -51,7 +52,7 @@ struct DashboardView: View {
                 title: "学習時間",
                 value: viewModel.totalStudyTimeText,
                 icon: "clock.fill",
-                color: Color("AsaCoffeeBrown")
+                color: AsaColors.coffeeBrown
             )
 
             SummaryCard(
@@ -183,7 +184,7 @@ struct SummaryCard: View {
 
             Text(value)
                 .font(.title2.bold())
-                .foregroundColor(Color("AsaDarkSlate"))
+                .foregroundColor(AsaColors.darkSlate)
 
             Text(title)
                 .font(.caption)
@@ -206,7 +207,7 @@ struct StatRow: View {
     var body: some View {
         HStack {
             Image(systemName: icon)
-                .foregroundColor(Color("AsaCoffeeBrown"))
+                .foregroundColor(AsaColors.coffeeBrown)
                 .frame(width: 24)
 
             Text(label)
@@ -216,7 +217,7 @@ struct StatRow: View {
 
             Text(value)
                 .font(.headline)
-                .foregroundColor(Color("AsaDarkSlate"))
+                .foregroundColor(AsaColors.darkSlate)
         }
     }
 }

@@ -5,6 +5,7 @@
 //  週間学習チャート
 //
 
+import AsaUIKit
 import Charts
 import SwiftUI
 
@@ -52,8 +53,8 @@ struct WeeklyChartView: View {
                 )
                 .foregroundStyle(
                     stat.isToday
-                        ? Color("AsaCoffeeBrown")
-                        : Color("AsaCoffeeBrown").opacity(0.5)
+                        ? AsaColors.coffeeBrown
+                        : AsaColors.coffeeBrown.opacity(0.5)
                 )
                 .cornerRadius(4)
             }
@@ -109,7 +110,7 @@ struct WeekStat: View {
             HStack(spacing: 2) {
                 Text(value)
                     .font(.headline)
-                    .foregroundColor(Color("AsaDarkSlate"))
+                    .foregroundColor(AsaColors.darkSlate)
 
                 if !unit.isEmpty {
                     Text(unit)

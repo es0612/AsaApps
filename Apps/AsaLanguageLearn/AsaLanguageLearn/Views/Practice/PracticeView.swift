@@ -5,6 +5,7 @@
 //  発音練習画面
 //
 
+import AsaUIKit
 import SwiftUI
 import SwiftData
 
@@ -31,13 +32,13 @@ struct PracticeView: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                Color("AsaSoftCream").opacity(0.3)
+                AsaColors.softCream.opacity(0.3)
                     .ignoresSafeArea()
 
                 VStack(spacing: 0) {
                     // 進捗バー
                     ProgressView(value: viewModel.progress)
-                        .tint(Color("AsaCoffeeBrown"))
+                        .tint(AsaColors.coffeeBrown)
                         .padding(.horizontal)
 
                     // メインコンテンツ
@@ -126,7 +127,7 @@ struct PracticeView: View {
 
             Text("レッスン完了！")
                 .font(.title.bold())
-                .foregroundColor(Color("AsaDarkSlate"))
+                .foregroundColor(AsaColors.darkSlate)
 
             // 統計
             VStack(spacing: 16) {
@@ -139,7 +140,7 @@ struct PracticeView: View {
                     let rate = Double(viewModel.correctCount) / Double(viewModel.correctCount + viewModel.incorrectCount)
                     Text("正解率: \(Int(rate * 100))%")
                         .font(.headline)
-                        .foregroundColor(Color("AsaCoffeeBrown"))
+                        .foregroundColor(AsaColors.coffeeBrown)
                 }
             }
             .padding()
@@ -155,10 +156,10 @@ struct PracticeView: View {
                 } label: {
                     Text("もう一度練習")
                         .font(.headline)
-                        .foregroundColor(Color("AsaCoffeeBrown"))
+                        .foregroundColor(AsaColors.coffeeBrown)
                         .frame(maxWidth: .infinity)
                         .padding()
-                        .background(Color("AsaSoftCream"))
+                        .background(AsaColors.softCream)
                         .clipShape(RoundedRectangle(cornerRadius: 12))
                 }
 
@@ -170,7 +171,7 @@ struct PracticeView: View {
                         .foregroundColor(.white)
                         .frame(maxWidth: .infinity)
                         .padding()
-                        .background(Color("AsaCoffeeBrown"))
+                        .background(AsaColors.coffeeBrown)
                         .clipShape(RoundedRectangle(cornerRadius: 12))
                 }
             }
@@ -200,7 +201,7 @@ struct PracticeView: View {
                 viewModel.retryCurrentItem()
             }
             .buttonStyle(.borderedProminent)
-            .tint(Color("AsaCoffeeBrown"))
+            .tint(AsaColors.coffeeBrown)
         }
         .padding()
         .frame(maxWidth: .infinity, maxHeight: .infinity)

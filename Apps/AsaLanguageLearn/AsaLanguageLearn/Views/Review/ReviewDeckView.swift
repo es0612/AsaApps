@@ -5,6 +5,7 @@
 //  復習デッキ画面
 //
 
+import AsaUIKit
 import SwiftUI
 import SwiftData
 
@@ -67,7 +68,7 @@ struct ReviewDeckView: View {
 
             Text("復習完了！")
                 .font(.title2.bold())
-                .foregroundColor(Color("AsaDarkSlate"))
+                .foregroundColor(AsaColors.darkSlate)
 
             Text("今日復習するアイテムはありません。\n新しいレッスンを始めましょう！")
                 .font(.subheadline)
@@ -76,7 +77,7 @@ struct ReviewDeckView: View {
         }
         .padding()
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color("AsaSoftCream").opacity(0.3))
+        .background(AsaColors.softCream.opacity(0.3))
     }
 
     // MARK: - Review Content
@@ -95,7 +96,7 @@ struct ReviewDeckView: View {
             }
             .padding()
         }
-        .background(Color("AsaSoftCream").opacity(0.3))
+        .background(AsaColors.softCream.opacity(0.3))
     }
 
     // MARK: - Stats Card
@@ -106,7 +107,7 @@ struct ReviewDeckView: View {
                 VStack(alignment: .leading, spacing: 4) {
                     Text("\(viewModel.totalItems)")
                         .font(.system(size: 48, weight: .bold, design: .rounded))
-                        .foregroundColor(Color("AsaCoffeeBrown"))
+                        .foregroundColor(AsaColors.coffeeBrown)
 
                     Text("復習待ちのアイテム")
                         .font(.subheadline)
@@ -117,7 +118,7 @@ struct ReviewDeckView: View {
 
                 Image(systemName: "arrow.clockwise.circle.fill")
                     .font(.system(size: 48))
-                    .foregroundColor(Color("AsaCoffeeBrown").opacity(0.3))
+                    .foregroundColor(AsaColors.coffeeBrown.opacity(0.3))
             }
         }
         .padding()
@@ -162,7 +163,7 @@ struct ReviewDeckView: View {
             .foregroundColor(.white)
             .frame(maxWidth: .infinity)
             .padding()
-            .background(Color("AsaCoffeeBrown"))
+            .background(AsaColors.coffeeBrown)
             .clipShape(RoundedRectangle(cornerRadius: 12))
         }
     }
@@ -197,7 +198,7 @@ struct ReviewDeckView: View {
 
                 Text("正解率: \(summary.correctRateText)")
                     .font(.headline)
-                    .foregroundColor(Color("AsaCoffeeBrown"))
+                    .foregroundColor(AsaColors.coffeeBrown)
             }
             .padding()
             .background(Color.white)
@@ -215,14 +216,14 @@ struct ReviewDeckView: View {
                     .foregroundColor(.white)
                     .frame(maxWidth: .infinity)
                     .padding()
-                    .background(Color("AsaCoffeeBrown"))
+                    .background(AsaColors.coffeeBrown)
                     .clipShape(RoundedRectangle(cornerRadius: 12))
             }
             .padding(.horizontal, 30)
             .padding(.bottom, 30)
         }
         .padding()
-        .background(Color("AsaSoftCream").opacity(0.3))
+        .background(AsaColors.softCream.opacity(0.3))
     }
 }
 
@@ -240,7 +241,7 @@ struct MasteryLevelBadge: View {
 
             Text("\(count)")
                 .font(.headline)
-                .foregroundColor(Color("AsaDarkSlate"))
+                .foregroundColor(AsaColors.darkSlate)
 
             Text(level.displayName)
                 .font(.caption2)

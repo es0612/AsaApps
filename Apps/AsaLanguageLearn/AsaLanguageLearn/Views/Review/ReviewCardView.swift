@@ -5,6 +5,7 @@
 //  復習カード表示と練習画面
 //
 
+import AsaUIKit
 import SwiftUI
 import SwiftData
 
@@ -21,7 +22,7 @@ struct ReviewPracticeView: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                Color("AsaSoftCream").opacity(0.3)
+                AsaColors.softCream.opacity(0.3)
                     .ignoresSafeArea()
 
                 if let practiceVM = practiceViewModel {
@@ -73,7 +74,7 @@ struct ReviewCardContent: View {
         VStack(spacing: 0) {
             // 進捗バー
             ProgressView(value: reviewViewModel.progress)
-                .tint(Color("AsaCoffeeBrown"))
+                .tint(AsaColors.coffeeBrown)
                 .padding(.horizontal)
 
             // メインコンテンツ
@@ -147,7 +148,7 @@ struct ReviewCardContent: View {
                 onComplete()
             }
             .buttonStyle(.borderedProminent)
-            .tint(Color("AsaCoffeeBrown"))
+            .tint(AsaColors.coffeeBrown)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
@@ -169,7 +170,7 @@ struct ReviewCardContent: View {
                 viewModel.retryCurrentItem()
             }
             .buttonStyle(.borderedProminent)
-            .tint(Color("AsaCoffeeBrown"))
+            .tint(AsaColors.coffeeBrown)
         }
         .padding()
         .frame(maxWidth: .infinity, maxHeight: .infinity)

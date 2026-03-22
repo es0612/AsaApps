@@ -5,6 +5,7 @@
 //  ホーム画面
 //
 
+import AsaUIKit
 import SwiftUI
 import SwiftData
 
@@ -61,7 +62,7 @@ struct HomeView: View {
             }
             .tag(3)
         }
-        .tint(Color("AsaCoffeeBrown"))
+        .tint(AsaColors.coffeeBrown)
         .task {
             if viewModel == nil {
                 viewModel = LanguageLearnViewModel(modelContext: modelContext)
@@ -90,7 +91,7 @@ struct HomeView: View {
             }
             .padding()
         }
-        .background(Color("AsaSoftCream").opacity(0.3))
+        .background(AsaColors.softCream.opacity(0.3))
         .refreshable {
             await viewModel?.refresh()
         }
@@ -103,18 +104,18 @@ struct HomeView: View {
             // 炎アイコン
             ZStack {
                 Circle()
-                    .fill(Color("AsaCoffeeBrown").opacity(0.15))
+                    .fill(AsaColors.coffeeBrown.opacity(0.15))
                     .frame(width: 60, height: 60)
 
                 Image(systemName: "flame.fill")
                     .font(.system(size: 28))
-                    .foregroundColor(Color("AsaCoffeeBrown"))
+                    .foregroundColor(AsaColors.coffeeBrown)
             }
 
             VStack(alignment: .leading, spacing: 4) {
                 Text("\(viewModel?.currentStreak ?? 0)日連続")
                     .font(.title2.bold())
-                    .foregroundColor(Color("AsaDarkSlate"))
+                    .foregroundColor(AsaColors.darkSlate)
 
                 Text(viewModel?.hasStudiedToday == true ? "今日も学習済み！" : "今日の学習を始めよう")
                     .font(.subheadline)
@@ -147,7 +148,7 @@ struct HomeView: View {
 
                 Text("\(viewModel?.dueItemsCount ?? 0)個")
                     .font(.subheadline.bold())
-                    .foregroundColor(Color("AsaCoffeeBrown"))
+                    .foregroundColor(AsaColors.coffeeBrown)
             }
 
             Button {
@@ -162,7 +163,7 @@ struct HomeView: View {
                 .font(.subheadline.bold())
                 .foregroundColor(.white)
                 .padding()
-                .background(Color("AsaCoffeeBrown"))
+                .background(AsaColors.coffeeBrown)
                 .clipShape(RoundedRectangle(cornerRadius: 12))
             }
         }
@@ -186,7 +187,7 @@ struct HomeView: View {
                     selectedTab = 1
                 }
                 .font(.subheadline)
-                .foregroundColor(Color("AsaCoffeeBrown"))
+                .foregroundColor(AsaColors.coffeeBrown)
             }
 
             if let courses = viewModel?.courses.prefix(3) {
@@ -220,7 +221,7 @@ struct HomeView: View {
                 QuickStartButton(
                     title: "挨拶",
                     icon: "hand.wave.fill",
-                    color: Color("AsaCoffeeBrown")
+                    color: AsaColors.coffeeBrown
                 ) {
                     if let course = viewModel?.courses.first {
                         viewModel?.selectCourse(course)
@@ -231,7 +232,7 @@ struct HomeView: View {
                 QuickStartButton(
                     title: "復習",
                     icon: "arrow.clockwise",
-                    color: Color("AsaMocha")
+                    color: AsaColors.mocha
                 ) {
                     selectedTab = 2
                 }
@@ -265,7 +266,7 @@ struct CourseRowView: View {
             VStack(alignment: .leading, spacing: 4) {
                 Text(course.title)
                     .font(.subheadline.bold())
-                    .foregroundColor(Color("AsaDarkSlate"))
+                    .foregroundColor(AsaColors.darkSlate)
 
                 HStack(spacing: 8) {
                     Text(course.difficultyStars)
@@ -311,7 +312,7 @@ struct QuickStartButton: View {
 
                 Text(title)
                     .font(.caption.bold())
-                    .foregroundColor(Color("AsaDarkSlate"))
+                    .foregroundColor(AsaColors.darkSlate)
             }
             .frame(maxWidth: .infinity)
             .padding()
@@ -334,12 +335,12 @@ struct CircularProgressView: View {
 
             Circle()
                 .trim(from: 0, to: progress)
-                .stroke(Color("AsaCoffeeBrown"), style: StrokeStyle(lineWidth: 3, lineCap: .round))
+                .stroke(AsaColors.coffeeBrown, style: StrokeStyle(lineWidth: 3, lineCap: .round))
                 .rotationEffect(.degrees(-90))
 
             Text("\(Int(progress * 100))%")
                 .font(.system(size: 8, weight: .bold))
-                .foregroundColor(Color("AsaCoffeeBrown"))
+                .foregroundColor(AsaColors.coffeeBrown)
         }
     }
 }

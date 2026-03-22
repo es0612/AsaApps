@@ -5,6 +5,7 @@
 //  レッスン一覧画面
 //
 
+import AsaUIKit
 import SwiftUI
 
 struct LessonListView: View {
@@ -28,7 +29,7 @@ struct LessonListView: View {
         }
         .navigationTitle(course.title)
         .navigationBarTitleDisplayMode(.inline)
-        .background(Color("AsaSoftCream").opacity(0.3))
+        .background(AsaColors.softCream.opacity(0.3))
         .fullScreenCover(isPresented: $showingPractice) {
             if let lesson = selectedLesson {
                 PracticeView(
@@ -119,11 +120,11 @@ struct StatBadge: View {
         VStack(spacing: 4) {
             Image(systemName: icon)
                 .font(.caption)
-                .foregroundColor(Color("AsaCoffeeBrown"))
+                .foregroundColor(AsaColors.coffeeBrown)
 
             Text(value)
                 .font(.caption.bold())
-                .foregroundColor(Color("AsaDarkSlate"))
+                .foregroundColor(AsaColors.darkSlate)
 
             Text(title)
                 .font(.caption2)
@@ -145,7 +146,7 @@ struct LessonCardView: View {
                 // レッスン番号
                 ZStack {
                     Circle()
-                        .fill(lesson.isCompleted ? Color.green : Color("AsaCoffeeBrown"))
+                        .fill(lesson.isCompleted ? Color.green : AsaColors.coffeeBrown)
                         .frame(width: 40, height: 40)
 
                     if lesson.isCompleted {
@@ -162,7 +163,7 @@ struct LessonCardView: View {
                 VStack(alignment: .leading, spacing: 4) {
                     Text(lesson.title)
                         .font(.subheadline.bold())
-                        .foregroundColor(Color("AsaDarkSlate"))
+                        .foregroundColor(AsaColors.darkSlate)
 
                     Text(lesson.lessonDescription)
                         .font(.caption)
@@ -181,7 +182,7 @@ struct LessonCardView: View {
                                 systemImage: "chart.bar.fill"
                             )
                             .font(.caption2)
-                            .foregroundColor(Color("AsaCoffeeBrown"))
+                            .foregroundColor(AsaColors.coffeeBrown)
                         }
 
                         if lesson.itemsDueForReview.count > 0 {
@@ -199,7 +200,7 @@ struct LessonCardView: View {
 
                 Image(systemName: "play.circle.fill")
                     .font(.title2)
-                    .foregroundColor(Color("AsaCoffeeBrown"))
+                    .foregroundColor(AsaColors.coffeeBrown)
             }
             .padding()
             .background(Color.white)

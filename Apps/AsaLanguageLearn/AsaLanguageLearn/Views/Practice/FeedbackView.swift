@@ -5,6 +5,7 @@
 //  発音評価結果表示画面
 //
 
+import AsaUIKit
 import SwiftUI
 
 struct FeedbackView: View {
@@ -61,7 +62,7 @@ struct FeedbackView: View {
 
                 Text(result.normalizedTarget)
                     .font(.title3.bold())
-                    .foregroundColor(Color("AsaDarkSlate"))
+                    .foregroundColor(AsaColors.darkSlate)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
 
@@ -99,7 +100,7 @@ struct FeedbackView: View {
 
             Text(sentence)
                 .font(.subheadline)
-                .foregroundColor(Color("AsaDarkSlate"))
+                .foregroundColor(AsaColors.darkSlate)
 
             if let translation = translation {
                 Text(translation)
@@ -109,7 +110,7 @@ struct FeedbackView: View {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding()
-        .background(Color("AsaSoftCream").opacity(0.5))
+        .background(AsaColors.softCream.opacity(0.5))
         .clipShape(RoundedRectangle(cornerRadius: 12))
     }
 
@@ -124,14 +125,14 @@ struct FeedbackView: View {
                     Text("やり直す")
                 }
                 .font(.headline)
-                .foregroundColor(Color("AsaCoffeeBrown"))
+                .foregroundColor(AsaColors.coffeeBrown)
                 .frame(maxWidth: .infinity)
                 .padding()
                 .background(Color.white)
                 .clipShape(RoundedRectangle(cornerRadius: 12))
                 .overlay(
                     RoundedRectangle(cornerRadius: 12)
-                        .stroke(Color("AsaCoffeeBrown"), lineWidth: 2)
+                        .stroke(AsaColors.coffeeBrown, lineWidth: 2)
                 )
             }
 
@@ -145,13 +146,13 @@ struct FeedbackView: View {
                 .foregroundColor(.white)
                 .frame(maxWidth: .infinity)
                 .padding()
-                .background(Color("AsaCoffeeBrown"))
+                .background(AsaColors.coffeeBrown)
                 .clipShape(RoundedRectangle(cornerRadius: 12))
             }
         }
         .padding()
         .background(
-            Color("AsaSoftCream")
+            AsaColors.softCream
                 .opacity(0.95)
                 .ignoresSafeArea()
         )

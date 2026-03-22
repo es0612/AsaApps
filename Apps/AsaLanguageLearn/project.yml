@@ -31,6 +31,7 @@ targets:
         INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad: "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight"
     dependencies:
       - package: AsaUIKit
+        product: AsaUIKit
       - sdk: Speech.framework
       - sdk: AVFoundation.framework
 
