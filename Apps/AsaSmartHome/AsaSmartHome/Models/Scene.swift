@@ -248,6 +248,62 @@ extension SmartScene {
         )
     }
 
+    /// カスタムシーン - 集中モード
+    static func focusScene(deviceIds: [DeviceType: UUID]) -> SmartScene {
+        var actions: [SceneAction] = []
+
+        // 書斎ライトを全開
+        if let lightId = deviceIds[.light] {
+            actions.append(SceneAction(deviceId: lightId, commandType: "power", value: "on"))
+            actions.append(SceneAction(deviceId: lightId, commandType: "brightness", value: "100"))
+        }
+
+        // テレビをオフ
+        if let tvId = deviceIds[.television] {
+            actions.append(SceneAction(deviceId: tvId, commandType: "power", value: "off"))
+        }
+
+        // スピーカーをオフ
+        if let speakerId = deviceIds[.speaker] {
+            actions.append(SceneAction(deviceId: speakerId, commandType: "power", value: "off"))
+        }
+
+        return SmartScene(
+            name: "集中モード",
+            iconName: "brain.head.profile.fill",
+            colorHex: "64D2FF",
+            actions: actions,
+            isBuiltIn: false,
+            sortOrder: 5
+        )
+    }
+
+    /// カスタムシーン - お料理タイム
+    static func cookingScene(deviceIds: [DeviceType: UUID]) -> SmartScene {
+        var actions: [SceneAction] = []
+
+        // キッチンライトをオン
+        if let lightId = deviceIds[.light] {
+            actions.append(SceneAction(deviceId: lightId, commandType: "power", value: "on"))
+            actions.append(SceneAction(deviceId: lightId, commandType: "brightness", value: "100"))
+        }
+
+        // スピーカーをオン（BGM用）
+        if let speakerId = deviceIds[.speaker] {
+            actions.append(SceneAction(deviceId: speakerId, commandType: "power", value: "on"))
+            actions.append(SceneAction(deviceId: speakerId, commandType: "volume", value: "30"))
+        }
+
+        return SmartScene(
+            name: "お料理タイム",
+            iconName: "frying.pan.fill",
+            colorHex: "FF9F0A",
+            actions: actions,
+            isBuiltIn: false,
+            sortOrder: 6
+        )
+    }
+
     /// プリセットシーン - 映画
     static func movieScene(deviceIds: [DeviceType: UUID]) -> SmartScene {
         var actions: [SceneAction] = []

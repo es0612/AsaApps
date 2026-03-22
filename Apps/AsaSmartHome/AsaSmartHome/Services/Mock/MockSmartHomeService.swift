@@ -54,7 +54,9 @@ final class MockSmartHomeService: SmartHomeServiceProtocol {
                 SmartScene.goodMorningScene(deviceIds: deviceIds),
                 SmartScene.leaveHomeScene(deviceIds: deviceIds),
                 SmartScene.comeHomeScene(deviceIds: deviceIds),
-                SmartScene.movieScene(deviceIds: deviceIds)
+                SmartScene.movieScene(deviceIds: deviceIds),
+                SmartScene.focusScene(deviceIds: deviceIds),
+                SmartScene.cookingScene(deviceIds: deviceIds)
             ]
             for scene in scenes {
                 modelContext.insert(scene)

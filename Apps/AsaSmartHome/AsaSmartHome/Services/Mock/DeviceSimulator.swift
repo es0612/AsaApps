@@ -252,6 +252,55 @@ extension DeviceSimulator {
             devices.append(bedroomAC)
         }
 
+        // キッチン（3番目の部屋と仮定）
+        if rooms.count > 2 {
+            let kitchen = rooms[2]
+
+            // キッチンライト
+            let kitchenLight = SmartDevice(
+                name: "キッチンライト",
+                deviceType: .light,
+                roomId: kitchen.id,
+                powerState: .on,
+                connectionStatus: .online,
+                metadata: [
+                    SmartDevice.MetadataKey.brightness: "100",
+                    SmartDevice.MetadataKey.colorTemperature: "5000"
+                ]
+            )
+            devices.append(kitchenLight)
+
+            // スマート冷蔵庫（温度センサーとして）
+            let fridge = SmartDevice(
+                name: "スマート冷蔵庫",
+                deviceType: .thermostat,
+                roomId: kitchen.id,
+                powerState: .on,
+                connectionStatus: .online,
+                metadata: [
+                    SmartDevice.MetadataKey.currentTemperature: "3.0",
+                    SmartDevice.MetadataKey.targetTemperature: "3",
+                    SmartDevice.MetadataKey.humidity: "40"
+                ]
+            )
+            devices.append(fridge)
+
+            // キッチン換気扇
+            let ventilator = SmartDevice(
+                name: "キッチン換気扇",
+                deviceType: .airConditioner,
+                roomId: kitchen.id,
+                powerState: .off,
+                connectionStatus: .online,
+                metadata: [
+                    SmartDevice.MetadataKey.targetTemperature: "22",
+                    SmartDevice.MetadataKey.acMode: ACMode.fan.rawValue,
+                    SmartDevice.MetadataKey.fanSpeed: FanSpeed.medium.rawValue
+                ]
+            )
+            devices.append(ventilator)
+        }
+
         // 書斎（4番目の部屋と仮定）
         if rooms.count > 3 {
             let office = rooms[3]
@@ -269,6 +318,40 @@ extension DeviceSimulator {
                 ]
             )
             devices.append(officeLight)
+        }
+
+        // 子供部屋（5番目の部屋と仮定）
+        if rooms.count > 4 {
+            let kidsRoom = rooms[4]
+
+            // おやすみライト
+            let nightLight = SmartDevice(
+                name: "おやすみライト",
+                deviceType: .light,
+                roomId: kidsRoom.id,
+                powerState: .off,
+                connectionStatus: .online,
+                metadata: [
+                    SmartDevice.MetadataKey.brightness: "30",
+                    SmartDevice.MetadataKey.colorTemperature: "2700"
+                ]
+            )
+            devices.append(nightLight)
+
+            // 子供部屋エアコン
+            let kidsAC = SmartDevice(
+                name: "子供部屋エアコン",
+                deviceType: .airConditioner,
+                roomId: kidsRoom.id,
+                powerState: .off,
+                connectionStatus: .online,
+                metadata: [
+                    SmartDevice.MetadataKey.targetTemperature: "25",
+                    SmartDevice.MetadataKey.acMode: ACMode.auto.rawValue,
+                    SmartDevice.MetadataKey.fanSpeed: FanSpeed.low.rawValue
+                ]
+            )
+            devices.append(kidsAC)
         }
 
         // 玄関（共通）
