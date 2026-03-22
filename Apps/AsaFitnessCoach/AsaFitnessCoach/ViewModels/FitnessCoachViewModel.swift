@@ -59,6 +59,13 @@ final class FitnessCoachViewModel {
         // ユーザープロファイル読み込み
         userProfile = dataService.fetchUserProfile()
 
+        // 初回起動時のサンプルデータ投入
+        if userProfile == nil {
+            let generator = SampleDataGenerator(dataService: dataService)
+            generator.insertSampleData()
+            userProfile = dataService.fetchUserProfile()
+        }
+
         // ワークアウトプラン読み込み
         workoutPlans = dataService.fetchWorkoutPlans()
         todayPlans = dataService.fetchTodayPlans()
