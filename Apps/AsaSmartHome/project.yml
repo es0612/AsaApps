@@ -34,9 +34,6 @@ targets:
       PRODUCT_BUNDLE_IDENTIFIER: com.asaapps.AsaSmartHome
       MARKETING_VERSION: "1.0"
       CURRENT_PROJECT_VERSION: "1"
-    dependencies:
-      - package: AsaUIKit
-        product: AsaUIKit
 
   AsaSmartHomeTests:
     type: bundle.unit-test
@@ -64,10 +61,6 @@ targets:
     settings:
       GENERATE_INFOPLIST_FILE: true
       TEST_TARGET_NAME: AsaSmartHome
-
-packages:
-  AsaUIKit:
-    path: ../../Packages/AsaUIKit
 
 schemes:
   AsaSmartHome:
