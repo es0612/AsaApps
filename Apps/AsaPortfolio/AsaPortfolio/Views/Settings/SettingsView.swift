@@ -1,5 +1,6 @@
 import SwiftUI
 import SwiftData
+import AsaUIKit
 
 /// 設定ビュー
 struct SettingsView: View {
@@ -35,7 +36,7 @@ struct SettingsView: View {
                                 showAPIKey.toggle()
                             } label: {
                                 Image(systemName: showAPIKey ? "eye.slash" : "eye")
-                                    .foregroundStyle(Color("AsaMutedSage"))
+                                    .foregroundStyle(AsaColors.mutedSage)
                             }
                         }
 
@@ -52,7 +53,7 @@ struct SettingsView: View {
                             }
                             .frame(maxWidth: .infinity)
                             .padding(.vertical, 8)
-                            .background(Color("AsaCoffeeBrown"))
+                            .background(AsaColors.coffeeBrown)
                             .foregroundStyle(.white)
                             .clipShape(RoundedRectangle(cornerRadius: 8))
                         }
@@ -90,7 +91,7 @@ struct SettingsView: View {
                         Text("残りリクエスト数")
                         Spacer()
                         Text("\(viewModel.remainingAPIRequests)")
-                            .foregroundStyle(Color("AsaCoffeeBrown"))
+                            .foregroundStyle(AsaColors.coffeeBrown)
                             .bold()
                     }
 

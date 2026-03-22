@@ -1,5 +1,6 @@
 import SwiftUI
 import SwiftData
+import AsaUIKit
 
 /// 保有資産詳細ビュー
 struct HoldingDetailView: View {
@@ -23,10 +24,10 @@ struct HoldingDetailView: View {
 
                                     Text(holding.assetType.displayName)
                                         .font(.caption)
-                                        .foregroundStyle(Color("AsaCoffeeBrown"))
+                                        .foregroundStyle(AsaColors.coffeeBrown)
                                         .padding(.horizontal, 8)
                                         .padding(.vertical, 4)
-                                        .background(Color("AsaCoffeeBrown").opacity(0.1))
+                                        .background(AsaColors.coffeeBrown.opacity(0.1))
                                         .clipShape(Capsule())
                                 }
 
@@ -42,7 +43,7 @@ struct HoldingDetailView: View {
                         HStack(alignment: .bottom) {
                             Text(holding.currentPrice.formattedPrice)
                                 .font(.system(size: 32, weight: .bold, design: .rounded))
-                                .foregroundStyle(Color("AsaCoffeeBrown"))
+                                .foregroundStyle(AsaColors.coffeeBrown)
 
                             Text(holding.currency)
                                 .font(.subheadline)
@@ -120,7 +121,7 @@ struct HoldingDetailView: View {
                                 TransactionListView(holding: holding)
                             } label: {
                                 Text("すべての取引を表示")
-                                    .foregroundStyle(Color("AsaCoffeeBrown"))
+                                    .foregroundStyle(AsaColors.coffeeBrown)
                             }
                         }
                     }
@@ -156,7 +157,7 @@ struct HoldingDetailView: View {
 struct DetailRow: View {
     let title: String
     let value: String
-    var valueColor: Color = Color("AsaDarkSlate")
+    var valueColor: Color = AsaColors.darkSlate
 
     var body: some View {
         HStack {
@@ -305,7 +306,7 @@ struct AddTransactionSheet: View {
                             Spacer()
                             Text(CurrencyFormatter.format(qty * prc + fees, currencyCode: holding.currency))
                                 .bold()
-                                .foregroundStyle(Color("AsaCoffeeBrown"))
+                                .foregroundStyle(AsaColors.coffeeBrown)
                         }
                     }
                 }

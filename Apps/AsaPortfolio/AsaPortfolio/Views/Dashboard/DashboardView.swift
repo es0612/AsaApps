@@ -1,5 +1,6 @@
 import SwiftUI
 import SwiftData
+import AsaUIKit
 
 /// ダッシュボードビュー - 総資産と概要表示
 struct DashboardView: View {
@@ -32,7 +33,7 @@ struct DashboardView: View {
                 }
                 .padding()
             }
-            .background(Color("AsaDarkSlate").opacity(0.05))
+            .background(AsaColors.darkSlate.opacity(0.05))
             .navigationTitle("ダッシュボード")
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
@@ -70,7 +71,7 @@ struct TotalValueCard: View {
 
             Text(viewModel.totalValue.formattedCurrency)
                 .font(.system(size: 36, weight: .bold, design: .rounded))
-                .foregroundStyle(Color("AsaCoffeeBrown"))
+                .foregroundStyle(AsaColors.coffeeBrown)
 
             HStack(spacing: 16) {
                 // 損益額
@@ -114,7 +115,7 @@ struct TotalValueCard: View {
 
                     Text("\(viewModel.allHoldings.count)")
                         .font(.headline)
-                        .foregroundStyle(Color("AsaDarkSlate"))
+                        .foregroundStyle(AsaColors.darkSlate)
                 }
             }
 
@@ -144,7 +145,7 @@ struct QuickActionsRow: View {
             QuickActionButton(
                 title: "ポートフォリオ追加",
                 icon: "folder.badge.plus",
-                color: Color("AsaCoffeeBrown")
+                color: AsaColors.coffeeBrown
             ) {
                 showAddPortfolio = true
             }
@@ -153,7 +154,7 @@ struct QuickActionsRow: View {
                 QuickActionButton(
                     title: "銘柄追加",
                     icon: "plus.circle",
-                    color: Color("AsaMocha")
+                    color: AsaColors.mocha
                 ) {
                     showAddHolding = true
                 }
@@ -202,7 +203,7 @@ struct PerformanceSummarySection: View {
         VStack(alignment: .leading, spacing: 12) {
             Text("パフォーマンス")
                 .font(.headline)
-                .foregroundStyle(Color("AsaDarkSlate"))
+                .foregroundStyle(AsaColors.darkSlate)
 
             HStack(spacing: 12) {
                 // 値上がり銘柄数
@@ -226,7 +227,7 @@ struct PerformanceSummarySection: View {
                     title: "API残り",
                     value: "\(viewModel.remainingAPIRequests)",
                     icon: "network",
-                    color: Color("AsaMutedSage")
+                    color: AsaColors.mutedSage
                 )
             }
         }
@@ -247,7 +248,7 @@ struct StatCard: View {
 
             Text(value)
                 .font(.title3.bold())
-                .foregroundStyle(Color("AsaDarkSlate"))
+                .foregroundStyle(AsaColors.darkSlate)
 
             Text(title)
                 .font(.caption)
@@ -270,7 +271,7 @@ struct PortfolioSummarySection: View {
         VStack(alignment: .leading, spacing: 12) {
             Text("ポートフォリオ")
                 .font(.headline)
-                .foregroundStyle(Color("AsaDarkSlate"))
+                .foregroundStyle(AsaColors.darkSlate)
 
             ForEach(viewModel.portfolios) { portfolio in
                 PortfolioSummaryRow(portfolio: portfolio, viewModel: viewModel)
@@ -329,7 +330,7 @@ struct TopHoldingsSection: View {
         VStack(alignment: .leading, spacing: 12) {
             Text("保有額上位")
                 .font(.headline)
-                .foregroundStyle(Color("AsaDarkSlate"))
+                .foregroundStyle(AsaColors.darkSlate)
 
             ForEach(viewModel.topHoldings) { holding in
                 HoldingSummaryRow(holding: holding)

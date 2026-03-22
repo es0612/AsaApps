@@ -1,5 +1,6 @@
 import SwiftUI
 import SwiftData
+import AsaUIKit
 
 /// ポートフォリオ一覧ビュー
 struct PortfolioListView: View {
@@ -83,7 +84,7 @@ struct PortfolioRow: View {
                         .foregroundStyle(.secondary)
                         .padding(.horizontal, 8)
                         .padding(.vertical, 4)
-                        .background(Color("AsaDarkSlate").opacity(0.1))
+                        .background(AsaColors.darkSlate.opacity(0.1))
                         .clipShape(Capsule())
                 }
 
@@ -129,11 +130,11 @@ struct EmptyPortfolioView: View {
         VStack(spacing: 20) {
             Image(systemName: "briefcase")
                 .font(.system(size: 60))
-                .foregroundStyle(Color("AsaMutedSage"))
+                .foregroundStyle(AsaColors.mutedSage)
 
             Text("ポートフォリオがありません")
                 .font(.title2.bold())
-                .foregroundStyle(Color("AsaDarkSlate"))
+                .foregroundStyle(AsaColors.darkSlate)
 
             Text("最初のポートフォリオを作成して\n資産管理を始めましょう")
                 .font(.subheadline)
@@ -148,7 +149,7 @@ struct EmptyPortfolioView: View {
                     .foregroundStyle(.white)
                     .padding()
                     .frame(maxWidth: .infinity)
-                    .background(Color("AsaCoffeeBrown"))
+                    .background(AsaColors.coffeeBrown)
                     .clipShape(RoundedRectangle(cornerRadius: 12))
             }
             .padding(.horizontal, 40)
@@ -323,7 +324,7 @@ struct PortfolioDetailView: View {
                             VStack(spacing: 8) {
                                 Image(systemName: "chart.line.uptrend.xyaxis")
                                     .font(.largeTitle)
-                                    .foregroundStyle(Color("AsaMutedSage"))
+                                    .foregroundStyle(AsaColors.mutedSage)
                                 Text("銘柄がありません")
                                     .font(.subheadline)
                                     .foregroundStyle(.secondary)
@@ -394,10 +395,10 @@ struct HoldingRow: View {
 
                     Text(holding.assetType.displayName)
                         .font(.caption2)
-                        .foregroundStyle(Color("AsaCoffeeBrown"))
+                        .foregroundStyle(AsaColors.coffeeBrown)
                         .padding(.horizontal, 6)
                         .padding(.vertical, 2)
-                        .background(Color("AsaCoffeeBrown").opacity(0.1))
+                        .background(AsaColors.coffeeBrown.opacity(0.1))
                         .clipShape(Capsule())
                 }
 

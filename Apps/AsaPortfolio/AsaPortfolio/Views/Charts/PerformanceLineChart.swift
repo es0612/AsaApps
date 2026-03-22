@@ -1,12 +1,13 @@
 import SwiftUI
 import Charts
+import AsaUIKit
 
 /// 資産推移折れ線グラフ
 struct PerformanceLineChart: View {
     let data: [ChartDataPoint]
     let title: String
     var showArea: Bool = true
-    var color: Color = Color("AsaCoffeeBrown")
+    var color: Color = AsaColors.coffeeBrown
 
     @State private var selectedPoint: ChartDataPoint?
     @State private var selectedTimeRange: TimeRange = .month
@@ -17,7 +18,7 @@ struct PerformanceLineChart: View {
             HStack {
                 Text(title)
                     .font(.headline)
-                    .foregroundStyle(Color("AsaDarkSlate"))
+                    .foregroundStyle(AsaColors.darkSlate)
 
                 Spacer()
 
@@ -50,10 +51,10 @@ struct PerformanceLineChart: View {
                 Image(systemName: "chevron.down")
                     .font(.caption2)
             }
-            .foregroundStyle(Color("AsaCoffeeBrown"))
+            .foregroundStyle(AsaColors.coffeeBrown)
             .padding(.horizontal, 10)
             .padding(.vertical, 6)
-            .background(Color("AsaCoffeeBrown").opacity(0.1))
+            .background(AsaColors.coffeeBrown.opacity(0.1))
             .clipShape(Capsule())
         }
     }
@@ -62,7 +63,7 @@ struct PerformanceLineChart: View {
         VStack(spacing: 12) {
             Image(systemName: "chart.line.uptrend.xyaxis")
                 .font(.system(size: 40))
-                .foregroundStyle(Color("AsaMutedSage"))
+                .foregroundStyle(AsaColors.mutedSage)
 
             Text("データがありません")
                 .font(.subheadline)
@@ -228,7 +229,7 @@ struct GainLossBarChart: View {
         VStack(alignment: .leading, spacing: 12) {
             Text(title)
                 .font(.headline)
-                .foregroundStyle(Color("AsaDarkSlate"))
+                .foregroundStyle(AsaColors.darkSlate)
 
             if holdings.isEmpty {
                 emptyState
@@ -246,7 +247,7 @@ struct GainLossBarChart: View {
         VStack(spacing: 12) {
             Image(systemName: "chart.bar")
                 .font(.system(size: 40))
-                .foregroundStyle(Color("AsaMutedSage"))
+                .foregroundStyle(AsaColors.mutedSage)
 
             Text("データがありません")
                 .font(.subheadline)
@@ -315,5 +316,5 @@ struct GainLossBarChart: View {
         }
         .padding()
     }
-    .background(Color("AsaDarkSlate").opacity(0.05))
+    .background(AsaColors.darkSlate.opacity(0.05))
 }

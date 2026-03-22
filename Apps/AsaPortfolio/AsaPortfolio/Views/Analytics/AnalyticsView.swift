@@ -1,6 +1,7 @@
 import SwiftUI
 import SwiftData
 import Charts
+import AsaUIKit
 
 /// 分析ビュー
 struct AnalyticsView: View {
@@ -41,7 +42,7 @@ struct AnalyticsView: View {
                     .padding()
                 }
             }
-            .background(Color("AsaDarkSlate").opacity(0.05))
+            .background(AsaColors.darkSlate.opacity(0.05))
             .navigationTitle("分析")
         }
     }
@@ -80,7 +81,7 @@ struct PerformanceSummaryCard: View {
                 MetricItem(
                     title: "時価総額",
                     value: viewModel.totalValue.formattedCurrency,
-                    color: Color("AsaCoffeeBrown")
+                    color: AsaColors.coffeeBrown
                 )
 
                 Divider()
@@ -89,7 +90,7 @@ struct PerformanceSummaryCard: View {
                 MetricItem(
                     title: "取得原価",
                     value: viewModel.totalCost.formattedCurrency,
-                    color: Color("AsaDarkSlate")
+                    color: AsaColors.darkSlate
                 )
             }
 
@@ -124,7 +125,7 @@ struct PerformanceSummaryCard: View {
                 MetricItem(
                     title: "ポートフォリオ数",
                     value: "\(viewModel.portfolios.count)",
-                    color: Color("AsaMutedSage")
+                    color: AsaColors.mutedSage
                 )
 
                 Divider()
@@ -133,7 +134,7 @@ struct PerformanceSummaryCard: View {
                 MetricItem(
                     title: "保有銘柄数",
                     value: "\(viewModel.allHoldings.count)",
-                    color: Color("AsaMutedSage")
+                    color: AsaColors.mutedSage
                 )
 
                 Divider()
@@ -142,7 +143,7 @@ struct PerformanceSummaryCard: View {
                 MetricItem(
                     title: "ウォッチ",
                     value: "\(viewModel.watchlistItems.count)",
-                    color: Color("AsaMutedSage")
+                    color: AsaColors.mutedSage
                 )
             }
         }
@@ -195,7 +196,7 @@ struct TopPerformersSection: View {
                             .foregroundStyle(.green)
                         Text("値上がり上位")
                             .font(.headline)
-                            .foregroundStyle(Color("AsaDarkSlate"))
+                            .foregroundStyle(AsaColors.darkSlate)
                     }
 
                     ForEach(viewModel.topGainers) { holding in
@@ -216,7 +217,7 @@ struct TopPerformersSection: View {
                             .foregroundStyle(.red)
                         Text("値下がり上位")
                             .font(.headline)
-                            .foregroundStyle(Color("AsaDarkSlate"))
+                            .foregroundStyle(AsaColors.darkSlate)
                     }
 
                     ForEach(viewModel.topLosers) { holding in
@@ -269,11 +270,11 @@ struct EmptyAnalyticsView: View {
         VStack(spacing: 20) {
             Image(systemName: "chart.line.uptrend.xyaxis")
                 .font(.system(size: 60))
-                .foregroundStyle(Color("AsaMutedSage"))
+                .foregroundStyle(AsaColors.mutedSage)
 
             Text("分析データがありません")
                 .font(.title2.bold())
-                .foregroundStyle(Color("AsaDarkSlate"))
+                .foregroundStyle(AsaColors.darkSlate)
 
             Text("ポートフォリオに銘柄を追加すると\n詳細な分析が表示されます")
                 .font(.subheadline)

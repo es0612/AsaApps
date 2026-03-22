@@ -1,5 +1,6 @@
 import SwiftUI
 import Charts
+import AsaUIKit
 
 /// 資産配分円グラフ
 struct AllocationPieChart: View {
@@ -12,7 +13,7 @@ struct AllocationPieChart: View {
         VStack(alignment: .leading, spacing: 12) {
             Text(title)
                 .font(.headline)
-                .foregroundStyle(Color("AsaDarkSlate"))
+                .foregroundStyle(AsaColors.darkSlate)
 
             if allocations.isEmpty {
                 emptyState
@@ -30,7 +31,7 @@ struct AllocationPieChart: View {
         VStack(spacing: 12) {
             Image(systemName: "chart.pie")
                 .font(.system(size: 40))
-                .foregroundStyle(Color("AsaMutedSage"))
+                .foregroundStyle(AsaColors.mutedSage)
 
             Text("データがありません")
                 .font(.subheadline)
@@ -62,7 +63,7 @@ struct AllocationPieChart: View {
                             .lineLimit(1)
                         Text(String(format: "%.1f%%", selected.percentage))
                             .font(.headline.bold())
-                            .foregroundStyle(Color("AsaCoffeeBrown"))
+                            .foregroundStyle(AsaColors.coffeeBrown)
                     }
                 } else {
                     VStack(spacing: 2) {
@@ -71,7 +72,7 @@ struct AllocationPieChart: View {
                             .foregroundStyle(.secondary)
                         Text("\(allocations.count)")
                             .font(.headline.bold())
-                            .foregroundStyle(Color("AsaCoffeeBrown"))
+                            .foregroundStyle(AsaColors.coffeeBrown)
                     }
                 }
             }
@@ -95,14 +96,14 @@ struct AllocationPieChart: View {
 
                             Text(item.name)
                                 .font(.caption)
-                                .foregroundStyle(Color("AsaDarkSlate"))
+                                .foregroundStyle(AsaColors.darkSlate)
                                 .lineLimit(1)
 
                             Spacer()
 
                             Text(String(format: "%.1f%%", item.percentage))
                                 .font(.caption.bold())
-                                .foregroundStyle(Color("AsaCoffeeBrown"))
+                                .foregroundStyle(AsaColors.coffeeBrown)
                         }
                     }
                 }
@@ -139,10 +140,10 @@ struct SectorAllocationChart: View {
 
     private var allocations: [AllocationData] {
         let colors: [Color] = [
-            Color("AsaCoffeeBrown"),
-            Color("AsaMocha"),
-            Color("AsaMutedSage"),
-            Color("AsaDarkSlate"),
+            AsaColors.coffeeBrown,
+            AsaColors.mocha,
+            AsaColors.mutedSage,
+            AsaColors.darkSlate,
             .blue,
             .green,
             .orange,
@@ -177,12 +178,12 @@ struct AssetTypeAllocationChart: View {
 
     private var allocations: [AllocationData] {
         let colorMap: [AssetType: Color] = [
-            .stock: Color("AsaCoffeeBrown"),
-            .etf: Color("AsaMocha"),
+            .stock: AsaColors.coffeeBrown,
+            .etf: AsaColors.mocha,
             .mutualFund: .blue,
             .bond: .green,
             .crypto: .orange,
-            .other: Color("AsaMutedSage")
+            .other: AsaColors.mutedSage
         ]
 
         return assetTypeAllocations.map { allocation in
@@ -208,8 +209,8 @@ struct AssetTypeAllocationChart: View {
     VStack(spacing: 20) {
         AllocationPieChart(
             allocations: [
-                AllocationData(id: "1", name: "Technology", value: 5000, percentage: 50, color: Color("AsaCoffeeBrown")),
-                AllocationData(id: "2", name: "Healthcare", value: 2000, percentage: 20, color: Color("AsaMocha")),
+                AllocationData(id: "1", name: "Technology", value: 5000, percentage: 50, color: AsaColors.coffeeBrown),
+                AllocationData(id: "2", name: "Healthcare", value: 2000, percentage: 20, color: AsaColors.mocha),
                 AllocationData(id: "3", name: "Finance", value: 1500, percentage: 15, color: .blue),
                 AllocationData(id: "4", name: "Energy", value: 1000, percentage: 10, color: .green),
                 AllocationData(id: "5", name: "Other", value: 500, percentage: 5, color: .gray)
@@ -220,5 +221,5 @@ struct AssetTypeAllocationChart: View {
         AllocationPieChart(allocations: [], title: "空のチャート")
     }
     .padding()
-    .background(Color("AsaDarkSlate").opacity(0.05))
+    .background(AsaColors.darkSlate.opacity(0.05))
 }

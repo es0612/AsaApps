@@ -1,5 +1,6 @@
 import SwiftUI
 import SwiftData
+import AsaUIKit
 
 /// 保有資産追加シート
 struct AddHoldingSheet: View {
@@ -64,7 +65,7 @@ struct AddHoldingSheet: View {
                                     VStack(alignment: .leading) {
                                         Text(result.symbol)
                                             .font(.headline)
-                                            .foregroundStyle(Color("AsaDarkSlate"))
+                                            .foregroundStyle(AsaColors.darkSlate)
                                         Text(result.name)
                                             .font(.caption)
                                             .foregroundStyle(.secondary)
@@ -128,7 +129,7 @@ struct AddHoldingSheet: View {
                                 .foregroundStyle(.secondary)
                             Spacer()
                             Text(CurrencyFormatter.format(qty * cost, currencyCode: currency))
-                                .foregroundStyle(Color("AsaCoffeeBrown"))
+                                .foregroundStyle(AsaColors.coffeeBrown)
                                 .bold()
                         }
                     }

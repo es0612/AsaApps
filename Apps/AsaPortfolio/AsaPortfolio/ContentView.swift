@@ -1,5 +1,6 @@
 import SwiftUI
 import SwiftData
+import AsaUIKit
 
 /// メインコンテンツビュー - TabViewでナビゲーション
 struct ContentView: View {
@@ -59,7 +60,7 @@ struct ContentView: View {
                         }
                         .tag(Tab.settings)
                 }
-                .tint(Color("AsaCoffeeBrown"))
+                .tint(AsaColors.coffeeBrown)
             } else {
                 ProgressView("読み込み中...")
                     .onAppear {

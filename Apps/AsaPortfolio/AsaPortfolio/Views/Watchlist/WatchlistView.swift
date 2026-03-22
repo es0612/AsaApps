@@ -1,5 +1,6 @@
 import SwiftUI
 import SwiftData
+import AsaUIKit
 
 /// ウォッチリストビュー
 struct WatchlistView: View {
@@ -83,10 +84,10 @@ struct WatchlistItemRow: View {
 
                     Text(item.assetType.displayName)
                         .font(.caption2)
-                        .foregroundStyle(Color("AsaCoffeeBrown"))
+                        .foregroundStyle(AsaColors.coffeeBrown)
                         .padding(.horizontal, 6)
                         .padding(.vertical, 2)
-                        .background(Color("AsaCoffeeBrown").opacity(0.1))
+                        .background(AsaColors.coffeeBrown.opacity(0.1))
                         .clipShape(Capsule())
                 }
 
@@ -102,7 +103,7 @@ struct WatchlistItemRow: View {
                         Text("目標: \(target.formattedPrice)")
                             .font(.caption2)
                     }
-                    .foregroundStyle(item.targetReached ? .green : Color("AsaMutedSage"))
+                    .foregroundStyle(item.targetReached ? .green : AsaColors.mutedSage)
                 }
             }
 
@@ -138,11 +139,11 @@ struct EmptyWatchlistView: View {
         VStack(spacing: 20) {
             Image(systemName: "star")
                 .font(.system(size: 60))
-                .foregroundStyle(Color("AsaMutedSage"))
+                .foregroundStyle(AsaColors.mutedSage)
 
             Text("ウォッチリストが空です")
                 .font(.title2.bold())
-                .foregroundStyle(Color("AsaDarkSlate"))
+                .foregroundStyle(AsaColors.darkSlate)
 
             Text("気になる銘柄を追加して\n価格動向をチェックしましょう")
                 .font(.subheadline)
@@ -157,7 +158,7 @@ struct EmptyWatchlistView: View {
                     .foregroundStyle(.white)
                     .padding()
                     .frame(maxWidth: .infinity)
-                    .background(Color("AsaCoffeeBrown"))
+                    .background(AsaColors.coffeeBrown)
                     .clipShape(RoundedRectangle(cornerRadius: 12))
             }
             .padding(.horizontal, 40)
@@ -223,7 +224,7 @@ struct AddWatchlistSheet: View {
                                     VStack(alignment: .leading) {
                                         Text(result.symbol)
                                             .font(.headline)
-                                            .foregroundStyle(Color("AsaDarkSlate"))
+                                            .foregroundStyle(AsaColors.darkSlate)
                                         Text(result.name)
                                             .font(.caption)
                                             .foregroundStyle(.secondary)
