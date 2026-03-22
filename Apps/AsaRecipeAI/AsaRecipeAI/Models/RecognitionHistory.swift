@@ -103,7 +103,7 @@ struct SavedIngredient: Codable, Identifiable, Sendable {
 
 extension RecognitionHistory {
     /// サンプルデータ
-    static let sampleHistories: [RecognitionHistory] = [
+    static var sampleHistories: [RecognitionHistory] { [
         RecognitionHistory(
             ingredients: [
                 SavedIngredient(name: "にんじん", category: "野菜", confidence: 0.95, emoji: "🥕"),
@@ -123,5 +123,5 @@ extension RecognitionHistory {
             recognizedAt: Date().addingTimeInterval(-86400),
             generatedRecipeCount: 2
         ),
-    ]
+    ] }
 }

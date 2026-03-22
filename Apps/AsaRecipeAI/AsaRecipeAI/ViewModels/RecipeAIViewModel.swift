@@ -184,10 +184,33 @@ final class RecipeAIViewModel {
                 preferences: preferences
             ) {
                 partialRecipes = partial
+            }
 
-                // 完成したレシピを抽出
-                if let recipes = partial.recipes {
-                    completedRecipes = recipes.compactMap { $0 }
+            // ストリーミング完了後、完成レシピを抽出
+            if let finalRecipes = partialRecipes?.recipes {
+                completedRecipes = finalRecipes.compactMap { partial in
+                    guard let name = partial.name,
+                          let description = partial.description,
+                          let difficulty = partial.difficulty,
+                          let cookingTimeMinutes = partial.cookingTimeMinutes,
+                          let servings = partial.servings,
+                          let recommendationReason = partial.recommendationReason else {
+                        return nil
+                    }
+                    let ingredients = (partial.ingredients ?? []).compactMap { ing -> RecipeIngredient? in
+                        guard let name = ing.name, let amount = ing.amount else { return nil }
+                        return RecipeIngredient(name: name, amount: amount, isAvailable: ing.isAvailable ?? false)
+                    }
+                    let steps = (partial.steps ?? []).compactMap { step -> CookingStep? in
+                        guard let stepNumber = step.stepNumber, let instruction = step.instruction else { return nil }
+                        return CookingStep(stepNumber: stepNumber, instruction: instruction, tip: step.tip ?? nil)
+                    }
+                    return RecipeRecommendation(
+                        name: name, description: description, difficulty: difficulty,
+                        cookingTimeMinutes: cookingTimeMinutes, servings: servings,
+                        ingredients: ingredients, steps: steps,
+                        recommendationReason: recommendationReason
+                    )
                 }
             }
 

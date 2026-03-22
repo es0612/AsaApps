@@ -29,11 +29,11 @@ struct RecipeRecommendation: Equatable, Sendable, Identifiable {
     let difficulty: String
 
     /// 調理時間（分）
-    @Guide(description: "調理にかかる時間（分）", range: 5...180)
+    @Guide(description: "調理にかかる時間（分）", .range(5...180))
     let cookingTimeMinutes: Int
 
     /// 人数分
-    @Guide(description: "何人分の分量か", range: 1...8)
+    @Guide(description: "何人分の分量か", .range(1...8))
     let servings: Int
 
     /// 必要な食材
@@ -77,7 +77,7 @@ struct CookingStep: Equatable, Sendable, Identifiable {
     var id: Int { stepNumber }
 
     /// ステップ番号
-    @Guide(description: "手順の番号（1から始まる）", range: 1...20)
+    @Guide(description: "手順の番号（1から始まる）", .range(1...20))
     let stepNumber: Int
 
     /// 手順の説明

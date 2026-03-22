@@ -25,7 +25,7 @@ struct IngredientInfo: Equatable, Sendable, Identifiable {
     let category: String
 
     /// 認識信頼度（0.0〜1.0）
-    @Guide(description: "認識の信頼度（0.0〜1.0の範囲）", range: 0.0...1.0)
+    @Guide(description: "認識の信頼度（0.0〜1.0の範囲）", .range(0.0...1.0))
     let confidence: Double
 
     /// 絵文字アイコン

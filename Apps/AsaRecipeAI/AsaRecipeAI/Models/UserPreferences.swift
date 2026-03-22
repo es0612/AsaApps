@@ -155,5 +155,5 @@ enum DietaryRestriction: String, CaseIterable, Codable, Sendable {
 
 extension UserPreferences {
     /// デフォルト設定
-    static let defaultPreferences = UserPreferences()
+    static var defaultPreferences: UserPreferences { UserPreferences() }
 }

@@ -167,7 +167,7 @@ struct SavedCookingStep: Codable, Identifiable, Sendable {
 
 extension Recipe {
     /// サンプルデータ
-    static let sampleRecipes: [Recipe] = [
+    static var sampleRecipes: [Recipe] { [
         Recipe(
             name: "肉じゃが",
             description: "家庭の定番料理。ホクホクのじゃがいもと甘辛い味付けが美味しい",
@@ -206,5 +206,5 @@ extension Recipe {
             recommendationReason: "手軽に作れる時短レシピ",
             isFavorite: false
         ),
-    ]
+    ] }
 }

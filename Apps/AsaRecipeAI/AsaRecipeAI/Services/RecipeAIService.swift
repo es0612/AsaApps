@@ -43,7 +43,7 @@ final class RecipeAIService {
     func prepareSession() async {
         do {
             // デバイス互換性チェック
-            guard LanguageModelSession.isAvailable else {
+            guard case .available = SystemLanguageModel.default.availability else {
                 lastError = "このデバイスではFoundation Modelsが利用できません"
                 return
             }
@@ -143,7 +143,7 @@ final class RecipeAIService {
                         to: prompt,
                         generating: RecipeRecommendations.self
                     ) {
-                        continuation.yield(partial.result)
+                        continuation.yield(partial.content)
                     }
                     continuation.finish()
                 } catch {

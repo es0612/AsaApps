@@ -51,13 +51,11 @@ struct StreamingRecipeView: View {
         VStack(alignment: .leading, spacing: 16) {
             if let recipes = partialRecipes?.recipes {
                 ForEach(recipes.indices, id: \.self) { index in
-                    if let recipe = recipes[index] {
-                        StreamingRecipeCard(recipe: recipe, index: index)
-                            .transition(.asymmetric(
-                                insertion: .opacity.combined(with: .move(edge: .bottom)),
-                                removal: .opacity
-                            ))
-                    }
+                    StreamingRecipeCard(recipe: recipes[index], index: index)
+                        .transition(.asymmetric(
+                            insertion: .opacity.combined(with: .move(edge: .bottom)),
+                            removal: .opacity
+                        ))
                 }
             }
 
@@ -153,19 +151,18 @@ struct StreamingRecipeCard: View {
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack(spacing: 8) {
                         ForEach(ingredients.indices, id: \.self) { i in
-                            if let ing = ingredients[i] {
-                                HStack(spacing: 4) {
-                                    Image(systemName: ing.isAvailable == true ? "checkmark.circle.fill" : "circle")
-                                        .font(.caption2)
-                                        .foregroundStyle(ing.isAvailable == true ? .green : .gray)
-                                    Text(ing.name ?? "")
-                                        .font(.caption2)
-                                }
-                                .padding(.horizontal, 8)
-                                .padding(.vertical, 4)
-                                .background(Color("AsaSoftCream"))
-                                .clipShape(Capsule())
+                            let ing = ingredients[i]
+                            HStack(spacing: 4) {
+                                Image(systemName: ing.isAvailable == true ? "checkmark.circle.fill" : "circle")
+                                    .font(.caption2)
+                                    .foregroundStyle(ing.isAvailable == true ? .green : .gray)
+                                Text(ing.name ?? "")
+                                    .font(.caption2)
                             }
+                            .padding(.horizontal, 8)
+                            .padding(.vertical, 4)
+                            .background(Color("AsaSoftCream"))
+                            .clipShape(Capsule())
                         }
                     }
                 }
@@ -207,12 +204,6 @@ struct StreamingRecipeCard: View {
         StreamingTextView(
             text: "これはストリーミングテキストのサンプルです",
             isStreaming: true
-        )
-        .padding()
-
-        StreamingRecipeCard(
-            recipe: RecipeRecommendation.PartiallyGenerated(),
-            index: 0
         )
         .padding()
     }

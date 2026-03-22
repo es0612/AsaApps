@@ -78,12 +78,12 @@ final class Ingredient {
 
 extension Ingredient {
     /// サンプルデータ
-    static let sampleIngredients: [Ingredient] = [
+    static var sampleIngredients: [Ingredient] { [
         Ingredient(name: "にんじん", category: .vegetable, emoji: "🥕", confidence: 0.95),
         Ingredient(name: "玉ねぎ", category: .vegetable, emoji: "🧅", confidence: 0.92),
         Ingredient(name: "じゃがいも", category: .vegetable, emoji: "🥔", confidence: 0.88),
         Ingredient(name: "鶏もも肉", category: .meat, emoji: "🍗", confidence: 0.90),
         Ingredient(name: "卵", category: .egg, emoji: "🥚", confidence: 0.98),
         Ingredient(name: "牛乳", category: .dairy, emoji: "🥛", confidence: 0.85),
-    ]
+    ] }
 }
