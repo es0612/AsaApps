@@ -310,6 +310,14 @@ final class RecipeAIViewModel {
 
     /// 初期データを読み込み
     private func loadInitialData() async {
+        // 初回起動時のサンプルデータ投入
+        let existingRecipes = dataService.fetchAllRecipes()
+        let existingHistory = dataService.fetchAllHistory()
+        if existingRecipes.isEmpty && existingHistory.isEmpty {
+            let generator = SampleDataGenerator(dataService: dataService)
+            generator.insertSampleData()
+        }
+
         favoriteRecipes = dataService.fetchFavoriteRecipes()
         recognitionHistory = dataService.fetchRecentHistory()
         userPreferences = dataService.fetchUserPreferences()
