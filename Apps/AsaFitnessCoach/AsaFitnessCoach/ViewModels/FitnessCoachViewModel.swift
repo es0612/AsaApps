@@ -40,6 +40,7 @@ final class FitnessCoachViewModel {
     // UI状態
     var isLoading = false
     var errorMessage: String?
+    var isDemoMode = false
     var showOnboarding: Bool {
         userProfile == nil
     }
@@ -64,6 +65,7 @@ final class FitnessCoachViewModel {
             let generator = SampleDataGenerator(dataService: dataService)
             generator.insertSampleData()
             userProfile = dataService.fetchUserProfile()
+            UserDefaults.standard.set(true, forKey: "AsaFitnessCoach_isDemoMode")
         }
 
         // ワークアウトプラン読み込み
@@ -80,6 +82,12 @@ final class FitnessCoachViewModel {
         // HealthKitデータ読み込み
         if healthKitService.isAuthorized {
             await loadHealthKitData()
+        } else if UserDefaults.standard.bool(forKey: "AsaFitnessCoach_isDemoMode") {
+            isDemoMode = true
+            todaySteps = 6842
+            todayCalories = 320
+            todayActiveTime = 45
+            todayWorkoutCount = 1
         }
 
         // AI提案生成

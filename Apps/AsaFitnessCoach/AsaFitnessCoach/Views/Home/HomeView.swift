@@ -12,6 +12,7 @@ struct HomeView: View {
 
     @Bindable var viewModel: FitnessCoachViewModel
     @State private var showOnboarding = false
+    @State private var selectedPlanForWorkout: WorkoutPlan?
 
     // MARK: - Body
 
@@ -50,6 +51,9 @@ struct HomeView: View {
             }
             .sheet(isPresented: $showOnboarding) {
                 OnboardingView(viewModel: viewModel)
+            }
+            .sheet(item: $selectedPlanForWorkout) { plan in
+                WorkoutSessionView(viewModel: viewModel, plan: plan)
             }
             .onAppear {
                 if viewModel.showOnboarding {
@@ -99,8 +103,8 @@ struct HomeView: View {
                 )
             }
 
-            // HealthKit未連携の場合
-            if !viewModel.healthKitService_.isAuthorized {
+            // HealthKit未連携の場合（デモモード時は非表示）
+            if !viewModel.healthKitService_.isAuthorized && !viewModel.isDemoMode {
                 Button {
                     Task {
                         await viewModel.requestHealthKitAuthorization()
@@ -133,7 +137,7 @@ struct HomeView: View {
                 TodayWorkoutCard(
                     plan: plan,
                     onStart: {
-                        // ワークアウト開始処理
+                        selectedPlanForWorkout = plan
                     }
                 )
             }
