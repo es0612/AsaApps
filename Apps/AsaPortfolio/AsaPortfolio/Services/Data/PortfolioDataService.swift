@@ -4,7 +4,7 @@ import SwiftData
 /// ポートフォリオデータサービス - SwiftData CRUD操作
 @MainActor
 final class PortfolioDataService {
-    private let modelContext: ModelContext
+    let modelContext: ModelContext
 
     init(modelContext: ModelContext) {
         self.modelContext = modelContext

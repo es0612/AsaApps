@@ -113,6 +113,14 @@ final class PortfolioViewModel {
             portfolios = try dataService.fetchAllPortfolios()
             watchlistItems = try dataService.fetchWatchlist()
 
+            // 初回起動時のサンプルデータ投入
+            if portfolios.isEmpty {
+                let generator = SampleDataGenerator(modelContext: dataService.modelContext)
+                try generator.insertSampleData()
+                portfolios = try dataService.fetchAllPortfolios()
+                watchlistItems = try dataService.fetchWatchlist()
+            }
+
             if portfolios.isEmpty {
                 appState = .empty
             } else {
