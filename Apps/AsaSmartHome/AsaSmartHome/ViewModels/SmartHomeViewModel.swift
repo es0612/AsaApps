@@ -77,6 +77,9 @@ final class SmartHomeViewModel {
         devices.filter { $0.roomId == nil }
     }
 
+    /// DeviceDetailViewなど外部からサービスにアクセスするためのアクセサ
+    var smartHomeService: SmartHomeServiceProtocol { service }
+
     // MARK: - Initialization
 
     init(service: SmartHomeServiceProtocol) {

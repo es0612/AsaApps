@@ -139,10 +139,7 @@ struct DeviceDetailView: View {
     // MARK: - Private Methods
 
     private func getService() -> SmartHomeServiceProtocol? {
-        // ViewModelから直接サービスを取得する方法がないため、
-        // 実際のアプリではDependency Injectionを使用します
-        // ここではプレースホルダーとしてnilを返す
-        nil
+        viewModel.smartHomeService
     }
 }
 
