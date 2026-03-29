@@ -272,6 +272,44 @@ final class LanguageLearnViewModel {
 
         modelContext.insert(travelCourse)
 
+        // デモ用: 学習セッション履歴を作成（ダッシュボード表示用）
+        let calendar = Calendar.current
+        let sessionConfigs: [(daysAgo: Int, items: Int, correct: Int, duration: Int, score: Double)] = [
+            (6, 5, 4, 480, 0.78),
+            (5, 8, 6, 600, 0.82),
+            (4, 0, 0, 0, 0),     // 休み
+            (3, 10, 8, 720, 0.85),
+            (2, 7, 6, 540, 0.88),
+            (1, 12, 10, 900, 0.90),
+            (0, 6, 5, 420, 0.83),
+        ]
+
+        for config in sessionConfigs where config.items > 0 {
+            let session = StudySession(sessionType: .practice)
+            let startOfDay = calendar.startOfDay(for: Date())
+            let sessionDate = calendar.date(byAdding: .day, value: -config.daysAgo, to: startOfDay)!
+            let sessionStart = calendar.date(byAdding: .hour, value: 6, to: sessionDate)!
+            session.startedAt = sessionStart
+            session.endedAt = sessionStart.addingTimeInterval(TimeInterval(config.duration))
+            session.itemsPracticed = config.items
+            session.correctCount = config.correct
+            session.incorrectCount = config.items - config.correct
+            session.averageScore = config.score
+            modelContext.insert(session)
+        }
+
+        // デモ用: ユーザープロファイルに学習実績を反映
+        if let profile = userProfile {
+            profile.totalStudySeconds = 3660  // 約1時間
+            profile.currentStreak = 3
+            profile.bestStreak = 3
+            profile.completedLessons = 4
+            profile.masteredItems = 2
+            profile.totalCorrect = 39
+            profile.totalAnswers = 48
+            profile.lastStudyDate = Date()
+        }
+
         try modelContext.save()
     }
 
