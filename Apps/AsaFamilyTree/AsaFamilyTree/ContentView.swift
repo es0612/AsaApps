@@ -1,4 +1,5 @@
 import SwiftUI
+import SwiftData
 import AsaFamilyTreeKit
 import AsaUIKit
 
@@ -6,6 +7,7 @@ struct ContentView: View {
     // MARK: - Environment
 
     @Environment(FamilyTreeViewModel.self) private var viewModel
+    @Environment(\.modelContext) private var modelContext
 
     // MARK: - State
 
@@ -43,6 +45,7 @@ struct ContentView: View {
         .tint(AsaColors.coffeeBrown)
         .task {
             await viewModel.loadInitialData()
+            await loadSampleDataIfNeeded()
         }
         .sheet(isPresented: $showingCreateTreeSheet) {
             CreateTreeSheet()
@@ -51,6 +54,23 @@ struct ContentView: View {
             if viewModel.appState == .empty && !showingCreateTreeSheet {
                 EmptyStateView(showingCreateTreeSheet: $showingCreateTreeSheet)
             }
+        }
+    }
+
+    // MARK: - Sample Data Loading
+
+    /// 初回起動時にデモ用サンプルデータを投入
+    private func loadSampleDataIfNeeded() async {
+        let key = "AsaFamilyTree_SampleDataLoaded_v1"
+        guard !UserDefaults.standard.bool(forKey: key) else { return }
+
+        let service = SampleDataService(modelContext: modelContext)
+        do {
+            try service.loadSampleData()
+            UserDefaults.standard.set(true, forKey: key)
+            await viewModel.loadInitialData()
+        } catch {
+            print("サンプルデータ投入エラー: \(error.localizedDescription)")
         }
     }
 }
