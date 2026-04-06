@@ -38,6 +38,9 @@ struct ContentView: View {
         let scoringService = ScoringService()
         let difficultyService = AdaptiveDifficultyService()
 
+        // 初回起動時にデモ用サンプルデータを投入
+        Self.loadSampleDataIfNeeded(modelContainer: dataService.modelContainer)
+
         self.dataService = dataService
         self.questionGenerator = questionGenerator
         self.scoringService = scoringService
@@ -46,6 +49,21 @@ struct ContentView: View {
         self._homeVM = State(initialValue: HomeViewModel(dataService: dataService))
         self._progressVM = State(initialValue: ProgressViewModel(dataService: dataService))
         self._profileVM = State(initialValue: ProfileViewModel(dataService: dataService))
+    }
+
+    /// 初回起動時にサンプルデータを投入
+    /// - プロフィール（はなちゃん 6歳）+ 14件のゲーム履歴 + 5つの実績バッジ
+    private static func loadSampleDataIfNeeded(modelContainer: ModelContainer) {
+        let key = "AsaEduGame_SampleDataLoaded_v1"
+        guard !UserDefaults.standard.bool(forKey: key) else { return }
+
+        let sampleService = SampleDataService(modelContainer: modelContainer)
+        do {
+            try sampleService.loadSampleData()
+            UserDefaults.standard.set(true, forKey: key)
+        } catch {
+            print("サンプルデータ投入エラー: \(error.localizedDescription)")
+        }
     }
 
     // MARK: - Body
