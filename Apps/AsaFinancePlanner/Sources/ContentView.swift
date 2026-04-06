@@ -36,6 +36,23 @@ struct ContentView: View {
             }
         }
         .tint(AsaColors.coffeeBrown)
+        .task {
+            loadSampleDataIfNeeded()
+        }
+    }
+
+    /// 初回起動時にデモ用サンプルデータを投入
+    private func loadSampleDataIfNeeded() {
+        let key = "AsaFinancePlanner_SampleDataLoaded_v1"
+        guard !UserDefaults.standard.bool(forKey: key) else { return }
+
+        let service = SampleDataService(modelContext: modelContext)
+        do {
+            try service.loadSampleData()
+            UserDefaults.standard.set(true, forKey: key)
+        } catch {
+            print("サンプルデータ投入エラー: \(error.localizedDescription)")
+        }
     }
 
     @ViewBuilder
