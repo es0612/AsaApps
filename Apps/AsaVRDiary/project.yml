@@ -21,7 +21,9 @@ targets:
     type: application
     platform: iOS
     sources:
-      - AsaVRDiary
+      - path: AsaVRDiary
+        excludes:
+          - "**/CLAUDE.md"
     resources:
       - AsaVRDiary/Assets.xcassets
     settings:

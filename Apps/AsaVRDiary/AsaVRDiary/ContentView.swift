@@ -38,6 +38,14 @@ struct ContentView: View {
 
     init(dataService: DiaryDataService? = nil) {
         let service = dataService ?? DiaryDataService()
+
+        // 初回起動時にデモ用サンプルデータを自動投入
+        let sampleDataKey = "AsaVRDiary_SampleDataLoaded_v1"
+        if !UserDefaults.standard.bool(forKey: sampleDataKey) {
+            service.createSampleData()
+            UserDefaults.standard.set(true, forKey: sampleDataKey)
+        }
+
         _diaryViewModel = State(initialValue: DiaryViewModel(dataService: service))
         _vrViewModel = State(initialValue: VRSceneViewModel())
         _statsViewModel = State(initialValue: StatsViewModel(dataService: service))
