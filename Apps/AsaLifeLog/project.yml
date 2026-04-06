@@ -23,7 +23,10 @@ targets:
   AsaLifeLog:
     type: application
     platform: iOS
-    sources: [Sources]
+    sources:
+      - path: Sources
+        excludes:
+          - "**/CLAUDE.md"
     resources: [Sources/Assets.xcassets]
     settings:
       PRODUCT_BUNDLE_IDENTIFIER: com.asapapa.apps.asalifelog

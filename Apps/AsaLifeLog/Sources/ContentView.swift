@@ -74,6 +74,8 @@ struct ContentView: View {
             }
         }
         .task {
+            // 初回起動時にデモ用サンプルデータを自動投入
+            SampleDataLoader.loadIfNeeded(into: modelContext)
             dataService = LifeLogDataService(modelContext: modelContext)
         }
         .sheet(isPresented: $showOnboarding) {

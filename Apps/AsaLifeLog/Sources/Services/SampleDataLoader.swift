@@ -4,10 +4,19 @@ import AsaLifeLogKit
 
 // MARK: - SampleDataLoader
 
-/// デバッグ用サンプルデータローダー
-#if DEBUG
+/// デモ動画撮影用サンプルデータローダー
+/// UserDefaults フラグで初回起動時のみ投入
 @MainActor
 struct SampleDataLoader {
+    private static let sampleDataKey = "AsaLifeLog_SampleDataLoaded_v1"
+
+    /// 初回起動時のみサンプルデータを投入
+    static func loadIfNeeded(into context: ModelContext) {
+        guard !UserDefaults.standard.bool(forKey: sampleDataKey) else { return }
+        loadSampleData(into: context)
+        UserDefaults.standard.set(true, forKey: sampleDataKey)
+    }
+
     static func loadSampleData(into context: ModelContext) {
         let calendar = Calendar.current
         let today = Date()
@@ -103,4 +112,3 @@ struct SampleDataLoader {
         try? context.save()
     }
 }
-#endif
