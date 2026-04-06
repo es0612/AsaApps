@@ -12,8 +12,32 @@ import SwiftData
 struct AsaCrowdsourceApp: App {
     // MARK: - Properties
 
-    @StateObject private var authViewModel = AuthViewModel()
+    /// AuthViewModel の初期化前にデモユーザーを UserDefaults に書き込む
+    /// クロージャー初期化を使うことで、AuthViewModel.init() より先に setupDemoUserIfNeeded() が走る
+    @StateObject private var authViewModel: AuthViewModel = {
+        AsaCrowdsourceApp.setupDemoUserIfNeeded()
+        return AuthViewModel()
+    }()
+
     @StateObject private var familyViewModel = FamilyGroupViewModel()
+
+    /// 初回起動時のデモユーザー事前設定
+    /// AuthViewModel.loadPersistedUser() がこのデータを読み込んで自動サインインする
+    private static func setupDemoUserIfNeeded() {
+        let userKey = "AsaCrowdsource.CurrentUser"
+        guard UserDefaults.standard.data(forKey: userKey) == nil else { return }
+
+        let demoUser = User(
+            id: "demo_user_papa",
+            email: "papa@tanaka.example",
+            displayName: "パパ"
+        )
+
+        if let data = try? JSONEncoder().encode(demoUser) {
+            UserDefaults.standard.set(data, forKey: userKey)
+            UserDefaults.standard.set(demoUser.id, forKey: "AsaCrowdsource.CurrentUserId")
+        }
+    }
 
     // MARK: - SwiftData Model Container
 

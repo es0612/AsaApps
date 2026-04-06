@@ -22,6 +22,7 @@ targets:
       - path: AsaCrowdsource
         excludes:
           - "**/.DS_Store"
+          - "**/CLAUDE.md"
     resources:
       - path: AsaCrowdsource/Assets.xcassets
     settings:

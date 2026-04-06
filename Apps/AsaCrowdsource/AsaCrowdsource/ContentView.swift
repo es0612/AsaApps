@@ -34,6 +34,9 @@ struct ContentView: View {
             }
         }
         .animation(.easeInOut(duration: 0.2), value: authViewModel.authState)
+        .task {
+            await loadDemoSampleDataIfNeeded()
+        }
     }
 
     // MARK: - Subviews
@@ -101,6 +104,32 @@ struct ContentView: View {
 
     private func loadInitialData() async {
         await familyViewModel.loadInitialData()
+    }
+
+    /// 初回起動時にデモ用サンプルデータを自動投入
+    /// - サインイン済みの場合のみ実行（事前に App.init で demo_user_papa が設定済み）
+    /// - SampleDataService 経由でグループ・メンバー・アイデア・コメント・投票を投入
+    private func loadDemoSampleDataIfNeeded() async {
+        let key = "AsaCrowdsource_SampleDataLoaded_v1"
+        guard !UserDefaults.standard.bool(forKey: key) else { return }
+        guard let user = authViewModel.currentUser else { return }
+
+        // FamilyGroupViewModel に dataService を設定（mainTabView の onAppear より先に走るケースに対応）
+        let dataService = LocalDataService(modelContainer: modelContext.container)
+        familyViewModel.setDataService(dataService)
+        familyViewModel.setCurrentUserId(user.id)
+
+        // サンプルデータを投入
+        let sampleService = SampleDataService(modelContainer: modelContext.container)
+        do {
+            try await sampleService.loadSampleData(ownerUserId: user.id)
+            UserDefaults.standard.set(true, forKey: key)
+
+            // FamilyGroupViewModel をリロードしてグループを表示
+            await familyViewModel.loadInitialData()
+        } catch {
+            print("サンプルデータ投入エラー: \(error.localizedDescription)")
+        }
     }
 }
 
