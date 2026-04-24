@@ -135,38 +135,69 @@ public struct TreeConnection: Identifiable, Sendable {
     public let from: CGPoint
     public let to: CGPoint
     public let connectionType: ConnectionType
+    /// 配偶者接続で隣接配置されているか（遠距離配偶者のスタイル分岐に使用）
+    public let isAdjacent: Bool
+    /// この接続線に関係するメンバーの ID 集合（選択ハイライト判定に使用）
+    public let memberIds: Set<UUID>
 
-    public init(from: CGPoint, to: CGPoint, connectionType: ConnectionType) {
+    public init(
+        from: CGPoint,
+        to: CGPoint,
+        connectionType: ConnectionType,
+        isAdjacent: Bool = true,
+        memberIds: Set<UUID> = []
+    ) {
         self.id = UUID()
         self.from = from
         self.to = to
         self.connectionType = connectionType
+        self.isAdjacent = isAdjacent
+        self.memberIds = memberIds
     }
 }
 
 // MARK: - ConnectionType
 
 /// 接続線の種類
+/// 色値は AsaColors に準拠（循環依存を避けるため RGB を複製定義）：
+/// - parentChild / siblingBus: `AsaColors.mocha` 相当 #8B5A2B
+/// - currentSpouse: `AsaColors.coffeeBrown` 相当 #C68C53（二重線で描画）
+/// - divorcedSpouse: `AsaColors.mutedSage` 相当 #7A918D（破線で描画）
 public enum ConnectionType: Sendable {
-    case parentChild    // 親子関係（縦線）
-    case spouse         // 配偶者関係（横線）
+    case parentChild      // 親→子の階段状線（兄弟1人 or 親1人のケース）
+    case currentSpouse    // 現配偶者（=記号風の二重線）
+    case divorcedSpouse   // 離別配偶者（破線）
+    case siblingBus       // 複数兄弟を共通横線(T字)で束ねる線
 
-    /// 線の色
+    /// 線の色（CGColor）
     public var lineColor: CGColor {
         switch self {
-        case .parentChild:
-            return CGColor(red: 0.4, green: 0.4, blue: 0.4, alpha: 1.0)
-        case .spouse:
-            return CGColor(red: 0.8, green: 0.4, blue: 0.5, alpha: 1.0)
+        case .parentChild, .siblingBus:
+            return CGColor(red: 0.545, green: 0.353, blue: 0.169, alpha: 1.0) // mocha
+        case .currentSpouse:
+            return CGColor(red: 0.776, green: 0.549, blue: 0.325, alpha: 1.0) // coffeeBrown
+        case .divorcedSpouse:
+            return CGColor(red: 0.478, green: 0.569, blue: 0.553, alpha: 1.0) // mutedSage
         }
     }
 
     /// 線の太さ
     public var lineWidth: CGFloat {
         switch self {
-        case .parentChild: return 2.0
-        case .spouse: return 2.5
+        case .parentChild, .siblingBus: return 1.8
+        case .currentSpouse: return 2.0
+        case .divorcedSpouse: return 1.2
         }
+    }
+
+    /// 破線かどうか
+    public var isDashed: Bool {
+        self == .divorcedSpouse
+    }
+
+    /// 二重線（=記号風）で描画するか
+    public var isDouble: Bool {
+        self == .currentSpouse
     }
 }
 

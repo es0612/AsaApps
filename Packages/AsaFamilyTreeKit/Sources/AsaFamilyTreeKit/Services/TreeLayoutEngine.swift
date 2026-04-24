@@ -95,18 +95,21 @@ public final class TreeLayoutEngine {
 
     // MARK: - Helper Methods
 
-    /// メンバーを配偶者ペアとシングルに分離
+    /// メンバーを配偶者ペアとシングルに分離（親ペア単位でグルーピングして兄弟を連続配置）
     private func groupBySpouse(members: [FamilyMember]) -> (pairs: [(FamilyMember, FamilyMember)], singles: [FamilyMember]) {
+        // 親ペアキーでグループ分けし、同じ親ペアの子が横並びになるよう順序を決める
+        let sortedMembers = sortByParentGroup(members: members)
+
         var pairs: [(FamilyMember, FamilyMember)] = []
         var processedIds = Set<UUID>()
         var singles: [FamilyMember] = []
 
-        for member in members {
+        for member in sortedMembers {
             guard !processedIds.contains(member.id) else { continue }
 
-            // 同じ世代の配偶者を探す
+            // 現配偶者（離婚していない）がこの世代にいれば、ペアとして配置
             if let spouse = member.currentSpouse,
-               members.contains(where: { $0.id == spouse.id }) {
+               sortedMembers.contains(where: { $0.id == spouse.id }) {
                 pairs.append((member, spouse))
                 processedIds.insert(member.id)
                 processedIds.insert(spouse.id)
@@ -117,6 +120,30 @@ public final class TreeLayoutEngine {
         }
 
         return (pairs, singles)
+    }
+
+    /// 同世代のメンバーを「親ペアキー」でソートし、同じ親ペアの子が連続するように並べ替え
+    private func sortByParentGroup(members: [FamilyMember]) -> [FamilyMember] {
+        var groupOrder: [String] = []
+        var membersByGroup: [String: [FamilyMember]] = [:]
+
+        for member in members {
+            let key = parentGroupKey(for: member)
+            if membersByGroup[key] == nil {
+                groupOrder.append(key)
+            }
+            membersByGroup[key, default: []].append(member)
+        }
+
+        return groupOrder.flatMap { membersByGroup[$0] ?? [] }
+    }
+
+    /// 親ペアキー（ソート済み親IDの連結文字列、親が無ければ "_root_"）
+    private func parentGroupKey(for member: FamilyMember) -> String {
+        if member.parents.isEmpty {
+            return "_root_\(member.id.uuidString)"
+        }
+        return member.parents.map { $0.id.uuidString }.sorted().joined(separator: "-")
     }
 
     /// 子の位置を親の中心に調整
@@ -197,43 +224,120 @@ public final class TreeLayoutEngine {
     /// 接続線を生成
     private func generateConnections(nodes: [UUID: TreeNode], tree: FamilyTree) -> [TreeConnection] {
         var connections: [TreeConnection] = []
-        var processedPairs = Set<String>()
+
+        // 1. 親子接続 / 兄弟バス線（兄弟2人以上なら T字でまとめる）
+        connections.append(contentsOf: generateParentChildConnections(nodes: nodes, tree: tree))
+
+        // 2. 配偶者接続（現婚は二重線、離別は破線）
+        connections.append(contentsOf: generateSpouseConnections(nodes: nodes, tree: tree))
+
+        return connections
+    }
+
+    /// 親子接続と兄弟バス線を生成
+    private func generateParentChildConnections(nodes: [UUID: TreeNode], tree: FamilyTree) -> [TreeConnection] {
+        var connections: [TreeConnection] = []
+        var processedParentGroupKeys = Set<String>()
+
+        for member in tree.members {
+            guard !member.children.isEmpty else { continue }
+
+            for child in member.children {
+                // 親ペアキー（両親の ID を昇順連結）で兄弟グループを一意化
+                let parentKey = child.parents.map { $0.id.uuidString }.sorted().joined(separator: "-")
+                guard !parentKey.isEmpty else { continue }
+                guard !processedParentGroupKeys.contains(parentKey) else { continue }
+                processedParentGroupKeys.insert(parentKey)
+
+                // この親グループの全兄弟を収集
+                let siblings = tree.members.filter {
+                    !$0.parents.isEmpty &&
+                    $0.parents.map { $0.id.uuidString }.sorted().joined(separator: "-") == parentKey
+                }
+                let siblingNodes = siblings.compactMap { nodes[$0.id] }
+                guard !siblingNodes.isEmpty else { continue }
+
+                // 親ノード中心点（両親の下端中央の平均）
+                let parentNodes = child.parents.compactMap { nodes[$0.id] }
+                guard !parentNodes.isEmpty else { continue }
+                let parentCenterX = parentNodes.map { $0.bottomCenter.x }.reduce(0, +) / CGFloat(parentNodes.count)
+                let parentBottomY = parentNodes.map { $0.bottomCenter.y }.max() ?? 0
+                let parentAnchor = CGPoint(x: parentCenterX, y: parentBottomY)
+
+                // ハイライト判定用の ID 集合（親 + 兄弟全員）
+                let parentIds = Set(child.parents.map { $0.id })
+                let siblingIds = Set(siblings.map { $0.id })
+                let groupIds = parentIds.union(siblingIds)
+
+                if siblingNodes.count >= 2 {
+                    // 兄弟バス線（T字）
+                    let busY = parentBottomY + verticalSpacing / 2
+
+                    // 親 → バス Y（縦線、親子色）
+                    connections.append(TreeConnection(
+                        from: parentAnchor,
+                        to: CGPoint(x: parentCenterX, y: busY),
+                        connectionType: .parentChild,
+                        memberIds: groupIds
+                    ))
+
+                    // バス横線（左端 → 右端、兄弟色）
+                    let childXs = siblingNodes.map { $0.topCenter.x }
+                    let minX = min(parentCenterX, childXs.min() ?? parentCenterX)
+                    let maxX = max(parentCenterX, childXs.max() ?? parentCenterX)
+                    connections.append(TreeConnection(
+                        from: CGPoint(x: minX, y: busY),
+                        to: CGPoint(x: maxX, y: busY),
+                        connectionType: .siblingBus,
+                        memberIds: groupIds
+                    ))
+
+                    // バス → 各子の上端（縦線）
+                    for (sibling, childNode) in zip(siblings, siblingNodes) {
+                        connections.append(TreeConnection(
+                            from: CGPoint(x: childNode.topCenter.x, y: busY),
+                            to: childNode.topCenter,
+                            connectionType: .parentChild,
+                            memberIds: parentIds.union([sibling.id])
+                        ))
+                    }
+                } else if let soloNode = siblingNodes.first, let solo = siblings.first {
+                    // 兄弟 1 人: 従来の階段状
+                    connections.append(TreeConnection(
+                        from: parentAnchor,
+                        to: soloNode.topCenter,
+                        connectionType: .parentChild,
+                        memberIds: parentIds.union([solo.id])
+                    ))
+                }
+            }
+        }
+
+        return connections
+    }
+
+    /// 配偶者接続を生成（現婚・離婚で別スタイル）
+    private func generateSpouseConnections(nodes: [UUID: TreeNode], tree: FamilyTree) -> [TreeConnection] {
+        var connections: [TreeConnection] = []
+        var processedMarriageIds = Set<UUID>()
 
         for member in tree.members {
             guard let node = nodes[member.id] else { continue }
 
-            // 親子接続
-            for child in member.children {
-                guard let childNode = nodes[child.id] else { continue }
-
-                // 重複チェック
-                let pairKey = [member.id.uuidString, child.id.uuidString].sorted().joined(separator: "-")
-                guard !processedPairs.contains(pairKey) else { continue }
-                processedPairs.insert(pairKey)
-
-                // 親の下端から子の上端への接続
-                let connection = TreeConnection(
-                    from: node.bottomCenter,
-                    to: childNode.topCenter,
-                    connectionType: .parentChild
-                )
-                connections.append(connection)
-            }
-
-            // 配偶者接続
             for marriage in member.marriages {
+                guard !processedMarriageIds.contains(marriage.id) else { continue }
+                processedMarriageIds.insert(marriage.id)
+
                 guard let spouse = marriage.getSpouse(of: member),
                       let spouseNode = nodes[spouse.id] else { continue }
 
-                // 重複チェック
-                let pairKey = [member.id.uuidString, spouse.id.uuidString].sorted().joined(separator: "-spouse")
-                guard !processedPairs.contains(pairKey) else { continue }
-                processedPairs.insert(pairKey)
+                // 隣接判定（X 座標差が閾値以内か）
+                let xDiff = abs(node.position.x - spouseNode.position.x)
+                let adjacencyThreshold = nodeSize.width + horizontalSpacing * 1.2
+                let isAdjacent = xDiff <= adjacencyThreshold
 
-                // 隣り合う配偶者間の接続
                 let fromPoint: CGPoint
                 let toPoint: CGPoint
-
                 if node.position.x < spouseNode.position.x {
                     fromPoint = node.rightCenter
                     toPoint = spouseNode.leftCenter
@@ -242,12 +346,14 @@ public final class TreeLayoutEngine {
                     toPoint = spouseNode.rightCenter
                 }
 
-                let connection = TreeConnection(
+                let type: ConnectionType = marriage.isCurrentlyMarried ? .currentSpouse : .divorcedSpouse
+                connections.append(TreeConnection(
                     from: fromPoint,
                     to: toPoint,
-                    connectionType: .spouse
-                )
-                connections.append(connection)
+                    connectionType: type,
+                    isAdjacent: isAdjacent,
+                    memberIds: [member.id, spouse.id]
+                ))
             }
         }
 

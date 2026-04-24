@@ -166,6 +166,35 @@ public final class FamilyTree {
         for member in members where member.generation == -1 {
             member.generation = 0
         }
+
+        // 配偶者の世代を揃える（親が未登録の配偶者がルート扱いになる問題を解消）
+        alignSpouseGenerations()
+    }
+
+    /// 配偶者同士の世代差を解消（配偶者がいるなら、高い方の世代に揃える）
+    ///
+    /// 例：鈴木健太（親登録なし → generation 0）と鈴木幸子（山田家 generation 1）の
+    /// 結婚ペアは世代が一致していないと家系図の横軸が揃わない。
+    private func alignSpouseGenerations() {
+        var changed = true
+        var iterations = 0
+        let maxIterations = members.count * 2  // 無限ループ防止
+
+        while changed && iterations < maxIterations {
+            changed = false
+            iterations += 1
+
+            for member in members {
+                for spouse in member.spouses {
+                    if member.generation > spouse.generation {
+                        spouse.generation = member.generation
+                        // 子孫にも伝播（子がいればその世代も見直す）
+                        propagateGeneration(from: spouse)
+                        changed = true
+                    }
+                }
+            }
+        }
     }
 
     /// 世代を子孫に伝播
@@ -198,6 +227,44 @@ public final class FamilyTree {
             member.firstName.lowercased().contains(lowercasedQuery) ||
             member.lastName.lowercased().contains(lowercasedQuery)
         }
+    }
+
+    /// 指定したメンバーの直系血族の ID 集合を返す
+    ///
+    /// 含まれるメンバー：
+    /// - 本人
+    /// - 全ての祖先（親・祖父母・…）
+    /// - 全ての子孫（子・孫・…）
+    /// - 現在の配偶者（離別者は含まない）
+    ///
+    /// 兄弟姉妹・義親族・いとこ等は含まない。選択ハイライト用途に使う。
+    public func directBloodline(of member: FamilyMember) -> Set<UUID> {
+        var result: Set<UUID> = [member.id]
+
+        // 祖先を BFS で辿る
+        var ancestorQueue: [FamilyMember] = member.parents
+        while let current = ancestorQueue.first {
+            ancestorQueue.removeFirst()
+            guard !result.contains(current.id) else { continue }
+            result.insert(current.id)
+            ancestorQueue.append(contentsOf: current.parents)
+        }
+
+        // 子孫を BFS で辿る
+        var descendantQueue: [FamilyMember] = member.children
+        while let current = descendantQueue.first {
+            descendantQueue.removeFirst()
+            guard !result.contains(current.id) else { continue }
+            result.insert(current.id)
+            descendantQueue.append(contentsOf: current.children)
+        }
+
+        // 現配偶者
+        if let spouse = member.currentSpouse {
+            result.insert(spouse.id)
+        }
+
+        return result
     }
 }
 

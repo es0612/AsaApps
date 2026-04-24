@@ -24,12 +24,14 @@ public final class FamilyTreeViewModel {
     public private(set) var familyTrees: [FamilyTree] = []
     public private(set) var currentTree: FamilyTree?
     public private(set) var selectedMember: FamilyMember?
+    /// 選択中メンバーの直系血族 ID 集合（nil の場合は全員通常表示）
+    public private(set) var highlightedIDs: Set<UUID>?
     public private(set) var isLoading = false
     public private(set) var errorMessage: String?
 
     // MARK: - Tree View State
 
-    public var zoomScale: CGFloat = 1.0
+    public var zoomScale: CGFloat = 0.55
     public var panOffset: CGSize = .zero
     public var searchQuery: String = ""
 
@@ -156,7 +158,7 @@ public final class FamilyTreeViewModel {
     /// 家系図を選択
     public func selectTree(_ tree: FamilyTree) {
         currentTree = tree
-        selectedMember = nil
+        selectMember(nil)
         resetViewState()
     }
 
@@ -180,7 +182,7 @@ public final class FamilyTreeViewModel {
 
         if currentTree?.id == tree.id {
             currentTree = familyTrees.first
-            selectedMember = nil
+            selectMember(nil)
         }
 
         if familyTrees.isEmpty {
@@ -224,9 +226,23 @@ public final class FamilyTreeViewModel {
         return member
     }
 
-    /// メンバーを選択
+    /// メンバーを選択（直系血族ハイライトも更新）
+    ///
+    /// nil を渡すとハイライトを解除。タップで選択→再タップで解除を実現する場合は
+    /// 呼び出し側で同じメンバーかを判定して nil を渡す。
     public func selectMember(_ member: FamilyMember?) {
         selectedMember = member
+        if let member, let tree = currentTree {
+            highlightedIDs = tree.directBloodline(of: member)
+        } else {
+            highlightedIDs = nil
+        }
+    }
+
+    /// 指定 ID のノードを薄く表示すべきか
+    public func shouldDim(id: UUID) -> Bool {
+        guard let highlightedIDs else { return false }
+        return !highlightedIDs.contains(id)
     }
 
     /// メンバーを更新
@@ -251,7 +267,7 @@ public final class FamilyTreeViewModel {
         try dataService.deleteMember(member, from: tree)
 
         if selectedMember?.id == member.id {
-            selectedMember = nil
+            selectMember(nil)
         }
     }
 
@@ -317,7 +333,7 @@ public final class FamilyTreeViewModel {
 
     /// ビュー状態をリセット
     public func resetViewState() {
-        zoomScale = 1.0
+        zoomScale = 0.55
         panOffset = .zero
         searchQuery = ""
         showOnlyAlive = false
@@ -327,7 +343,7 @@ public final class FamilyTreeViewModel {
     /// ズームをリセット
     public func resetZoom() {
         withAnimation(.easeInOut(duration: 0.2)) {
-            zoomScale = 1.0
+            zoomScale = 0.55
             panOffset = .zero
         }
     }

@@ -92,18 +92,34 @@ struct TreeVisualizationView: View {
         GeometryReader { geometry in
             ScrollView([.horizontal, .vertical], showsIndicators: true) {
                 ZStack {
+                    // 背景タップで選択解除
+                    Color.clear
+                        .contentShape(Rectangle())
+                        .onTapGesture {
+                            if viewModel.selectedMember != nil {
+                                viewModel.selectMember(nil)
+                            }
+                        }
+
                     // 接続線
                     ForEach(layout.connections) { connection in
-                        ConnectionLineView(connection: connection)
+                        ConnectionLineView(
+                            connection: connection,
+                            dimmed: shouldDimConnection(connection)
+                        )
                     }
 
                     // ノード
                     ForEach(layout.nodes) { node in
-                        MemberNodeView(node: node)
-                            .position(node.center)
-                            .onTapGesture {
-                                selectMember(id: node.id)
-                            }
+                        MemberNodeView(
+                            node: node,
+                            dimmed: viewModel.shouldDim(id: node.id),
+                            isSelected: viewModel.selectedMember?.id == node.id
+                        )
+                        .position(node.center)
+                        .onTapGesture {
+                            handleNodeTap(id: node.id)
+                        }
                     }
                 }
                 .frame(
@@ -120,7 +136,20 @@ struct TreeVisualizationView: View {
                         viewModel.zoomScale = newScale
                     }
             )
+            .overlay(alignment: .bottomTrailing) {
+                TreeLegendView()
+                    .padding(.trailing, 12)
+                    .padding(.bottom, 12)
+            }
         }
+    }
+
+    /// 接続線を薄く表示すべきか
+    private func shouldDimConnection(_ connection: TreeConnection) -> Bool {
+        guard let highlightedIDs = viewModel.highlightedIDs else { return false }
+        guard !connection.memberIds.isEmpty else { return false }
+        // 関連メンバー全員が直系血族に含まれていれば濃く表示、1人でも外なら薄く
+        return !connection.memberIds.isSubset(of: highlightedIDs)
     }
 
     // MARK: - Empty Tree View
@@ -157,8 +186,12 @@ struct TreeVisualizationView: View {
 
     // MARK: - Helper Methods
 
-    private func selectMember(id: UUID) {
-        if let member = viewModel.currentTree?.members.first(where: { $0.id == id }) {
+    /// ノードタップ処理（同じメンバーなら選択解除、それ以外は選択）
+    private func handleNodeTap(id: UUID) {
+        guard let member = viewModel.currentTree?.members.first(where: { $0.id == id }) else { return }
+        if viewModel.selectedMember?.id == id {
+            viewModel.selectMember(nil)
+        } else {
             viewModel.selectMember(member)
         }
     }
@@ -168,32 +201,67 @@ struct TreeVisualizationView: View {
 
 struct ConnectionLineView: View {
     let connection: TreeConnection
+    var dimmed: Bool = false
 
     var body: some View {
+        Group {
+            if connection.connectionType.isDouble {
+                doubleLine
+            } else {
+                singleLine
+            }
+        }
+        .opacity(dimmed ? 0.25 : 1.0)
+    }
+
+    private var singleLine: some View {
         Path { path in
             path.move(to: connection.from)
-
             switch connection.connectionType {
             case .parentChild:
-                // 階段状の接続線
+                // 階段状の接続線（親 → 中間Y → 子）
                 let midY = (connection.from.y + connection.to.y) / 2
                 path.addLine(to: CGPoint(x: connection.from.x, y: midY))
                 path.addLine(to: CGPoint(x: connection.to.x, y: midY))
                 path.addLine(to: connection.to)
-
-            case .spouse:
+            case .siblingBus, .currentSpouse, .divorcedSpouse:
                 // 直線
                 path.addLine(to: connection.to)
             }
         }
         .stroke(
-            Color(cgColor: connection.connectionType.lineColor),
-            style: StrokeStyle(
-                lineWidth: connection.connectionType.lineWidth,
-                lineCap: .round,
-                lineJoin: .round
-            )
+            connection.connectionType.swiftUIColor,
+            style: connection.connectionType.strokeStyle()
         )
+    }
+
+    /// 現配偶者を示す「=」記号風の二重線
+    private var doubleLine: some View {
+        let offset: CGFloat = 2.5
+        // 水平配偶者線（y がほぼ同じ）なら垂直方向にオフセット、それ以外は水平方向
+        let isHorizontal = abs(connection.from.y - connection.to.y) < 0.5
+        let dx: CGFloat = isHorizontal ? 0 : offset
+        let dy: CGFloat = isHorizontal ? offset : 0
+
+        return ZStack {
+            Path { path in
+                path.move(to: CGPoint(x: connection.from.x + dx, y: connection.from.y + dy))
+                path.addLine(to: CGPoint(x: connection.to.x + dx, y: connection.to.y + dy))
+            }
+            .stroke(
+                connection.connectionType.swiftUIColor,
+                style: connection.connectionType.strokeStyle()
+            )
+
+            Path { path in
+                path.move(to: CGPoint(x: connection.from.x - dx, y: connection.from.y - dy))
+                path.addLine(to: CGPoint(x: connection.to.x - dx, y: connection.to.y - dy))
+            }
+            .stroke(
+                connection.connectionType.swiftUIColor,
+                style: connection.connectionType.strokeStyle()
+            )
+        }
     }
 }
 
