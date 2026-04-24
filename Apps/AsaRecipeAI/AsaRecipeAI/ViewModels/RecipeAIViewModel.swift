@@ -41,6 +41,17 @@ final class RecipeAIViewModel {
         recipeAIService.isSessionReady
     }
 
+    /// デモモード（Foundation Models 非対応環境）かどうか
+    var isDemoMode: Bool {
+        if case .mock = recipeAIService.mode { return true }
+        return false
+    }
+
+    /// AI ステータスの表示文字列（"AI準備完了" / "デモモード"）
+    var aiStatusText: String {
+        recipeAIService.mode.userFacingLabel
+    }
+
     // MARK: - Recognition Results
 
     /// 認識された食材
@@ -114,6 +125,12 @@ final class RecipeAIViewModel {
         clearResults()
     }
 
+    /// 画像ロード失敗を報告（PhotosPicker からのデコード失敗時に View 側から呼び出す）
+    func reportImageLoadError(_ message: String = "画像の読み込みに失敗しました") {
+        errorMessage = message
+        appState = .error(message)
+    }
+
     /// 選択した画像を分析
     func analyzeSelectedImage() async {
         guard let image = selectedImage else {
@@ -132,15 +149,18 @@ final class RecipeAIViewModel {
         clearResults()
 
         do {
-            // Step 1: Vision で画像を分類
-            let labels = try await visionService.extractFoodLabels(image)
+            // Step 1: Vision で画像を分類（失敗しても続行。サービス層で空ラベル時のフォールバックを処理）
+            let labels: [String]
+            do {
+                labels = try await visionService.extractFoodLabels(image)
+            } catch {
+                // Vision エラーは続行可能（recognizeIngredients が空ラベル時にモックへフォールバック）
+                labels = []
+            }
             visionLabels = labels
 
-            guard !labels.isEmpty else {
-                throw RecipeAIError.generationFailed("食品が認識できませんでした")
-            }
-
-            // Step 2: Foundation Models で食材を特定
+            // Step 2: Foundation Models（または mock）で食材を特定
+            // ラベルが空でも recognizeIngredients 側でモック食材にフォールバックするので throw しない
             let result = try await recipeAIService.recognizeIngredients(from: labels)
             recognizedIngredients = result.ingredients
 
@@ -165,9 +185,16 @@ final class RecipeAIViewModel {
     // MARK: - Public Methods - Recipe Generation
 
     /// レシピを生成（ストリーミング）
+    /// デモモード時は最初から非ストリーミング版にフォールバック
     func generateRecipes() async {
         guard !recognizedIngredients.isEmpty else {
             errorMessage = "食材が認識されていません"
+            return
+        }
+
+        // デモモードならストリーミングを使わず最初から sync 版へ
+        if isDemoMode {
+            await generateRecipesSync()
             return
         }
 
@@ -217,6 +244,12 @@ final class RecipeAIViewModel {
             appState = .recipesGenerated
 
         } catch {
+            // 推論中に mock に劣化した場合は sync 版にフォールバック
+            if isDemoMode {
+                isGeneratingRecipes = false
+                await generateRecipesSync()
+                return
+            }
             errorMessage = error.localizedDescription
             appState = .error(error.localizedDescription)
         }

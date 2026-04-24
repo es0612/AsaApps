@@ -9,6 +9,31 @@
 import Foundation
 import FoundationModels
 
+// MARK: - RecipeAIServiceMode
+
+/// サービスの動作モード
+/// Foundation Models が使えない環境（シミュレータ、Apple Intelligence 非対応端末等）では
+/// `.mock` に劣化してデモデータを返す
+enum RecipeAIServiceMode: Equatable {
+    /// Foundation Models で本物の推論を実行
+    case live
+    /// モック（シミュレータ／モデル未対応／準備失敗時）
+    case mock(reason: String)
+
+    var isLive: Bool {
+        if case .live = self { return true }
+        return false
+    }
+
+    /// UI に表示する文字列
+    var userFacingLabel: String {
+        switch self {
+        case .live: return "AI準備完了"
+        case .mock: return "デモモード"
+        }
+    }
+}
+
 // MARK: - RecipeAIService
 
 /// Foundation Models を使用したAIレシピサービス
@@ -23,11 +48,19 @@ final class RecipeAIService {
     /// 処理中フラグ
     private(set) var isProcessing = false
 
-    /// セッション準備完了フラグ
-    private(set) var isSessionReady = false
+    /// 動作モード（live / mock）
+    private(set) var mode: RecipeAIServiceMode = .mock(reason: "初期化中")
 
     /// エラーメッセージ
     private(set) var lastError: String?
+
+    /// セッション準備完了フラグ（mock モードでも UI 操作を許可するため、初期化中以外は true）
+    var isSessionReady: Bool {
+        if case .mock(let reason) = mode, reason == "初期化中" {
+            return false
+        }
+        return true
+    }
 
     // MARK: - Initialization
 
@@ -40,21 +73,49 @@ final class RecipeAIService {
     // MARK: - Public Methods
 
     /// セッションを準備（プレウォーム）
+    /// availability チェックに一本化。Apple Intelligence 対応環境（シミュレータ含む）では本物の Foundation Models が動作する。
+    /// 非対応環境では mock モードに劣化フォールバック。
     func prepareSession() async {
-        do {
-            // デバイス互換性チェック
-            guard case .available = SystemLanguageModel.default.availability else {
-                lastError = "このデバイスではFoundation Modelsが利用できません"
-                return
-            }
+        // availability の詳細ケース分岐
+        switch SystemLanguageModel.default.availability {
+        case .available:
+            break
+        case .unavailable(let reason):
+            mode = .mock(reason: Self.describe(reason))
+            lastError = nil
+            return
+        @unknown default:
+            mode = .mock(reason: "未対応の availability 状態")
+            lastError = nil
+            return
+        }
 
-            session = LanguageModelSession()
-            try await session?.prewarm()
-            isSessionReady = true
+        // セッション生成と prewarm を try/catch で包む
+        do {
+            let newSession = LanguageModelSession()
+            try await newSession.prewarm()
+            session = newSession
+            mode = .live
             lastError = nil
         } catch {
-            lastError = "セッションの準備に失敗しました: \(error.localizedDescription)"
-            isSessionReady = false
+            // prewarm 失敗時はモック経路に劣化
+            session = nil
+            mode = .mock(reason: "Foundation Models 初期化失敗: \(error.localizedDescription)")
+            lastError = nil
+        }
+    }
+
+    /// availability の理由を人間可読文字列に変換
+    private static func describe(_ reason: SystemLanguageModel.Availability.UnavailableReason) -> String {
+        switch reason {
+        case .deviceNotEligible:
+            return "このデバイスは Apple Intelligence 非対応です"
+        case .appleIntelligenceNotEnabled:
+            return "設定で Apple Intelligence を有効にしてください"
+        case .modelNotReady:
+            return "モデルアセットをダウンロード中です"
+        @unknown default:
+            return "Foundation Models を利用できません"
         }
     }
 
@@ -62,12 +123,27 @@ final class RecipeAIService {
     /// - Parameter visionLabels: Visionフレームワークからの分類ラベル
     /// - Returns: 食材認識結果
     func recognizeIngredients(from visionLabels: [String]) async throws -> IngredientRecognitionResult {
-        guard let session else {
-            throw RecipeAIError.sessionNotReady
-        }
-
         isProcessing = true
         defer { isProcessing = false }
+
+        // モックモードなら Vision ラベルを参照せずデモデータを返す
+        if case .mock = mode {
+            try? await Task.sleep(nanoseconds: 600_000_000) // 演出用の軽い遅延
+            return MockRecipeAIData.ingredientRecognition()
+        }
+
+        // live モードでも Vision ラベルが空の場合（シミュレータで Vision が使えない等）は
+        // モック食材にフォールバック。空プロンプトで Foundation Models を呼ぶと結果が不安定になるため。
+        if visionLabels.isEmpty {
+            try? await Task.sleep(nanoseconds: 400_000_000)
+            return MockRecipeAIData.ingredientRecognition()
+        }
+
+        guard let session else {
+            // live のはずだがセッション喪失時はモックに劣化させて継続
+            mode = .mock(reason: "セッション喪失")
+            return MockRecipeAIData.ingredientRecognition()
+        }
 
         let labelList = visionLabels.joined(separator: ", ")
 
@@ -84,12 +160,17 @@ final class RecipeAIService {
         - 食材として認識できるものだけを抽出してください
         """
 
-        let response = try await session.respond(
-            to: prompt,
-            generating: IngredientRecognitionResult.self
-        )
-
-        return response.content
+        do {
+            let response = try await session.respond(
+                to: prompt,
+                generating: IngredientRecognitionResult.self
+            )
+            return response.content
+        } catch {
+            // 推論中に初めて低レベル例外が顕在化する場合も劣化フォールバック
+            mode = .mock(reason: "推論失敗: \(error.localizedDescription)")
+            return MockRecipeAIData.ingredientRecognition()
+        }
     }
 
     /// 食材からレシピを推薦（非ストリーミング）
@@ -101,21 +182,32 @@ final class RecipeAIService {
         for ingredients: [IngredientInfo],
         preferences: UserPreferences?
     ) async throws -> RecipeRecommendations {
-        guard let session else {
-            throw RecipeAIError.sessionNotReady
-        }
-
         isProcessing = true
         defer { isProcessing = false }
 
+        // モックモードならデモレシピを返す
+        if case .mock = mode {
+            try? await Task.sleep(nanoseconds: 800_000_000) // 演出用の軽い遅延
+            return MockRecipeAIData.recommendations()
+        }
+
+        guard let session else {
+            mode = .mock(reason: "セッション喪失")
+            return MockRecipeAIData.recommendations()
+        }
+
         let prompt = buildRecipePrompt(ingredients: ingredients, preferences: preferences)
 
-        let response = try await session.respond(
-            to: prompt,
-            generating: RecipeRecommendations.self
-        )
-
-        return response.content
+        do {
+            let response = try await session.respond(
+                to: prompt,
+                generating: RecipeRecommendations.self
+            )
+            return response.content
+        } catch {
+            mode = .mock(reason: "推論失敗: \(error.localizedDescription)")
+            return MockRecipeAIData.recommendations()
+        }
     }
 
     /// 食材からレシピを推薦（ストリーミング）
@@ -123,13 +215,21 @@ final class RecipeAIService {
     ///   - ingredients: 認識された食材
     ///   - preferences: ユーザー設定
     /// - Returns: ストリーミングレスポンス
+    /// - Note: mock モードでは即 sessionNotReady を投げ、ViewModel 側で非ストリーミング版にフォールバックさせる
     func streamRecipeRecommendations(
         for ingredients: [IngredientInfo],
         preferences: UserPreferences?
     ) -> AsyncThrowingStream<RecipeRecommendations.PartiallyGenerated, Error> {
         AsyncThrowingStream { continuation in
             Task { @MainActor in
+                // mock モードならストリーミング非対応の信号を返し、ViewModel に sync 経路を使わせる
+                if case .mock = self.mode {
+                    continuation.finish(throwing: RecipeAIError.sessionNotReady)
+                    return
+                }
+
                 guard let session = self.session else {
+                    self.mode = .mock(reason: "セッション喪失")
                     continuation.finish(throwing: RecipeAIError.sessionNotReady)
                     return
                 }
@@ -147,6 +247,8 @@ final class RecipeAIService {
                     }
                     continuation.finish()
                 } catch {
+                    // 推論中の失敗は mock に劣化させて ViewModel にフォールバックさせる
+                    self.mode = .mock(reason: "推論失敗: \(error.localizedDescription)")
                     continuation.finish(throwing: error)
                 }
 

@@ -101,12 +101,18 @@ struct HomeView: View {
     private var aiStatusSection: some View {
         HStack(spacing: 8) {
             Circle()
-                .fill(viewModel.isAIReady ? Color.green : Color.orange)
+                .fill(statusColor)
                 .frame(width: 10, height: 10)
 
-            Text(viewModel.isAIReady ? "AI準備完了" : "AI準備中...")
+            Text(viewModel.aiStatusText)
                 .font(.caption)
                 .foregroundStyle(Color("AsaDarkSlate"))
+
+            if viewModel.isDemoMode {
+                Text("・サンプルで動作中")
+                    .font(.caption2)
+                    .foregroundStyle(Color("AsaMocha"))
+            }
 
             Spacer()
 
@@ -118,6 +124,12 @@ struct HomeView: View {
         .padding(.vertical, 8)
         .background(Color.white.opacity(0.6))
         .clipShape(RoundedRectangle(cornerRadius: 8))
+    }
+
+    /// AI ステータスドットの色（デモモード=オレンジ／ライブ=緑／準備中=グレー）
+    private var statusColor: Color {
+        if viewModel.isDemoMode { return .orange }
+        return viewModel.isAIReady ? .green : .gray
     }
 
     // MARK: - Image Selection Section
@@ -315,9 +327,12 @@ struct HomeView: View {
             if let data = try await item.loadTransferable(type: Data.self),
                let uiImage = UIImage(data: data) {
                 viewModel.selectImage(uiImage)
+            } else {
+                viewModel.reportImageLoadError("画像のデコードに失敗しました")
             }
         } catch {
-            viewModel.selectImage(UIImage())
+            // 空 UIImage を渡すと Vision がクラッシュする可能性があるため、エラー報告に変更
+            viewModel.reportImageLoadError()
         }
     }
 }

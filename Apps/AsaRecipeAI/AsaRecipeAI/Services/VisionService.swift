@@ -29,6 +29,12 @@ final class VisionService: Sendable {
     /// - Parameter image: 分類する画像
     /// - Returns: 識別子と信頼度のタプルリスト
     func classifyImage(_ image: UIImage) async throws -> [(identifier: String, confidence: Float)] {
+        // シミュレータでは CoreSceneUnderstanding の CoreML モデル（Espresso）が初期化できず、
+        // VNClassifyImageRequest 実行時に CSU exception でプロセスクラッシュするため回避する。
+        // 実機（Apple Intelligence 対応端末）では従来通り動作する。
+        #if targetEnvironment(simulator)
+        return []
+        #else
         guard let cgImage = image.cgImage else {
             throw VisionError.imageConversionFailed
         }
@@ -61,6 +67,7 @@ final class VisionService: Sendable {
                 continuation.resume(throwing: VisionError.requestFailed(error))
             }
         }
+        #endif
     }
 
     /// 画像から食品関連のラベルを抽出
