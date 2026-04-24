@@ -114,6 +114,7 @@ final class SpeechRecognitionService: NSObject, SpeechRecognitionServiceProtocol
         let audioSession = AVAudioSession.sharedInstance()
         do {
             try audioSession.setCategory(.record, mode: .measurement, options: .duckOthers)
+            try audioSession.setPreferredSampleRate(44100)
             try audioSession.setActive(true, options: .notifyOthersOnDeactivation)
         } catch {
             throw SpeechRecognitionError.audioEngineError(error.localizedDescription)
@@ -134,7 +135,18 @@ final class SpeechRecognitionService: NSObject, SpeechRecognitionServiceProtocol
 
         // オーディオ入力の設定
         let inputNode = audioEngine.inputNode
-        let recordingFormat = inputNode.outputFormat(forBus: 0)
+        let nativeFormat = inputNode.outputFormat(forBus: 0)
+
+        // シミュレータではチャンネル数やサンプルレートが0になる場合があるためフォールバック
+        let recordingFormat: AVAudioFormat
+        if nativeFormat.channelCount == 0 || nativeFormat.sampleRate == 0 {
+            guard let fallback = AVAudioFormat(standardFormatWithSampleRate: 44100, channels: 1) else {
+                throw SpeechRecognitionError.audioEngineError("音声フォーマットの作成に失敗しました")
+            }
+            recordingFormat = fallback
+        } else {
+            recordingFormat = nativeFormat
+        }
 
         inputNode.installTap(onBus: 0, bufferSize: 1024, format: recordingFormat) { [weak self] buffer, _ in
             self?.recognitionRequest?.append(buffer)

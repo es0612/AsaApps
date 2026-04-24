@@ -160,6 +160,13 @@ final class PracticeViewModel {
         state = .listening
         speechRecognitionService.reset()
 
+        // 権限をリクエスト（未許可の場合はシステムダイアログが表示される）
+        let granted = await speechRecognitionService.requestPermissions()
+        guard granted else {
+            state = .error(SpeechRecognitionError.microphonePermissionDenied.localizedDescription)
+            return
+        }
+
         do {
             try await speechRecognitionService.startRecognition()
         } catch {
