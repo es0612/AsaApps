@@ -20,5 +20,12 @@
     <string>$(CURRENT_PROJECT_VERSION)</string>
     <key>NSCameraUsageDescription</key>
     <string>ARモードで日記を表示するためにカメラを使用します</string>
+    <key>UILaunchScreen</key>
+    <dict>
+        <key>UIColorName</key>
+        <string></string>
+        <key>UIImageName</key>
+        <string></string>
+    </dict>
 </dict>
 </plist>

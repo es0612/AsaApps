@@ -14,9 +14,24 @@ struct VRDiaryView: View {
     @Bindable var vrViewModel: VRSceneViewModel
     @State private var showingControlPanel = true
     @State private var showingDetailSheet = false
+    @State private var showingHint: Bool = !UserDefaults.standard.bool(forKey: Self.hintDismissedKey)
+
+    private static let hintDismissedKey = "AsaVRDiary_VRHintDismissed_v1"
 
     var body: some View {
         ZStack {
+            // VR空間の雰囲気を出す夜空グラデーション
+            LinearGradient(
+                colors: [
+                    Color(red: 0.04, green: 0.05, blue: 0.18),
+                    Color(red: 0.10, green: 0.06, blue: 0.24),
+                    Color(red: 0.02, green: 0.02, blue: 0.10)
+                ],
+                startPoint: .top,
+                endPoint: .bottom
+            )
+            .ignoresSafeArea()
+
             // RealityKit シーン（ARViewベース）
             RealityKitSceneView(
                 diaryViewModel: diaryViewModel,
@@ -28,6 +43,12 @@ struct VRDiaryView: View {
             VStack {
                 // トップバー
                 topBar
+
+                // 操作ヒント（初回のみ）
+                if showingHint {
+                    hintOverlay
+                        .padding(.top, 8)
+                }
 
                 Spacer()
 
@@ -56,6 +77,48 @@ struct VRDiaryView: View {
     }
 
     // MARK: - Subviews
+
+    /// 操作ヒント
+    private var hintOverlay: some View {
+        HStack(spacing: 10) {
+            Image(systemName: "hand.tap.fill")
+                .font(.subheadline)
+                .foregroundStyle(.white)
+
+            Text("カードをタップで選択 ・ ピンチ/ドラッグで視点変更")
+                .font(.caption)
+                .foregroundStyle(.white)
+
+            Button {
+                dismissHint()
+            } label: {
+                Image(systemName: "xmark.circle.fill")
+                    .font(.subheadline)
+                    .foregroundStyle(.white.opacity(0.7))
+            }
+        }
+        .padding(.horizontal, 14)
+        .padding(.vertical, 10)
+        .background(.ultraThinMaterial)
+        .environment(\.colorScheme, .dark)
+        .clipShape(Capsule())
+        .transition(.move(edge: .top).combined(with: .opacity))
+        .onAppear {
+            Task { @MainActor in
+                try? await Task.sleep(nanoseconds: 6_000_000_000)
+                if showingHint {
+                    dismissHint()
+                }
+            }
+        }
+    }
+
+    private func dismissHint() {
+        UserDefaults.standard.set(true, forKey: Self.hintDismissedKey)
+        withAnimation(.easeOut(duration: 0.4)) {
+            showingHint = false
+        }
+    }
 
     /// トップバー
     private var topBar: some View {
@@ -214,12 +277,32 @@ struct RealityKitSceneView: UIViewRepresentable {
         // 非ARモード（カメラなし）で使用
         arView.cameraMode = .nonAR
 
-        // 背景色を設定
-        arView.environment.background = .color(.systemBackground)
+        // 背景は SwiftUI 側のグラデーションを見せるため透明化
+        arView.environment.background = .color(.clear)
+        arView.backgroundColor = .clear
 
-        // シーンを構築
-        let anchor = vrViewModel.buildScene(entries: diaryViewModel.filteredEntries)
-        arView.scene.addAnchor(anchor)
+        // カメラセットアップ（軌道カメラ方式）
+        // FOV 80° は portrait アスペクトでも水平に十分な可視範囲を確保するため
+        let cameraAnchor = AnchorEntity(world: .zero)
+        let camera = PerspectiveCamera()
+        camera.camera.fieldOfViewInDegrees = 80
+        cameraAnchor.addChild(camera)
+        arView.scene.addAnchor(cameraAnchor)
+
+        context.coordinator.cameraEntity = camera
+        context.coordinator.cameraAnchor = cameraAnchor
+
+        // 初期カメラ位置を即座に適用
+        Self.applyCameraTransform(to: camera, viewModel: vrViewModel, animated: false)
+
+        // コンテンツシーンを構築（entries が空でもアンカーは作る）
+        let contentAnchor = vrViewModel.buildScene(entries: diaryViewModel.filteredEntries)
+        arView.scene.addAnchor(contentAnchor)
+        context.coordinator.contentAnchor = contentAnchor
+        // シーン追加後にアニメーション開始（buildScene 内で move() するとアニメシステムが動かないため）
+        if !diaryViewModel.filteredEntries.isEmpty {
+            vrViewModel.sceneService.startEntranceAnimations()
+        }
 
         // タップジェスチャーを追加
         let tapGesture = UITapGestureRecognizer(
@@ -235,22 +318,84 @@ struct RealityKitSceneView: UIViewRepresentable {
         )
         arView.addGestureRecognizer(pinchGesture)
 
+        // パンジェスチャー（左右ドラッグで回転、上下で高さ調整）
+        let panGesture = UIPanGestureRecognizer(
+            target: context.coordinator,
+            action: #selector(Coordinator.handlePan(_:))
+        )
+        arView.addGestureRecognizer(panGesture)
+
         context.coordinator.arView = arView
 
         return arView
     }
 
     func updateUIView(_ arView: ARView, context: Context) {
-        // シーン更新が必要な場合
-        if vrViewModel.needsSceneUpdate {
-            // 既存のアンカーを削除
-            arView.scene.anchors.removeAll()
+        // entries が後から populate されるケースに対応するため、
+        // 描画済みエンティティ数と現在の entries 数を比較して再構築判定
+        let currentEntries = diaryViewModel.filteredEntries
+        let renderedCount = vrViewModel.sceneService.entities.count
+        let needsRebuild = vrViewModel.needsSceneUpdate || renderedCount != currentEntries.count
 
-            // 新しいシーンを構築
-            let anchor = vrViewModel.buildScene(entries: diaryViewModel.filteredEntries)
-            arView.scene.addAnchor(anchor)
-
+        if needsRebuild {
+            if let oldContent = context.coordinator.contentAnchor {
+                arView.scene.removeAnchor(oldContent)
+            }
+            let newContent = vrViewModel.buildScene(entries: currentEntries)
+            arView.scene.addAnchor(newContent)
+            context.coordinator.contentAnchor = newContent
+            // シーン追加後にアニメーション発火
+            if !currentEntries.isEmpty {
+                vrViewModel.sceneService.startEntranceAnimations()
+            }
             vrViewModel.markSceneUpdated()
+        }
+
+        // カメラ更新（zoomLevel/rotationAngle/cameraOffset を参照することで
+        // @Observable の変更検知 → updateUIView 再呼び出しが起きる）
+        if let camera = context.coordinator.cameraEntity {
+            Self.applyCameraTransform(to: camera, viewModel: vrViewModel, animated: true)
+        }
+    }
+
+    /// オービタルカメラの transform を計算して適用
+    /// - 中心 = `cameraOffset` + grid 中心オフセット を look-at ターゲット
+    /// - 距離 = baseDistance / zoomLevel
+    /// - Y軸回転 = rotationAngle
+    /// - 高さ = カメラオフセット.y + 一定オフセット
+    @MainActor
+    private static func applyCameraTransform(
+        to camera: PerspectiveCamera,
+        viewModel: VRSceneViewModel,
+        animated: Bool
+    ) {
+        let baseDistance: Float = 1.0
+        let distance = baseDistance / max(viewModel.zoomLevel, 0.1)
+        let angle = viewModel.rotationAngle
+        // grid center が y=-0.13 付近、z=-0.5 付近なので look-at をそこに合わせる
+        let lookAtPoint = SIMD3<Float>(
+            viewModel.cameraOffset.x,
+            viewModel.cameraOffset.y - 0.13,
+            viewModel.cameraOffset.z - 0.5
+        )
+        let cameraPos = SIMD3<Float>(
+            sin(angle) * distance + viewModel.cameraOffset.x,
+            0.0 + viewModel.cameraOffset.y,
+            cos(angle) * distance + viewModel.cameraOffset.z - 0.5
+        )
+
+        if animated {
+            // 一時 Entity で look-at transform を計算して move(to:) で補間適用
+            let temp = Entity()
+            temp.look(at: lookAtPoint, from: cameraPos, relativeTo: nil)
+            camera.move(
+                to: temp.transform,
+                relativeTo: nil,
+                duration: 0.3,
+                timingFunction: .easeInOut
+            )
+        } else {
+            camera.look(at: lookAtPoint, from: cameraPos, relativeTo: nil)
         }
     }
 
@@ -262,6 +407,9 @@ struct RealityKitSceneView: UIViewRepresentable {
         var diaryViewModel: DiaryViewModel
         var vrViewModel: VRSceneViewModel
         weak var arView: ARView?
+        weak var cameraEntity: PerspectiveCamera?
+        weak var cameraAnchor: AnchorEntity?
+        weak var contentAnchor: AnchorEntity?
 
         init(diaryViewModel: DiaryViewModel, vrViewModel: VRSceneViewModel) {
             self.diaryViewModel = diaryViewModel
@@ -300,6 +448,26 @@ struct RealityKitSceneView: UIViewRepresentable {
                     self.vrViewModel.zoomLevel = min(max(newZoom, 0.5), 3.0)
                 }
                 gesture.scale = 1.0
+            }
+        }
+
+        @objc func handlePan(_ gesture: UIPanGestureRecognizer) {
+            guard let arView = arView else { return }
+            if gesture.state == .changed {
+                let translation = gesture.translation(in: arView)
+                // 横方向 → Y軸回転、縦方向 → カメラ高さ調整
+                let rotationDelta = Float(translation.x) * 0.005
+                let heightDelta = Float(-translation.y) * 0.001
+                Task { @MainActor in
+                    self.vrViewModel.rotationAngle += rotationDelta
+                    let currentOffset = self.vrViewModel.cameraOffset
+                    self.vrViewModel.cameraOffset = SIMD3<Float>(
+                        currentOffset.x,
+                        max(min(currentOffset.y + heightDelta, 0.5), -0.5),
+                        currentOffset.z
+                    )
+                }
+                gesture.setTranslation(.zero, in: arView)
             }
         }
     }

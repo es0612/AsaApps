@@ -278,27 +278,20 @@ enum DiaryEntityRenderer {
         }
     }
 
-    /// マテリアルを作成
+    /// マテリアルを作成（UnlitMaterial: ライト不要で常に同じ見た目になる）
     private static func createMaterial(texture: CGImage?, mood: DiaryMood) -> Material {
-        var material = SimpleMaterial()
+        var material = UnlitMaterial()
 
-        if let texture = texture {
-            if let textureResource = try? TextureResource.generate(
-                from: texture,
-                options: .init(semantic: .color)
-            ) {
-                material.color = .init(texture: .init(textureResource))
-            } else {
-                material.color = .init(tint: .white, texture: nil)
-            }
+        if let texture = texture,
+           let textureResource = try? TextureResource.generate(
+               from: texture,
+               options: .init(semantic: .color)
+           ) {
+            material.color = .init(tint: .white, texture: .init(textureResource))
         } else {
-            material.color = .init(tint: .white, texture: nil)
+            // フォールバック: 気分の色をベースに
+            material.color = .init(tint: mood.uiColor.withAlphaComponent(0.95))
         }
-
-        // 気分に応じた質感
-        let effect = mood.vrEffect
-        material.roughness = .init(floatLiteral: effect.roughness)
-        material.metallic = .init(floatLiteral: 0.0)
 
         return material
     }

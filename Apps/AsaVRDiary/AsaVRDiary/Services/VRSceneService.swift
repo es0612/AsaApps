@@ -90,11 +90,37 @@ final class VRSceneService {
                 entity.position = SIMD3<Float>(x, y, z)
             }
 
+            // 入場アニメーション準備: scale=0.01 で配置
+            // 実際の move() は scene 追加後に呼ぶ必要があるため startEntranceAnimations() で
+            entity.scale = SIMD3<Float>(repeating: 0.01)
             anchor.addChild(entity)
             entities[entry.id] = entity
         }
 
         return anchor
+    }
+
+    /// 入場アニメーションを開始（buildScene の anchor を scene に追加した後に呼ぶ）
+    /// scale 0.01 → 1.0 を index ベースのスタガーで適用
+    func startEntranceAnimations() {
+        guard let anchor = anchorEntity else { return }
+        let sortedEntities = entities.values.sorted { $0.position.y > $1.position.y }
+        for (index, entity) in sortedEntities.enumerated() {
+            let finalPosition = entity.position
+            let targetTransform = Transform(
+                scale: .one,
+                rotation: entity.orientation,
+                translation: finalPosition
+            )
+            let baseDuration: TimeInterval = 0.5
+            let staggerOffset: TimeInterval = Double(index) * 0.08
+            entity.move(
+                to: targetTransform,
+                relativeTo: anchor,
+                duration: baseDuration + staggerOffset,
+                timingFunction: .easeOut
+            )
+        }
     }
 
     /// エンティティをクリア
