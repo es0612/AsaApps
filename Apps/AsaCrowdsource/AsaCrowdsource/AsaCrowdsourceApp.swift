@@ -68,10 +68,52 @@ struct AsaCrowdsourceApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            // RootViewでEnvironment(\.modelContext)を取得し、共有のLocalDataServiceを構築する
+            RootView()
                 .environmentObject(authViewModel)
                 .environmentObject(familyViewModel)
         }
         .modelContainer(sharedModelContainer)
+    }
+}
+
+// MARK: - RootView
+
+/// `@Environment(\.modelContext)` から取得した単一Contextで `LocalDataService` を構築し、
+/// 配下のViewへEnvironment経由で配布する中継View。
+///
+/// これにより、ContentView/IdeaListView 等で個別に `LocalDataService(modelContainer:)` を
+/// new することによる Context Lifecycle 問題を防止する。
+///
+/// - Note: `LocalDataService` は `@State` で1回だけ初期化する。`body` 内で直接 `LocalDataService(...)`
+///   を呼ぶと再描画ごとに新インスタンスが生成され、ViewModelに渡したインスタンスが古いものに
+///   なってしまう（クラッシュには至らないがインスタンス乱立の温床）。
+private struct RootView: View {
+    @Environment(\.modelContext) private var modelContext
+    @State private var dataService: LocalDataService?
+
+    var body: some View {
+        ContentView()
+            .environment(\.localDataService, dataService)
+            .task {
+                if dataService == nil {
+                    dataService = LocalDataService(modelContext: modelContext)
+                }
+            }
+    }
+}
+
+// MARK: - LocalDataService Environment
+
+/// LocalDataService 配布用のEnvironmentKey
+private struct LocalDataServiceKey: EnvironmentKey {
+    static let defaultValue: LocalDataService? = nil
+}
+
+extension EnvironmentValues {
+    /// アプリ全体で共有される LocalDataService（@MainActor）
+    var localDataService: LocalDataService? {
+        get { self[LocalDataServiceKey.self] }
+        set { self[LocalDataServiceKey.self] = newValue }
     }
 }

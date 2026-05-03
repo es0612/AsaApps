@@ -15,6 +15,7 @@ struct ContentView: View {
     @EnvironmentObject private var authViewModel: AuthViewModel
     @EnvironmentObject private var familyViewModel: FamilyGroupViewModel
     @Environment(\.modelContext) private var modelContext
+    @Environment(\.localDataService) private var localDataService
 
     @State private var selectedTab = 0
 
@@ -34,7 +35,10 @@ struct ContentView: View {
             }
         }
         .animation(.easeInOut(duration: 0.2), value: authViewModel.authState)
-        .task {
+        // localDataService がEnvironment経由で利用可能になるまで待つため task(id:) を使用。
+        // RootView の .task で dataService が非nilに切り替わるとこのタスクが再起動する。
+        .task(id: localDataService != nil) {
+            guard localDataService != nil else { return }
             await loadDemoSampleDataIfNeeded()
         }
     }
@@ -94,7 +98,8 @@ struct ContentView: View {
     // MARK: - Private Methods
 
     private func setupFamilyViewModel() {
-        let dataService = LocalDataService(modelContainer: modelContext.container)
+        // Environment経由で配布された共有のLocalDataServiceを利用（毎回new禁止）
+        guard let dataService = localDataService else { return }
         familyViewModel.setDataService(dataService)
 
         if let user = authViewModel.currentUser {
@@ -115,14 +120,14 @@ struct ContentView: View {
         guard let user = authViewModel.currentUser else { return }
 
         // FamilyGroupViewModel に dataService を設定（mainTabView の onAppear より先に走るケースに対応）
-        let dataService = LocalDataService(modelContainer: modelContext.container)
+        guard let dataService = localDataService else { return }
         familyViewModel.setDataService(dataService)
         familyViewModel.setCurrentUserId(user.id)
 
-        // サンプルデータを投入
-        let sampleService = SampleDataService(modelContainer: modelContext.container)
+        // サンプルデータを投入（共有のmodelContextを直接利用）
+        let sampleService = SampleDataService(modelContext: modelContext)
         do {
-            try await sampleService.loadSampleData(ownerUserId: user.id)
+            try sampleService.loadSampleData(ownerUserId: user.id)
             UserDefaults.standard.set(true, forKey: key)
 
             // FamilyGroupViewModel をリロードしてグループを表示

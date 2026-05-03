@@ -18,6 +18,7 @@ struct EditIdeaView: View {
     @EnvironmentObject private var authViewModel: AuthViewModel
     @EnvironmentObject private var familyViewModel: FamilyGroupViewModel
     @Environment(\.modelContext) private var modelContext
+    @Environment(\.localDataService) private var localDataService
     @Environment(\.dismiss) private var dismiss
 
     @State private var viewModel = CreateIdeaViewModel()
@@ -180,7 +181,8 @@ struct EditIdeaView: View {
     // MARK: - Private Methods
 
     private func setupViewModel() {
-        let dataService = LocalDataService(modelContainer: modelContext.container)
+        // Environment経由で配布された共有のLocalDataServiceを利用（毎回new禁止）
+        guard let dataService = localDataService else { return }
         viewModel.setDataService(dataService)
 
         if let group = familyViewModel.currentGroup {

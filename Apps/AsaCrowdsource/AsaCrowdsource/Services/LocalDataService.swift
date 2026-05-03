@@ -9,8 +9,24 @@ import Foundation
 import SwiftData
 
 /// SwiftDataを使用したローカルデータサービス
-@ModelActor
-actor LocalDataService: CrowdsourceDataServiceProtocol {
+///
+/// 設計メモ:
+/// - 以前は `@ModelActor actor` 実装だったが、生成インスタンスごとに
+///   独立した `ModelContext` を持つため、複数箇所で new される運用と相性が悪かった。
+/// - SwiftUIの `@Environment(\.modelContext)` から渡される単一Contextを共有するため
+///   `@MainActor final class` に変更し、Context Lifecycle問題（"reset and is no longer usable"）を解消。
+@MainActor
+final class LocalDataService: CrowdsourceDataServiceProtocol {
+
+    // MARK: - Properties
+
+    let modelContext: ModelContext
+
+    // MARK: - Initializer
+
+    init(modelContext: ModelContext) {
+        self.modelContext = modelContext
+    }
 
     // MARK: - GroupDataServiceProtocol
 

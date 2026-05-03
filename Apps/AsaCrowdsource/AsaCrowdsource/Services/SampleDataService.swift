@@ -10,8 +10,21 @@ import Foundation
 import SwiftData
 
 /// サンプルデータサービス
-@ModelActor
-actor SampleDataService {
+///
+/// LocalDataService と同じ理由で `@ModelActor actor` から `@MainActor final class` に変更。
+/// 初期化時に `ModelContext` を直接受け取り、共有Contextに対してデータ投入する。
+@MainActor
+final class SampleDataService {
+    // MARK: - Properties
+
+    let modelContext: ModelContext
+
+    // MARK: - Initializer
+
+    init(modelContext: ModelContext) {
+        self.modelContext = modelContext
+    }
+
     // MARK: - Public Methods
 
     /// サンプルデータを一括投入（田中家のグループ + メンバー4人 + アイデア5件）

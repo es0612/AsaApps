@@ -197,3 +197,85 @@ AsaCrowdsourceは、SwiftDataと@Observableを組み合わせた現代的なiOS�
 **次のアプリ**: #94へ続く
 
 **総開発時間**: 約4-5時間（Phase 1-3実装）
+
+---
+
+## 修正記録（2026-05-02）
+
+### 発生した不具合
+アイデア画面操作中に以下のクラッシュが頻発:
+```
+SwiftData/BackingData.swift:835: Fatal error:
+This model instance was destroyed by calling ModelContext.reset
+and is no longer usable.
+```
+
+クラッシュ位置は `Idea.id.getter`。直接的な `ModelContext.reset()` 呼び出しは存在しなかった。
+
+### 根本原因 — `@ModelActor` の Context Lifecycle 問題
+
+`@ModelActor` マクロは `init(modelContainer:)` ごとに**新しい `ModelContext` を内部生成**する仕様。
+
+```swift
+// マクロが自動生成する init（イメージ）
+init(modelContainer: ModelContainer) {
+    let modelContext = ModelContext(modelContainer)  // ← 毎回新規生成
+    self.modelExecutor = DefaultSerialModelExecutor(modelContext: modelContext)
+    self.modelContainer = modelContainer
+}
+```
+
+ContentView/IdeaListView/IdeaDetailView/CreateIdeaView/EditIdeaView の各 `setupViewModel()` で
+`LocalDataService(modelContainer: modelContext.container)` を**毎回new**していたため、独立した複数のContextが乱立。一時的なLocalDataServiceがARC解放されると、その内部Contextも解放されるが、`IdeaListViewModel.ideas: [Idea]` が解放後Contextに紐づくIdea参照を保持したままになり、SwiftUI再描画で `Idea.id` getterへアクセスしてクラッシュ。
+
+### 修正内容
+
+| 変更前 | 変更後 |
+|--------|--------|
+| `@ModelActor actor LocalDataService` | `@MainActor final class LocalDataService` |
+| `init(modelContainer:)`（マクロ自動生成） | `init(modelContext: ModelContext)`（明示定義） |
+| 各Viewで `LocalDataService(modelContainer:)` を毎回new | App側で1個生成 → `EnvironmentKey` で全Viewへ配布 |
+| SampleDataService も @ModelActor だった | こちらも @MainActor final class 化 |
+
+### 教訓
+
+1. **`@ModelActor` は便利だが、SwiftUI の `@Environment(\.modelContext)` と組み合わせるときは要注意**
+   - actor 内の Context と Environment 由来 Context が**別物になる**
+   - actor は new されるたびに新Contextを作るため、複数箇所で生成すると Context が乱立する
+
+2. **SwiftUIアプリで SwiftData を使うなら、サービス層も `@MainActor final class` が安全**
+   - メインスレッドでDB操作するため、性能問題は小規模アプリでは無視できる
+   - `@Environment(\.modelContext)` から渡される単一Contextを共有することで Lifecycle が一貫する
+
+3. **`@Model` オブジェクトの保持元Contextが消えると、保持中のオブジェクトは即座に無効化**
+   - エラーメッセージに `reset` の文言が出るが、実際は **Context lifecycle 問題**であることが多い
+   - クラッシュ追跡時は `ModelContext` の生成箇所を全部洗い出すことが第一歩
+
+### 修正ファイル一覧
+- `Services/LocalDataService.swift` — @MainActor class化、init追加
+- `Services/SampleDataService.swift` — 同上
+- `AsaCrowdsourceApp.swift` — RootView + EnvironmentKey 追加
+- `ContentView.swift` — Environmentから取得
+- `Views/Ideas/IdeaListView.swift` — 同上
+- `Views/Ideas/IdeaDetailView.swift` — 同上
+- `Views/Ideas/CreateIdeaView.swift` — 同上
+- `Views/Ideas/EditIdeaView.swift` — 同上
+
+### 検証結果
+- `xcodebuild build`: 警告ゼロでBUILD SUCCEEDED
+- `xcodebuild test`: 22件全テストPASS
+
+### 追加修正（タイミング問題）
+
+クラッシュ修正後、シミュレータでサンプルデータが投入されない事象が発生。
+
+**原因**:
+- RootView の `.task` で `LocalDataService` を初期化するため、Environment の `localDataService` は初期表示時 nil
+- ContentView の `.task` で `loadDemoSampleDataIfNeeded()` を呼ぶが、`guard let dataService = localDataService else { return }` で早期リターン
+- 結果: 初回起動時にサンプルデータ投入処理が走らない
+
+**修正**: `.task` を `task(id: localDataService != nil)` に変更。`localDataService` が nil → 非nil に変化したタイミングで再実行されるようにした（ContentView.swift:38-42）。
+
+**教訓**:
+- SwiftUIで `@Environment` 経由で渡される値が**遅延初期化**される場合、`task(id:)` で値の変化を待つパターンが必要
+- 「初期化完了イベント」の概念が SwiftUI の Environment にはないため、**bool化した `!= nil` を `task(id:)` に渡す**のが定石
