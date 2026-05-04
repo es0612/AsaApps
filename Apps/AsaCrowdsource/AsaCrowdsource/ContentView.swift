@@ -111,16 +111,29 @@ struct ContentView: View {
         await familyViewModel.loadInitialData()
     }
 
-    /// 初回起動時にデモ用サンプルデータを自動投入
-    /// - サインイン済みの場合のみ実行（事前に App.init で demo_user_papa が設定済み）
-    /// - SampleDataService 経由でグループ・メンバー・アイデア・コメント・投票を投入
+    /// 初回起動時（およびデータが空のとき）にデモ用サンプルデータを自動投入
+    /// - 判定基準: UserDefaults フラグではなく **実データの存在**（fetchUserGroups の結果が空かどうか）
+    ///   → SwiftData ストアと UserDefaults フラグの状態がズレても自動復旧する
+    /// - 副作用: ユーザーが手動で全グループを削除した場合は次回起動でサンプル復活する（デモ用途として許容）
     private func loadDemoSampleDataIfNeeded() async {
-        let key = "AsaCrowdsource_SampleDataLoaded_v1"
-        guard !UserDefaults.standard.bool(forKey: key) else { return }
         guard let user = authViewModel.currentUser else { return }
-
-        // FamilyGroupViewModel に dataService を設定（mainTabView の onAppear より先に走るケースに対応）
         guard let dataService = localDataService else { return }
+
+        // 既にグループが存在すればサンプル投入をスキップ
+        do {
+            let existingGroups = try await dataService.fetchUserGroups(userId: user.id)
+            guard existingGroups.isEmpty else {
+                familyViewModel.setDataService(dataService)
+                familyViewModel.setCurrentUserId(user.id)
+                await familyViewModel.loadInitialData()
+                return
+            }
+        } catch {
+            print("既存グループ取得エラー: \(error.localizedDescription)")
+            return
+        }
+
+        // FamilyGroupViewModel に dataService を設定
         familyViewModel.setDataService(dataService)
         familyViewModel.setCurrentUserId(user.id)
 
@@ -128,9 +141,6 @@ struct ContentView: View {
         let sampleService = SampleDataService(modelContext: modelContext)
         do {
             try sampleService.loadSampleData(ownerUserId: user.id)
-            UserDefaults.standard.set(true, forKey: key)
-
-            // FamilyGroupViewModel をリロードしてグループを表示
             await familyViewModel.loadInitialData()
         } catch {
             print("サンプルデータ投入エラー: \(error.localizedDescription)")

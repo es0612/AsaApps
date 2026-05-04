@@ -279,3 +279,28 @@ ContentView/IdeaListView/IdeaDetailView/CreateIdeaView/EditIdeaView の各 `setu
 **教訓**:
 - SwiftUIで `@Environment` 経由で渡される値が**遅延初期化**される場合、`task(id:)` で値の変化を待つパターンが必要
 - 「初期化完了イベント」の概念が SwiftUI の Environment にはないため、**bool化した `!= nil` を `task(id:)` に渡す**のが定石
+
+### 追加修正2（サンプルデータ投入判定の堅牢化）
+
+タイミング修正後もサンプルデータ未表示が再発。原因は **UserDefaults フラグ `AsaCrowdsource_SampleDataLoaded_v1` の状態と SwiftData ストアの実態の不整合**。
+
+**シナリオ**:
+- 過去のビルドで一度サンプル投入が走り `UserDefaults` フラグが true になる
+- スキーマ変更/手動削除/シミュレータ再インストール等で SwiftData ストアだけクリアされる
+- UserDefaults はドメイン単位で保持されるためフラグだけ残る
+- 次回起動: `guard !UserDefaults.standard.bool(forKey: key) else { return }` で早期リターン → サンプル投入されないまま空データで起動
+
+**修正方針** — 判定基準を UserDefaults フラグから **実データの存在** に切り替え:
+```swift
+let existingGroups = try await dataService.fetchUserGroups(userId: user.id)
+guard existingGroups.isEmpty else { return }
+// 空ならサンプル投入
+```
+この方式により、ストアと永続化フラグの状態がズレても自動復旧する。
+
+**副作用** — ユーザーが手動で全グループを削除した場合、次回起動でサンプル復活する。デモ用途のアプリでは許容する判断。
+
+**教訓**:
+- 「初回起動かどうか」を UserDefaults boolean で覚えさせると、それと同期させたいデータと**乖離した瞬間に詰む**
+- データ存在ベース（fetch して空ならseed）の方が、ストアの寿命に追従するため堅牢
+- 教科書的な「once flag」より「データ駆動の冪等処理」の方が、デモ／開発フェーズでは事故が少ない
