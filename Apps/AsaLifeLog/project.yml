@@ -56,9 +56,11 @@ targets:
     sources: [LifeLogWidgetExtension, Shared]
     settings:
       PRODUCT_BUNDLE_IDENTIFIER: com.asapapa.apps.asalifelog.widget
-      GENERATE_INFOPLIST_FILE: true
+      INFOPLIST_FILE: LifeLogWidgetExtension/Info.plist
       SKIP_INSTALL: "YES"
       LD_RUNPATH_SEARCH_PATHS: "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks"
+      SWIFT_STRICT_CONCURRENCY: complete
+      CODE_SIGN_ENTITLEMENTS: LifeLogWidgetExtension/LifeLogWidgetExtension.entitlements
     dependencies:
       - package: AsaUIKit
   AsaLifeLogTests:

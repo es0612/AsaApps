@@ -51,13 +51,11 @@ targets:
     sources: [PapaHubWidgetExtension, Shared]
     settings:
       PRODUCT_BUNDLE_IDENTIFIER: com.asapapa.apps.asapapahub.widget
-      GENERATE_INFOPLIST_FILE: true
+      INFOPLIST_FILE: PapaHubWidgetExtension/Info.plist
       SKIP_INSTALL: "YES"
       LD_RUNPATH_SEARCH_PATHS: "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks"
       SWIFT_STRICT_CONCURRENCY: complete
       CODE_SIGN_ENTITLEMENTS: PapaHubWidgetExtension/PapaHubWidgetExtension.entitlements
-      INFOPLIST_KEY_CFBundleDisplayName: "PapaHub Widget"
-      INFOPLIST_KEY_NSExtension_NSExtensionPointIdentifier: com.apple.widgetkit-extension
     dependencies:
       - package: AsaUIKit
   AsaPapaHubTests:
