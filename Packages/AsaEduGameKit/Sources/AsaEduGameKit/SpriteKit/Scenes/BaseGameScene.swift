@@ -56,12 +56,27 @@ public class BaseGameScene: SKScene {
     /// 背景色（薄いクリーム色）
     let backgroundColorValue = SKColor(red: 0.97, green: 0.93, blue: 0.87, alpha: 1.0)
 
+    // MARK: - Scene Ready State
+
+    /// シーンが didMove 完了済みか（共通ノード初期化済みか）
+    private var isSceneReady = false
+
+    /// didMove 前に届いた問題の保留先（マウント完了後に再駆動する）
+    private var pendingQuestion: GameQuestion?
+
     // MARK: - Lifecycle
 
     public override func didMove(to view: SKView) {
         super.didMove(to: view)
         backgroundColor = backgroundColorValue
         setupCommonNodes()
+        isSceneReady = true
+
+        // マウント前に届いた問題があれば再駆動（dynamic dispatch でサブクラスの override に届く）
+        if let queued = pendingQuestion {
+            pendingQuestion = nil
+            presentQuestion(queued)
+        }
     }
 
     // MARK: - 共通セットアップ
@@ -117,6 +132,13 @@ public class BaseGameScene: SKScene {
 
     /// 問題を表示する（サブクラスでオーバーライドして具体的な表示を実装）
     public func presentQuestion(_ question: GameQuestion) {
+        // didMove 前にビュー側から呼ばれた場合は最後の 1 件だけ保留し、
+        // didMove 末尾で再駆動する。IUO ノードへのアクセスを避けてクラッシュを防ぐ。
+        guard isSceneReady else {
+            pendingQuestion = question
+            return
+        }
+
         currentQuestion = question
         gameState = .playing
 
