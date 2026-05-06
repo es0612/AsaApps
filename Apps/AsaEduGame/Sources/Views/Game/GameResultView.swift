@@ -79,14 +79,16 @@ struct GameResultView: View {
     // MARK: - パーフェクトバナー
 
     private var perfectBanner: some View {
-        HStack(spacing: 8) {
-            Text("💯")
-                .font(.system(size: 36))
+        HStack(spacing: 12) {
+            Image(systemName: "checkmark.seal.fill")
+                .font(.system(size: 32, weight: .semibold))
+                .foregroundColor(AsaColors.coffeeBrown)
             Text("パーフェクト!")
                 .font(.system(size: 28, weight: .bold, design: .rounded))
                 .foregroundColor(AsaColors.coffeeBrown)
-            Text("💯")
-                .font(.system(size: 36))
+            Image(systemName: "checkmark.seal.fill")
+                .font(.system(size: 32, weight: .semibold))
+                .foregroundColor(AsaColors.coffeeBrown)
         }
         .scaleEffect(showStarAnimation ? 1.0 : 0.5)
         .opacity(showStarAnimation ? 1.0 : 0.0)
@@ -96,13 +98,11 @@ struct GameResultView: View {
 
     private var starSection: some View {
         VStack(spacing: 12) {
-            // 大きな星
             ZStack {
-                // 背景のキラキラ
                 ForEach(0..<5, id: \.self) { index in
-                    Image(systemName: "star.fill")
-                        .font(.system(size: 20))
-                        .foregroundColor(.yellow.opacity(0.5))
+                    Image(systemName: "sparkle")
+                        .font(.system(size: 18))
+                        .foregroundColor(AsaColors.softCream)
                         .offset(
                             x: CGFloat.random(in: -40...40),
                             y: CGFloat.random(in: -40...40)
@@ -116,9 +116,9 @@ struct GameResultView: View {
                 }
 
                 Image(systemName: "star.fill")
-                    .font(.system(size: 80))
-                    .foregroundColor(.yellow)
-                    .shadow(color: .orange.opacity(0.4), radius: 10)
+                    .font(.system(size: 80, weight: .semibold))
+                    .foregroundColor(AsaColors.coffeeBrown)
+                    .shadow(color: AsaColors.coffeeBrown.opacity(0.3), radius: 10)
             }
             .scaleEffect(showStarAnimation ? 1.0 : 0.3)
 
@@ -152,14 +152,14 @@ struct GameResultView: View {
         .opacity(showDetails ? 1.0 : 0.0)
     }
 
-    /// 正答率に応じた色
+    /// 正答率に応じた色（ブランドカラー基調）
     private func accuracyColor(_ accuracy: Int) -> Color {
         if accuracy >= 80 {
-            return .green
+            return AsaColors.coffeeBrown
         } else if accuracy >= 50 {
-            return .orange
+            return AsaColors.mocha
         } else {
-            return .red
+            return AsaColors.mutedSage
         }
     }
 
@@ -173,9 +173,24 @@ struct GameResultView: View {
                     .foregroundColor(AsaColors.darkSlate)
 
                 if let result = gameVM.sessionResult {
-                    scoreRow(label: "きほんのほし", value: result.earnedStars, emoji: "⭐")
-                    scoreRow(label: "コンボボーナス", value: result.comboBonus, emoji: "🔥")
-                    scoreRow(label: "パーフェクトボーナス", value: result.perfectBonus, emoji: "💯")
+                    scoreRow(
+                        label: "きほんのほし",
+                        value: result.earnedStars,
+                        systemImage: "star.fill",
+                        iconColor: AsaColors.coffeeBrown
+                    )
+                    scoreRow(
+                        label: "コンボボーナス",
+                        value: result.comboBonus,
+                        systemImage: "flame.fill",
+                        iconColor: AsaColors.mocha
+                    )
+                    scoreRow(
+                        label: "パーフェクトボーナス",
+                        value: result.perfectBonus,
+                        systemImage: "checkmark.seal.fill",
+                        iconColor: AsaColors.mutedSage
+                    )
 
                     Divider()
 
@@ -190,16 +205,20 @@ struct GameResultView: View {
                     }
                 }
 
-                // 最大コンボ
                 if gameVM.maxCombo >= 2 {
                     HStack {
                         Text("さいだいコンボ")
                             .font(.system(size: 14, design: .rounded))
                             .foregroundColor(AsaColors.mutedSage)
                         Spacer()
-                        Text("\(gameVM.maxCombo)コンボ 🔥")
-                            .font(.system(size: 14, weight: .medium, design: .rounded))
-                            .foregroundColor(.orange)
+                        HStack(spacing: 4) {
+                            Text("\(gameVM.maxCombo)コンボ")
+                                .font(.system(size: 14, weight: .medium, design: .rounded))
+                                .foregroundColor(AsaColors.mocha)
+                            Image(systemName: "flame.fill")
+                                .font(.system(size: 12))
+                                .foregroundColor(AsaColors.mocha)
+                        }
                     }
                 }
             }
@@ -208,9 +227,13 @@ struct GameResultView: View {
     }
 
     /// スコア行コンポーネント
-    private func scoreRow(label: String, value: Int, emoji: String) -> some View {
-        HStack {
-            Text("\(emoji) \(label)")
+    private func scoreRow(label: String, value: Int, systemImage: String, iconColor: Color) -> some View {
+        HStack(spacing: 8) {
+            Image(systemName: systemImage)
+                .font(.system(size: 14, weight: .semibold))
+                .foregroundColor(iconColor)
+                .frame(width: 18)
+            Text(label)
                 .font(.system(size: 14, design: .rounded))
                 .foregroundColor(AsaColors.darkSlate)
             Spacer()
@@ -224,15 +247,26 @@ struct GameResultView: View {
 
     private var newBadgesSection: some View {
         VStack(spacing: 12) {
-            Text("🎉 あたらしいバッジ!")
-                .font(.system(size: 18, weight: .bold, design: .rounded))
-                .foregroundColor(AsaColors.coffeeBrown)
+            HStack(spacing: 8) {
+                Image(systemName: "sparkles")
+                    .font(.system(size: 18, weight: .semibold))
+                    .foregroundColor(AsaColors.coffeeBrown)
+                Text("あたらしいバッジ!")
+                    .font(.system(size: 18, weight: .bold, design: .rounded))
+                    .foregroundColor(AsaColors.coffeeBrown)
+            }
 
             ForEach(gameVM.newBadges, id: \.rawValue) { badge in
                 AsaCard {
-                    HStack(spacing: 12) {
-                        Text(badge.emoji)
-                            .font(.system(size: 36))
+                    HStack(spacing: 16) {
+                        ZStack {
+                            Circle()
+                                .fill(badge.iconColor.opacity(0.15))
+                                .frame(width: 56, height: 56)
+                            Image(systemName: badge.systemImage)
+                                .font(.system(size: 28, weight: .semibold))
+                                .foregroundColor(badge.iconColor)
+                        }
 
                         VStack(alignment: .leading, spacing: 4) {
                             Text(badge.title)
@@ -258,7 +292,7 @@ struct GameResultView: View {
         VStack(spacing: 12) {
             ChildFriendlyButton(
                 title: "もういっかい",
-                color: Color(gameMode.themeColorName)
+                color: gameMode.themeColor
             ) {
                 onPlayAgain()
             }

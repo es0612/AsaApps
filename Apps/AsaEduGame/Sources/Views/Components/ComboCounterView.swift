@@ -21,14 +21,17 @@ struct ComboCounterView: View {
 
     var body: some View {
         HStack(spacing: 4) {
-            // 炎エフェクト（コンボ3以上）
             if combo >= 3 {
-                Text(fireEmoji)
-                    .font(.system(size: fireSize))
-                    .scaleEffect(isAnimating ? 1.2 : 1.0)
+                HStack(spacing: 1) {
+                    ForEach(0..<flameCount, id: \.self) { _ in
+                        Image(systemName: "flame.fill")
+                            .font(.system(size: 12, weight: .semibold))
+                            .foregroundColor(comboColor)
+                    }
+                }
+                .scaleEffect(isAnimating ? 1.2 : 1.0)
             }
 
-            // コンボ数
             Text("\(combo)")
                 .font(.system(size: 20, weight: .bold, design: .rounded))
                 .foregroundColor(comboColor)
@@ -60,41 +63,26 @@ struct ComboCounterView: View {
 
     // MARK: - Computed
 
-    /// コンボ数に応じた色
+    /// コンボ数に応じた色（ブランドカラー基調）
     private var comboColor: Color {
         switch combo {
         case 0..<3:
             return AsaColors.mutedSage
         case 3..<5:
-            return .orange
+            return AsaColors.coffeeBrown
         case 5..<10:
-            return .red
+            return AsaColors.mocha
         default:
-            return .purple
+            return AsaColors.darkSlate
         }
     }
 
-    /// コンボ数に応じた炎の絵文字
-    private var fireEmoji: String {
+    /// コンボ数に応じた炎アイコンの数（1-3個）
+    private var flameCount: Int {
         switch combo {
-        case 3..<5:
-            return "🔥"
-        case 5..<10:
-            return "🔥🔥"
-        default:
-            return "🔥🔥🔥"
-        }
-    }
-
-    /// 炎のサイズ
-    private var fireSize: CGFloat {
-        switch combo {
-        case 3..<5:
-            return 14
-        case 5..<10:
-            return 12
-        default:
-            return 10
+        case 3..<5: return 1
+        case 5..<10: return 2
+        default: return 3
         }
     }
 }

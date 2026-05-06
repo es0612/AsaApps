@@ -199,9 +199,9 @@ struct ProfileView: View {
 
                         Divider()
 
-                        profileRow(
+                        starsRow(
                             label: "かくとくほし",
-                            value: "\(viewModel.profile?.totalStars ?? 0)こ ⭐"
+                            stars: viewModel.profile?.totalStars ?? 0
                         )
                     }
                 }
@@ -222,6 +222,24 @@ struct ProfileView: View {
         }
     }
 
+    /// 星表示行（数値+SF Symbolで表示）
+    private func starsRow(label: String, stars: Int) -> some View {
+        HStack {
+            Text(label)
+                .font(.system(size: 14, design: .rounded))
+                .foregroundColor(AsaColors.mutedSage)
+            Spacer()
+            HStack(spacing: 4) {
+                Text("\(stars)こ")
+                    .font(.system(size: 16, weight: .medium, design: .rounded))
+                    .foregroundColor(AsaColors.darkSlate)
+                Image(systemName: "star.fill")
+                    .font(.system(size: 14))
+                    .foregroundColor(AsaColors.coffeeBrown)
+            }
+        }
+    }
+
     // MARK: - バッジコレクションリンク
 
     private var badgeCollectionLink: some View {
@@ -229,9 +247,15 @@ struct ProfileView: View {
             showBadgeCollection = true
         } label: {
             AsaCard {
-                HStack(spacing: 12) {
-                    Text("🏅")
-                        .font(.system(size: 28))
+                HStack(spacing: 16) {
+                    ZStack {
+                        Circle()
+                            .fill(AsaColors.coffeeBrown.opacity(0.15))
+                            .frame(width: 48, height: 48)
+                        Image(systemName: "rosette")
+                            .font(.system(size: 24, weight: .semibold))
+                            .foregroundColor(AsaColors.coffeeBrown)
+                    }
 
                     VStack(alignment: .leading, spacing: 4) {
                         Text("バッジコレクション")

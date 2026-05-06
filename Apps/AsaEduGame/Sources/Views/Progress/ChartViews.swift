@@ -54,7 +54,7 @@ struct AccuracyChartView: View {
                                 x: .value("セッション", data.index),
                                 y: .value("せいとうりつ", data.accuracy)
                             )
-                            .foregroundStyle(Color(data.mode.themeColorName))
+                            .foregroundStyle(data.mode.themeColor)
                             .symbolSize(40)
                         }
                     }
@@ -99,7 +99,7 @@ struct StarsChartView: View {
         GameMode.allCases.map { mode in
             let sessions = modeStats[mode]
             let stars = sessions?.totalCorrect ?? 0
-            return (mode: mode.displayName, stars: stars, color: Color(mode.themeColorName))
+            return (mode: mode.displayName, stars: stars, color: mode.themeColor)
         }
     }
 

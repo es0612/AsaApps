@@ -61,39 +61,37 @@ struct ProgressDashboardView: View {
                 .foregroundColor(AsaColors.darkSlate)
 
             HStack(spacing: 12) {
-                // プレイ回数
                 statCard(
                     value: "\(totalPlayCount)",
                     label: "プレイかいすう",
-                    emoji: "🎮",
+                    systemImage: "gamecontroller.fill",
                     color: AsaColors.coffeeBrown
                 )
 
-                // 総正答率
                 statCard(
                     value: "\(overallAccuracyPercent)%",
                     label: "せいとうりつ",
-                    emoji: "📊",
+                    systemImage: "chart.bar.xaxis",
                     color: AsaColors.mutedSage
                 )
 
-                // 獲得星数
                 statCard(
                     value: "\(viewModel.profile?.totalStars ?? 0)",
                     label: "かくとくほし",
-                    emoji: "⭐",
-                    color: .orange
+                    systemImage: "star.fill",
+                    color: AsaColors.coffeeBrown
                 )
             }
         }
     }
 
     /// 統計カード
-    private func statCard(value: String, label: String, emoji: String, color: Color) -> some View {
+    private func statCard(value: String, label: String, systemImage: String, color: Color) -> some View {
         AsaCard {
             VStack(spacing: 6) {
-                Text(emoji)
-                    .font(.system(size: 24))
+                Image(systemName: systemImage)
+                    .font(.system(size: 22, weight: .semibold))
+                    .foregroundColor(color)
 
                 Text(value)
                     .font(.system(size: 22, weight: .bold, design: .rounded))
@@ -183,12 +181,12 @@ struct ProgressDashboardView: View {
     private func sessionRow(session: GameSession) -> some View {
         AsaCard {
             HStack(spacing: 12) {
-                // モード絵文字
-                Text(session.gameMode.emoji)
-                    .font(.system(size: 28))
+                Image(systemName: session.gameMode.systemImage)
+                    .font(.system(size: 24, weight: .semibold))
+                    .foregroundColor(session.gameMode.themeColor)
+                    .frame(width: 32)
 
                 VStack(alignment: .leading, spacing: 4) {
-                    // モード名 + 難易度
                     HStack(spacing: 6) {
                         Text(session.gameMode.displayName)
                             .font(.system(size: 16, weight: .bold, design: .rounded))
@@ -199,7 +197,7 @@ struct ProgressDashboardView: View {
                             .foregroundColor(.white)
                             .padding(.horizontal, 8)
                             .padding(.vertical, 2)
-                            .background(Color(session.gameMode.themeColorName))
+                            .background(session.gameMode.themeColor)
                             .clipShape(Capsule())
                     }
 
@@ -220,7 +218,7 @@ struct ProgressDashboardView: View {
                     HStack(spacing: 2) {
                         Image(systemName: "star.fill")
                             .font(.system(size: 10))
-                            .foregroundColor(.yellow)
+                            .foregroundColor(AsaColors.coffeeBrown)
                         Text("+\(session.earnedStars)")
                             .font(.system(size: 12, design: .rounded))
                             .foregroundColor(AsaColors.mutedSage)

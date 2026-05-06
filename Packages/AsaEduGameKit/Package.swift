@@ -13,11 +13,15 @@ let package = Package(
             targets: ["AsaEduGameKit"]
         ),
     ],
-    dependencies: [],
+    dependencies: [
+        .package(path: "../AsaUIKit"),
+    ],
     targets: [
         .target(
             name: "AsaEduGameKit",
-            dependencies: [],
+            dependencies: [
+                .product(name: "AsaUIKit", package: "AsaUIKit"),
+            ],
             path: "Sources/AsaEduGameKit"
         ),
         .testTarget(

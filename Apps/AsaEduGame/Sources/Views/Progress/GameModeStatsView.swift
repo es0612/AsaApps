@@ -18,18 +18,21 @@ struct GameModeStatsView: View {
     var body: some View {
         AsaCard {
             HStack(spacing: 14) {
-                // モード絵文字
-                Text(mode.emoji)
-                    .font(.system(size: 36))
+                ZStack {
+                    Circle()
+                        .fill(mode.themeColor.opacity(0.15))
+                        .frame(width: 56, height: 56)
+                    Image(systemName: mode.systemImage)
+                        .font(.system(size: 28, weight: .semibold))
+                        .foregroundColor(mode.themeColor)
+                }
 
                 VStack(alignment: .leading, spacing: 8) {
-                    // モード名
                     Text(mode.displayName)
                         .font(.system(size: 16, weight: .bold, design: .rounded))
-                        .foregroundColor(Color(mode.themeColorName))
+                        .foregroundColor(mode.themeColor)
 
                     if let stats, stats.totalSessions > 0 {
-                        // 正答率プログレスバー
                         VStack(alignment: .leading, spacing: 4) {
                             HStack {
                                 Text("せいとうりつ")
@@ -38,16 +41,14 @@ struct GameModeStatsView: View {
                                 Spacer()
                                 Text("\(Int(stats.averageAccuracy * 100))%")
                                     .font(.system(size: 14, weight: .bold, design: .rounded))
-                                    .foregroundColor(Color(mode.themeColorName))
+                                    .foregroundColor(mode.themeColor)
                             }
 
                             ProgressView(value: stats.averageAccuracy)
-                                .tint(Color(mode.themeColorName))
+                                .tint(mode.themeColor)
                         }
 
-                        // 統計詳細
                         HStack(spacing: 16) {
-                            // プレイ回数
                             HStack(spacing: 4) {
                                 Image(systemName: "play.circle")
                                     .font(.system(size: 11))
@@ -57,29 +58,27 @@ struct GameModeStatsView: View {
                                     .foregroundColor(AsaColors.mutedSage)
                             }
 
-                            // 正解数
                             HStack(spacing: 4) {
                                 Image(systemName: "checkmark.circle")
                                     .font(.system(size: 11))
-                                    .foregroundColor(.green)
+                                    .foregroundColor(AsaColors.coffeeBrown)
                                 Text("\(stats.totalCorrect)もん")
                                     .font(.system(size: 12, design: .rounded))
                                     .foregroundColor(AsaColors.mutedSage)
                             }
 
-                            // 最高コンボ
                             if stats.bestCombo >= 2 {
                                 HStack(spacing: 4) {
-                                    Text("🔥")
+                                    Image(systemName: "flame.fill")
                                         .font(.system(size: 11))
+                                        .foregroundColor(AsaColors.mocha)
                                     Text("\(stats.bestCombo)")
                                         .font(.system(size: 12, design: .rounded))
-                                        .foregroundColor(.orange)
+                                        .foregroundColor(AsaColors.mocha)
                                 }
                             }
                         }
                     } else {
-                        // まだプレイしていない
                         Text("まだプレイしていません")
                             .font(.system(size: 12, design: .rounded))
                             .foregroundColor(AsaColors.mutedSage)

@@ -100,10 +100,9 @@ struct HomeView: View {
                         .foregroundColor(AsaColors.mutedSage)
                 }
 
-                // 獲得星数
                 HStack(spacing: 2) {
                     Image(systemName: "star.fill")
-                        .foregroundColor(.yellow)
+                        .foregroundColor(AsaColors.coffeeBrown)
                         .font(.system(size: 14))
                     Text("\(viewModel.profile?.totalStars ?? 0)")
                         .font(.system(size: 14, weight: .medium, design: .rounded))
@@ -143,16 +142,19 @@ struct HomeView: View {
         } label: {
             AsaCard {
                 VStack(spacing: 12) {
-                    // 絵文字アイコン
-                    Text(mode.emoji)
-                        .font(.system(size: 44))
+                    ZStack {
+                        Circle()
+                            .fill(mode.themeColor.opacity(0.15))
+                            .frame(width: 72, height: 72)
+                        Image(systemName: mode.systemImage)
+                            .font(.system(size: 36, weight: .semibold))
+                            .foregroundColor(mode.themeColor)
+                    }
 
-                    // モード名
                     Text(mode.displayName)
                         .font(.system(size: 18, weight: .bold, design: .rounded))
-                        .foregroundColor(Color(mode.themeColorName))
+                        .foregroundColor(mode.themeColor)
 
-                    // 説明文
                     Text(mode.modeDescription)
                         .font(.system(size: 12, design: .rounded))
                         .foregroundColor(AsaColors.mutedSage)
@@ -168,23 +170,36 @@ struct HomeView: View {
         .accessibilityHint(mode.modeDescription)
     }
 
+    /// 難易度に応じた SF Symbol アイコン名（数字円で1/2/3を可視化）
+    private func difficultyIcon(for difficulty: DifficultyLevel) -> String {
+        switch difficulty.starCount {
+        case 1: return "1.circle.fill"
+        case 2: return "2.circle.fill"
+        default: return "3.circle.fill"
+        }
+    }
+
     // MARK: - 難易度選択シート
 
     private var difficultySelectionSheet: some View {
         NavigationStack {
             VStack(spacing: 24) {
                 if let mode = selectedMode {
-                    // モード表示
                     VStack(spacing: 8) {
-                        Text(mode.emoji)
-                            .font(.system(size: 60))
+                        ZStack {
+                            Circle()
+                                .fill(mode.themeColor.opacity(0.15))
+                                .frame(width: 96, height: 96)
+                            Image(systemName: mode.systemImage)
+                                .font(.system(size: 48, weight: .semibold))
+                                .foregroundColor(mode.themeColor)
+                        }
                         Text(mode.displayName)
                             .font(.system(size: 24, weight: .bold, design: .rounded))
-                            .foregroundColor(Color(mode.themeColorName))
+                            .foregroundColor(mode.themeColor)
                     }
                     .padding(.top, 16)
 
-                    // 難易度選択ボタン
                     VStack(spacing: 16) {
                         Text("むずかしさをえらんでね")
                             .font(.system(size: 18, weight: .medium, design: .rounded))
@@ -192,12 +207,12 @@ struct HomeView: View {
 
                         ForEach(DifficultyLevel.allCases, id: \.self) { difficulty in
                             ChildFriendlyButton(
-                                title: "\(difficulty.emoji) \(difficulty.displayName)",
-                                color: Color(mode.themeColorName)
+                                title: difficulty.displayName,
+                                color: mode.themeColor,
+                                icon: difficultyIcon(for: difficulty)
                             ) {
                                 selectedDifficulty = difficulty
                                 showDifficultySheet = false
-                                // 少し遅延を入れて遷移
                                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                                     navigateToGame = true
                                 }

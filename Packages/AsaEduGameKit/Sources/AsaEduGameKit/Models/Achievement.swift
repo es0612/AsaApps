@@ -1,5 +1,7 @@
 import Foundation
 import SwiftData
+import SwiftUI
+import AsaUIKit
 
 // MARK: - アチーブメント
 
@@ -76,7 +78,7 @@ public enum BadgeDefinition: String, CaseIterable, Sendable {
         }
     }
 
-    /// バッジ絵文字
+    /// バッジ絵文字（後方互換／既存データ用）
     public var emoji: String {
         switch self {
         case .firstStar: return "⭐"
@@ -92,6 +94,39 @@ public enum BadgeDefinition: String, CaseIterable, Sendable {
         case .starCollector500: return "✨"
         case .levelThree: return "🏆"
         case .allModes: return "🎮"
+        }
+    }
+
+    /// バッジの SF Symbol アイコン名
+    public var systemImage: String {
+        switch self {
+        case .firstStar: return "star.fill"
+        case .mathMaster: return "function"
+        case .hiraganaHero: return "character.book.closed.fill"
+        case .shapeExpert: return "square.on.circle.fill"
+        case .logicGenius: return "puzzlepiece.fill"
+        case .combo5: return "flame.fill"
+        case .superCombo: return "bolt.fill"
+        case .perfect: return "checkmark.seal.fill"
+        case .dailyPlayer: return "calendar"
+        case .starCollector100: return "sparkles"
+        case .starCollector500: return "star.square.on.square.fill"
+        case .levelThree: return "trophy.fill"
+        case .allModes: return "gamecontroller.fill"
+        }
+    }
+
+    /// バッジアイコン色（ブランドカラーから割当）
+    public var iconColor: Color {
+        switch self {
+        case .firstStar, .mathMaster, .perfect, .levelThree:
+            return AsaColors.coffeeBrown
+        case .hiraganaHero, .shapeExpert, .combo5, .superCombo:
+            return AsaColors.mocha
+        case .logicGenius, .dailyPlayer, .allModes:
+            return AsaColors.mutedSage
+        case .starCollector100, .starCollector500:
+            return AsaColors.coffeeBrown
         }
     }
 

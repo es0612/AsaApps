@@ -9,10 +9,6 @@ import AsaUIKit
 /// 3タブ: ホーム, しんちょく, プロフィール
 struct ContentView: View {
 
-    // MARK: - Environment
-
-    @Environment(\.modelContext) private var modelContext
-
     // MARK: - Services
 
     private let dataService: EduGameDataServiceProtocol
@@ -98,8 +94,8 @@ struct ContentView: View {
                 .tag(2)
         }
         .tint(AsaColors.coffeeBrown)
+        .modelContainer(dataService.modelContainer)
         .onAppear {
-            // タブバーの外観設定
             let appearance = UITabBarAppearance()
             appearance.configureWithDefaultBackground()
             UITabBar.appearance().scrollEdgeAppearance = appearance

@@ -44,12 +44,21 @@ public enum DifficultyLevel: String, CaseIterable, Codable, Sendable {
         }
     }
 
-    /// 難易度の絵文字表示
+    /// 難易度の絵文字表示（後方互換用）
     public var emoji: String {
         switch self {
         case .easy: return "⭐"
         case .normal: return "⭐⭐"
         case .hard: return "⭐⭐⭐"
+        }
+    }
+
+    /// 難易度を星数で表現（SF Symbols 表示用）
+    public var starCount: Int {
+        switch self {
+        case .easy: return 1
+        case .normal: return 2
+        case .hard: return 3
         }
     }
 }

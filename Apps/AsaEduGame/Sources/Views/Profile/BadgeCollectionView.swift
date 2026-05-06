@@ -59,9 +59,14 @@ struct BadgeCollectionView: View {
     private var progressHeader: some View {
         AsaCard {
             VStack(spacing: 10) {
-                Text("🏅 バッジしゅうしゅう")
-                    .font(.system(size: 18, weight: .bold, design: .rounded))
-                    .foregroundColor(AsaColors.darkSlate)
+                HStack(spacing: 8) {
+                    Image(systemName: "rosette")
+                        .font(.system(size: 20))
+                        .foregroundColor(AsaColors.coffeeBrown)
+                    Text("バッジしゅうしゅう")
+                        .font(.system(size: 18, weight: .bold, design: .rounded))
+                        .foregroundColor(AsaColors.darkSlate)
+                }
 
                 // 解除済み数
                 HStack(spacing: 4) {
@@ -88,26 +93,25 @@ struct BadgeCollectionView: View {
 
     private func badgeCell(badge: BadgeDefinition) -> some View {
         let isUnlocked = isBadgeUnlocked(badge)
+        let badgeColor = badge.iconColor
 
         return Button {
             selectedBadge = badge
             showBadgeDetail = true
         } label: {
             VStack(spacing: 8) {
-                // バッジ絵文字
                 ZStack {
                     Circle()
-                        .fill(isUnlocked
-                              ? Color(badge.emoji == "⭐" ? "AsaCoffeeBrown" : badge.rawValue.hashValue % 2 == 0 ? "AsaMocha" : "AsaMutedSage").opacity(0.15)
-                              : Color.gray.opacity(0.1))
+                        .fill(isUnlocked ? badgeColor.opacity(0.15) : Color.gray.opacity(0.1))
                         .frame(width: 70, height: 70)
 
                     if isUnlocked {
-                        Text(badge.emoji)
-                            .font(.system(size: 36))
+                        Image(systemName: badge.systemImage)
+                            .font(.system(size: 32, weight: .semibold))
+                            .foregroundColor(badgeColor)
                     } else {
-                        Text("???")
-                            .font(.system(size: 20, weight: .bold, design: .rounded))
+                        Image(systemName: "lock.fill")
+                            .font(.system(size: 24))
                             .foregroundColor(.gray.opacity(0.4))
                     }
                 }
@@ -132,17 +136,17 @@ struct BadgeCollectionView: View {
         let achievement = findAchievement(for: badge)
 
         return VStack(spacing: 24) {
-            // バッジ絵文字
             ZStack {
                 Circle()
                     .fill(isUnlocked
-                          ? AsaColors.coffeeBrown.opacity(0.1)
+                          ? badge.iconColor.opacity(0.15)
                           : Color.gray.opacity(0.1))
                     .frame(width: 120, height: 120)
 
                 if isUnlocked {
-                    Text(badge.emoji)
-                        .font(.system(size: 64))
+                    Image(systemName: badge.systemImage)
+                        .font(.system(size: 56, weight: .semibold))
+                        .foregroundColor(badge.iconColor)
                 } else {
                     VStack(spacing: 4) {
                         Image(systemName: "lock.fill")

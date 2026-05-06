@@ -106,16 +106,25 @@ struct LevelBadgeView: View {
 
                         Spacer()
 
-                        Text("あと\(starsToNextLevel)⭐")
-                            .font(.system(size: 12, weight: .medium, design: .rounded))
-                            .foregroundColor(levelColor)
+                        HStack(spacing: 2) {
+                            Text("あと\(starsToNextLevel)")
+                                .font(.system(size: 12, weight: .medium, design: .rounded))
+                                .foregroundColor(levelColor)
+                            Image(systemName: "star.fill")
+                                .font(.system(size: 11))
+                                .foregroundColor(levelColor)
+                        }
                     }
                 }
             } else {
-                // 最大レベル
-                Text("さいこうレベルたっせい! 🎉")
-                    .font(.system(size: 14, weight: .bold, design: .rounded))
-                    .foregroundColor(.yellow)
+                HStack(spacing: 6) {
+                    Image(systemName: "trophy.fill")
+                        .font(.system(size: 14, weight: .semibold))
+                        .foregroundColor(AsaColors.coffeeBrown)
+                    Text("さいこうレベルたっせい!")
+                        .font(.system(size: 14, weight: .bold, design: .rounded))
+                        .foregroundColor(AsaColors.coffeeBrown)
+                }
             }
         }
     }

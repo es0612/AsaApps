@@ -1,5 +1,4 @@
 import SwiftUI
-import SwiftData
 import AsaEduGameKit
 
 // MARK: - AsaEduGame App
@@ -12,11 +11,5 @@ struct AsaEduGameApp: App {
         WindowGroup {
             ContentView()
         }
-        .modelContainer(for: [
-            UserProfile.self,
-            GameSession.self,
-            LearningRecord.self,
-            Achievement.self
-        ])
     }
 }

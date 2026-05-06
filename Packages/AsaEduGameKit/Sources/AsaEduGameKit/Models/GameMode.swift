@@ -1,4 +1,6 @@
 import Foundation
+import SwiftUI
+import AsaUIKit
 
 // MARK: - ゲームモード
 
@@ -19,7 +21,7 @@ public enum GameMode: String, CaseIterable, Codable, Sendable {
         }
     }
 
-    /// モード別の絵文字アイコン
+    /// モード別の絵文字アイコン（後方互換／既存データ用）
     public var emoji: String {
         switch self {
         case .mathQuiz: return "🔢"
@@ -29,13 +31,23 @@ public enum GameMode: String, CaseIterable, Codable, Sendable {
         }
     }
 
-    /// テーマカラー名（AsaUIKit連携用）
-    public var themeColorName: String {
+    /// モード別の SF Symbol アイコン名
+    public var systemImage: String {
         switch self {
-        case .mathQuiz: return "AsaCoffeeBrown"
-        case .hiraganaPractice: return "AsaMocha"
-        case .shapePuzzle: return "AsaMutedSage"
-        case .logicGame: return "AsaDarkSlate"
+        case .mathQuiz: return "function"
+        case .hiraganaPractice: return "character.book.closed.fill"
+        case .shapePuzzle: return "square.on.circle.fill"
+        case .logicGame: return "puzzlepiece.fill"
+        }
+    }
+
+    /// テーマカラー（AsaUIKit のブランドカラーを返す）
+    public var themeColor: Color {
+        switch self {
+        case .mathQuiz: return AsaColors.coffeeBrown
+        case .hiraganaPractice: return AsaColors.mocha
+        case .shapePuzzle: return AsaColors.mutedSage
+        case .logicGame: return AsaColors.darkSlate
         }
     }
 
