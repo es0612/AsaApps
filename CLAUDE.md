@@ -118,7 +118,7 @@ xcodebuild -project AsaNumberGame.xcodeproj -scheme AsaNumberGame \
 
 ## Swift ビルドエラー防止ルール
 
-過去の実装で頻発した12種類のビルドエラーパターンと防止策。**実装時に必ず参照すること。**
+過去の実装で頻発した13種類のビルドエラーパターンと防止策。**実装時に必ず参照すること。**
 
 ### 標準ビルド・テストコマンド
 
@@ -273,6 +273,32 @@ import Foundation
 @Model final class Item { }
 ```
 
+#### 12. Shared/ フォルダのターゲット可視性
+アプリ + Widget/Intent Extension 構成で `Apps/<App>/Shared/` 配下に `SharedDefaults.swift` 等を置く場合、`project.yml` の **両方のターゲット** の `sources` に `Shared/` を含める必要がある。片方のみだと "cannot find 'SharedDefaults' in scope" 等のスコープエラーが発生する。
+```yaml
+# ❌ NG: メインアプリからは Shared/ が見えない
+targets:
+  AsaLifeLog:
+    sources:
+      - Sources
+  LifeLogWidgetExtension:
+    sources:
+      - LifeLogWidgetExtension
+      - Shared
+
+# ✅ OK: 両方のターゲットで Shared/ を sources に含める
+targets:
+  AsaLifeLog:
+    sources:
+      - Sources
+      - Shared
+  LifeLogWidgetExtension:
+    sources:
+      - LifeLogWidgetExtension
+      - Shared
+```
+症状の特徴: `import` 追加では解決しない（同じターゲットで定義された型ではないため）。`project.yml` の `sources` 設定を確認するのが正しい対処。
+
 ### コミット前ビルドチェックリスト
 
 1. `xcodegen generate` 成功
@@ -282,6 +308,7 @@ import Foundation
 5. import 漏れなし（SwiftData, Foundation）
 6. 使用APIのiOSバージョン要件と project.yml ターゲットが一致
 7. システム型との命名衝突なし
+8. `Shared/` フォルダがメインアプリ + Extension 両方の `sources` に含まれているか確認
 
 ## アーキテクチャパターン
 
