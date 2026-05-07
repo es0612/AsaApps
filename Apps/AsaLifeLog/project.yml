@@ -27,6 +27,7 @@ targets:
       - path: Sources
         excludes:
           - "**/CLAUDE.md"
+      - path: Shared
     resources: [Sources/Assets.xcassets]
     settings:
       PRODUCT_BUNDLE_IDENTIFIER: com.asapapa.apps.asalifelog
