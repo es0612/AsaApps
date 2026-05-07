@@ -99,9 +99,11 @@ struct ContentView: View {
     // MARK: - Private Methods
 
     private func initializeApp() async {
-        // 初回起動時にサンプルデータを投入
         let loader = SampleDataLoader(modelContext: modelContext)
+        // 初回マスター（preferences, quickActions）
         await loader.loadIfNeeded()
+        // 当日分のデータが無ければ補充（毎起動・冪等）
+        await loader.seedTodayIfMissing()
 
         // オンボーディング表示チェック
         let hasSeenOnboarding = UserDefaults.standard.bool(forKey: "hasSeenOnboarding")
