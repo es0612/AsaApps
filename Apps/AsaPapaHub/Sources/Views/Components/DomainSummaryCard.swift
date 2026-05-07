@@ -61,11 +61,6 @@ struct DomainSummaryCard<Destination: View>: View {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .frame(height: 168)
-        .padding(14)
-        .background(
-            RoundedRectangle(cornerRadius: 14)
-                .fill(.background)
-                .shadow(color: .black.opacity(0.05), radius: 4, y: 2)
-        )
+        .hubCardStyle()
     }
 }

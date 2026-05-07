@@ -27,9 +27,9 @@ struct SiriTipBanner: View {
                 .font(.caption)
                 .foregroundStyle(.tertiary)
         }
-        .padding()
+        .padding(14)
         .background(
-            RoundedRectangle(cornerRadius: 12)
+            RoundedRectangle(cornerRadius: 14)
                 .fill(AsaColors.softCream.opacity(0.5))
         )
     }

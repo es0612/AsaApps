@@ -86,9 +86,9 @@ struct DashboardView: View {
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .padding()
+        .padding(14)
         .background(
-            RoundedRectangle(cornerRadius: 16)
+            RoundedRectangle(cornerRadius: 14)
                 .fill(.ultraThinMaterial)
         )
     }

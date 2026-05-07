@@ -70,13 +70,8 @@ struct MorningRoutineView: View {
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
         }
-        .padding()
         .frame(maxWidth: .infinity)
-        .background(
-            RoundedRectangle(cornerRadius: 16)
-                .fill(.background)
-                .shadow(color: .black.opacity(0.05), radius: 6, y: 3)
-        )
+        .hubFeaturedCardStyle()
     }
 
     // MARK: - タイマーセクション
@@ -125,12 +120,7 @@ struct MorningRoutineView: View {
                 }
             }
         }
-        .padding()
-        .background(
-            RoundedRectangle(cornerRadius: 16)
-                .fill(.background)
-                .shadow(color: .black.opacity(0.05), radius: 6, y: 3)
-        )
+        .hubFeaturedCardStyle()
     }
 
     // MARK: - アイテムリスト

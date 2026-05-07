@@ -14,16 +14,16 @@ struct CommunityOverviewView: View {
 
     var body: some View {
         ScrollView {
-            VStack(spacing: 20) {
-                // スコアヘッダー
+            VStack(spacing: 16) {
                 if let snapshot {
-                    communityScoreHeader(snapshot)
+                    DomainScoreHeader(
+                        domain: .community,
+                        snapshot: snapshot,
+                        gradientColors: [.blue, .cyan]
+                    )
                 }
 
-                // 地域イベントカード
                 LocalEventCard()
-
-                // 安全ステータスカード
                 SafetyStatusCard()
             }
             .padding()
@@ -31,38 +31,6 @@ struct CommunityOverviewView: View {
         .navigationTitle("地域")
         .background(Color(.systemGroupedBackground))
         .task { await loadData() }
-    }
-
-    // MARK: - スコアヘッダー
-
-    private func communityScoreHeader(_ snapshot: DomainSnapshot) -> some View {
-        HStack {
-            VStack(alignment: .leading, spacing: 4) {
-                Text("地域スコア")
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
-                Text("\(snapshot.score)点")
-                    .font(.title)
-                    .fontWeight(.bold)
-                    .foregroundStyle(AsaColors.darkSlate)
-                TrendIndicator(trend: snapshot.trend)
-            }
-
-            Spacer()
-
-            ScoreRing(
-                progress: Double(snapshot.score) / 100.0,
-                lineWidth: 8,
-                size: 72,
-                gradientColors: [.blue, .cyan]
-            )
-        }
-        .padding()
-        .background(
-            RoundedRectangle(cornerRadius: 16)
-                .fill(.background)
-                .shadow(color: .black.opacity(0.05), radius: 6, y: 3)
-        )
     }
 
     // MARK: - Private

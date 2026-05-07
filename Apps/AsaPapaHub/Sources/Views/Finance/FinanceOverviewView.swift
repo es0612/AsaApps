@@ -14,16 +14,16 @@ struct FinanceOverviewView: View {
 
     var body: some View {
         ScrollView {
-            VStack(spacing: 20) {
-                // スコアヘッダー
+            VStack(spacing: 16) {
                 if let snapshot {
-                    financeScoreHeader(snapshot)
+                    DomainScoreHeader(
+                        domain: .finance,
+                        snapshot: snapshot,
+                        gradientColors: [.green, .mint]
+                    )
                 }
 
-                // 目標進捗カード
                 GoalProgressCard()
-
-                // 月次支出チャート
                 MonthlySpendingChart()
             }
             .padding()
@@ -31,43 +31,6 @@ struct FinanceOverviewView: View {
         .navigationTitle("資産")
         .background(Color(.systemGroupedBackground))
         .task { await loadData() }
-    }
-
-    // MARK: - スコアヘッダー
-
-    private func financeScoreHeader(_ snapshot: DomainSnapshot) -> some View {
-        HStack {
-            VStack(alignment: .leading, spacing: 4) {
-                Text("資産スコア")
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
-                Text("\(snapshot.score)点")
-                    .font(.title)
-                    .fontWeight(.bold)
-                    .foregroundStyle(AsaColors.darkSlate)
-                TrendIndicator(trend: snapshot.trend)
-
-                Text(snapshot.summary)
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-                    .padding(.top, 4)
-            }
-
-            Spacer()
-
-            ScoreRing(
-                progress: Double(snapshot.score) / 100.0,
-                lineWidth: 8,
-                size: 72,
-                gradientColors: [.green, .mint]
-            )
-        }
-        .padding()
-        .background(
-            RoundedRectangle(cornerRadius: 16)
-                .fill(.background)
-                .shadow(color: .black.opacity(0.05), radius: 6, y: 3)
-        )
     }
 
     // MARK: - Private

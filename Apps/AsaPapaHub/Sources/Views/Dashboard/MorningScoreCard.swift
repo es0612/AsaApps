@@ -52,12 +52,7 @@ struct MorningScoreCard: View {
                 }
             }
         }
-        .padding()
-        .background(
-            RoundedRectangle(cornerRadius: 16)
-                .fill(.background)
-                .shadow(color: .black.opacity(0.06), radius: 8, y: 4)
-        )
+        .hubFeaturedCardStyle()
     }
 
     // MARK: - Private
