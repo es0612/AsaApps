@@ -100,44 +100,53 @@ struct DashboardView: View {
             GridItem(.flexible(), spacing: 12),
             GridItem(.flexible(), spacing: 12),
         ], spacing: 12) {
-            HealthSummaryCard(snapshot: dataBridge.snapshot(for: .health), dashboard: dataBridge.todayDashboard)
-            FamilySummaryCard(snapshot: dataBridge.snapshot(for: .family))
-            FinanceSummaryCard(snapshot: dataBridge.snapshot(for: .finance))
-            CommunitySummaryCard(snapshot: dataBridge.snapshot(for: .community))
-            LearningSummaryCard(snapshot: dataBridge.snapshot(for: .learning))
-            MorningScoreSummaryCard(snapshot: dataBridge.snapshot(for: .morning))
-        }
-    }
-}
+            DomainSummaryCard(
+                domain: .health,
+                snapshot: dataBridge.snapshot(for: .health),
+                subtitle: healthSubtitle(for: dataBridge.todayDashboard)
+            ) {
+                HealthOverviewView()
+            }
 
-// MARK: - 朝活サマリーカード（グリッド用）
+            DomainSummaryCard(
+                domain: .family,
+                snapshot: dataBridge.snapshot(for: .family)
+            ) {
+                FamilyHubView()
+            }
 
-private struct MorningScoreSummaryCard: View {
-    let snapshot: DomainSnapshot?
+            DomainSummaryCard(
+                domain: .finance,
+                snapshot: dataBridge.snapshot(for: .finance)
+            ) {
+                FinanceOverviewView()
+            }
 
-    var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            DomainSectionHeader(domain: .morning)
+            DomainSummaryCard(
+                domain: .community,
+                snapshot: dataBridge.snapshot(for: .community)
+            ) {
+                CommunityOverviewView()
+            }
 
-            if let snapshot {
-                Text("\(snapshot.score)点")
-                    .font(.title2)
-                    .fontWeight(.bold)
-                    .foregroundStyle(AsaColors.darkSlate)
+            DomainSummaryCard(
+                domain: .learning,
+                snapshot: dataBridge.snapshot(for: .learning)
+            ) {
+                LearningOverviewView()
+            }
 
-                TrendIndicator(trend: snapshot.trend)
-            } else {
-                Text("--")
-                    .font(.title2)
-                    .foregroundStyle(.secondary)
+            DomainSummaryCard(
+                domain: .morning,
+                snapshot: dataBridge.snapshot(for: .morning)
+            ) {
+                MorningScoreDetailView()
             }
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .padding()
-        .background(
-            RoundedRectangle(cornerRadius: 12)
-                .fill(.background)
-                .shadow(color: .black.opacity(0.05), radius: 4, y: 2)
-        )
+    }
+
+    private func healthSubtitle(for dashboard: HubDashboard?) -> String? {
+        guard let dashboard else { return nil }
+        return "\(dashboard.stepsCount)歩 ・ \(String(format: "%.1f", dashboard.sleepHours))時間"
     }
 }
